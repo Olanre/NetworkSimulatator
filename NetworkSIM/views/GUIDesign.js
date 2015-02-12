@@ -17,7 +17,7 @@ var svgCanvas = document.querySelector('svg'),
  * @param centerY: y  value of the center of the circle
  * @param radius: radius of the server
  * @param svgCanvas: the canvas to paint this object on
- * @param elementClass: The class of the circle object to be created
+ * @param elementClass: The class of the circle object to be created, used to attach CSS.
  */
 function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.x=centerX;
@@ -48,6 +48,17 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('stroke', this.stroke);
 }
 
+function polygon(pointList, svgCanvas, elementClass){
+	this.pointList = pointList;
+	
+	this.element = document.createElementNS(svgNS, 'polygon');
+	
+	this.element.setAttribute('data-index', shapes.length);
+	
+	this.element.setAttribute('class', elementClass);
+	
+	
+}
 
 /**
  * --------------
