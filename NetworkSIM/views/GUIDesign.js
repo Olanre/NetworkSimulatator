@@ -44,7 +44,14 @@ interact('.device')
 	.draggable({
 		// enable inertial throwing
 	    inertia: true,
-		//allows inertia with moving the circle
+	    
+	    //restricts the object to stay within the parent object
+	    restrict: {
+	        restriction: "parent",
+	        endOnly: true,
+	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+	      },
+	      
 		//handles moving the circle
 		onmove: function (event) {
 		//gets the circle from the list of shapes
