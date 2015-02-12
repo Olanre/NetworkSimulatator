@@ -92,11 +92,12 @@ interact('.network').dropzone({
 	//if a droppable object is being held
 	ondropactivate: function(event){
 		//display where you can drop the object
-		event.target.classList.add('possibleDrop');
+		event.target.classList.add('drop-locations');
 	},
 	
 	//if a droppable object is dragged within the network
 	ondragenter: function (event) {
+		//related target is the object  being dragged
 	    var draggableElement = event.relatedTarget,
 	        dropzoneElement = event.target;
 
@@ -104,7 +105,26 @@ interact('.network').dropzone({
 	    dropzoneElement.classList.add('drop-target');
 	    draggableElement.classList.add('can-drop');
 	    draggableElement.textContent = 'Dragged in';
-	  },
+	},
+	//when an object leaves a droppable location
+	ondragleave: function (event) {
+		  // remove the indication of the object being able to be dropped
+		  event.target.classList.remove('drop-target');
+		  event.relatedTarget.classList.remove('can-drop');
+	},
+	//when an object is dropped into this network
+	//this is where you would send messages to the server
+	//telling it that a device has been added to a network
+	ondrop: function (event) {
+		//put interaction in here
+	},
+	//when stopped holding a droppable object
+	ondropdeactivate: function (event) {
+	    //remove css information
+	    event.target.classList.remove('drop-locations');
+	    event.target.classList.remove('drop-target');
+	}
+	
 })
 
 
