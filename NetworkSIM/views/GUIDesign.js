@@ -22,7 +22,7 @@ function circle(centerX, centerY, radius, svgCanvas){
 	//set the unique id of this shape
 	this.element.setAttribute('data-index', shapes.length);
 	//sets the class of this shape to 
-	this.element.setAttribute('class', 'network');
+	this.element.setAttribute('class', 'device');
 	shapes.push(this);
 	
 	this.draw();
@@ -39,21 +39,23 @@ circle.prototype.draw=function(){
 }
 
 //listener for the events for the ".network" class
-interact('.network')
+interact('.device')
 //handles a dragging event for the circle
-.draggable({
-  max: Infinity,
-  //handles moving the circle
-  onmove: function (event) {
-	//gets the circle from the list of shapes
-    var rectangle = shapes[event.target.getAttribute('data-index')];
-
-    rectangle.x += event.dx;
-    rectangle.y += event.dy;
-    rectangle.draw();
-  }
+	.draggable({
+		// enable inertial throwing
+	    inertia: true,
+		//allows inertia with moving the circle
+		//handles moving the circle
+		onmove: function (event) {
+		//gets the circle from the list of shapes
+			var rectangle = shapes[event.target.getAttribute('data-index')];
+			//updates the location of the rectangle
+			rectangle.x += event.dx;
+			rectangle.y += event.dy;
+			rectangle.draw();
+		}
 })
 
 for (var i = 0; i < 5; i++) {
-  new circle(50 + 100 * i, 80, 80, svgCanvas);
+  new circle(100 + 200*i, 80+i*30, 20, svgCanvas);
 }
