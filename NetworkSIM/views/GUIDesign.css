@@ -8,6 +8,25 @@ svg {
 .device {
 	fill: red;
 	stroke: black;
+	stroke-dasharray: 10,10;
+}
+
+.possibleDrop{
+	border-color: #666;
+	border-width: 5px;
+	border-style: dashed;
+}
+
+.drop-target{
+	fill:black;
+}
+.can-drop{
+	fill: yellow;
+}
+
+.network{
+	fill: green;
+	stroke: black;
 }
 
 body { 

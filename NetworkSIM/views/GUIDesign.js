@@ -4,14 +4,22 @@ var svgCanvas = document.querySelector('svg'),
     svgNS = 'http://www.w3.org/2000/svg',
     //holds array of shapes in the svg
     shapes=[];
+
+/**
+ * ---------
+ * Shape Classes
+ * -------------------
+ */
+
 /**
  * Circle object to be rendered by SVG.
  * @param centerX: x value of the center of the circle
  * @param centerY: y  value of the center of the circle
  * @param radius: radius of the server
  * @param svgCanvas: the canvas to paint this object on
+ * @param elementClass: The class of the circle object to be created
  */
-function circle(centerX, centerY, radius, svgCanvas){
+function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.x=centerX;
 	this.y=centerY;
 	this.r=radius;
@@ -22,7 +30,7 @@ function circle(centerX, centerY, radius, svgCanvas){
 	//set the unique id of this shape
 	this.element.setAttribute('data-index', shapes.length);
 	//sets the class of this shape to 
-	this.element.setAttribute('class', 'device');
+	this.element.setAttribute('class', elementClass);
 	shapes.push(this);
 	
 	this.draw();
@@ -38,7 +46,16 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('stroke', this.stroke);
 }
 
-//listener for the events for the ".network" class
+
+/**
+ * --------------
+ * Shape Interaction
+ * --------------------
+ */
+
+/**
+ * Interaction with the "device" class
+ */
 interact('.device')
 //handles a dragging event for the circle
 	.draggable({
@@ -55,14 +72,43 @@ interact('.device')
 		//handles moving the circle
 		onmove: function (event) {
 		//gets the circle from the list of shapes
-			var rectangle = shapes[event.target.getAttribute('data-index')];
+			var circle = shapes[event.target.getAttribute('data-index')];
 			//updates the location of the rectangle
-			rectangle.x += event.dx;
-			rectangle.y += event.dy;
-			rectangle.draw();
+			circle.x += event.dx;
+			circle.y += event.dy;
+			circle.draw();
 		}
+	})
+
+/**
+ * Interaction with the "network" class
+ */
+interact('.network').dropzone({
+	//only accept elements of the class device
+	accept: '.device',
+	//requires 100% overlap to accept
+	overlap: 1.00,
+	
+	//if a droppable object is being held
+	ondropactivate: function(event){
+		//display where you can drop the object
+		event.target.classList.add('possibleDrop');
+	},
+	
+	//if a droppable object is dragged within the network
+	ondragenter: function (event) {
+	    var draggableElement = event.relatedTarget,
+	        dropzoneElement = event.target;
+
+	    // feedback the possibility of a drop
+	    dropzoneElement.classList.add('drop-target');
+	    draggableElement.classList.add('can-drop');
+	    draggableElement.textContent = 'Dragged in';
+	  },
 })
 
-for (var i = 0; i < 5; i++) {
-  new circle(100 + 200*i, 80+i*30, 20, svgCanvas);
+
+new circle(100, 500, 100, svgCanvas, 'network');
+for (var i = 0; i < 10; i++) {
+  new circle(100 + 50*i, 80+i*30, 20, svgCanvas, 'device');
 }
