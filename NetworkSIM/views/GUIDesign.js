@@ -36,6 +36,8 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.draw();
 	//adds the circle to the svg canvas
 	svgCanvas.appendChild(this.element);
+	//orders the canvas so that devices are above networks
+	orderCanvas();
 }
 
 circle.prototype.draw=function(){
@@ -83,52 +85,84 @@ interact('.device')
 /**
  * Interaction with the "network" class
  */
-interact('.network').dropzone({
-	//only accept elements of the class device
-	accept: '.device',
-	//requires 100% overlap to accept
-	overlap: 1.00,
+interact('.network')
+	.dropzone({
+		//only accept elements of the class device
+		accept: '.device',
+		//requires 100% overlap to accept
+		overlap: 1.00,
+		
+		//if a droppable object is being held
+		ondropactivate: function(event){
+			//display where you can drop the object
+			event.target.classList.add('drop-locations');
+		},
+		
+		//if a droppable object is dragged within the network
+		ondragenter: function (event) {
+			//related target is the object  being dragged
+		    var draggableElement = event.relatedTarget,
+		        dropzoneElement = event.target;
 	
-	//if a droppable object is being held
-	ondropactivate: function(event){
-		//display where you can drop the object
-		event.target.classList.add('drop-locations');
-	},
+		    // feedback the possibility of a drop
+		    dropzoneElement.classList.add('drop-target');
+		    draggableElement.classList.add('can-drop');
+		    draggableElement.textContent = 'Dragged in';
+		},
+		//when an object leaves a droppable location
+		ondragleave: function (event) {
+			  // remove the indication of the object being able to be dropped
+			  event.target.classList.remove('drop-target');
+			  event.relatedTarget.classList.remove('can-drop');
+		},
+		//when an object is dropped into this network
+		//this is where you would send messages to the server
+		//telling it that a device has been added to a network
+		ondrop: function (event) {
+			//put interaction in here
+		},
+		//when stopped holding a droppable object
+		ondropdeactivate: function (event) {
+			//remove css information
+			event.target.classList.remove('drop-locations');
+		    event.target.classList.remove('drop-target');
+		},
+	})
+	//allows the network objects to be draggable
+	.draggable({
+		onmove: function(event){
+			var circle = shapes[event.target.getAttribute('data-index')];
+			circle.x+=event.dx;
+			circle.y+=event.dy;
+			circle.draw();
+		}
+	})
 	
-	//if a droppable object is dragged within the network
-	ondragenter: function (event) {
-		//related target is the object  being dragged
-	    var draggableElement = event.relatedTarget,
-	        dropzoneElement = event.target;
 
-	    // feedback the possibility of a drop
-	    dropzoneElement.classList.add('drop-target');
-	    draggableElement.classList.add('can-drop');
-	    draggableElement.textContent = 'Dragged in';
-	},
-	//when an object leaves a droppable location
-	ondragleave: function (event) {
-		  // remove the indication of the object being able to be dropped
-		  event.target.classList.remove('drop-target');
-		  event.relatedTarget.classList.remove('can-drop');
-	},
-	//when an object is dropped into this network
-	//this is where you would send messages to the server
-	//telling it that a device has been added to a network
-	ondrop: function (event) {
-		//put interaction in here
-	},
-	//when stopped holding a droppable object
-	ondropdeactivate: function (event) {
-	    //remove css information
-	    event.target.classList.remove('drop-locations');
-	    event.target.classList.remove('drop-target');
+/**
+ * --------
+ * Utilities and Button Handlers
+ * -----------------
+ */
+
+/**
+ * orderCanvas orders all the shapes on the canvas so that devices
+ * appear infront of networks.
+ */
+function orderCanvas(){
+	for (var i = 0; i < shapes.length; i++){
+		if (shapes[i].element.getAttribute('class')=='device'){
+			svgCanvas.appendChild(shapes[i].element);
+		}
 	}
-	
-})
+}
 
+//creates a network circle
+function createNetwork(){
+	new circle(100, 500, 100, svgCanvas, 'network');
+}
 
-new circle(100, 500, 100, svgCanvas, 'network');
-for (var i = 0; i < 10; i++) {
-  new circle(100 + 50*i, 80+i*30, 20, svgCanvas, 'device');
+//creates a device circle
+function createDevice(){
+	new circle(50, 50, 20, svgCanvas, 'device');
 }
