@@ -76,11 +76,15 @@ function Network(networkName, networkKind){
 }
 
 
-function Device(deviceName){
-  // Construct a device object
+function Device(deviceName, simulation, network, partition, token, email){
+  // Fiech wants it done like this. I've made it consistent with how we did things before.
 
-  this.deviceName = deviceName;
-
+  this.current_device_name = deviceName;
+  this.current_simulation=simulation;
+  this.current_network=network;
+  this.current_partition=partition;
+  this.email=email;
+  this.token=token;
   this.joinNetwork = function(network){
     // Make the device join a network
   };
@@ -102,6 +106,8 @@ function Device(deviceName){
   };
 }
 
-
+exports.Device = Device;
+exports.Network=Network;
+exports.Partition=Partition;
 exports.NetworkIterator = NetworkIterator;
 exports.DeviceIterator = DeviceIterator;
