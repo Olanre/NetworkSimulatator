@@ -4,10 +4,24 @@ svg {
   border-style: solid;
   border-width: 5px;
 }
+.viable-partition{
+	fill:red;
+	stroke: blue;
+	stroke-dasharray: 20,5;
+	stroke-width:5;
+}
+.partition-line{
+	fill:black;
+	stroke-dasharray: 20,5;
+	stroke-width:5;
+	stroke:black;
+}
+.partition-create{
+	fill:grey;
+}
 
 .device {
 	fill: red;
-	z-index: 5;
 }
 
 .network{
@@ -15,9 +29,10 @@ svg {
 	stroke: black;
 }
 
-.partition{
-	stroke: black;
-	fill:black;
+.create-partition{
+	stroke: white;
+	stroke-dasharray: 20,5;
+	stroke-width:5;
 }
 
 .drop-locations{

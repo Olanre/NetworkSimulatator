@@ -1,11 +1,11 @@
 
 //gets the svg object from html
+var i=0;
 var svgCanvas = document.querySelector('svg'),
 //gets SVG in order to display graphics
     svgNS = 'http://www.w3.org/2000/svg',
     //holds array of shapes in the svg
     shapes=[];
-	lines=[];
 
 /**
  * ---------
@@ -50,7 +50,7 @@ circle.prototype.draw=function(){
 	orderCanvas();
 }
 
-function line(x1, y1, x2, y2, svgCanvas, elementClass, networkIndex){
+function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.x1=x1;
 	this.x2=x2;
 	this.y1=y1;
@@ -60,11 +60,9 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass, networkIndex){
 	this.element = document.createElementNS(svgNS, 'line');
 	//set the unique id of this shape
 	this.element.setAttribute('data-index', shapes.length);
-	this.element.setAttribute('networkIndex', networkIndex);
 	//sets the class of this shape to 
 	this.element.setAttribute('class', elementClass);
 	shapes.push(this);
-	lines.push(this);
 	
 	this.draw();
 	//adds the line to the svg canvas
@@ -76,7 +74,7 @@ line.prototype.draw=function(){
 	this.element.setAttribute('x2', this.x2);
 	this.element.setAttribute('y1', this.y1);
 	this.element.setAttribute('y2', this.y2);
-	this.element.setAttribute('stroke', this.stroke);
+	this.element.setAttribute('stroke-width', this.stroke);
 	//orders the canvas so that devices are above networks
 	orderCanvas();
 }
@@ -118,9 +116,10 @@ interact('.device')
  * Interaction with the "network" class
  */
 interact('.network')
+	
 	.dropzone({
 		//only accept elements of the class device
-		accept: '.device',
+		accept: '.device, .partition-create',
 		//requires 100% overlap to accept
 		overlap: 1.00,
 		
@@ -135,11 +134,14 @@ interact('.network')
 			//related target is the object  being dragged
 		    var draggableElement = event.relatedTarget,
 		        dropzoneElement = event.target;
-	
-		    // feedback the possibility of a drop
-		    dropzoneElement.classList.add('drop-target');
-		    draggableElement.classList.add('can-drop');
-		    draggableElement.textContent = 'Dragged in';
+		    
+		    //if this is a device
+		    if (draggableElement.classList.contains('device')){
+			    // feedback the possibility of a drop
+			    dropzoneElement.classList.add('drop-target');
+			    draggableElement.classList.add('can-drop');
+			    draggableElement.textContent = 'Dragged in';
+		    }
 		},
 		//when an object leaves a droppable location
 		ondragleave: function (event) {
@@ -151,6 +153,10 @@ interact('.network')
 		//this is where you would send messages to the server
 		//telling it that a device has been added to a network
 		ondrop: function (event) {
+			var draggableElement = event.relatedTarget,
+	        dropzoneElement = event.target;
+
+		    createPartition(dropzoneElement.cx.baseVal.value, dropzoneElement.cy.baseVal.value);
 			//put interaction in here
 		},
 		//when stopped holding a droppable object
@@ -163,17 +169,38 @@ interact('.network')
 	//allows the network objects to drag out a partition
 	.draggable({
 		onstart: function(event){
-			var circle = shapes[event.target.getAttribute('data-index')];
-			new line(circle.x,circle.y,circle.x,circle.y,svgCanvas, 'partition',event.target.getAttribute('data-index'));
 		},
 		onmove: function(event){
-			var line = lines[event.target.getAttribute('data-index')];
-			line.x2+=event.dx;
-			line.y2+=event.dy;
-			line.draw();
 		},
 		onend: function(event){
 			//if connected to new network create partition otherwise delete line
+		}
+	})
+	.on('hold', function(event){
+		var network = shapes[event.target.getAttribute('data-index')];
+		new circle(event.x, event.y, 20, svgCanvas, 'partition-create');
+	})
+	
+interact('.partition-create')
+	.draggable({
+		// enable inertial throwing
+	    inertia: true,
+	    
+	    //restricts the object to stay within the parent object
+	    restrict: {
+	        restriction: "parent",
+	        endOnly: true,
+	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+	    },
+	    
+		//handles moving the circle
+		onmove: function (event) {
+		//gets the circle from the list of shapes
+			var circle = shapes[event.target.getAttribute('data-index')];
+			//updates the location of the rectangle
+			circle.x += event.dx;
+			circle.y += event.dy;
+			circle.draw();
 		}
 	})
 
@@ -197,10 +224,16 @@ function orderCanvas(){
 
 //creates a network circle
 function createNetwork(){
-	new circle(100, 500, 100, svgCanvas, 'network');
+	new circle(100+300*i, 500, 100, svgCanvas, 'network');
+	i+=1;
 }
 
 //creates a device circle
 function createDevice(){
-	new circle(50, 50, 20, svgCanvas, 'device');
+	new circle(50, 50, 10, svgCanvas, 'device');
+}
+
+function createPartition(originalNetworkx, originalNetworky){
+	alert(originalNetworkx);
+	new line(20,300,originalNetworkx,originalNetworky,svgCanvas, 'partition-line');
 }
