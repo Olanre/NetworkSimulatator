@@ -1,9 +1,11 @@
+
 //gets the svg object from html
 var svgCanvas = document.querySelector('svg'),
 //gets SVG in order to display graphics
     svgNS = 'http://www.w3.org/2000/svg',
     //holds array of shapes in the svg
     shapes=[];
+	lines=[];
 
 /**
  * ---------
@@ -36,8 +38,6 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.draw();
 	//adds the circle to the svg canvas
 	svgCanvas.appendChild(this.element);
-	//orders the canvas so that devices are above networks
-	orderCanvas();
 }
 
 circle.prototype.draw=function(){
@@ -46,18 +46,39 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('cy', this.y);
 	this.element.setAttribute('r', this.r);
 	this.element.setAttribute('stroke', this.stroke);
+	//orders the canvas so that devices are above networks
+	orderCanvas();
 }
 
-function polygon(pointList, svgCanvas, elementClass){
-	this.pointList = pointList;
+function line(x1, y1, x2, y2, svgCanvas, elementClass, networkIndex){
+	this.x1=x1;
+	this.x2=x2;
+	this.y1=y1;
+	this.y2=y2;
+	this.stroke=4
 	
-	this.element = document.createElementNS(svgNS, 'polygon');
-	
+	this.element = document.createElementNS(svgNS, 'line');
+	//set the unique id of this shape
 	this.element.setAttribute('data-index', shapes.length);
-	
+	this.element.setAttribute('networkIndex', networkIndex);
+	//sets the class of this shape to 
 	this.element.setAttribute('class', elementClass);
+	shapes.push(this);
+	lines.push(this);
 	
-	
+	this.draw();
+	//adds the line to the svg canvas
+	svgCanvas.appendChild(this.element);
+}
+
+line.prototype.draw=function(){
+	this.element.setAttribute('x1', this.x1);
+	this.element.setAttribute('x2', this.x2);
+	this.element.setAttribute('y1', this.y1);
+	this.element.setAttribute('y2', this.y2);
+	this.element.setAttribute('stroke', this.stroke);
+	//orders the canvas so that devices are above networks
+	orderCanvas();
 }
 
 /**
@@ -139,16 +160,22 @@ interact('.network')
 		    event.target.classList.remove('drop-target');
 		},
 	})
-	//allows the network objects to be draggable
+	//allows the network objects to drag out a partition
 	.draggable({
-		onmove: function(event){
+		onstart: function(event){
 			var circle = shapes[event.target.getAttribute('data-index')];
-			circle.x+=event.dx;
-			circle.y+=event.dy;
-			circle.draw();
+			new line(circle.x,circle.y,circle.x,circle.y,svgCanvas, 'partition',event.target.getAttribute('data-index'));
+		},
+		onmove: function(event){
+			var line = lines[event.target.getAttribute('data-index')];
+			line.x2+=event.dx;
+			line.y2+=event.dy;
+			line.draw();
+		},
+		onend: function(event){
+			//if connected to new network create partition otherwise delete line
 		}
 	})
-	
 
 /**
  * --------
