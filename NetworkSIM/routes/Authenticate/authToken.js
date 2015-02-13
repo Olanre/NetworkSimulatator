@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-var tokenManager = require('../../devices/TokenManager.js');
+var tokenManager = require('../../simulation/TokenManager.js');
 
 router.get('/', function(req, res) {
 	
