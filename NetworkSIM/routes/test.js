@@ -1,15 +1,22 @@
+/**
+ * New node file
+ */
+
 var express = require('express');
-var app = express();
 var router = express.Router();
 var path = require('path');
 var server = require('../Server');
 
-
 router.get('/', function(req, res) {
 	
-	console.log("> '/' path requested");
 	server.globalCount -= 1;
-	res.sendFile("AttachToken.html", {"root": path.join(__dirname, '../ajax') });
+	res.sendFile("test.html", {"root": path.join(__dirname, '../ajax') });
+});
+
+router.post('/', function(req, res) {
+	
+	server.globalCount += 1;
+	res.send(JSON.stringify(server.globalCount));
 });
 
 module.exports = router;
