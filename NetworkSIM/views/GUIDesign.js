@@ -40,7 +40,8 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.element.setAttribute('data-index', shapes.length);
 	//sets the class of this shape to 
 	this.element.setAttribute('class', elementClass);
-	shapes.push(this);
+	
+	this.children=[];
 	
 	this.draw();
 	//adds the circle to the svg canvas
@@ -117,7 +118,7 @@ interact('.device')
 			circle.y += event.dy;
 			circle.draw();
 		}
-	})
+	});
 
 /**
  * Interaction with the "network" class
@@ -126,9 +127,9 @@ interact('.network')
 	
 	.dropzone({
 		//only accept elements of the class device
-		accept: '.device',
+		accept: '.device, .network',
 		
-		overlap: 1.00,
+		overlap: 0.9,
 		
 		//if a droppable object is being held
 		ondropactivate: function(event){
@@ -155,17 +156,45 @@ interact('.network')
 			  // remove the indication of the object being able to be dropped
 			  event.target.classList.remove('drop-target');
 			  event.relatedTarget.classList.remove('can-drop');
+			  var networkIndex=event.target.getAttribute('data-index');
+			  var network=shapes[networkIndex];
+			  var deviceIndex=event.relatedTarget.getAttribute('data-index');
+			  var device=network.children[deviceIndex];
+			  console.log(deviceIndex);
+			  console.log(network.children[deviceIndex]);
+			  delete network.children[deviceIndex];
+			  shapes[networkIndex]=network;
+			  
 		},
 		//when an object is dropped into this network
 		//this is where you would send messages to the server
 		//telling it that a device has been added to a network
 		
 		ondrop: function (event) {
-			var draggableElement = event.relatedTarget,
-	        dropzoneElement = event.target;
-			var draggableClass=draggableElement.getAttribute('class');
-			var dropzoneClass=dropzoneElement.getAttribute('class');
-			
+			var draggableElement = event.relatedTarget;
+	        var dropzoneElement = event.target;
+			var dragClass=draggableElement.classList[0];
+			console.log(dragClass);
+			if(dragClass==='device'){
+				var deviceIndex=draggableElement.getAttribute('data-index');
+				var networkIndex=dropzoneElement.getAttribute('data-index');
+				var device=shapes[deviceIndex];
+				var network=shapes[networkIndex];
+				network.children[deviceIndex]=(device);
+				shapes[networkIndex]=network;
+			}
+			if(dragClass==='network'){
+
+				var indexDifference=draggableElement.getAttribute('data-index')-dropzoneElement.getAttribute('data-index');
+				if(indexDifference!=1){
+					var partition=createPartition(dropzoneElement.getAttribute('cx'),dropzoneElement.getAttribute('cy'));
+				}
+				var networkIndex=dropzoneElement.getAttribute('data-index');
+				var circle=shapes[networkIndex];
+				circle.x=origin.x;
+				circle.y=origin.y;
+				circle.draw();
+			}
 		
 		},
 		//when stopped holding a droppable object
@@ -176,18 +205,47 @@ interact('.network')
 		},
 	})
 	
+	.draggable({
+			// enable inertial throwing
+		    inertia: true,
+		
+			//handles moving the circle
+			onmove: function (event) {
+				var circle = shapes[event.target.getAttribute('data-index')];
+				circle.x += event.dx;
+				circle.y += event.dy;
+				for(index in circle.children){
+					circle.children[index].x+=event.dx;
+					circle.children[index].y+=event.dy;
+					circle.children[index].draw();
+				}
+				circle.draw();
+			},
+			onstart: function(event){
+		    	//the idea here is to save the original coordinates
+		    	var circle = shapes[event.target.getAttribute('data-index')];
+		    	
+				origin.x=circle.x;
+				origin.y=circle.y;
+			},
 
+		
+			onend: function(event){
+				
+			}
+			
+		});
 	
 /******
  * HERE'S THE PLAN
  * Each network is initialized with a partition node in the center. You can drag that node to other networks to create a partition. You can probably click the line
  * that will be made to delete it or something but we can sort that out later.
- *******/
-interact('.partition-create').dropzone({
+ *****
+interact('.connection-node').dropzone({
 	//only accept elements of the class device
-	accept: '.partition-create',
+	accept: '.connection-node',
 	
-	overlap: 0.1,
+	overlap: 1.0,
 	
 	//if a droppable object is being held
 	ondropactivate: function(event){
@@ -202,7 +260,7 @@ interact('.partition-create').dropzone({
 	        dropzoneElement = event.target;
 	   
 	    //if this is a device
-	    if (draggableElement.classList.contains('.partition-create')){
+	    if (draggableElement.classList.contains('.connection-node')){
 		    // feedback the possibility of a drop
 		    dropzoneElement.classList.add('drop-target');
 		    draggableElement.classList.add('can-drop');
@@ -239,27 +297,24 @@ interact('.partition-create').dropzone({
 	    event.target.classList.remove('drop-target');
 	},
 })
-	.draggable({
+	interact('.connection-node').draggable({
 		// enable inertial throwing
 	    inertia: true,
 	    
 	    //restricts the object to stay within the parent object
-	    restrict: {
-	        restriction: "parent",
-	        endOnly: true,
-	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-	    },
+	    
 	    onstart: function(event){
 	    	//the idea here is to save the original coordinates
 	    	var circle = shapes[event.target.getAttribute('data-index')];
+	    	
 			origin.x=circle.x;
 			origin.y=circle.y;
-			console.log(origin.x+","+origin.y);
 		},
 		//handles moving the circle
 		onmove: function (event) {
 			var circle = shapes[event.target.getAttribute('data-index')];
 			//updates the location of the rectangle
+			console.log(circle);
 			circle.x += event.dx;
 			circle.y += event.dy;
 			circle.draw();
@@ -272,7 +327,7 @@ interact('.partition-create').dropzone({
 		}
 	});
 
-	
+	*/
 /**
  * --------
  * Utilities and Button Handlers
@@ -294,14 +349,14 @@ function orderCanvas(){
 //creates a network circle
 function createNetwork(){
 	var  network=new circle(100+300*i, 500, 100, svgCanvas, 'network');
-	console.log(network.element);
-	new circle(100+300*i,500,5, svgCanvas,'partition-create');
+	shapes.push(network);
 	i+=1;
 }
 
 //creates a device circle
 function createDevice(){
-	new circle(50, 50, 10, svgCanvas, 'device');
+	var device=new circle(50, 50, 10, svgCanvas, 'device');
+	shapes.push(device);
 }
 
 function createPartition(destinationx, destinationy){
