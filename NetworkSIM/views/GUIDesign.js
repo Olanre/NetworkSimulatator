@@ -7,7 +7,12 @@ var svgCanvas = document.querySelector('svg'),
     //holds array of shapes in the svg
     shapes=[];
 var origin = {x: 0, y: 0};
+var mouse = {x: 0, y: 0};
 
+document.addEventListener('mousemove', function(e){ 
+    mouse.x = e.clientX || e.pageX; 
+    mouse.y = e.clientY || e.pageY 
+}, false);
 
 /**
  * ---------
@@ -136,7 +141,7 @@ interact('.network')
 			//related target is the object  being dragged
 		    var draggableElement = event.relatedTarget,
 		        dropzoneElement = event.target;
-		    console.log(draggableElement);
+		   
 		    //if this is a device
 		    if (draggableElement.classList.contains('device')){
 			    // feedback the possibility of a drop
@@ -154,11 +159,23 @@ interact('.network')
 		//when an object is dropped into this network
 		//this is where you would send messages to the server
 		//telling it that a device has been added to a network
+		
 		ondrop: function (event) {
 			var draggableElement = event.relatedTarget,
 	        dropzoneElement = event.target;
-
-		    createPartition(dropzoneElement.cx.baseVal.value, dropzoneElement.cy.baseVal.value);
+			var draggableClass=draggableElement.getAttribute('class');
+			var dropzoneClass=dropzoneElement.getAttribute('class');
+			
+			if(draggableClass==='partition-create'){
+				var indexDifference=draggableElement.getAttribute('data-index')-dropzoneElement.getAttribute('data-index');
+				if(indexDifference!=1){
+					
+					createPartition(dropzoneElement.getAttribute('cx'),dropzoneElement.getAttribute('cy'));
+				}
+			}
+		
+			
+		    //createPartition(dropzoneElement.cx.baseVal.value, dropzoneElement.cy.baseVal.value);
 			//put interaction in here
 		},
 		//when stopped holding a droppable object
@@ -212,8 +229,9 @@ interact('.partition-create')
 	    },
 	    onstart: function(event){
 	    	//the idea here is to save the original coordinates
-			origin.x=event.x;
-			origin.y=event.y;
+			origin.x=mouse.x;
+			origin.y=mouse.y;
+			console.log(origin.x+","+origin.y);
 		},
 		//handles moving the circle
 		onmove: function (event) {
@@ -227,15 +245,8 @@ interact('.partition-create')
 		onend: function(event){
 			
 		}
-	})
-interact('.partition-line').draggable({
-	onmove: function(event){
-		
-	},
-	onend: function(event){
-		
-	}
-});
+	});
+
 	
 /**
  * --------
@@ -267,7 +278,7 @@ function createDevice(){
 	new circle(50, 50, 10, svgCanvas, 'device');
 }
 
-function createPartition(originalNetworkx, originalNetworky){
-	alert(originalNetworkx);
-	new line(20,300,originalNetworkx,originalNetworky,svgCanvas, 'partition-line');
+function createPartition(destinationx, destinationy){
+	console.log("("+destinationx+","+destinationy+")("+origin.x+","+origin.y+")");
+	new line(destinationx,destinationy,origin.x, origin.y,svgCanvas,'partition-line');
 }
