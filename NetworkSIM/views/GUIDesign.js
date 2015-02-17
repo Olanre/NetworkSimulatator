@@ -6,12 +6,9 @@ var svgCanvas = document.querySelector('svg'),
     svgNS = 'http://www.w3.org/2000/svg',
     //holds array of shapes in the svg
     shapes=[];
-var mouse = {x: 0, y: 0};
+var origin = {x: 0, y: 0};
 
-document.addEventListener('mousemove', function(e){ 
-    mouse.x = e.clientX || e.pageX; 
-    mouse.y = e.clientY || e.pageY ;
-}, false);
+
 /**
  * ---------
  * Shape Classes
@@ -81,7 +78,6 @@ line.prototype.draw=function(){
 	this.element.setAttribute('y2', this.y2);
 	this.element.setAttribute('stroke-width', this.stroke);
 	//orders the canvas so that devices are above networks
-	console.log(this);
 	orderCanvas();
 }
 
@@ -126,7 +122,7 @@ interact('.network')
 	.dropzone({
 		//only accept elements of the class device
 		accept: '.device, .partition-create',
-		//requires 100% overlap to accept
+		
 		overlap: 1.00,
 		
 		//if a droppable object is being held
@@ -140,7 +136,7 @@ interact('.network')
 			//related target is the object  being dragged
 		    var draggableElement = event.relatedTarget,
 		        dropzoneElement = event.target;
-		    
+		    console.log(draggableElement);
 		    //if this is a device
 		    if (draggableElement.classList.contains('device')){
 			    // feedback the possibility of a drop
@@ -173,21 +169,20 @@ interact('.network')
 		},
 	})
 	//allows the network objects to drag out a partition
-	.draggable({
+	/*.draggable({
 		onstart: function(event){
 			var x1=event.target.getAttribute('cx');
 			var y1=event.target.getAttribute('cy');
 			console.log(x1+","+y1);
-			var pLine=new line(x1,y1,100,100,svgCanvas,'partition');
+			var pLine=new line(x1,y1,event.pageX,event.pageY,svgCanvas,'partition-line');
 			pLine.draw();
 		},
 		onmove: function(event){
 			var partitionLine=shapes.pop();
-			partitionLine.x2+=event.dx;
-			partitionLine.y2+=event.dy;
+			partitionLine.x2=mouse.x;
+			partitionLine.y2=mouse.y;
 			partitionLine.draw();
 			shapes.push(partitionLine);
-			console.log(partitionLine);
 		},
 		onend: function(event){
 			//if connected to new network create partition otherwise delete line
@@ -196,8 +191,14 @@ interact('.network')
 	.on('hold', function(event){
 		var network = shapes[event.target.getAttribute('data-index')];
 		new circle(event.x, event.y, 5, svgCanvas, 'partition-create');
-	})
+	})*/
+
 	
+/******
+ * HERE'S THE PLAN
+ * Each network is initialized with a partition node in the center. You can drag that node to other networks to create a partition. You can probably click the line
+ * that will be made to delete it or something but we can sort that out later.
+ *******/
 interact('.partition-create')
 	.draggable({
 		// enable inertial throwing
@@ -209,7 +210,11 @@ interact('.partition-create')
 	        endOnly: true,
 	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 	    },
-	    
+	    onstart: function(event){
+	    	//the idea here is to save the original coordinates
+			origin.x=event.x;
+			origin.y=event.y;
+		},
 		//handles moving the circle
 		onmove: function (event) {
 		//gets the circle from the list of shapes
@@ -218,9 +223,20 @@ interact('.partition-create')
 			circle.x += event.dx;
 			circle.y += event.dy;
 			circle.draw();
+		},
+		onend: function(event){
+			
 		}
 	})
-
+interact('.partition-line').draggable({
+	onmove: function(event){
+		
+	},
+	onend: function(event){
+		
+	}
+});
+	
 /**
  * --------
  * Utilities and Button Handlers
@@ -242,6 +258,7 @@ function orderCanvas(){
 //creates a network circle
 function createNetwork(){
 	new circle(100+300*i, 500, 100, svgCanvas, 'network');
+	new circle(100+300*i,500,5, svgCanvas,'partition-create');
 	i+=1;
 }
 
