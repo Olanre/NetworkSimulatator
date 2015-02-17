@@ -6,7 +6,12 @@ var svgCanvas = document.querySelector('svg'),
     svgNS = 'http://www.w3.org/2000/svg',
     //holds array of shapes in the svg
     shapes=[];
+var mouse = {x: 0, y: 0};
 
+document.addEventListener('mousemove', function(e){ 
+    mouse.x = e.clientX || e.pageX; 
+    mouse.y = e.clientY || e.pageY ;
+}, false);
 /**
  * ---------
  * Shape Classes
@@ -79,6 +84,11 @@ line.prototype.draw=function(){
 	orderCanvas();
 }
 
+line.prototype.stretch=function(endx,endy){
+	this.x2=endx;
+	this.y2=endy;
+	this.draw();
+}
 /**
  * --------------
  * Shape Interaction
@@ -169,8 +179,17 @@ interact('.network')
 	//allows the network objects to drag out a partition
 	.draggable({
 		onstart: function(event){
+			var x1=event.target.getAttribute('cx');
+			var y1=event.target.getAttribute('cy');
+			console.log(x1+","+y1);
+			new line(x1,y1,x1,y1,svgCanvas,'partition');
+			
 		},
 		onmove: function(event){
+			var partitionLine=shapes.pop();
+			partitionLine.stretch(mouse.x,mouse.y);
+			console.log(mouse.x+","+mouse.y);
+			shapes.push(partitionLine);
 		},
 		onend: function(event){
 			//if connected to new network create partition otherwise delete line
