@@ -252,8 +252,8 @@ interact('.partition-create').dropzone({
 	    onstart: function(event){
 	    	//the idea here is to save the original coordinates
 	    	var circle = shapes[event.target.getAttribute('data-index')];
-			origin.x=mouse.x;
-			origin.y=mouse.y;
+			origin.x=circle.x;
+			origin.y=circle.y;
 			console.log(origin.x+","+origin.y);
 		},
 		//handles moving the circle
