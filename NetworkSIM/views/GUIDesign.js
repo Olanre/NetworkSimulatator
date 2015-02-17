@@ -126,7 +126,7 @@ interact('.network')
 	
 	.dropzone({
 		//only accept elements of the class device
-		accept: '.device, .partition-create',
+		accept: '.device',
 		
 		overlap: 1.00,
 		
@@ -166,17 +166,7 @@ interact('.network')
 			var draggableClass=draggableElement.getAttribute('class');
 			var dropzoneClass=dropzoneElement.getAttribute('class');
 			
-			if(draggableClass==='partition-create'){
-				var indexDifference=draggableElement.getAttribute('data-index')-dropzoneElement.getAttribute('data-index');
-				if(indexDifference!=1){
-					
-					createPartition(dropzoneElement.getAttribute('cx'),dropzoneElement.getAttribute('cy'));
-				}
-			}
 		
-			
-		    //createPartition(dropzoneElement.cx.baseVal.value, dropzoneElement.cy.baseVal.value);
-			//put interaction in here
 		},
 		//when stopped holding a droppable object
 		ondropdeactivate: function (event) {
@@ -185,30 +175,7 @@ interact('.network')
 		    event.target.classList.remove('drop-target');
 		},
 	})
-	//allows the network objects to drag out a partition
-	/*.draggable({
-		onstart: function(event){
-			var x1=event.target.getAttribute('cx');
-			var y1=event.target.getAttribute('cy');
-			console.log(x1+","+y1);
-			var pLine=new line(x1,y1,event.pageX,event.pageY,svgCanvas,'partition-line');
-			pLine.draw();
-		},
-		onmove: function(event){
-			var partitionLine=shapes.pop();
-			partitionLine.x2=mouse.x;
-			partitionLine.y2=mouse.y;
-			partitionLine.draw();
-			shapes.push(partitionLine);
-		},
-		onend: function(event){
-			//if connected to new network create partition otherwise delete line
-		}
-	})
-	.on('hold', function(event){
-		var network = shapes[event.target.getAttribute('data-index')];
-		new circle(event.x, event.y, 5, svgCanvas, 'partition-create');
-	})*/
+	
 
 	
 /******
@@ -216,7 +183,62 @@ interact('.network')
  * Each network is initialized with a partition node in the center. You can drag that node to other networks to create a partition. You can probably click the line
  * that will be made to delete it or something but we can sort that out later.
  *******/
-interact('.partition-create')
+interact('.partition-create').dropzone({
+	//only accept elements of the class device
+	accept: '.partition-create',
+	
+	overlap: 0.1,
+	
+	//if a droppable object is being held
+	ondropactivate: function(event){
+		//display where you can drop the object
+		event.target.classList.add('drop-locations');
+	},
+	
+	//if a droppable object is dragged within the network
+	ondragenter: function (event) {
+		//related target is the object  being dragged
+	    var draggableElement = event.relatedTarget,
+	        dropzoneElement = event.target;
+	   
+	    //if this is a device
+	    if (draggableElement.classList.contains('.partition-create')){
+		    // feedback the possibility of a drop
+		    dropzoneElement.classList.add('drop-target');
+		    draggableElement.classList.add('can-drop');
+		    draggableElement.textContent = 'Dragged in';
+	    }
+	},
+	//when an object leaves a droppable location
+	ondragleave: function (event) {
+		  // remove the indication of the object being able to be dropped
+		  event.target.classList.remove('drop-target');
+		  event.relatedTarget.classList.remove('can-drop');
+	},
+	//when an object is dropped into this network
+	//this is where you would send messages to the server
+	//telling it that a device has been added to a network
+	
+	ondrop: function (event) {
+		var draggableElement = event.relatedTarget,
+        dropzoneElement = event.target;
+		var draggableClass=draggableElement.getAttribute('class');
+		var dropzoneClass=dropzoneElement.getAttribute('class');
+		var indexDifference=draggableElement.getAttribute('data-index')-dropzoneElement.getAttribute('data-index');
+		
+		if(indexDifference!=1){
+			createPartition(dropzoneElement.getAttribute('cx'),dropzoneElement.getAttribute('cy'));
+		}
+		
+
+	},
+	//when stopped holding a droppable object
+	ondropdeactivate: function (event) {
+		//remove css information
+		event.target.classList.remove('drop-locations');
+	    event.target.classList.remove('drop-target');
+	},
+})
 	.draggable({
 		// enable inertial throwing
 	    inertia: true,
@@ -229,13 +251,13 @@ interact('.partition-create')
 	    },
 	    onstart: function(event){
 	    	//the idea here is to save the original coordinates
+	    	var circle = shapes[event.target.getAttribute('data-index')];
 			origin.x=mouse.x;
 			origin.y=mouse.y;
 			console.log(origin.x+","+origin.y);
 		},
 		//handles moving the circle
 		onmove: function (event) {
-		//gets the circle from the list of shapes
 			var circle = shapes[event.target.getAttribute('data-index')];
 			//updates the location of the rectangle
 			circle.x += event.dx;
@@ -243,7 +265,10 @@ interact('.partition-create')
 			circle.draw();
 		},
 		onend: function(event){
-			
+			var circle = shapes[event.target.getAttribute('data-index')];
+			circle.x=origin.x;
+			circle.y=origin.y;
+			circle.draw();
 		}
 	});
 
@@ -268,7 +293,8 @@ function orderCanvas(){
 
 //creates a network circle
 function createNetwork(){
-	new circle(100+300*i, 500, 100, svgCanvas, 'network');
+	var  network=new circle(100+300*i, 500, 100, svgCanvas, 'network');
+	console.log(network.element);
 	new circle(100+300*i,500,5, svgCanvas,'partition-create');
 	i+=1;
 }
@@ -280,5 +306,5 @@ function createDevice(){
 
 function createPartition(destinationx, destinationy){
 	console.log("("+destinationx+","+destinationy+")("+origin.x+","+origin.y+")");
-	new line(destinationx,destinationy,origin.x, origin.y,svgCanvas,'partition-line');
+	new line(destinationx,destinationy,origin.x, origin.y,svgCanvas,'network-connection');
 }
