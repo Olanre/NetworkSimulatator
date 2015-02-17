@@ -81,14 +81,10 @@ line.prototype.draw=function(){
 	this.element.setAttribute('y2', this.y2);
 	this.element.setAttribute('stroke-width', this.stroke);
 	//orders the canvas so that devices are above networks
+	console.log(this);
 	orderCanvas();
 }
 
-line.prototype.stretch=function(endx,endy){
-	this.x2=endx;
-	this.y2=endy;
-	this.draw();
-}
 /**
  * --------------
  * Shape Interaction
@@ -182,14 +178,16 @@ interact('.network')
 			var x1=event.target.getAttribute('cx');
 			var y1=event.target.getAttribute('cy');
 			console.log(x1+","+y1);
-			new line(x1,y1,x1,y1,svgCanvas,'partition');
-			
+			var pLine=new line(x1,y1,100,100,svgCanvas,'partition');
+			pLine.draw();
 		},
 		onmove: function(event){
 			var partitionLine=shapes.pop();
-			partitionLine.stretch(mouse.x,mouse.y);
-			console.log(mouse.x+","+mouse.y);
+			partitionLine.x2+=event.dx;
+			partitionLine.y2+=event.dy;
+			partitionLine.draw();
 			shapes.push(partitionLine);
+			console.log(partitionLine);
 		},
 		onend: function(event){
 			//if connected to new network create partition otherwise delete line
@@ -197,7 +195,7 @@ interact('.network')
 	})
 	.on('hold', function(event){
 		var network = shapes[event.target.getAttribute('data-index')];
-		new circle(event.x, event.y, 20, svgCanvas, 'partition-create');
+		new circle(event.x, event.y, 5, svgCanvas, 'partition-create');
 	})
 	
 interact('.partition-create')
