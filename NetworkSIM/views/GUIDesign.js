@@ -247,18 +247,16 @@ function snapToLocation(shape,coordinates){
 		child.draw();
 		
 	}
-	updatePartitionLines
+	updatePartitionLines(shape);
 
 	shape.draw();
 }
 function updatePartitionLines(networkShape){
 	
 	for(index in networkShape.connections){
-		console.log(index);
 		var connectedNetwork=networkShape.connections[index];
 		var oldLine=shapes[index];
 		svgCanvas.removeChild(oldLine.element);
-		console.log(connectedNetwork);
 		var newLine=new line(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y,svgCanvas,'network-connection');
 		shapes[index]=newLine;
 		newLine.draw();
