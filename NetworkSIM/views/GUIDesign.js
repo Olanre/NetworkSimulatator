@@ -109,9 +109,13 @@ interact('.device')
 	.draggable({
 		
 	    inertia: true,
+	    
+	    restrict: {
+	        restriction: 'parent',
+	    },
 
 		onmove: function (event) {
-			
+		
 		//gets the circle from the list of shapes
 			var circle = getShapeFromEvent(event);
 			
@@ -131,7 +135,7 @@ interact('.network')
 		
 		accept: '.device, .network',
 		
-		overlap: 0.9,
+		overlap: 0.85,
 		
 		//if a droppable object is being held
 		ondropactivate: function(event){
@@ -205,7 +209,10 @@ interact('.network')
 	.draggable({
 			
 		    inertia: true,
-		
+		    
+		    restrict: {
+		        restriction: 'parent',
+		    },
 		
 			onmove: function (event) {
 				
