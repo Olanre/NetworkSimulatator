@@ -4,21 +4,24 @@ var deviceList;
 
 function NetworkIterator(){
   // An iterator over networks in the simulation
-
+  this.index=0;
+  
   this.first = function() {
-    // Return the first element
+    return networkList[0];
   };
 
   this.next = function() {
-    // Return the next element
+	  var network=networkList[index];
+	  index++;
+	  return network;
   };
 
   this.hasNext = function() {
-    // Determine if there are more elements to iterate
+    return this.index<networkList.length;
   };
 
   this.reset = function() {
-    // Reset the iterator to its initial state so it can be re-used
+    this.index=0;
   };
 
   this.each = function(callback) {
@@ -32,20 +35,29 @@ function NetworkIterator(){
 
 function DeviceIterator(){
   // Similar to the NetworkIterator except the elements are devices
-
+  this.index=0;
   this.first = function() {
+	  return deviceList[0];
   };
 
   this.next = function() {
+	  var device=deviceList[index];
+	  index++;
+	  return device;
   };
 
   this.hasNext = function() {
+	  return this.index<deviceList.length;
   };
 
   this.reset = function() {
+	  this.index=0;
   };
 
   this.each = function(callback) {
+	  for (var item = this.first(); this.hasNext(); item = this.next()) {
+	      callback(item);
+	    }
   };
 }
 
@@ -55,24 +67,33 @@ function Network(networkName, networkKind){
 
   this.networkName = networkName; // String
   this.networkKind = networkKind; // Constant: WiFi, GSM
-
+  this.deviceList=[];
   this.deviceIterator = new DeviceIterator(); // Returns an iterator that provides Device objects
-
+  this.partition={};
+  
   this.addDevice = function(device){
-    // Adds a device object to the network
+    deviceList.push(device);
   };
 
   this.removeDevice = function(device){
-    // Remove the device object from the network
+   var deviceIndex=deviceList.indexOf(device);
+   deviceList.splice(deviceIndex,1);
   };
 
   this.connectNetwork = function(network){
-    // Connect the network to another
+    var partition=network.partition;
+    this.partition=partition;
+    partition.addNetwork(this);
   };
 
   this.disconnectNetwork = function(network){
-    // Disconnect the network from another
+    var partition=network.partition;
+    if(this.partition===partition){
+    	this.partition={};
+    }
+    partition.removeNetwork(this);
   };
+  
 }
 
 
@@ -85,6 +106,7 @@ function Device(deviceName, simulation, network, partition, token, email){
   this.current_partition=partition;
   this.email=email;
   this.token=token;
+  
   this.joinNetwork = function(network){
     // Make the device join a network
   };
@@ -104,6 +126,22 @@ function Device(deviceName, simulation, network, partition, token, email){
   this.accessRDT = function(){
     // Access the previously registered replicated data type in the device
   };
+}
+
+function Partition(partitionName){
+	
+	this.partition_name=partitionName;
+	this.networks=[];
+	
+	this.addNetwork=function(network){
+		networks.push(network);
+	};
+	this.removeNetwork=function(network){
+		var networkIndex=networks.indexOf(network);
+		networks.splice(networkIndex,1);
+	};
+
+	
 }
 
 exports.Device = Device;
