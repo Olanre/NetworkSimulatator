@@ -44,6 +44,10 @@ function getDevicesFromNetwork(map, network_name){;
 	return list;
 }
 
+function getPartitionFromDevice(map, device_name){
+	network_name=getNetwork(map,device_name);
+	return getPartition(map,network_name);
+}
 
 function getNetwork(map, device_name){
 

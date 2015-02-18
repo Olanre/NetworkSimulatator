@@ -3,7 +3,7 @@
  */
 
 
-function getApplicationState(){
+function getApplicationTemplate(){
 	var application = {};
 	application.simulation_list = [];
 	application.num_devices = 0;
@@ -12,4 +12,4 @@ function getApplicationState(){
 	return application;
 }
 
-module.exports.getApplicationState = getApplicationState;
+module.exports.getApplicationTemplate = getApplicationTemplate;

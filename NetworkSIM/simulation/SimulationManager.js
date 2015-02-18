@@ -8,11 +8,12 @@ var DeviceManager=require("./DeviceManager");
 var tokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
-var deviceState = require("./deviceState.js");
-var SimulationState = require("./simulationState.js");
+var deviceTemplate = require("./deviceTemplate.js");
+var SimulationTemplate = require("./simulationTemplate.js");
+var stateTemplate require("./stateTemplate.js");
 var simulation = require("./Simulation.js");
-var applicationState = require("./applicationState.js");
-var TotalAppState = require("./TotalAppState.js");
+var applicationTemplate = require("./applicationTemplate.js");
+var TotalAppTemplate = require("./TotalAppTemplate.js");
 
 var express = require('express');
 var router = express.Router();
@@ -55,13 +56,13 @@ exports.ClientRequest = function(token, eventQueue, callback) {
 	callback();
 };
 
-exports.startState = function(callback) {
+exports.startTemplate = function(callback) {
 	
-	//entire encapsulated application state
+	//entire encapsulated application Template
 	var appstate = {};
-	appstate.user = deviceState.getDeviceState();
+	appstate.device = deviceTemplate.getDeviceTemplate();
 	///console.log(appstate.user);
-	appstate.current_simulation_session = SimulationState.getSimulationState();
+	appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
 	Database.getApp(function(data){
 		//console.log(data);
 		if(data !== null){
@@ -88,7 +89,7 @@ function authToken(token, callback){
 }
 
 function addSimulation(body) {
-	var Device = deviceState.getDeviceState();
+	var Device = deviceTemplate.getDeviceTemplate();
 	var map = body.config_map;
 	var d = new Date();
 	var device_list = simulation.getDevices(map);
@@ -149,7 +150,7 @@ function replaceAll(find, replace, str) {
 function addDevice(body) {
 
 	var device_name = body.device_name;
-	var network_name = body.netowrk_name;
+	var network_name = body.network_name;
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
 	var token = body.token;
@@ -205,28 +206,28 @@ function getNewState(token, callback){
 						Simulation.config_map = JSON.parse(Simulation.config_map);
 						//console.log(Simulation.config_map);
 						appstate.current_simulation_session = Simulation;
-						appstate.user = Device;
+						appstate.device = Device;
 					}else{
 						var appstate = {};
-						appstate.user = deviceState.getDeviceState();
+						appstate.device = deviceTemplate.getDeviceTemplate();
 						///console.log(appstate.user);
-						appstate.current_simulation_session = SimulationState.getSimulationState();
-						appstate.application = applicationState.getApplicationState();
+						appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
+						appstate.application = applicationTemplate.getApplicationTemplate();
 					}
 					callback(appstate);
 				});
 			 }); 
 		 }else{
 			 var appstate = {};
-				appstate.user = deviceState.getDeviceState();
+				appstate.device = deviceTemplate.getDeviceTemplate();
 				///console.log(appstate.user);
-				appstate.current_simulation_session = SimulationState.getSimulationState();
-				appstate.application = applicationState.getApplicationState();
+				appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
+				appstate.application = applicationTemplate.getApplicationTemplate();
 		 }
 	 });
-	var Local_Simulation = SimulationState.getSimulationState();
-	var Application = applicationState.getApplicationState();
-	var TotalState = TotalAppState.getTotalState();
+	var Local_Simulation = SimulationTemplate.getSimulationTemplate();
+	var Application = applicationTemplate.getApplicationTemplate();
+	var TotalTemplate = TotalAppTemplate.getTotalTemplate();
 	
 	
 	
