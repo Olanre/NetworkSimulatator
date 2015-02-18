@@ -1,4 +1,4 @@
-var i=0;
+var uniqueDataIndex=0;
 var svgCanvas = document.querySelector('svg'),
 
 //gets SVG in order to display graphics
@@ -33,7 +33,7 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	//creates an SVG element in the DOM as a circle
 	this.element = document.createElementNS(svgNS, 'circle');
 	//set the unique id of this shape
-	this.element.setAttribute('data-index', shapes.length);
+	this.element.setAttribute('data-index', uniqueDataIndex);
 	this.element.setAttribute('class', elementClass);
 	this.children=[];
 	this.connections=[];
@@ -65,7 +65,7 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	
 	this.element = document.createElementNS(svgNS, 'line');
 	//set the unique id of this shape
-	this.element.setAttribute('data-index', shapes.length);
+	this.element.setAttribute('data-index', uniqueDataIndex);
 	//sets the class of this shape to 
 	this.element.setAttribute('class', elementClass);
 	
@@ -82,7 +82,12 @@ line.prototype.draw=function(){
 	this.element.setAttribute('stroke-width', this.stroke);
 	orderCanvas();
 }
-
+line.prototype.update=function(x1,y1,x2,y2){
+	this.x1=x1;
+	this.y1=y1;
+	this.x2=x2;
+	this.y2=y2;
+}
 /****
  * --------------
  * Object Interactions
@@ -177,8 +182,11 @@ interact('.network')
 			if(dragClass==='network'){
 				
 				
-				if(isValidPartition(dropzone,dragged)){
+				if(!partitionExists(dropzone,dragged)){
 					var partition=createPartition(dropzone,dragged);
+				}
+				else{
+					removePartition(dropzone,dragged);
 				}
 				var networkIndex=draggableElement.getAttribute('data-index');
 				var heldCircle=shapes[networkIndex];
@@ -252,22 +260,21 @@ function snapToLocation(shape,coordinates){
 	shape.draw();
 }
 function updatePartitionLines(networkShape){
-	
 	for(index in networkShape.connections){
 		var connectedNetwork=networkShape.connections[index];
-		var oldLine=shapes[index];
-		svgCanvas.removeChild(oldLine.element);
-		var newLine=new line(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y,svgCanvas,'network-connection');
-		shapes[index]=newLine;
-		newLine.draw();
+		var theLine=shapes[index];
+		theLine.update(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y);
+		shapes[index]=theLine;
+		theLine.draw();
 	}
 	
 }
 /****
 * We'll update this later so that it actually checks if the partition doesn't already exist.
  ****/
-function isValidPartition(dropzoneObject, dragObject){
-	return true;
+function partitionExists(dropzoneObject, dragObject){
+	var index=dropzoneObject.connections.indexOf(dragObject);
+	return index>-1
 }
 
 function getShapeFromEvent(event){
@@ -283,14 +290,14 @@ function getRelatedShapeFromEvent(event){
  * appear in front of networks.
  ****/
 function orderCanvas(){
-	for (var i = 0; i < shapes.length; i++){
-		if (shapes[i].element.getAttribute('class')!='network-connection'){
-			svgCanvas.appendChild(shapes[i].element);
+	for (index in shapes){
+		if (shapes[index].element.getAttribute('class')!='network-connection'&&shapes[index]!=null){
+			svgCanvas.appendChild(shapes[index].element);
 		}
 	}
-	for (var i = 0; i < shapes.length; i++){
-		if (shapes[i].element.getAttribute('class')=='device'){
-			svgCanvas.appendChild(shapes[i].element);
+	for (index in shapes){
+		if (shapes[index].element.getAttribute('class')=='device'&&shapes[index]!=null){
+			svgCanvas.appendChild(shapes[index].element);
 		}
 	}
 }
@@ -298,14 +305,15 @@ function orderCanvas(){
 
 function createNetwork(){
 	var  network=new circle(100, 500, 80, svgCanvas, 'network');
-	shapes.push(network);
-	i+=1;
+	shapes[uniqueDataIndex]=(network);
+	uniqueDataIndex++;
 }
 
 
 function createDevice(){
 	var device=new circle(50, 50, 10, svgCanvas, 'device');
-	shapes.push(device);
+	shapes[uniqueDataIndex]=(device);
+	uniqueDataIndex++;
 }
 /***
  * handles getting what the mouse has moved over 
@@ -321,15 +329,21 @@ function mouseOver(e){
 		toElem = e.toElement || e.relatedTarget;
 	}
 	function str(el) { return el ? (el.id || el.nodeName) : 'null' }
-	//console.log("From "+str(fromElem)+ " to "+str(toElem));
 }
 document.body.onmouseover = document.body.onmouseout = mouseOver;
 
 function createPartition(sourceNetwork, destinationNetwork){
 	var connection=new line(origin.x,origin.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
-
-	var index=shapes.length;
-	shapes.push(connection);
-	sourceNetwork.connections[index]=destinationNetwork;
-	destinationNetwork.connections[index]=sourceNetwork;
+	shapes[uniqueDataIndex]=(connection);
+	sourceNetwork.connections[uniqueDataIndex]=destinationNetwork;
+	destinationNetwork.connections[uniqueDataIndex]=sourceNetwork;
+	uniqueDataIndex++;
+}
+function removePartition(sourceNetwork,destinationNetwork){
+	var index=sourceNetwork.connections.indexOf(destinationNetwork);
+	destinationNetwork.connections.splice(index,1);
+	sourceNetwork.connections.splice(index,1);
+	var oldLine=shapes[index];
+	svgCanvas.removeChild(oldLine.element);
+	shapes.splice(index,1);
 }
