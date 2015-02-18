@@ -12,40 +12,30 @@ svg {
 }
 .network-connection{
 	fill:black;
-	stroke-dasharray: 20,5;
 	stroke-width:5;
 	stroke:black;
 }
-.connection-node{
-	fill:grey;
-}
 
 .device {
-	fill: red;
+	fill: #FF8300;
 }
 
 .network{
-	fill: green;
+	fill: #33CCFF;
 	stroke: black;
 }
 
-.create-partition{
-	stroke: white;
-	stroke-dasharray: 20,5;
-	stroke-width:5;
-}
-
 .drop-locations{
-	stroke: orange;
-	stroke-dasharray: 20,5;
-	stroke-width:5;
+	stroke: #FFC12B;
+	stroke-dasharray: 10,5;
+	stroke-width:4;
 }
 
 .drop-target{
-	fill: blue;
+	fill: #FFC12B;
 }
 .can-drop{
-	fill: yellow;
+	fill: #0430FB;
 }
 
 body { 

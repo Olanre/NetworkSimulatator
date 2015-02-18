@@ -283,6 +283,11 @@ function getRelatedShapeFromEvent(event){
  ****/
 function orderCanvas(){
 	for (var i = 0; i < shapes.length; i++){
+		if (shapes[i].element.getAttribute('class')!='network-connection'){
+			svgCanvas.appendChild(shapes[i].element);
+		}
+	}
+	for (var i = 0; i < shapes.length; i++){
 		if (shapes[i].element.getAttribute('class')=='device'){
 			svgCanvas.appendChild(shapes[i].element);
 		}
@@ -291,7 +296,7 @@ function orderCanvas(){
 
 
 function createNetwork(){
-	var  network=new circle(100+300*i, 500, 100, svgCanvas, 'network');
+	var  network=new circle(100, 500, 100, svgCanvas, 'network');
 	shapes.push(network);
 	i+=1;
 }
