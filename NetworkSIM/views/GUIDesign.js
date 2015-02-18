@@ -83,18 +83,6 @@ line.prototype.draw=function(){
 	orderCanvas();
 }
 
-line.prototype.update=function(newx,newy){
-	if((Math.abs(this.x1-newx)+Math.abs(this.y1-newy))<(Math.abs(this.x2-newx)+Math.abs(this.y2-newy))){
-		this.x1=newx;
-		this.y1=newy;
-	}
-	else{
-		this.x2=newx;
-		this.y2=newy;
-	}
-	
-	
-}
 /****
  * --------------
  * Object Interactions
@@ -224,12 +212,7 @@ interact('.network')
 					circle.children[index].y+=event.dy;
 					circle.children[index].draw();
 				}
-				for(index in circle.connections){
-					var lineIndex=circle.connections[index];
-					var line=shapes[lineIndex];
-					line.update(circle.x,circle.y);
-					line.draw();
-				}
+				updatePartitionLines(circle);
 				circle.draw();
 			},
 			
@@ -252,22 +235,35 @@ interact('.network')
  */
 
 function snapToLocation(shape,coordinates){
+	
+	var xdiff=(shape.x-coordinates.x);
+	var ydiff=(shape.y-coordinates.y);
+	shape.x=coordinates.x;
+	shape.y=coordinates.y;
 	for(index in shape.children){
 		var child=shape.children[index];
-		child.x-=(shape.x-coordinates.x);
-		child.y-=(shape.y-coordinates.y);
+		child.x-=xdiff;
+		child.y-=ydiff;
 		child.draw();
 		
 	}
-	for(index in shape.connections){
-		var lineIndex=shape.connections[index];
-		var line=shapes[lineIndex];
-		line.update(coordinates.x,coordinates.y);
-		line.draw();
-	}
-	shape.x=coordinates.x;
-	shape.y=coordinates.y;
+	updatePartitionLines
+
 	shape.draw();
+}
+function updatePartitionLines(networkShape){
+	
+	for(index in networkShape.connections){
+		console.log(index);
+		var connectedNetwork=networkShape.connections[index];
+		var oldLine=shapes[index];
+		svgCanvas.removeChild(oldLine.element);
+		console.log(connectedNetwork);
+		var newLine=new line(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y,svgCanvas,'network-connection');
+		shapes[index]=newLine;
+		newLine.draw();
+	}
+	
 }
 /****
 * We'll update this later so that it actually checks if the partition doesn't already exist.
@@ -303,7 +299,7 @@ function orderCanvas(){
 
 
 function createNetwork(){
-	var  network=new circle(100, 500, 100, svgCanvas, 'network');
+	var  network=new circle(100, 500, 80, svgCanvas, 'network');
 	shapes.push(network);
 	i+=1;
 }
@@ -313,12 +309,29 @@ function createDevice(){
 	var device=new circle(50, 50, 10, svgCanvas, 'device');
 	shapes.push(device);
 }
+/***
+ * handles getting what the mouse has moved over 
+ */
+function mouseOver(e){
+	e = e || event;
+	if (event.type == 'mouseover'){
+		var fromElem = e.fromElement || e.relatedTarget;
+		var toElem = e.srcElement || e.target;
+	}
+	else if (e.type == 'mouseout'){
+		fromElem = e.srcElement || e.target;
+		toElem = e.toElement || e.relatedTarget;
+	}
+	function str(el) { return el ? (el.id || el.nodeName) : 'null' }
+	//console.log("From "+str(fromElem)+ " to "+str(toElem));
+}
+document.body.onmouseover = document.body.onmouseout = mouseOver;
 
 function createPartition(sourceNetwork, destinationNetwork){
 	var connection=new line(origin.x,origin.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
 
 	var index=shapes.length;
 	shapes.push(connection);
-	sourceNetwork.connections.push(index);
-	destinationNetwork.connections.push(index);
+	sourceNetwork.connections[index]=destinationNetwork;
+	destinationNetwork.connections[index]=sourceNetwork;
 }
