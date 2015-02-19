@@ -2,7 +2,10 @@
  * New node file
  */
 
-
+/**
+ * session_data holds all of the variables related to the current simulation if one exists.
+ * This is the template for a simulation.
+ */
 function getSimulationTemplate(){
 	var session_data = {};
 	session_data.num_devices = 0;

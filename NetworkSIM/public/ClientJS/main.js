@@ -21,65 +21,6 @@
  * local_device: holds the data about this user to which these variables are native.
  *****/
 
-
-/**
- * user_data holds all the variables related to the current user in an array.
- * This is the template for a user's device.
- */
-var device_data = {}
-device_data.token = '';
-device_data.email = '';
-device_data.verified = false;
-device_data.current_network = '';
-device_data.current_simulation = '';
-device_data.registeredOn = '';
-device_data.networks_created = [];
-device_data.current_partition = '';
-device_data.current_device_name = '';
-device_data.application_id =  'default';
-device_data.admin = false;
-device_data.localcount = 0;
-device_data.globalcount = 0;
-return device_data;
-
-/**
- * session_data holds all of the variables related to the current simulation if one exists.
- * This is the template for a simulation.
- */
-var session_data = {};
-session_data.num_devices = 0;
-session_data.num_networks = 0;
-session_data.simulation_population = 0;
-session_data.simulation_name = '';
-session_data.config_map = {};
-session_data.tokenMethod = '';
-session_data.globalcount = 0;
-session_data.activity_logs = '';
-
-/**
- * application holds all of the variables related to  the current application.
- * Note: The application is just the program. A simulation is a subset of the application.
- * There will be only one application running at a time.
- */
-var application = {};
-application.simulation_list = [];
-application.total_devices = 0;
-application.total_networks = 0;
-application.superadmin = {};
-
-//entire encapsulated application state
-var appstate = {};
-appstate.user = user_data;
-appstate.current_simulation_session = session_data;
-appstate.application = application;
-
-
-
-
-var states_data = {};
-states_data.id = '';
-states_data.states = [];
-
 /**
  * Initializes the local_events, which will hold all of the events
  * which occur on this device. This list will be sent to the server
@@ -262,10 +203,8 @@ function addNetworkCreated2Application(local_session, local_application){
  * 
  */
 function addDevice( device_name, network_name){
-	var local_device = get_local_device();
-	device_name = local_device.current_device_name;
-	network = local_device.current_network;
-	removeDevicefromNetwork( device_name, network);
+	
+	removeDevicefromNetwork( device_name, network_name);
 	addDevice2Network( device_name, network_name);
 	//gets the default page for the user.
 	appDefaultView();
@@ -285,13 +224,16 @@ function addDevice2Network( device_name, network_name){
 	var map = local_session.config_map;
 	//gets the partition of the network 
 	var Partition_name = getPartition(network_name);
-	
-	//updates the network this device belongs to
-	updateCurrentNetwork(network_name);
-	//increments the number of device in this network
-	//local_session.config_map[Partition_name][network_name][device_name] = num_devices + 1;
-	//updates the partition this device belongs to. Should be done within "updateNetwork"
-	updateCurrentPartition(Partition_name);
+	if( device_name == local_device.current_device_name){
+		//updates the network this device belongs to
+		updateCurrentNetwork(network_name);
+
+		updateCurrentPartition(Partition_name);
+	}
+	//add the device to the actual configuration map
+	device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
+	local_session.config_map[Partition_name][network_name][device_name] = device_num;
+	//send the information to the eventQueue for syncing with the server
 	var params = { 
 			'network_name': network_name, 
 			'partition_name': Partition_name , 
@@ -314,9 +256,18 @@ function addDevice2Network( device_name, network_name){
 function addDevice2FreeList( device_name, simulation_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
+	//gets the information of local device
+	var local_device = get_local_device();
+	if( device_name == local_device.current_device_name){
+		//updates the network this device belongs to
+		updateCurrentNetwork('freelist');
+		
+		//updates the partition this device belongs to. Should be done within "updateNetwork"
+		updateCurrentPartition('freelist');
+	}
 	free_num = size(local_session.config_map.['freelist']) + 1;
 	//adds the device to the freelist
-	local_session.config_map.['freelist'][device_name] = free_num;
+	local_session.config_map['freelist'][device_name] = free_num;
 	putinStorage( 'session', JSON.stringify(local_session) );
 	var params = { 
 			'simulation_name': local_session.simulation_name,
@@ -624,9 +575,9 @@ function removeDevicefromFreeList( device_name, simulation_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
 	//removes a device form the free list
-	var list = local_session.config_map.['freelist'];
+	var list = local_session.config_map['freelist'];
 	if( list.hasOwnProperty(device_name) ){
-		delete local_session.config_map.['freelist'][device_name]
+		delete local_session.config_map['freelist'][device_name]
 	}
 	putinStorage( 'session', JSON.stringify(local_session) );
 	
@@ -817,7 +768,7 @@ function authToken(token){
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
 	//sends the token to be validated by the server
-	send2Server(url, params, validate_user)
+	send2Server(url, params, validate_user);
 	
 }
 
@@ -846,6 +797,17 @@ function validate_user(data){
  * Getter Methods
  * -----------------
  */
+
+function getSimulation(simulation_name){
+	var param = {
+			'simulation_name': simulation_name,
+			'client_id' : ''
+			};
+	params = JSON.stringify(param);
+	var url = '/get/Simulation';
+	//sends the request to be validated by the server
+	send2Server(url, params, render);
+}
 
 /**
  * getPartitions returns the list of partitions for this current simulation
@@ -1004,6 +966,7 @@ function getLoginView(){
 	 clearPageElements();
 	
 }
+
 
 
 /**

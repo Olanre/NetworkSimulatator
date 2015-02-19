@@ -1,4 +1,7 @@
-
+/**
+ * user_data holds all the variables related to the current user in an array.
+ * This is the template for a user's device.
+ */
 	
 function getDeviceTemplate(){
 	var device_data = {}
@@ -15,6 +18,7 @@ function getDeviceTemplate(){
 	device_data.admin = false;
 	device_data.localcount = 0;
 	device_data.globalcount = 0;
+	device_data.activity = '';
 	return device_data;
 }
 
