@@ -18,8 +18,16 @@ function mouseOver(e){
 		fromElem = e.srcElement || e.target;
 		toElem = e.toElement || e.relatedTarget;
 	}
-	function str(el) { return el ? (el.id || el.nodeName) : 'null' }
-	//alert("From "+str(fromElem)+ " to "+str(toElem));
+	function toString(el) { 
+		return el ? (el.id || el.nodeName) : 'null' ;
+	}
+	//console.log("From "+toString(fromElem)+ " to "+toString(toElem));
+	if(toString(toElem) == "circle"){
+		toElem.nameVisible=true;
+	}
+	if(toString(fromElem) == "circle"){
+		toElem.nameVisible=false;
+	}
 }
 document.body.onmouseover = document.body.onmouseout = mouseOver;
 

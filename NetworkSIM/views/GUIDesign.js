@@ -59,8 +59,11 @@ interact('.device')
 		
 	    inertia: true,
 	    
-	    restrict: {
-	        restriction: 'parent',
+	  //restricts the device to be inside the canvas
+	    restrict:{
+	        restriction: "parent",
+	        endOnly: true,
+	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 	    },
 
 		onmove: function (event) {
@@ -155,8 +158,11 @@ interact('.network')
 			
 		    inertia: true,
 		    
-		    restrict: {
-		        restriction: 'parent',
+		    //restricts network to be inside the canvas
+		    restrict:{
+		        restriction: "parent",
+		        endOnly: true,
+		        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 		    },
 		
 			onmove: function (event) {
@@ -271,6 +277,8 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.y=centerY;
 	this.r=radius;
 	this.stroke=1;
+	//whether the name of the device is visible
+	this.nameVisible=false;
 	
 	this.element = document.createElementNS(svgNS, 'circle');
 	this.element.setAttribute('data-index', uniqueDataIndex);
@@ -278,8 +286,14 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.children=[];
 	this.connections=[];
 	
+	//displays the name of the network/device
+	this.displayName = document.createElementNS(svgNS, "text");
+	this.displayName.setAttribute("font-size","14");
+	this.displayName.setAttribute("text-anchor", "middle");
+	
 	this.draw();
 	svgCanvas.appendChild(this.element);
+	svgCanvas.appendChild(this.displayName);
 }
 
 circle.prototype.draw=function(){
@@ -287,8 +301,15 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('cy', this.y);
 	this.element.setAttribute('r', this.r);
 	this.element.setAttribute('stroke', this.stroke);
-
 	orderCanvas();
+	
+	if( this.nameVisible == true){
+		alert('good');
+		this.displayName.setAttribute("x", this.x);
+		this.displayName.setAttribute("y", this.y - this.r-2);
+		this.displayName.textContent='waaaaa';
+	}
+	
 }
 
 /****
