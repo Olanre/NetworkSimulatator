@@ -226,15 +226,14 @@ function mouseOver(e){
 	//don't delete this comment i need it
 	//console.log("From "+toString(fromElem)+ " to "+toString(toElem));
 	if(toString(toElem) == "circle"){
-		circle=shapes[toElem.getAttribute('data-index')];
-		//circle.nameVisible=true;
-		//circle.draw();
+		circleElem=shapes[toElem.getAttribute('data-index')];
+		circleElem.nameVisible=true;
+		circleElem.draw();
 	}
 	if(toString(fromElem) == "circle"){
-		circle=shapes[fromElem.getAttribute('data-index')];
-		//circle.nameVisible=false;
-		//circle.draw();
-		//console.log(circle.nameVisible);
+		circleElem=shapes[fromElem.getAttribute('data-index')];
+		circleElem.nameVisible=false;
+		circleElem.draw();
 	}
 }
 //adds the listener to the document
@@ -263,7 +262,7 @@ function moveUIElementAndChildren(UIShape,dx,dy){
 
 function partitionExists(dropzoneObject, dragObject){
 	var index=dropzoneObject.connections.indexOf(dragObject);
-	return index>-1
+	return index>-1;
 }
 
 function getShapeFromEvent(event){
@@ -276,7 +275,7 @@ function getRelatedShapeFromEvent(event){
 }
 document.addEventListener('mousemove', function(e){ 
     mouse.x = e.clientX || e.pageX; 
-    mouse.y = e.clientY || e.pageY 
+    mouse.y = e.clientY || e.pageY;
 }, false);
 /****
  * orderCanvas orders all the shapes on the canvas so that devices
@@ -359,7 +358,7 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.x2=x2;
 	this.y1=y1;
 	this.y2=y2;
-	this.stroke=4
+	this.stroke=4;
 	
 	this.element = document.createElementNS(svgNS, 'line');
 	this.element.setAttribute('data-index', uniqueDataIndex);
