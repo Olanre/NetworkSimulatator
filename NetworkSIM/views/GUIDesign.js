@@ -206,6 +206,40 @@ function snapToLocation(shape,coordinates){
 	shape.draw();
 	
 }
+
+/****
+ * handles getting what the mouse has moved over 
+ ****/
+function mouseOver(e){
+	e = e || event;
+	if (event.type == 'mouseover'){
+		var fromElem = e.fromElement || e.relatedTarget;
+		var toElem = e.srcElement || e.target;
+	}
+	else if (e.type == 'mouseout'){
+		fromElem = e.srcElement || e.target;
+		toElem = e.toElement || e.relatedTarget;
+	}
+	function toString(el) { 
+		return el ? (el.id || el.nodeName) : 'null' ;
+	}
+	//don't delete this comment i need it
+	//console.log("From "+toString(fromElem)+ " to "+toString(toElem));
+	if(toString(toElem) == "circle"){
+		circle=shapes[toElem.getAttribute('data-index')];
+		//circle.nameVisible=true;
+		//circle.draw();
+	}
+	if(toString(fromElem) == "circle"){
+		circle=shapes[fromElem.getAttribute('data-index')];
+		//circle.nameVisible=false;
+		//circle.draw();
+		//console.log(circle.nameVisible);
+	}
+}
+//adds the listener to the document
+document.body.onmouseover = document.body.onmouseout = mouseOver;
+
 function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){
 		var connectedNetwork=networkShape.connections[index];
@@ -301,15 +335,18 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('cy', this.y);
 	this.element.setAttribute('r', this.r);
 	this.element.setAttribute('stroke', this.stroke);
+	
+	this.displayName.setAttribute("x", this.x);
+	this.displayName.setAttribute("y", this.y - this.r-2);
+	
 	orderCanvas();
 	
 	if( this.nameVisible == true){
-		alert('good');
-		this.displayName.setAttribute("x", this.x);
-		this.displayName.setAttribute("y", this.y - this.r-2);
 		this.displayName.textContent='waaaaa';
 	}
-	
+	else{
+		this.displayName.textContent='';
+	}
 }
 
 /****
