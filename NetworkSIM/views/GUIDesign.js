@@ -80,7 +80,7 @@ interact('.network')
 		
 		accept: '.device, .network',
 		
-		overlap: 0.85,
+		overlap: 0.7,
 		
 		//if a droppable object is being held
 		ondropactivate: function(event){
