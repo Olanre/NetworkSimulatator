@@ -59,8 +59,11 @@ interact('.device')
 		
 	    inertia: true,
 	    
-	    restrict: {
-	        restriction: 'parent',
+	  //restricts the device to be inside the canvas
+	    restrict:{
+	        restriction: "parent",
+	        endOnly: true,
+	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 	    },
 
 		onmove: function (event) {
@@ -80,7 +83,7 @@ interact('.network')
 		
 		accept: '.device, .network',
 		
-		overlap: 0.85,
+		overlap: 0.7,
 		
 		//if a droppable object is being held
 		ondropactivate: function(event){
@@ -155,8 +158,11 @@ interact('.network')
 			
 		    inertia: true,
 		    
-		    restrict: {
-		        restriction: 'parent',
+		    //restricts network to be inside the canvas
+		    restrict:{
+		        restriction: "parent",
+		        endOnly: true,
+		        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 		    },
 		
 			onmove: function (event) {
@@ -200,6 +206,39 @@ function snapToLocation(shape,coordinates){
 	shape.draw();
 	
 }
+
+/****
+ * handles getting what the mouse has moved over 
+ ****/
+function mouseOver(e){
+	e = e || event;
+	if (event.type == 'mouseover'){
+		var fromElem = e.fromElement || e.relatedTarget;
+		var toElem = e.srcElement || e.target;
+	}
+	else if (e.type == 'mouseout'){
+		fromElem = e.srcElement || e.target;
+		toElem = e.toElement || e.relatedTarget;
+	}
+	function toString(el) { 
+		return el ? (el.id || el.nodeName) : 'null' ;
+	}
+	//don't delete this comment i need it
+	//console.log("From "+toString(fromElem)+ " to "+toString(toElem));
+	if(toString(toElem) == "circle"){
+		circleElem=shapes[toElem.getAttribute('data-index')];
+		circleElem.nameVisible=true;
+		circleElem.draw();
+	}
+	if(toString(fromElem) == "circle"){
+		circleElem=shapes[fromElem.getAttribute('data-index')];
+		circleElem.nameVisible=false;
+		circleElem.draw();
+	}
+}
+//adds the listener to the document
+document.body.onmouseover = document.body.onmouseout = mouseOver;
+
 function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){
 		var connectedNetwork=networkShape.connections[index];
@@ -223,7 +262,7 @@ function moveUIElementAndChildren(UIShape,dx,dy){
 
 function partitionExists(dropzoneObject, dragObject){
 	var index=dropzoneObject.connections.indexOf(dragObject);
-	return index>-1
+	return index>-1;
 }
 
 function getShapeFromEvent(event){
@@ -236,7 +275,7 @@ function getRelatedShapeFromEvent(event){
 }
 document.addEventListener('mousemove', function(e){ 
     mouse.x = e.clientX || e.pageX; 
-    mouse.y = e.clientY || e.pageY 
+    mouse.y = e.clientY || e.pageY;
 }, false);
 /****
  * orderCanvas orders all the shapes on the canvas so that devices
@@ -254,23 +293,6 @@ function orderCanvas(){
 		}
 	}
 }
-/****
- * handles getting what the mouse has moved over 
- ****/
-function mouseOver(e){
-	e = e || event;
-	if (event.type == 'mouseover'){
-		var fromElem = e.fromElement || e.relatedTarget;
-		var toElem = e.srcElement || e.target;
-	}
-	else if (e.type == 'mouseout'){
-		fromElem = e.srcElement || e.target;
-		toElem = e.toElement || e.relatedTarget;
-	}
-	function str(el) { return el ? (el.id || el.nodeName) : 'null' }
-}
-document.body.onmouseover = document.body.onmouseout = mouseOver;
-
 
 /****
  * -------------------
@@ -288,6 +310,8 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.y=centerY;
 	this.r=radius;
 	this.stroke=1;
+	//whether the name of the device is visible
+	this.nameVisible=false;
 	
 	this.element = document.createElementNS(svgNS, 'circle');
 	this.element.setAttribute('data-index', uniqueDataIndex);
@@ -295,8 +319,14 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.children=[];
 	this.connections=[];
 	
+	//displays the name of the network/device
+	this.displayName = document.createElementNS(svgNS, "text");
+	this.displayName.setAttribute("font-size","14");
+	this.displayName.setAttribute("text-anchor", "middle");
+	
 	this.draw();
 	svgCanvas.appendChild(this.element);
+	svgCanvas.appendChild(this.displayName);
 }
 
 circle.prototype.draw=function(){
@@ -304,8 +334,18 @@ circle.prototype.draw=function(){
 	this.element.setAttribute('cy', this.y);
 	this.element.setAttribute('r', this.r);
 	this.element.setAttribute('stroke', this.stroke);
-
+	
+	this.displayName.setAttribute("x", this.x);
+	this.displayName.setAttribute("y", this.y - this.r-2);
+	
 	orderCanvas();
+	
+	if( this.nameVisible == true){
+		this.displayName.textContent='waaaaa';
+	}
+	else{
+		this.displayName.textContent='';
+	}
 }
 
 /****
@@ -318,7 +358,7 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.x2=x2;
 	this.y1=y1;
 	this.y2=y2;
-	this.stroke=4
+	this.stroke=4;
 	
 	this.element = document.createElementNS(svgNS, 'line');
 	this.element.setAttribute('data-index', uniqueDataIndex);
