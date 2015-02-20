@@ -324,6 +324,11 @@ function orderCanvas(){
 		if(hasClass(shapes[index].element, 'held-object')==true&&shapes[index]!=null){
 			svgCanvas.appendChild(shapes[index].element);
 			svgCanvas.appendChild(shapes[index].displayName);
+			//order the children devices
+			for (var i =0; i<shapes[index].children.length;i++){
+				if(shapes[index].children[i]!= null)
+					svgCanvas.appendChild(shapes[index].children[i].element);
+			}
 		}
 	}
 }
@@ -376,7 +381,8 @@ circle.prototype.draw=function(){
 	orderCanvas();
 	
 	if( this.nameVisible == true){
-		this.displayName.textContent='waaaaa';
+		//fill this in with actual device name
+		this.displayName.textContent=this.element.getAttribute("data-index");
 	}
 	else{
 		this.displayName.textContent='';
