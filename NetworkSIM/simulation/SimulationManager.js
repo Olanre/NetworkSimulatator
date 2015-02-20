@@ -28,26 +28,94 @@ exports.ClientRequest = function(token, eventQueue, callback) {
 	for(var i = 0; i < eventQueue.length; i++) {
 		
 		switch(eventQueue[i].URL) {
-			case '/add/Simulation':  // should this be create/Simulation ?
-				addSimulation(eventQueue[i].Body);
+			case '/create/Simulation':  // should this be create/Simulation ?
+				createSimulation(eventQueue[i].Body);
+				break;
+				
+			case '/add/Device/Network':
+				AddDevice2Network(token, eventQueue[i].Body);
+				break;
+				
+			case '/add/Device/FreeList':
+				Add2FreeList( token, eventQueue[i].Body);
+				break;
+				
+			case '/create/Network' :
+				createNetwork(token, eventQueue[i].Body);
+				break;
+				
+			case '/create/Device' :
+				createDevice(eventQueue[i].Body);
+				break;
+				
+			case '/merge/Partitions' :
+				mergePartitions(eventQueue[i].Body);
+				break;
+				
+			case '/remove/Device' :
+				removeDevice(eventQueue[i].Body);
+				break;
+				
+			case '/remove/Device/FreeList'
+				removeDevicefromFreeList(eventQueue[i].Body);
+				break;
+				
+			case '/delete/Device':
+				deleteDevice(eventQueue[i].Body);
+				break;
+				
+			case '/delete/Network' :
+				deleteNetwork(eventQueue[i].Body);
+				break;
+				
+			case '/delete/Token' :
+				deleteToken(token);
+				break;
+				
+			case '/delete/Partition':
+				deletePartition(eventQueue[i].Body);
+				break;
+			
+			case '/delete/Simulation' :
+				deleteSimulation(eventQueue[i].Body);
 				break;
 			
 			case '/update/LocalCount':
 				console.log('In LocalCount');
 				updateLocalCount(token, eventQueue[i].Body);
-		
+				break;	
+			
+			case '/update/NetworkName':
+				updateNetworkName(eventQueue[i].Body);
 				break;
-		
-			case '/authenticate/authToken':
-				return authToken(token);
+			
+			case '/update/DeviceName':
+				updateDeviceName(eventQueue[i].Body);
+				break;
+			
+			case '/update/SimulationName':
+				updateSimulationName(eventQueue[i].Body);
+				break;
+			
+			case '/update/TokenMethod':
+				updateTokenMethod(eventQueue[i].Body);
+				break;
 				
+			case '/update/DeviceNumber':
+				updateDeviceNumber(eventQueue[i].Body);
 				break;
 			
-			
-			case 'Partition':
+			case '/update/NetworkNumber':
+				updateNetworkNumber(eventQueue[i].Body);
+				break;
+				
+			case '/update/ConfigMap':
+				updateConfigMap(eventQueue[i].Body);
 				break;
 			
-			
+			case 'dividePartition':
+				dividePartition(eventQueue[i].Body);
+				break;
 			default:
 				break;
 				
@@ -88,7 +156,7 @@ function authToken(token, callback){
 		
 }
 
-function addSimulation(body) {
+function createSimulation(body) {
 	var Device = deviceTemplate.getDeviceTemplate();
 	var map = body.config_map;
 	var d = new Date();
@@ -169,12 +237,12 @@ function addDevice(body) {
 
 function createNetwork(networkObject){
 	var simName=networkObject.networkName;
-	var partitionName=networkObject.Partition_name;
+	var partitionName=networkObject.partition_name;
 	Database.createNetwork(simName, partitionName, networkObject);
 }
 
 function addPartition(partitionObject){
-	var partitionName=partitionObject.PartitionName;
+	var partitionName=partitionObject.partition_name;
 	var simulationName=partitionObject.simulation_name;
 	Database.addPartition(simulationName,partitionName,partitionObject);
 }
@@ -239,7 +307,7 @@ function deleteDevice(deviceObject){
 }
 
 function deleteNetwork(networkObject){
-	var networkName=networkObject.networkname;
+	var networkName=networkObject.network_name;
 	var simulationName=networkObject.simulation_name;
 	Database.deleteNetwork(simulationName,networkName);
 }
@@ -293,26 +361,26 @@ function updateLocalCount(token, body) {
 	});
 }
 function updateNetworkName(networkObject){
-	var newName=networkObject.newName;
-	var oldName=networkObject.oldName;
+	var newName=networkObject.new_name;
+	var oldName=networkObject.old_name;
 	Database.updateNetworkName(oldName,newName);
 }
 
 function updateDeviceName(deviceObject){
-	var newName=deviceObject.newName;
-	var oldName=deviceObject.oldName;
+	var newName=deviceObject.new_name;
+	var oldName=deviceObject.old_name;
 	Database.updateDeviceName(oldName,newName);
 }
 
 function updateSimulationName(simulationObject){
-	var newName=simulationObject.newName;
-	var oldName=simulationObject.oldName;
+	var newName=simulationObject.new_name;
+	var oldName=simulationObject.old_name;
 	Database.updateSimulationName(oldName,newName);
 }
 
 function updateTokenMethod(simulationObject){
 	var simulationName=simulationObject.simulation_name;
-	var newMethod=simulationObject.newmethod;
+	var newMethod=simulationObject.new_method;
 	Database.updateTokenMethod(simulationName,newMethod);
 }
 
@@ -330,9 +398,9 @@ function updateNetworkNumber(networkObject){
 
 function updatePartitionMap(partitionObject){
 	var simulationName=partitionObject.simulation_name;
-	var configMap=partitionObject.config_map;
-	var partitionName=partitionObject.PartitionName;
-	Database.updatePartitionMap(simulationName,partitionName,configmap);
+	var config_map=partitionObject.config_map;
+	var partition_name=partitionObject.partition_name;
+	Database.updatePartitionMap(simulationName,partition_name,config_map);
 }
 
 function addDevice(body) {
@@ -342,16 +410,7 @@ function addDevice(body) {
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
 	var token = body.token;
-	//NetworkManager.addDevice(parameters);  // do you mean DeviceManager.addDevice(devID) ?
 	
-	router.post('/', function(req, res) {
-		
-		var request = new XMLHttpRequest();
-		request.open('POST', '/add/Device');
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		
-		//res.json(JSON.stringify());
-	});
 }
 
 

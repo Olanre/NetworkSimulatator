@@ -51,7 +51,7 @@ window.onload = function(){
  */ 
 window.setInterval(function(){
 	  /// call our sync function here
-		Sync2Server();
+		//Sync2Server();
 	}, 3000);
 
 /**
@@ -97,22 +97,28 @@ function overWriteAppState(new_state){
  * @params: is the data which accompanies this event
  * @timeStamp: is the time at which this event occurred
  */
-function addToEventQueue(method, params, timeStamp){
+function addToEventQueue(url, params, timeStamp){
 	
 	//gets the list of the events which have occurred on this device since it last contacted the server.
-	local_events = get_local_events();
-	
-	//gets the eventQueue from the local storage.
-	var events = local_events.eventQueue;
-	//creates the query to the server, this constitutes an event in the event queue
-	var query = {'URL': method, 'Body' : params, 'timestamp': timeStamp}
-	//adds the event to the event queue
-	events.push(query);
-	//updates the localEvents to the new list of local events.
-	local_events.eventQueue = events;
-	local_events.token = getToken();
-	
-	putinStorage( 'localevents', JSON.stringify(local_events) );
+	var local_events = get_local_events();
+	if(local_events !== null){
+		//now add it to the simulation logging or device logging
+		generateActivity(url, params, timestamp);
+		
+		//gets the eventQueue from the local storage.
+		var events = local_events.eventQueue;
+		//creates the query to the server, this constitutes an event in the event queue
+		var query = {'URL': url, 'Body' : params, 'timestamp': timeStamp}
+		//adds the event to the event queue
+		events.push(query);
+		//updates the localEvents to the new list of local events.
+		local_events.eventQueue = events;
+		local_events.token = getToken();
+		
+		putinStorage( 'localevents', JSON.stringify(local_events) );
+	}else{
+		console.log("Local events not found")
+	}
 	
 }
 
@@ -142,12 +148,15 @@ function newEventQueue(){
 function addToken(new_token){
 	//gets the user information out of local storage
 	var local_device = get_local_device();
-	//adds the token to the user information
-	local_device.token = new_token;
-	//saves the user information into the local storage.
-	putinStorage( 'device', JSON.stringify(local_device) );
+	if(local_device !== null){
+		//adds the token to the user information
+		local_device.token = new_token;
+		//saves the user information into the local storage.
+		putinStorage( 'device', JSON.stringify(local_device) );
+	}else{
+		console.log("Local device does not exist");
+	}
 }
-
 
 
 /**
@@ -170,30 +179,12 @@ function addNetworkCreated2User(new_network, Partition_name, Simulation_name, lo
  * @simulation_name: the name of the simulation this network belongs to.
  */
 function addNetworkCreated2Session(new_network, Partition_name, Simulation_name, local_session){
-	local_session.num_networks += 1;
 	//Ryan would need to specify the simulation to be added to as well.
 	local_session.map_config[Partition_name][new_network] = {};
 	putinStorage( 'session', JSON.stringify(local_session) );	
 
 }
 
-/**
- * addNetworkCreate2Application updates the total number of networks in the application?
- * why do we want this? Shouldn't the application just query each of its simulations if it needs to know?
- * shouldn't application contain simulations, and then the simulations are updated each time something changes
- * rather than holding these local_session things?
- */
-function addNetworkCreated2Application(local_session, local_application){
-	var sim = local_session.simulation_name;
-	local_application.total_networks += 1;
-	var list = local_application.simulation_list;
-	for(var i = 0; i < list.length; i++ ){
-		if( list[i].name == sim){
-			list[i].num_networks += 1; 
-		}
-	}
-	putinStorage( 'application', JSON.stringify(local_application) );
-}
 
 /** remove a device from its current network and adds 
  * the same device in the new specified network
@@ -220,30 +211,39 @@ function addDevice2Network( device_name, network_name){
 	var local_session = get_local_session();
 	//gets the information of this user
 	var local_device = get_local_device();
-	//gets the configuration of the current simulation
-	var map = local_session.config_map;
-	//gets the partition of the network 
-	var Partition_name = getPartition(network_name);
-	if( device_name == local_device.current_device_name){
-		//updates the network this device belongs to
-		updateCurrentNetwork(network_name);
-
-		updateCurrentPartition(Partition_name);
+	if(local_session !== null || local_device !== null){
+		//gets the configuration of the current simulation
+		var map = local_session.config_map;
+		//gets the partition of the network 
+		var Partition_name = getPartition(network_name);
+		if(Partition_names !== null){
+			//checks that the device_name passed as an argument is the same as the local device's current name
+			if( device_name == local_device.current_device_name){
+				//updates the network this device belongs to
+				updateCurrentNetwork(network_name);
+				//updates the partition the device belongs to
+				updateCurrentPartition(Partition_name);
+			}
+			//add the device to the actual configuration map
+			device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
+			local_session.config_map[Partition_name][network_name][device_name] = device_num;
+			//send the information to the eventQueue for syncing with the server
+			var params = { 
+					'network_name': network_name, 
+					'partition_name': Partition_name , 
+					'simulation_name': local_session.simulation_name,
+					'device_name' :  device_name
+					};
+			var url = '/add/Device/Network';
+			var timestamp = new Date();
+			//add to the event queue to sync with server
+			addToEventQueue(url, params, timeStamp);
+		}else{
+			console.log("The partition for the network does not exist");
+		}
+	}else{
+		console.log("Local device or local session does not exist");
 	}
-	//add the device to the actual configuration map
-	device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
-	local_session.config_map[Partition_name][network_name][device_name] = device_num;
-	//send the information to the eventQueue for syncing with the server
-	var params = { 
-			'network_name': network_name, 
-			'partition_name': Partition_name , 
-			'simulation_name': local_session.simulation_name,
-			'device_name' :  device_name
-			};
-	var url = '/add/Device/Network';
-	var timestamp = new Date();
-	//add to the event queue to sync with server
-	addToEventQueue(url, params, timeStamp);
 
 }
 
@@ -321,14 +321,14 @@ function deleteNetwork(network_name, Partition_name){
 	var list = local_device.networks_created;
 	for(var i = 0; i < list.length; i++ ){
 		if( list[i] == network_name){
-			deleteNetworkFromDevice(network_name, Partition_name);
+			deleteNetworkFromDevice(network_name, Partition_name, local_device);
 			break;
 		}
 	}
 	//delete from simulation object
-	deleteNetworkFromSession(network_name, Partition_name);
-	//delete from application object
-	deleteNetworkFromApplication(network_name);
+	deleteNetworkFromSession(network_name, Partition_name, local_session);
+	var new_number = local_session.num_networks - 1;
+	updateNetworkNumber(new_number);
 	var params = { 
 			'network_name': network_name, 
 			'simulation_name': local_session.simulation_name,
@@ -346,9 +346,8 @@ function deleteNetwork(network_name, Partition_name){
  * @param network_name: holds the name of the network to be deleted
  * @param Partition_name
  */
-function deleteNetworkFromDevice(network_name, Partition_name){
-	//gets the user information
-	var local_device = get_local_device();
+function deleteNetworkFromDevice(network_name, Partition_name, local_device){
+
 	//gets the simulation the user is in
 	var sim = local_device.current_simulation;
 	//gets the list of the networks the user has created
@@ -366,9 +365,7 @@ function deleteNetworkFromDevice(network_name, Partition_name){
  * @param network_name: the name of the network to be deleted
  * @param Partition_name: the name of the partition which the network is in.
  */
-function deleteNetworkFromSession(network_name, Partition_name){
-	//gets  the current simulation for this user
-	var local_session = get_local_session();
+function deleteNetworkFromSession(network_name, Partition_name, local_session){
 	//gets the network object with this name in this partition
 	//should check for whether or not these objects exist
 	var temp = local_session.config_map[Partition_name][network_name];
@@ -378,33 +375,6 @@ function deleteNetworkFromSession(network_name, Partition_name){
 	putinStorage( 'session', JSON.stringify(local_session) );
 }
 
-/**
- * deleteNetworkFromApplication deletes a network from the application on the 
- * @param network_name: the name of the network to be deleted
- * @param Partition_name: the name of the partition which the network is in.
- */
-function deleteNetworkFromApplication(network_name){
-	//gets the local session object
-	var local_session = get_local_session();
-	//get the local application object
-	var local_application = get_local_application();
-	//reduce the number of networks in the system in the application total networks count
-	local_application.total_networks -= 1;
-	//get the simulation name of the current session;
-	var sim = local_session.simulation_name;
-	//get the list of simulations kept in the local_application
-	var list = local_application.simulation_list;
-	//iterate over the list, when we find the current simulation reduce the number of networks by 1
-	for(var i = 0; i < list.length; i++ ){
-		if( local_application.simulation_list[i].name == sim){
-			local_application.simulation_list[i].num_networks -= 1; 
-		}
-	}
-	//save in the local storage
-	putinStorage( 'application', JSON.stringify(local_application) );
-	
-	
-}
 
 /** Function to delete a device from the simulation
  * the device will be removed form the configuration map as well as the application 
@@ -413,19 +383,32 @@ function deleteNetworkFromApplication(network_name){
 function deleteDevice(device_name){
 	//gets the simulation from storage
 	var local_session = get_local_session();
-	//gets the current application on the user's side
-	var local_application = get_local_application();
-	var sim = local_session.simulation_name;
-	deleteDeviceFromSession(device_name);
-	deleteDeviceFromApplication(device_name);
-	var params = { 
-			'device_name': device_name, 
-			'simulation_name': local_session.simulation_name,
-			};
-	var url = '/delete/Device';
-	var timestamp = new Date();
-	//add to the event queue to sync with server
-	addToEventQueue(url, params, timeStamp);
+	if(local_session !== null){
+		var new_number = local_session.num_devices - 1;
+		updateDeviceNumber(new_number);
+		//gets the network object with this name in this partition
+		//should check for whether or not these objects exist
+		var list = local_session.config_map['freelist'];
+		//if the device can be found in the free list then delete it, otherwise get the partition
+		//the device belongs in as well as the network and delete it from the configuration map
+		if( list.hasOwnProperty(device_name) ){
+			delete local_session.config_map.free_list[device_name];
+		}else{
+			network = getNetwork( device_name);
+			partition = getPartitionfromDevice( device_name);
+			delete local_session.config_map[partition][network][device_name];
+		}
+		putinStorage( 'session', JSON.stringify(local_session) );
+		
+		var params = { 
+				'device_name': device_name, 
+				'simulation_name': local_session.simulation_name,
+				};
+		var url = '/delete/Device';
+		var timestamp = new Date();
+		//add to the event queue to sync with server
+		addToEventQueue(url, params, timeStamp);
+	}
 	
 }
 
@@ -436,18 +419,22 @@ function deleteDevice(device_name){
 function deleteSimulation(simulation_name){
 	//gets the simulation from storage
 	var local_session = get_local_session();
-	deleteSimulationFromApplication(simulation_name);
-	if( simulation_name == local_session.simulation_name ){
-		deleteCurrentSimulation(simulation_name);
+	if(local_session !== null){
+		deleteSimulationFromApplication(simulation_name);
+		if( simulation_name == local_session.simulation_name ){
+			deleteCurrentSimulation(simulation_name);
+		}
+		var params = { 
+				'simulation_name': local_session.simulation_name,
+				};
+		
+		var url = '/delete/Simulation';
+		var timestamp = new Date();
+		//add to the event queue to sync with server
+		addToEventQueue(url, params, timeStamp);
+	}else{
+		console.log("local_session does not exist");
 	}
-	var params = { 
-			'simulation_name': local_session.simulation_name,
-			};
-	
-	var url = '/delete/Simulation';
-	var timestamp = new Date();
-	//add to the event queue to sync with server
-	addToEventQueue(url, params, timeStamp);
 }
 
 /** Function to delete the actual simulation
@@ -457,19 +444,23 @@ function deleteSimulation(simulation_name){
 function deleteSimulationFromApplication(simulation_name){
 	//gets the current application on the user's side
 	var local_application = get_local_application();
-	//get the list of simulations kept in the local_application
-	var list = local_application.simulation_list;
-	//iterate over the list, when we find the current simulation reduce the number of networks by 1
-	for(var i = 0; i < list.length; i++ ){
-		if( local_application.simulation_list[i].name == simulation_name){
-			local_application.total_networks -= local_application.simulation_list[i].num_networks;
-			local_application.total_devices -= local_application.simulation_list[i].num_devices;
-			list.splice(i, 1);
-			break;
+	if(local_application !== null){
+		//get the list of simulations kept in the local_application
+		var list = local_application.simulation_list;
+		//iterate over the list, when we find the current simulation reduce the number of networks by 1
+		for(var i = 0; i < list.length; i++ ){
+			if( local_application.simulation_list[i].name == simulation_name){
+				local_application.total_networks -= local_application.simulation_list[i].num_networks;
+				local_application.total_devices -= local_application.simulation_list[i].num_devices;
+				list.splice(i, 1);
+				break;
+			}
 		}
+		local_application.simulation_list = list;
+		putinStorage( 'application', JSON.stringify(local_application) );
+	}else{
+		console.log("Local Application not found!");
 	}
-	local_application.simulation_list = list;
-	putinStorage( 'application', JSON.stringify(local_application) );
 }
 
 /** Function to reset the current simulation object to a blank state
@@ -489,58 +480,6 @@ function deleteCurrentSimulation(){
 }
 
 /**
- * deleteDeviceFromSession deletes a network from the simulation on the 
- * user's side
- * @param network_name: the name of the network to be deleted
- * @param Partition_name: the name of the partition which the network is in.
- */
-function deleteDeviceFromSession(device_name){
-	//gets  the current simulation for this user
-	var local_session = get_local_session();
-	//gets the network object with this name in this partition
-	//should check for whether or not these objects exist
-	var list = local_session.config_map['freelist'];
-	//if the device can be found in the free list then delete it, otherwise get the partition
-	//the device belongs in as well as the network and delete it from the configuration map
-	if( list.hasOwnProperty(device_name) ){
-		delete local_session.config_map.free_list[device_name];
-	}else{
-		network = getNetwork( device_name);
-		partition = getPartitionfromDevice( device_name);
-		delete local_session.config_map[partition][network][device_name];
-	}
-	putinStorage( 'session', JSON.stringify(local_session) );
-}
-
-/**
- * deleteDeviceFromApplication deletes a network from the application on the 
- * @param network_name: the name of the network to be deleted
- * @param Partition_name: the name of the partition which the network is in.
- */
-function deleteDeviceFromApplication(device_name){
-	//gets the local session object
-	var local_session = get_local_session();
-	//get the local application object
-	var local_application = get_local_application();
-	//reduce the number of networks in the system in the application total networks count
-	local_application.total_devices -= 1;
-	//get the simulation name of the current session;
-	var sim = local_session.simulation_name;
-	//get the list of simulations kept in the local_application
-	var list = local_application.simulation_list;
-	//iterate over the list, when we find the current simulation reduce the number of networks by 1
-	for(var i = 0; i < list.length; i++ ){
-		if( local_application.simulation_list[i].name == sim){
-			local_application.simulation_list[i].num_devices -= 1;
-			break;
-		}
-	}
-	//save in the local storage
-	putinStorage( 'application', JSON.stringify(local_application) );
-	
-	
-}
-/**
  * removeDevicefromNetwork removes a device from a network in the session.
  * @param device_name
  * @param network
@@ -550,21 +489,29 @@ function removeDevicefromNetwork( device_name, network){
 	var local_device = get_local_device;
 	//gets the simulation from storage
 	var local_session = get_local_session();
-	//gets the partition which the user is part of
-	partition = getPartitionfromDevice( device_name);
-	//deletes the device from the network
-	delete local_session.config_map[partition][network][device_name];
-	//updates the locally stored object
-	putinStorage( 'session', JSON.stringify(local_session) );
-	var params = { 
-			'network_name': network, 
-			'partition_name': partition , 
-			'simulation_name': local_session.simulation_name,
-			'device_name' :  device_name
-			};
-	var url = '/remove/Device/Network';
-	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	if(local_device !== null && local_session !== null){
+		//gets the partition which the user is part of
+		partition = getPartitionfromDevice( device_name);
+		if(partition !== null){
+			//deletes the device from the network
+			delete local_session.config_map[partition][network][device_name];
+			//updates the locally stored object
+			putinStorage( 'session', JSON.stringify(local_session) );
+			var params = { 
+					'network_name': network, 
+					'partition_name': partition , 
+					'simulation_name': local_session.simulation_name,
+					'device_name' :  device_name
+					};
+			var url = '/remove/Device/Network';
+			var timestamp = new Date();
+			addToEventQueue(url, params, timeStamp);
+		}else{
+			console.log("partition not found!")
+		}
+	}else{
+		console.log("Local device or local session not found!")
+	}
 }
 
 /**
@@ -574,20 +521,24 @@ function removeDevicefromNetwork( device_name, network){
 function removeDevicefromFreeList( device_name, simulation_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
-	//removes a device form the free list
-	var list = local_session.config_map['freelist'];
-	if( list.hasOwnProperty(device_name) ){
-		delete local_session.config_map['freelist'][device_name]
+	if(local_session !== null){
+		//removes a device form the free list
+		var list = local_session.config_map['freelist'];
+		if( list.hasOwnProperty(device_name) ){
+			delete local_session.config_map['freelist'][device_name]
+		}
+		putinStorage( 'session', JSON.stringify(local_session) );
+		
+		var params = { 
+				'simulation_name': local_session.simulation_name,
+				'device_name' :  device_name
+				};
+		var url = '/remove/Device/FreeList';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timeStamp);
+	}else{
+		console.log("local simulation session not found!");
 	}
-	putinStorage( 'session', JSON.stringify(local_session) );
-	
-	var params = { 
-			'simulation_name': local_session.simulation_name,
-			'device_name' :  device_name
-			};
-	var url = '/remove/Device/FreeList';
-	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
 	
 }
 
@@ -598,19 +549,23 @@ function removeDevicefromFreeList( device_name, simulation_name){
  */
 function dividePartition(network, partition){
 	var local_session = get_local_session();
-	delete local_session.config_map[partiton][network];
-	local_session.config_map[network] = network;
-	console.log(local_session.config_map);
-	putinStorage( 'session', JSON.stringify(local_session) );
-	
-	var params = { 
-			'network': network, 
-			'partition_name': network , 
-			'simulation_name': local_session.simulation_name,
-			};
-	var url = '/divide/Partition';
-	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	if(local_session !== null){
+		delete local_session.config_map[partiton][network];
+		local_session.config_map[network] = network;
+		console.log(local_session.config_map);
+		putinStorage( 'session', JSON.stringify(local_session) );
+		
+		var params = { 
+				'network': network_name, 
+				'partition_name': network_name , 
+				'simulation_name': local_session.simulation_name,
+				};
+		var url = '/divide/Partition';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timeStamp);
+	}else{
+		console.log("Local simulation session not found")
+	}
 }
  
 
@@ -619,8 +574,12 @@ function dividePartition(network, partition){
  */
 function resetEventQueue(){
 	local_events = get_local_events();
-	local_events.eventQueue = [];
-	putinStorage( 'localevents', JSON.stringify(local_events) );
+	if(local_events !== null){
+		local_events.eventQueue = [];
+		putinStorage( 'localevents', JSON.stringify(local_events) );
+	}else{
+		console.log("Local events not found!");
+	}
 }
 
 /**
@@ -648,13 +607,15 @@ function createNetwork(network_name){
 	//gets the current partition that the user is in
 	
 	sim = local_device.current_simulation;
+	
+	var new_number = local_session.num_networks + 1;
+	updateNetworkNumber(new_number);
 	//only add it to the user's list of networks created if the session is in device view
 	if(local_device.verified == true){
-		partition = local_device.current_partition;
+		//partition = local_device.current_partition;
 		addNetworkCreated2User(network_name, partition, sim, local_device);
 	}
 	addNetworkCreated2Session(network_name, partition, sim, local_session);
-	addNetworkCreated2Application(local_session, local_application);
 	
 	var params = { 
 			'token', local_device.token,
@@ -670,18 +631,21 @@ function createNetwork(network_name){
 	
 }
 
+/** Function to create a new device in the simulation
+ * The new device with the specified is added t the free list 
+ * the number of devices in the simulation and eventqueue is then updated 
+ * 
+ * @param device_name, the name of the device to be added
+ */
 function createDevice(device_name){
-	var local_session = get_local_session();
-	var local_application = get_local_application();
-	local_application.total_devices += 1;
-	local_session.num_devices += 1;
-	var list = local_application.simulation_list;
+	
 	addDevice2FreeList( device_name, local_session.name);
-	for(var i = 0; i < list.length; i++ ){
-		if( local_application.simulation_list[i].name == sim){
-			local_application.simulation_list[i].num_devices += 1; 
-		}
-	}
+	
+	var local_session = get_local_session();
+	
+	var new_number = local_session.num_devices + 1;
+	
+	updateDeviceNumber(new_number);
 	
 	var params = { 
 			'device_name': device_name, 
@@ -887,7 +851,6 @@ function getDevices(network_name){
  */
 function getLogs(){
 	var local_session = get_local_session();
-	var map = local_session.config_map;
 	return local_session.activity_logs;
 }
 
@@ -973,6 +936,132 @@ function getLoginView(){
  * Utilities for user interaction
  * ------------------------------
  */
+
+/** Function for turning a url and params object into the desired activity log
+ * Can be used by any function to return the necessary activity associated with the URL
+ * Ideally will be used on the client and server
+ *@param, url : the method identifier 
+ *@param body : the body containing the information required for building the activity
+ */
+function generateActivity(url, body, timestamp){
+	switch(url) {
+		case '/create/Simulation':  // should this be create/Simulation ?
+			var new_activity = "Simulation created " +  body.simulation_name + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/add/Device/Network':
+			var new_activity = "Device " +  body.device_name +  " added to network " + body.network_name + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/add/Device/FreeList':
+			var new_activity = "Device" +  body.device_name +  " added to the free area " + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/create/Network' :
+			var new_activity = "Network " +  body.network_name +  " was created  at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/create/Device' :
+			var new_activity = "Device " +  body.device_name +  " was created  at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/merge/Partitions' :
+			var new_activity = "Two Partitions, " +  body.partition_a +  " and "  + body.partition_b + " were merged on " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/remove/Device' :
+			var new_activity = "Device " +  body.device_name +  " was removed from Network "  + body.network_name +  " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/remove/Device/FreeList'
+			var new_activity = "Device " +  body.device_name +  " was removed from the Free area at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Device':
+			var new_activity = "Device " +  body.device_name +  " was deleted " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Network' :
+			var new_activity = "Network " +  body.network_name +  " was deleted at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Token' :
+			var new_activity = "Token " +  body.token +  " was deleted and deactivated at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Partition':
+			var new_activity = "Partition" +  body.partition_name +  " was removed from the simulation at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/delete/Simulation' :
+			var new_activity = "Simulation " +  body.simulation_name +  " was removed the application at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/LocalCount':
+			var new_activity = "Updated Counter to " +  body.localcount + " At " + timestamp + "\n";
+			updateDeviceLog(new_activity);
+			//add to activity log for the simulation
+			new_activity = local_device.current_device_name + " " + new_activity;
+			updateSimulationLog(new_activity);
+			break;	
+		
+		case '/update/NetworkName':
+			var new_activity = "Network " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/DeviceName':
+			var new_activity = "Device " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/SimulationName':
+			var new_activity = "Simulation " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/TokenMethod':
+			var new_activity = "Device token propagation method  has been updated to  " + body.new_method + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/update/DeviceNumber':
+			var new_activity = "Number of devices in simulation increased to " +  body.device_number + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/NetworkNumber':
+			var new_activity = "Number of networks in simulation increased to " +  body.network_number + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/update/ConfigMap':
+			var new_activity = "The configuration map of the simulation was updated at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case 'dividePartition':
+			var new_activity = "Network " +  body.network_name +  " was split into its own partition at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		default:
+			break;
+		
+	}	
+}
 
 /**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
@@ -2168,19 +2257,179 @@ function updateRegisteredIn(new_list){
 function updateLocalEventsToken(token){
 	//gets the events
 	var local_events = get_local_events();
-	//gets the user data associated with this device
-	var local_device = get_local_device();
 	//sets the token to the token of the user
-	local_events.token = local_device.token;
+	local_events.token = token;
 	//returns the new object to the local storage.
 	putinStorage( 'localevents', JSON.stringify(local_events) );
 }
 
 
-function updateCurrentDeviceName(new_device_name){
+function updateDeviceName(old_name, new_name){
 	var local_device = get_local_device();
-	local_device.current_device = new_device_name;
+	var local_session = get_local_session();
+	var partition = getPartitionfromDevice( old_name);
+	var network = getNetwork(old_name);
+	
+	//rename it in the local device
+	if(local_device.current_device_name == old_name){ 
+		local_device.current_device_name == new_name;
+	}
+	
+	//renae it in config map nested object if necessary
+	if(network !== null && partition !== null){
+		local_session.config_map[partition][network][new_name] = local_session.config_map[partition][network][old_name]
+		delete local_session.config_map[partition][network][old_name];
+	}
+	
+	//rename it in free list object
+	var list = local_session.config_map['freelist'];
+	if( list.hasOwnProperty(device_name) ){
+		local_session.config_map['freelist'][new_name] = local_session.config_map['freelist'][old_name];
+		delete local_session.config_map['freelist'][old_name];
+	}
+	
+	
 	putinStorage( 'device', JSON.stringify(local_device) );
+	putinStorage( 'session', JSON.stringify(local_session) );
+	
+	//send to event queue
+	var params = { 
+			'old_name': old_name, 
+			'new_name': new_name,
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/update/DeviceName';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timeStamp);
+	
+}
+
+function updateNetworkName(old_name, new_name){
+	var local_device = get_local_device();
+	var local_session = get_local_session();
+	var partition = getPartition(old_name);
+	//check if the name is the network name of the current device
+	if(local_device.current_network == old_name){
+		//if so change it
+		local_device.current_network = new_name;
+	}
+	
+	//update in list of networks created
+	var list = local_device.networks_created;
+	for(var i = 0; i < list.length; i++){
+		if( local_device.networks_created[i] == old_name){
+			local_device.networks_created[i] = new_name;
+		}
+	}
+	
+	//perform the renaming of the network in configuration map
+	var temp = local_session.config_map[Partition_name][old_name];
+	
+	local_session.config_map[Partition_name][new_name] = temp;
+	//deletes the network
+	delete local_session.config_map[Partition_name][old_name];
+
+	pputinStorage( 'device', JSON.stringify(local_device) );
+	putinStorage( 'session', JSON.stringify(local_session) );
+	
+	//send to event queue
+	var params = { 
+			'old_name': old_name, 
+			'new_name': new_name,
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/update/NetworkName';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timeStamp);
+}
+
+function updateSimulationName(old_name, new_name){
+	var local_application = get_local_application();
+	var local_session = get_local_session();
+	var local_device = get_local_device();
+	
+	
+	if( old_name == local_session.simulation_name){
+		local_session.simulation_name = new_name;
+	}
+	var list = local_application.simulation_list;
+	//iterate over the list, when we find the current simulation reduce the number of networks by 1
+	for(var i = 0; i < list.length; i++ ){
+		if( local_application.simulation_list[i].name == old_name){
+			local_application.simulation_list[i].name = new_name;
+			break;
+		}
+	}
+	
+	if(local_device.current_simulation == old_name){
+		local_device.current_simulation == new_name;
+	}
+	
+	putinStorage( 'device', JSON.stringify(local_device) );
+	putinStorage( 'session', JSON.stringify(local_session) );
+	putinStorage( 'application', JSON.stringify(local_application) );
+	
+	//send to event queue
+	var params = { 
+			'old_name': old_name, 
+			'new_name': new_name,
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/update/SimulationName';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timeStamp);
+}
+
+function updateDeviceNumber(new_number){
+	var local_session = get_local_session();
+	var local_application = get_local_application();
+	var sim = local_session.simulation_name;
+	local_application.total_devices = new_number;
+	local_session.num_devices = new_number;
+	var list = local_application.simulation_list;
+	
+	for(var i = 0; i < list.length; i++ ){
+		if( local_application.simulation_list[i].name == sim){
+			local_application.simulation_list[i].num_devices = new_number; 
+		}
+	}
+	
+	var params = { 
+			'device_number': new_number, 
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/update/DeviceNumber';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timeStamp);
+	
+	putinStorage( 'application', JSON.stringify(local_application) );
+	putinStorage( 'session', JSON.stringify(local_session) );
+
+}
+
+function updateNetworkNumber(new_number){
+	var local_session = get_local_session();
+	var local_application = get_local_application();
+	var sim = local_session.simulation_name;
+	local_application.total_networks = new_number;
+	local_session.num_devices = new_number;
+	
+	var list = local_application.simulation_list;
+	for(var i = 0; i < list.length; i++ ){
+		if( local_application.simulation_list[i].name == sim){
+			local_application.simulation_list[i].num_networks = new_number; 
+		}
+	}
+	var params = { 
+			'network_number': new_number, 
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/update/NetworkNumber';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timeStamp);
+	
+	putinStorage( 'application', JSON.stringify(local_application) );
+	putinStorage( 'session', JSON.stringify(local_session) );
 }
 
 function updateLocalCount(){
@@ -2193,6 +2442,7 @@ function updateLocalCount(){
 	var method = '/update/LocalCount';
 	var timestamp = new Date();
 	addToEventQueue(method, params, timestamp);
+	
 	appDefaultView();
 }
 
@@ -2222,13 +2472,20 @@ function updateSessionGlobalCount(new_count){
 	var local_session = get_local_session();
 	local_session.globalcount += new_count;
 	putinStorage( 'session', JSON.stringify(local_session) );
+	
 }
 
-function updateActivityLog(new_comments){
+function updateSimulationLog(new_comments){
 	var local_session = get_local_session();
 	local_session.activity_logs += new_comments;
 	putinStorage( 'session', JSON.stringify(local_session) );
 }
+
+function updateDeviceLog(new_activity){
+	local_device = get_local_device();
+	local_device.activity += new_activity;
+}
+
 
 function updateTokenMethod( new_method){
 	var local_session = get_local_session();
