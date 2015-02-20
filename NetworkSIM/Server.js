@@ -112,40 +112,40 @@ app.post('/authenticate/authToken', function(req, res){
  * Routes call for the homepage of our website.
  */
 app.get('/', function(request,response){
-	response.sendFile("Tests/index.html", {"root": __dirname});	
+	response.sendFile("/index.html", {"root": __dirname});	
 }); 
 /*
  * Routes call for the homepage of our website.
  */
 app.get('/index', function(request,response){
-	response.sendFile("Tests/index.html", {"root": __dirname});
+	response.sendFile("/index.html", {"root": __dirname});
 	
 }); 
 
 app.get('/css/dashboard.css', function(request,response){
-	response.sendFile("css/dashboard.css", {"root": __dirname});
+	response.sendFile("/public/css/dashboard.css", {"root": __dirname});
 	
 }); 
 app.get('/css/bootstrap.min.css', function(request,response){
-	response.sendFile("/css/bootstrap.min.css", {"root": __dirname});
+	response.sendFile("/public/css/bootstrap.min.css", {"root": __dirname});
 	
 });
 app.get('/css/main.css', function(request,response){
-	response.sendFile("/css/main.css", {"root": __dirname});
+	response.sendFile("/public/css/main.css", {"root": __dirname});
 	
 });
 
 app.get('/img/img.png', function(request,response){
-	response.sendFile("/img/img.png", {"root": __dirname});
+	response.sendFile("/public/img/img.png", {"root": __dirname});
 	
 });
 
 app.get('/img/search.png', function(request,response){
-	response.sendFile("/img/search.png", {"root": __dirname});
+	response.sendFile("/public/img/search.png", {"root": __dirname});
 	
 });
 app.get('/js/main.js', function(request,response){
-	response.sendFile("ClientJS/main.js", {"root": __dirname});
+	response.sendFile("/public/ClientJS/main.js", {"root": __dirname});
 	
 }); 
 
