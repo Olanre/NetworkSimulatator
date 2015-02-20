@@ -116,7 +116,8 @@ function addToEventQueue(url, params, timeStamp){
 		local_events.token = getToken();
 		
 		putinStorage( 'localevents', JSON.stringify(local_events) );
-	}else{
+	}
+	else{
 		console.log("Local events not found")
 	}
 	
@@ -265,7 +266,7 @@ function addDevice2FreeList( device_name, simulation_name){
 		//updates the partition this device belongs to. Should be done within "updateNetwork"
 		updateCurrentPartition('freelist');
 	}
-	free_num = size(local_session.config_map.['freelist']) + 1;
+	free_num = size(local_session.config_map['freelist']) + 1;
 	//adds the device to the freelist
 	local_session.config_map['freelist'][device_name] = free_num;
 	putinStorage( 'session', JSON.stringify(local_session) );
@@ -618,7 +619,7 @@ function createNetwork(network_name){
 	addNetworkCreated2Session(network_name, partition, sim, local_session);
 	
 	var params = { 
-			'token', local_device.token,
+			'token': local_device.token,
 			'network_name': network_name, 
 			'partition_name': partition , 
 			'simulation_name': local_session.simulation_name,
@@ -980,7 +981,7 @@ function generateActivity(url, body, timestamp){
 			updateSimulationLog(new_activity);
 			break;
 			
-		case '/remove/Device/FreeList'
+		case '/remove/Device/FreeList':
 			var new_activity = "Device " +  body.device_name +  " was removed from the Free area at " + timestamp + "\n";
 			updateSimulationLog(new_activity);
 			break;
@@ -1708,6 +1709,7 @@ function render(new_data){
 		//if recieved an empty response
 		alert('Something went wrong. Please try again');
 	}
+}
 	
 
 /**

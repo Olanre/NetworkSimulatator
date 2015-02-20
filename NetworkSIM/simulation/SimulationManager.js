@@ -10,7 +10,7 @@ var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var deviceTemplate = require("./deviceTemplate.js");
 var SimulationTemplate = require("./simulationTemplate.js");
-var stateTemplate require("./stateTemplate.js");
+var stateTemplate=require("./stateTemplate.js");
 var simulation = require("./Simulation.js");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
@@ -23,12 +23,10 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 exports.ClientRequest = function(token, eventQueue, callback) {
 	
-	//console.log(eventQueue);
-	
 	for(var i = 0; i < eventQueue.length; i++) {
 		
 		switch(eventQueue[i].URL) {
-			case '/create/Simulation':  // should this be create/Simulation ?
+			case '/create/Simulation': 
 				createSimulation(eventQueue[i].Body);
 				break;
 				
@@ -56,7 +54,7 @@ exports.ClientRequest = function(token, eventQueue, callback) {
 				removeDevice(eventQueue[i].Body);
 				break;
 				
-			case '/remove/Device/FreeList'
+			case '/remove/Device/FreeList' :
 				removeDevicefromFreeList(eventQueue[i].Body);
 				break;
 				

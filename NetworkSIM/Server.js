@@ -1,52 +1,45 @@
-/***
+/****
  * This module is responsible for server-related actions and calls.
  * Please note that the routing javascript code is located under
  * the routes folder within src.
  * @Author: Noah
  * @editedBy Ryan (Jan. 30)
- */
+ ****/
 
 var express = require('express');
-var app = express();
 var logger = require('express-logger');
 var eventHandler = require("./EventHandler.js");
-
 var SimulationManager = require('./simulation/SimulationManager');
 var Database = require("./Database/mongooseConnect.js");
 
 
-var Authenticate = require('./routes/Authenticate');
-/*
+/****
 var Add = require('./routes/Add');
 var Create = require('./routes/Create');
 var Delete = require('./routes/Delete');
-*/
-var Get = require('./routes/Get');
-/*
 var Update = require('./routes/Update');
-// var start = require('./routes/start');
-// etc ..
-*/
+var start = require('./routes/start');
+****/
+var Get = require('./routes/Get');
+var Authenticate = require('./routes/Authenticate');
+
+
+var app = express();
 var globalCount = 0;
-var port = 3332;  // declare port here so changes to the port are reflected in code below
-				 // must be on port 3332 on excalibur for the grader
+var port = 3332;  // must be on port 3332 on excalibur for the grader
 
 
-//THIS IS OUR SERVER
-var server = app.listen(port, function () {  // our server must respond to port 3332 on excalibur 
+var server = app.listen(port, function () { 
 	
 	var Application = {};
 	//var item =  { 'name' : body.name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
 	
 	Database.getApp(function(data){
-		//console.log(data);
 		if(data == null){
-			//console.log(data);
 			Application.simulation_list = [];
 			Application.total_devices = 0;
 			Application.total_networks = 0;
 			Application.super_admin = {};
-			//console.log(Application);
 			Database.addApp(Application);
 		}else{
 			console.log('App already exists');
@@ -56,22 +49,25 @@ var server = app.listen(port, function () {  // our server must respond to port 
   console.log('Server listening at http://%s:%s', host, port);
 });
 
-app.use(logger({path: "./logfile.txt"}));  // logger
+app.use(logger({path: "./logfile.txt"}));
 
 
 /* does this get moved into the createSimulation.js module too? */
 	
 app.post("/getSync", function(req, res) {
-	var data = '';//waits until all of the data from the client has been received
-	req.on("data", function(chunk){ //if a piece of the data from the client is being received 
+	var data = '';
+	
+	//waits until all of the data from the client has been received
+	req.on("data", function(chunk){
 		data += chunk.toString();
 	});
-	//if we have the entire data from the client
+	
+	//once we have the entire data from the client
 	req.on("end", function() {
-		//console.log(data);
 		var obj = JSON.parse(data);
 		var token = obj.token;
 		var eventqueue = obj.eventQueue;
+		
 		SimulationManager.authToken(token, function(obj){
 			if(obj.Response == 'Success'){
 				SimulationManager.ClientRequest(token, eventqueue, function(){
@@ -147,6 +143,6 @@ app.get('/img/search.png', function(request,response){
 app.get('/js/main.js', function(request,response){
 	response.sendFile("/public/ClientJS/main.js", {"root": __dirname});
 	
-}); 
+});
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/
