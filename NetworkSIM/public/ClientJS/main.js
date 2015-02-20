@@ -149,7 +149,6 @@ function addToken(new_token){
 }
 
 
-
 /**
  * addNetworkCreated2User adds a network created by this user to the list of networks
  * that this user has created.
@@ -604,8 +603,8 @@ function dividePartition(network, partition){
 	putinStorage( 'session', JSON.stringify(local_session) );
 	
 	var params = { 
-			'network': network, 
-			'partition_name': network , 
+			'network': network_name, 
+			'partition_name': network_name , 
 			'simulation_name': local_session.simulation_name,
 			};
 	var url = '/divide/Partition';
@@ -973,6 +972,132 @@ function getLoginView(){
  * Utilities for user interaction
  * ------------------------------
  */
+
+/** Function for turning a url and params object into the desired activity log
+ * Can be used by any function to return the necessary activity associated with the URL
+ * Ideally will be used on the client and server
+ *@param, url : the method identifier 
+ *@param body : the body containing the information required for building the activity
+ */
+function generateActivity(url, body, timestamp){
+	switch(url) {
+		case '/create/Simulation':  // should this be create/Simulation ?
+			var new_activity = "Simulation created " +  body.simulation_name + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/add/Device/Network':
+			var new_activity = "Device " +  body.device_name +  " added to network " + body.network_name + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/add/Device/FreeList':
+			var new_activity = "Device" +  body.device_name +  " added to the free area " + " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/create/Network' :
+			var new_activity = "Network " +  body.network_name +  " was created  at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/create/Device' :
+			var new_activity = "Device " +  body.device_name +  " was created  at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/merge/Partitions' :
+			var new_activity = "Two Partitions, " +  body.partition_a +  " and "  + body.partition_b + " were merged on " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/remove/Device' :
+			var new_activity = "Device " +  body.device_name +  " was removed from Network "  + body.network_name +  " at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/remove/Device/FreeList'
+			var new_activity = "Device " +  body.device_name +  " was removed from the Free area at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Device':
+			var new_activity = "Device " +  body.device_name +  " was deleted " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Network' :
+			var new_activity = "Network " +  body.network_name +  " was deleted at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Token' :
+			var new_activity = "Token " +  body.token +  " was deleted and deactivated at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/delete/Partition':
+			var new_activity = "Partition" +  body.partition_name +  " was removed from the simulation at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/delete/Simulation' :
+			var new_activity = "Simulation " +  body.simulation_name +  " was removed the application at " + timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/LocalCount':
+			var new_activity = "Updated Counter to " +  body.localcount + " At " + timestamp + "\n";
+			updateDeviceLog(new_activity);
+			//add to activity log for the simulation
+			new_activity = local_device.current_device_name + " " + new_activity;
+			updateSimulationLog(new_activity);
+			break;	
+		
+		case '/update/NetworkName':
+			var new_activity = "Network " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/DeviceName':
+			var new_activity = "Device " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/SimulationName':
+			var new_activity = "Simulation " +  body.old_name +  " was assigned new name " + body.new_name + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/TokenMethod':
+			var new_activity = "Device token propagation method  has been updated to  " + body.new_method + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/update/DeviceNumber':
+			var new_activity = "Number of devices in simulation increased to " +  body.device_number + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case '/update/NetworkNumber':
+			var new_activity = "Number of networks in simulation increased to " +  body.network_number + " at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+			
+		case '/update/ConfigMap':
+			var new_activity = "The configuration map of the simulation was updated at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		
+		case 'dividePartition':
+			var new_activity = "Network " +  body.network_name +  " was split into its own partition at " +  timestamp + "\n";
+			updateSimulationLog(new_activity);
+			break;
+		default:
+			break;
+		
+	}	
+}
 
 /**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
@@ -2177,10 +2302,36 @@ function updateLocalEventsToken(token){
 }
 
 
-function updateCurrentDeviceName(new_device_name){
+function updateDeviceName(new_name){
 	var local_device = get_local_device();
-	local_device.current_device = new_device_name;
+	var old_name = local_device.current_device_name;
+	local_device.current_device_name = new_name;
 	putinStorage( 'device', JSON.stringify(local_device) );
+	//send to event queue
+}
+
+function updateNetworkName(old_name, new_name){
+	var local_device = get_local_device();
+	var local_session = get_local_session();
+	var partition = getPartition(old_name);
+	//perform the renaming of the network
+	var temp = local_session.config_map[Partition_name][old_name];
+	
+	local_session.config_map[Partition_name][new_name] = temp;
+	//deletes the network
+	delete local_session.config_map[Partition_name][old_name];
+
+	putinStorage( 'session', JSON.stringify(local_session) );
+	//send to event queue
+}
+
+function updateDeviceNumber(new_number){
+	
+
+}
+
+function updateNetworkNumber(new_number){
+	
 }
 
 function updateLocalCount(){
@@ -2193,6 +2344,7 @@ function updateLocalCount(){
 	var method = '/update/LocalCount';
 	var timestamp = new Date();
 	addToEventQueue(method, params, timestamp);
+	
 	appDefaultView();
 }
 
@@ -2222,13 +2374,20 @@ function updateSessionGlobalCount(new_count){
 	var local_session = get_local_session();
 	local_session.globalcount += new_count;
 	putinStorage( 'session', JSON.stringify(local_session) );
+	
 }
 
-function updateActivityLog(new_comments){
+function updateSimulationLog(new_comments){
 	var local_session = get_local_session();
 	local_session.activity_logs += new_comments;
 	putinStorage( 'session', JSON.stringify(local_session) );
 }
+
+function updateDeviceLog(new_activity){
+	local_device = get_local_device();
+	local_device.activity += new_activity;
+}
+
 
 function updateTokenMethod( new_method){
 	var local_session = get_local_session();
