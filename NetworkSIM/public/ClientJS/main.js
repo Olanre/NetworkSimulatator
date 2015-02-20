@@ -1393,7 +1393,15 @@ function simulationSideBarView(){
 	aside.innerHTML = sidebar.innerHTML;
 	
 }
-
+/****
+ * Temporary function so that I can get the network topology GUI working
+ ****/
+function tempGUIView(){
+	clearPageElements();
+	var guiView=document.getElementById('template11');
+	var content=getContainer();
+	content.innerHTML=guiView.innerHTML;
+}
 /**
  * appDefaultView gets the front page of the application.
  */

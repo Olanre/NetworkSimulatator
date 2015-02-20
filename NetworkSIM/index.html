@@ -88,6 +88,9 @@
 						</li>						
 						<li>						
 						<a href="#" onclick = "appDefaultView()">The Application</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "tempGUIView()">Temporary GUI View</a>						
 						</li>						
 					</ul>					
 				</div>				
@@ -300,6 +303,19 @@
 	</div>
 </script>
 
+<script type='network-topology-template' id = 'template11'>
+	<link rel="stylesheet" href="GUIDesign.css" media="screen" type="text/css" />
+	<script src='interact-1.2.2.js'></script>
+		<svg>
+		</svg>
+		
+		<script src='interact-1.2.2.js'></script>
+	
+		<script src="GUIDesign.js"></script>
+		<br>
+		<button type="button" onclick = createDevice()>New Device</button>
+		<button type="button" onclick = createNetwork()>New Network</button>
+</script>
 
 <body>
 		<!-- onload optional -->		

@@ -119,16 +119,20 @@ app.get('/index', function(request,response){
 }); 
 
 app.get('/css/dashboard.css', function(request,response){
-	response.sendFile("/public/css/dashboard.css", {"root": __dirname});
+	response.sendFile("/public/stylesheets/dashboard.css", {"root": __dirname});
 	
 }); 
 app.get('/css/bootstrap.min.css', function(request,response){
-	response.sendFile("/public/css/bootstrap.min.css", {"root": __dirname});
+	response.sendFile("/public/stylesheets/bootstrap.min.css", {"root": __dirname});
 	
 });
 app.get('/css/main.css', function(request,response){
-	response.sendFile("/public/css/main.css", {"root": __dirname});
+	response.sendFile("/public/stylesheets/main.css", {"root": __dirname});
 	
+});
+
+app.get('/css/topologyView.css',function(request,response){
+	response.sendFile("/public/stylesheets/topologyView.css",{"root":__dirname});
 });
 
 app.get('/img/img.png', function(request,response){
@@ -144,5 +148,6 @@ app.get('/js/main.js', function(request,response){
 	response.sendFile("/public/ClientJS/main.js", {"root": __dirname});
 	
 });
+
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/
