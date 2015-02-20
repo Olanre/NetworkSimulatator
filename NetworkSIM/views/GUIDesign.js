@@ -65,13 +65,26 @@ interact('.device')
 	        endOnly: true,
 	        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
 	    },
+	    
+	    onstart: function(event){
+			//adds class to make sure object you are moving is on top 
+			var circle = getShapeFromEvent(event);
+			circle.element.classList.add('held-object');
+		},
 
 		onmove: function (event) {
 		
 		//gets the circle from the list of shapes
 			var circle = getShapeFromEvent(event);
 			moveUIElementAndChildren(circle, event.dx,event.dy);
-		}
+		},
+		
+		onend: function(event){
+			//stops ensuring that object is ontop after dropped
+			var circle = getShapeFromEvent(event);
+			circle.element.classList.remove('held-object');
+			orderCanvas();
+		},
 	});
 
 /****
@@ -96,7 +109,6 @@ interact('.network')
 			//related target is the object  being dragged
 		    var draggableElement = event.relatedTarget,
 		        dropzoneElement = event.target;
-		   
 		    
 		    if (draggableElement.classList.contains('device')){
 			    dropzoneElement.classList.add('drop-target');
@@ -176,10 +188,16 @@ interact('.network')
 				origin.x=circle.x;
 				origin.y=circle.y;
 				
+				//adds class to make sure object you are moving is on top 
+				var circle = getShapeFromEvent(event);
+				circle.element.classList.add('held-object');
 			},
-
-		
-			
+			onend: function(event){
+				//stops ensuring that object is ontop after dropped
+				var circle = getShapeFromEvent(event);
+				circle.element.classList.remove('held-object');
+				orderCanvas();
+			},
 		});
 
 /****
@@ -249,6 +267,13 @@ function updatePartitionLines(networkShape){
 	}
 	
 }
+
+//checks if an object has a certain class
+function hasClass(element, Elclass) {
+    return element.classList.contains(Elclass);
+}
+
+//moves an element in the GUI and all elements attached to it
 function moveUIElementAndChildren(UIShape,dx,dy){
 	UIShape.x +=dx;
 	UIShape.y += dy;
@@ -283,13 +308,22 @@ document.addEventListener('mousemove', function(e){
  ****/
 function orderCanvas(){
 	for (index in shapes){
-		if (shapes[index].element.getAttribute('class')!='network-connection'&&shapes[index]!=null){
+		if(hasClass(shapes[index].element, 'network')==true&&shapes[index]!=null){
 			svgCanvas.appendChild(shapes[index].element);
+			svgCanvas.appendChild(shapes[index].displayName);
 		}
 	}
 	for (index in shapes){
-		if (shapes[index].element.getAttribute('class')=='device'&&shapes[index]!=null){
+		if(hasClass(shapes[index].element, 'device')==true&&shapes[index]!=null){
 			svgCanvas.appendChild(shapes[index].element);
+			svgCanvas.appendChild(shapes[index].displayName);
+		}
+	}
+	//orders held objects on top
+	for (index in shapes){
+		if(hasClass(shapes[index].element, 'held-object')==true&&shapes[index]!=null){
+			svgCanvas.appendChild(shapes[index].element);
+			svgCanvas.appendChild(shapes[index].displayName);
 		}
 	}
 }
@@ -321,6 +355,7 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	
 	//displays the name of the network/device
 	this.displayName = document.createElementNS(svgNS, "text");
+	this.displayName.setAttribute("class", 'name-text');
 	this.displayName.setAttribute("font-size","14");
 	this.displayName.setAttribute("text-anchor", "middle");
 	
