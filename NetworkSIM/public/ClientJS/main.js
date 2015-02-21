@@ -26,7 +26,7 @@
  * which occur on this device. This list will be sent to the server
  * to be handled and recorded. This is stored in the JSON format.
  */ 
-local_events = {};
+var local_events = {};
 local_events.eventQueue = [];
 local_events.token = '';
 
@@ -40,8 +40,7 @@ window.onload = function(){
 	loadStyleSheet('../css/bootstrap.min.css');
 	loadStyleSheet('../css/dashboard.css');
 	
-	loadAppContent();
-	
+	loadAppContent();	
 
 }
 
@@ -51,8 +50,9 @@ window.onload = function(){
  */ 
 window.setInterval(function(){
 	  /// call our sync function here
-		//Sync2Server();
-	}, 3000);
+		Sync2Server();
+	}, 6000);
+
 
 /**
  * function overwrites the "appstate" array above with new data.
@@ -2083,7 +2083,7 @@ send2Server = function(url, params, callback)
 {
 	
 	//optional list
-	//console.log(params);
+	console.log("About to send");
     var request = new XMLHttpRequest();
     if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
     	
@@ -2100,7 +2100,7 @@ send2Server = function(url, params, callback)
         {
         	resetEventQueue();
         	var obj = JSON.parse(request.responseText);
-        	//console.log(obj);
+        	console.log(obj);
             callback(obj); // Another callback here
         }else{
         	//alert("Please wait")

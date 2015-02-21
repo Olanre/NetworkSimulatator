@@ -148,7 +148,7 @@ function authToken(token, callback){
 		
 	//var token = body.token; 
 	tokenManager.authenticateToken(token, function(obj){
-		//console.log(obj);
+		console.log(obj);
 		callback(obj);
 	});
 		

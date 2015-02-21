@@ -67,17 +67,23 @@ app.post("/getSync", function(req, res) {
 		var obj = JSON.parse(data);
 		var token = obj.token;
 		var eventqueue = obj.eventQueue;
-		
+		//console.log(obj);
 		SimulationManager.authToken(token, function(obj){
 			if(obj.Response == 'Success'){
+				console.log("successful authenication" );
 				SimulationManager.ClientRequest(token, eventqueue, function(){
-			
-					SimulationManager.startState(function(data){
+					SimulationManager.getNewState(token, function(data){
+						console.log("Send newstate");
+						console.log(data);
 						res.send(data);
 					});
+					
 				});
 			}else{
-				SimulationManager.getNewState(token, function(data){
+				console.log("failed authenication" );
+				
+				SimulationManager.startTemplate(function(data){
+					console.log("Send blank state");
 					res.send(data);
 				});
 			}
@@ -129,6 +135,12 @@ app.get('/css/bootstrap.min.css', function(request,response){
 app.get('/css/main.css', function(request,response){
 	response.sendFile("/public/stylesheets/main.css", {"root": __dirname});
 	
+});
+app.get('/interact-1.2.2.js', function(request, response){
+	response.sendFile("/views/interact-1.2.2.js", {"root": __dirname});
+});
+app.get('/GUIDesign.js', function(request, response){
+	response.sendFile("/views/GUIDesign.js", {"root": __dirname});
 });
 
 app.get('/css/topologyView.css',function(request,response){
