@@ -1706,11 +1706,11 @@ function render(new_data){
 		}else{
 			//otherwise if the old and new states are not the same
 			//update the old state with the new state
-			alert('New changes detected on server');
+			//alert('New changes detected on server');
 			console.log(new_data);
 			overWriteAppState(new_data);
 			//update all of the views.
-			updateAllViews(400);
+			//updateAllViews(400);
 		}
 		
 	}else{
