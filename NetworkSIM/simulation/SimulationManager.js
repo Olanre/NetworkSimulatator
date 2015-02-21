@@ -12,6 +12,7 @@ var deviceTemplate = require("./deviceTemplate.js");
 var SimulationTemplate = require("./simulationTemplate.js");
 var stateTemplate=require("./stateTemplate.js");
 var simulation = require("./Simulation.js");
+var topography = require("./network_topography");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
 
@@ -122,6 +123,9 @@ exports.ClientRequest = function(token, eventQueue, callback) {
 	callback();
 };
 
+/** 	-------------------------------------------
+ * 				Getting and returning the states
+ */
 exports.startTemplate = function(callback) {
 	
 	//entire encapsulated application Template
@@ -140,109 +144,6 @@ exports.startTemplate = function(callback) {
 		callback(appstate);
 	});
 };
-
-
-
-function authToken(token, callback){
-		
-	//var token = body.token; 
-	tokenManager.authenticateToken(token, function(obj){
-		console.log(obj);
-		callback(obj);
-	});
-		
-}
-
-function createSimulation(body) {
-	var Device = deviceTemplate.getDeviceTemplate();
-	var map = body.config_map;
-	var d = new Date();
-	var device_list = simulation.getDevices(map);
-	//console.log(device_list);
-	for( var i = 0; i < device_list.length; i++) {
-		
-		Device.current_simulation = body.simulation_name;
-		Device.registeredOn = d.toString();
-		Device.current_device_name = device_list[i];
-		Device.current_network = simulation.getNetwork(map, Device.name);
-		Device.current_partition = simulation.getPartition(map, Device.current_network);
-		Device.email = device_list[i];
-		
-		Device.token = DeviceManager.getToken();	
-		TokenPropagator.mailToken(Device.email, Device.token, body.name);
-		//console.log(Device);
-		Database.addUser(Device);
-	}
-	
-	body.config_map = JSON.stringify(body.config_map);
-	//console.log(body.config_map);
-	//body.config_map = replaceAll('\"', "'", body.config_map);
-	
-	Database.addSim(body);
-	
-	Database.getApp(function(data){
-		//console.log(data);
-		if(data !== null){
-			var Application = data;
-			var item =  { 'name' : body.simulation_name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
-			Application.total_devices += body.num_devices;
-			Application.total_networks += body.num_networks;
-			item = JSON.stringify(item);
-			Application.simulation_list.push(item);
-			Database.modifyApp(Application);
-		}
-	});
-	setTimeout(function() {
-		Database.getSimByName(body.simulation_name, function(obj){
-			//console.log('');
-		});
-	}, 800 );
-	
-	Device = {};
-	Application = {};
-	Simulation = {};
-	
-	
-	
-	//var AppState = TotalAppState.getTotalState();
-	//console.log(body);
-}	
-
-function replaceAll(find, replace, str) {
-	  return str.replace(new RegExp(find, 'g'), replace);
-	}
-
-function addDevice(body) {
-
-	var device_name = body.device_name;
-	var network_name = body.network_name;
-	var partition_name = body.partition_name;
-	var simulation_name = body.simuation_name;
-	var token = body.token;
-	//NetworkManager.addDevice(parameters);  // do you mean DeviceManager.addDevice(devID) ?
-	
-	router.post('/', function(req, res) {
-		
-		var request = new XMLHttpRequest();
-		request.open('POST', '/add/Device');
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		
-		//res.json(JSON.stringify());
-	});
-}
-
-
-function createNetwork(networkObject){
-	var simName=networkObject.networkName;
-	var partitionName=networkObject.partition_name;
-	//Database.createNetwork(simName, partitionName, networkObject);
-}
-
-function addPartition(partitionObject){
-	var partitionName=partitionObject.partition_name;
-	var simulationName=partitionObject.simulation_name;
-	//Database.addPartition(simulationName,partitionName,partitionObject);
-}
 
 //callback horror!!
 function getNewState(token, callback){
@@ -290,6 +191,103 @@ function getNewState(token, callback){
 
 	
 }
+
+/** --------------------------------------------------
+ * authorizing a token 
+ */
+
+function authToken(token, callback){
+		
+	//var token = body.token; 
+	tokenManager.authenticateToken(token, function(obj){
+		console.log(obj);
+		callback(obj);
+	});
+		
+}
+
+function createSimulation(body) {
+	var Device = deviceTemplate.getDeviceTemplate();
+	var map = body.config_map;
+	var d = new Date();
+	var device_list = simulation.getDevices(map);
+	for( var i = 0; i < device_list.length; i++) {
+		
+		Device.current_simulation = body.simulation_name;
+		Device.registeredOn = d.toString();
+		Device.current_device_name = device_list[i];
+		Device.current_network = simulation.getNetwork(map, Device.name);
+		Device.current_partition = simulation.getPartition(map, Device.current_network);
+		Device.email = device_list[i];
+		
+		Device.token = DeviceManager.getToken();	
+		TokenPropagator.mailToken(Device.email, Device.token, body.name);
+		//console.log(Device);
+		Database.addUser(Device);
+	}
+	
+	body.config_map = JSON.stringify(body.config_map);
+	
+	Database.addSim(body);
+	
+	Database.getApp(function(data){
+		//console.log(data);
+		if(data !== null){
+			var Application = data;
+			var item =  { 'name' : body.simulation_name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
+			Application.total_devices += body.num_devices;
+			Application.total_networks += body.num_networks;
+			item = JSON.stringify(item);
+			Application.simulation_list.push(item);
+			Database.modifyApp(Application);
+		}
+	});
+	setTimeout(function() {
+		Database.getSimByName(body.simulation_name, function(obj){
+			//console.log('');
+		});
+	}, 800 );
+	
+	Device = {};
+	Application = {};
+	Simulation = {};
+	
+	
+	
+	//var AppState = TotalAppState.getTotalState();
+	//console.log(body);
+}	
+
+function replaceAll(find, replace, str) {
+	  return str.replace(new RegExp(find, 'g'), replace);
+	}
+
+function createDevice(body) {
+
+	var device_name = body.device_name;
+	var network_name = body.network_name;
+	var partition_name = body.partition_name;
+	var simulation_name = body.simuation_name;
+	var token = body.token;
+	//NetworkManager.addDevice(parameters);  // do you mean DeviceManager.addDevice(devID) ?
+	
+	
+}
+
+
+function createNetwork(networkObject){
+	var simName=networkObject.networkName;
+	var partitionName=networkObject.partition_name;
+	//Database.createNetwork(simName, partitionName, networkObject);
+}
+
+function addPartition(partitionObject){
+	var partitionName=partitionObject.partition_name;
+	var simulationName=partitionObject.simulation_name;
+	//Database.addPartition(simulationName,partitionName,partitionObject);
+}
+
+
 function deleteDevice(deviceObject){
 	var simulationName=deviceObject.simulation_name;
 	var deviceName=deviceObject.device_name;

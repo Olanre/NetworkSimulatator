@@ -111,7 +111,8 @@ function addToEventQueue(url, params, timeStamp){
 		events.push(query);
 		//updates the localEvents to the new list of local events.
 		local_events.eventQueue = events;
-		local_events.token = getToken();
+		local_events.token = getToken();  
+		local_events.simulation = getSimulationName();
 		
 		putinStorage( 'localevents', JSON.stringify(local_events) );
 	}
@@ -894,6 +895,11 @@ function getNetwork(device_name){
 function getToken(){
 	var local_device = get_local_device();
 	return local_device.token;
+}
+
+function getSimulationName(){
+	var local_session = get_local_session();
+	return local_session.simulation_name;
 }
 
 /**
@@ -2117,6 +2123,7 @@ function adminShowEmailList(list) {
 function Sync2Server(){
 	var url = '/getSync';
 	var param = '';
+	
 	local_events = get_local_events();
 	if(local_events == null){
 		params =  JSON.stringify(newEventQueue());	
