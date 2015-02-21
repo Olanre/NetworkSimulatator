@@ -1417,6 +1417,7 @@ function tempGUIView(){
 	defaultsideBarView();
 
 	loadJSFile('../js/network-topology.js');
+	loadStyleSheet('../css/topologyView.css');
 	var html=
 			"<svg></svg>" +
 					"<br>" +
