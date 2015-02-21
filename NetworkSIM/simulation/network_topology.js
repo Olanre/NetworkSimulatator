@@ -115,12 +115,6 @@ function Device(deviceName){
   //Required
   this.current_device_name = deviceName;
   
-  this.current_simulation=simulation;
-  this.current_network=network;
-  this.current_partition=partition;
-  this.email=email;
-  this.token=token;
-  
   //Required
   this.joinNetwork = function(network){
     // Make the device join a network

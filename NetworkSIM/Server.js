@@ -171,7 +171,7 @@ app.get('/js/interact-1.2.2.js', function(request,response){
 	
 });
 app.get('/js/network-topology.js', function(request,response){
-	response.sendFile("/public/ClientJS/network-topology.js", {"root": __dirname});
+	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
 	
 });
 
