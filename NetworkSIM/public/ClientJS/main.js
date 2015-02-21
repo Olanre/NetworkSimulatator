@@ -617,7 +617,6 @@ function createNetwork(network_name){
 	
 	sim = local_device.current_simulation;
 	
-	
 	//only add it to the user's list of networks created if the session is in device view
 	if(local_device.verified == true){
 		partition = local_device.current_partition;

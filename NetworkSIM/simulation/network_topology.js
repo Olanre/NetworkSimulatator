@@ -153,6 +153,10 @@ function Partition(partitionName){
 	
 }
 
+function Simulation(simulationName){
+	this.simulation_name=simulationName;
+}
+
 exports.Device = Device;
 exports.Network=Network;
 exports.NetworkIterator = NetworkIterator;

@@ -9,27 +9,100 @@ var svgCanvas = document.querySelector('svg'),
 
 var origin = {x: 0, y: 0};
 var mouse = {x: 0, y: 0};
-
+var testConfigMap={
+		 'Partition1': 
+		 {'networka' :
+		 { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
+		 'networkb' :
+		 		{ 'deviced': '4', 'devicee': '5'},
+		 				},
+		  'Partition2':
+		 { 'networkc' :
+		 { 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
+		 'networkd' :
+		 		{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
+		 				},
+		  'Partition3':
+		 { 'networke' : { 'devicek':'11'} },
+		 'freelist' : {'devicew': '13', 'evicex' : '14'}
+		 };
 
 
 /****
  * The main functions used in our GUI
  ***/
+function generateTopology(configMap){
+	var xpos,ypos,areaWidth,positioningRadius,numPartitions,numNetworks,rootXY;
+	var networkIndex=0;
+	var root,connected;
+	
+	//these are all manually entered, but we will derive them from lengths of lists when we actually load the config map
+	numPartitions=5;
+	numNetworks=3;
+	areaWidth=800;
+	positioningRadius=areaWidth/(numPartitions-1);
+	rootXY=positioningRadius;
+	
+	for(partition in configMap){
+		console.log(partition);
+		if(partition!='freelist'){
+			for(network in configMap[partition]){
+				
+				if(networkIndex==0){
+					root=createNetworkGraphicAt(rootXY,rootXY);
+					for(device in configMap[partition][network]){
+						console.log(device);
+					}
+					
+				}
+				else{
+					xpos=positioningRadius*Math.sin((networkIndex-1)/numNetworks);
+					ypos=positioningRadius*Math.cos((networkIndex-1)/numNetworks);
+					connected=createNetworkGraphicAt(rootXY+xpos,rootXY+ypos);
+					createPartitionGraphic(root,connected);
+					for(device in configMap[partition][network]){
+						console.log(device);
+					}
+				}
+				networkIndex++;
+			}
+			
+			rootXY+=positioningRadius;
+			networkIndex=0;
+		}
+		else{
+			for(device in configMap[partition]){
+				createDeviceGraphicAt(100+networkIndex*50,20);
+				networkIndex++;
+			}
+		}
+	}
+		
+}
 function createNetworkGraphic(){
-	var  network=new circle(100, 500, 80, svgCanvas, 'network');
-	shapes[uniqueDataIndex]=(network);
-	uniqueDataIndex++;
+	return createNetworkGraphicAt(100,500);
 }
 
-
 function createDeviceGraphic(){
-	var device=new circle(50, 50, 10, svgCanvas, 'device');
+	return createDeviceGraphicAt(50,50);
+}
+
+function createNetworkGraphicAt(xPosition, yPosition){
+	var  network=new circle(xPosition, yPosition, 60, svgCanvas, 'network');
+	shapes[uniqueDataIndex]=(network);
+	uniqueDataIndex++;
+	return network;
+}
+
+function createDeviceGraphicAt(xPosition, yPosition){
+	var device=new circle(xPosition, yPosition, 10, svgCanvas, 'device');
 	shapes[uniqueDataIndex]=(device);
 	uniqueDataIndex++;
+	return device;
 }
 
 function createPartitionGraphic(sourceNetwork, destinationNetwork){
-	var connection=new line(origin.x,origin.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
+	var connection=new line(sourceNetwork.x,sourceNetwork.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
 	shapes[uniqueDataIndex]=(connection);
 	sourceNetwork.connections[uniqueDataIndex]=destinationNetwork;
 	destinationNetwork.connections[uniqueDataIndex]=sourceNetwork;
@@ -299,6 +372,7 @@ function getRelatedShapeFromEvent(event){
 	var index=event.relatedTarget.getAttribute('data-index');
 	return shapes[index];
 }
+
 document.addEventListener('mousemove', function(e){ 
     mouse.x = e.clientX || e.pageX; 
     mouse.y = e.clientY || e.pageY;
@@ -424,3 +498,4 @@ line.prototype.update=function(x1,y1,x2,y2){
 	this.x2=x2;
 	this.y2=y2;
 }
+generateTopology(testConfigMap);
