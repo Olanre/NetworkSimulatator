@@ -2,6 +2,9 @@
 var networkList;
 //Required
 var deviceList;
+//Required
+var partitionList;
+
 
 /****
  * Required
@@ -114,7 +117,7 @@ function Network(networkName, networkKind){
 function Device(deviceName){
   //Required
   this.current_device_name = deviceName;
-  
+  this.device_number = deviceList.length;
   //Required
   this.joinNetwork = function(network){
     // Make the device join a network
@@ -149,6 +152,7 @@ function Partition(partitionName){
 		var networkIndex=networks.indexOf(network);
 		networks.splice(networkIndex,1);
 	};
+	this.get
 
 	
 }
