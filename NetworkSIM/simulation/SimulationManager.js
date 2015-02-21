@@ -126,19 +126,18 @@ exports.startTemplate = function(callback) {
 	
 	//entire encapsulated application Template
 	var appstate = {};
-	appstate.device = deviceTemplate.getDeviceTemplate();
-	///console.log(appstate.user);
-	appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-	Database.getApp(function(data){
-		//console.log(data);
-		if(data !== null){
-			
-			for(var i = 0; i < data.simulation_list.length; i++){
-				data.simulation_list[i] = JSON.parse(data.simulation_list[i]);
-			}
-			appstate.application = data;
-			callback(appstate);
+	
+	Database.getApp(function(App){
+
+		appstate.device = deviceTemplate.getDeviceTemplate();
+		///console.log(appstate.user);
+		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
+		//App.simulation_list = JSON.parse(App.simulation_list);
+		for(var i = 0; i < App.simulation_list.length; i++){
+			App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
 		}
+		appstate.application = App;
+		callback(appstate);
 	});
 };
 
@@ -284,18 +283,11 @@ function getNewState(token, callback){
 				});
 			 }); 
 		 }else{
-			 var appstate = {};
-				appstate.device = deviceTemplate.getDeviceTemplate();
-				///console.log(appstate.user);
-				appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-				appstate.application = applicationTemplate.getApplicationTemplate();
+			 callback(null);
+					
 		 }
 	 });
-	var Local_Simulation = SimulationTemplate.getSimulationTemplate();
-	var Application = applicationTemplate.getApplicationTemplate();
-	var TotalTemplate = TotalAppTemplate.getTotalTemplate();
-	
-	
+
 	
 }
 function deleteDevice(deviceObject){

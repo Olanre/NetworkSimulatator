@@ -20,7 +20,7 @@ function mailToken(email, token, sim_name){
 	    from: 'cs4770group2@gmail.com',
 	    to: email,
 	    subject: 'Simulation Framework Registration',
-	    text: 'Your token is: ' + token + ' <br> Use it to Register for Simulation: ' + sim_name
+	    text: 'Your token is: ' + token + '  Use it to Register for Simulation: ' + sim_name
 	});
 }
 

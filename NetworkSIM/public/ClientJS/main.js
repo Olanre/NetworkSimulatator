@@ -103,7 +103,7 @@ function addToEventQueue(url, params, timeStamp){
 	var local_events = get_local_events();
 	if(local_events !== null){
 		//now add it to the simulation logging or device logging
-		generateActivity(url, params, timestamp);
+		generateActivity(url, params, timeStamp);
 		
 		//gets the eventQueue from the local storage.
 		var events = local_events.eventQueue;
@@ -288,7 +288,7 @@ function addDevice2FreeList( device_name, simulation_name){
  */
 function addSimulation2Application(simulation){
 	//gets the name of the simulation to be added
-	var name = simulation.name;
+	var name = simulation.simulation_name;
 	//gets the number of networks in this simulation
 	var num_networks = simulation.num_networks;
 	//gets the number of devices in this simulation
@@ -668,7 +668,7 @@ function CreateSimulation(){
 	//creates a new simulation object
 	var body = wrapCreateSimulation();
 	//the method to tell the server how to handle it
-	var url = "/add/Simulation";
+	var url = "/create/Simulation";
 	//gets the timestamp of the simulation creation
 	var timestamp = new Date();
 	//adds the simulation to the application
@@ -1676,8 +1676,8 @@ function SimulationListTemplate(simulations){
 	str += " <table id = 'simslist'> ";
 	for (var i =0 ; i < simulations.length; i++) {
 		 str += "	<tr> " + "<td> <div class = 'sim-name'>  " + simulations[i].name + " </div> </td> " +
-			  "<td> <div class = 'num-devices'> Number of Devices: " + simulations[i].total_devices+ " </div> </td> " +
-			  "<td> <div class = 'num-networks'> Number of Networks: " + simulations[i].total_networks+ " </div> </td> ";
+			  "<td> <div class = 'num-devices'> Number of Devices: " + simulations[i].num_devices+ " </div> </td> " +
+			  "<td> <div class = 'num-networks'> Number of Networks: " + simulations[i].num_networks+ " </div> </td> ";
 		 		
 		 if(local_device.current_simulation == simulations[i].name ){
 			 str += "<td> <div class = 'aButton' onclick = 'appDefaultView()'> View </div> </td> </tr>";

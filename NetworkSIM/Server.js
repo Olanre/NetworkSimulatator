@@ -69,22 +69,31 @@ app.post("/getSync", function(req, res) {
 		var eventqueue = obj.eventQueue;
 		//console.log(obj);
 		SimulationManager.authToken(token, function(obj){
+			//for now allow empty tokens
 			if(obj.Response == 'Success'){
 				console.log("successful authenication" );
 				SimulationManager.ClientRequest(token, eventqueue, function(){
 					SimulationManager.getNewState(token, function(data){
-						console.log("Send newstate");
-						console.log(data);
-						res.send(data);
+						if(data == null){
+							SimulationManager.startTemplate(function(data){
+								console.log("Send blank state");
+								res.send(data);
+							});
+						}else{
+							console.log("Send newstate");
+							//console.log(data);
+							res.send(data);
+						}
 					});
 					
 				});
 			}else{
 				console.log("failed authenication" );
-				
-				SimulationManager.startTemplate(function(data){
-					console.log("Send blank state");
-					res.send(data);
+				SimulationManager.ClientRequest(token, eventqueue, function(){
+					SimulationManager.startTemplate(function(data){
+						console.log("Send blank state");
+						res.send(data);
+					});
 				});
 			}
 			
