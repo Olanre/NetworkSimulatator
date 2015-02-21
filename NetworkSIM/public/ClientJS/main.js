@@ -1334,6 +1334,12 @@ function loadStyleSheet(src){
         document.getElementsByTagName('head')[0].appendChild(stylesheet);
     }
 }
+function loadJSFile(path){
+	 var fileref=document.createElement('script');
+     fileref.setAttribute("type","text/javascript");
+     fileref.setAttribute("src", path);
+     document.getElementsByTagName("head")[0].appendChild(fileref)
+}
 //Here all the different pages are stored in different scripts 
 //labeled "template[n]" in the html file.
 
@@ -1342,11 +1348,9 @@ function loadStyleSheet(src){
  * can be created.
  */
 function newSimulationView(){
-	//gets the html for template10
 	var simulation_view = document.getElementById('template10');
 	var html = simulation_view.innerHTML;
 	var content = getContainer();
-	//sets the page's html to template 10
 	content.innerHTML = html;
 }
 /**
@@ -1369,7 +1373,6 @@ function defaultsideBarView(){
 	var aside = getSideBar();
 	html = sidebar.innerHTML;
 	aside.innerHTML = html;
-	//console.log(html);	
 }
 
 /**
@@ -1397,17 +1400,36 @@ function simulationSideBarView(){
  * Temporary function so that I can get the network topology GUI working
  ****/
 function tempGUIView(){
-	clearPageElements();
-	var guiView=document.getElementById('template11');
-	var content=getContainer();
-	content.innerHTML=guiView.innerHTML;
+	defaultheaderView(); 
+	
+	clearNav();
+	clearFooter();
+	clearSection();
+
+	var local_application = get_local_application();
+	var local_simulation_list = get_local_session();
+	defaultheaderView();
+	
+
+	var simulations = local_application.simulation_list;
+	var html =  SimulationListTemplate(simulations);
+	var content = getContainer();
+	defaultsideBarView();
+
+	loadJSFile('../js/network-topology.js');
+	var html=
+			"<svg></svg>" +
+					"<br>" +
+					"<button type='button' onclick = createDeviceGraphic()>New Device</button>" +
+							"<button type='button' onclick = createNetworkGraphic()>New Network</button>";
+	var content = getContainer();
+	content.innerHTML = html;
 }
 /**
  * appDefaultView gets the front page of the application.
  */
 function appDefaultView(){
 	defaultheaderView();
-	//console.log(getVerified());
 	if(getVerified() == false){
 		alert('You do not have permission to access this. Please get a token first.');
 		//AccountView();
@@ -1540,7 +1562,6 @@ function loadAppContent(){
 function viewDeviceView(){
 	var local_device = get_local_device();
 	var local_session = get_local_session();
-	//console.log(local_device);
 	var app_name = local_device.current_simulation;
 	
 	var str = "<div>" +

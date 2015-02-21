@@ -15,20 +15,20 @@ var mouse = {x: 0, y: 0};
 /****
  * The main functions used in our GUI
  ***/
-function createNetwork(){
+function createNetworkGraphic(){
 	var  network=new circle(100, 500, 80, svgCanvas, 'network');
 	shapes[uniqueDataIndex]=(network);
 	uniqueDataIndex++;
 }
 
 
-function createDevice(){
+function createDeviceGraphic(){
 	var device=new circle(50, 50, 10, svgCanvas, 'device');
 	shapes[uniqueDataIndex]=(device);
 	uniqueDataIndex++;
 }
 
-function createPartition(sourceNetwork, destinationNetwork){
+function createPartitionGraphic(sourceNetwork, destinationNetwork){
 	var connection=new line(origin.x,origin.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
 	shapes[uniqueDataIndex]=(connection);
 	sourceNetwork.connections[uniqueDataIndex]=destinationNetwork;
@@ -149,7 +149,7 @@ interact('.network')
 			if(dragClass==='network'){
 				
 				if(!partitionExists(dropzone,dragged)){
-					var partition=createPartition(dropzone,dragged);
+					var partition=createPartitionGraphic(dropzone,dragged);
 				}
 				else{
 					removePartition(dropzone,dragged);
@@ -255,7 +255,8 @@ function mouseOver(e){
 	}
 }
 //adds the listener to the document
-document.body.onmouseover = document.body.onmouseout = mouseOver;
+//document.body.onmouseover =mouseOver;
+//document.body.onmouseout = mouseOver;
 
 function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){

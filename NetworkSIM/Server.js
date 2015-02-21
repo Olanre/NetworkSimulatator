@@ -145,9 +145,6 @@ app.get('/css/main.css', function(request,response){
 	response.sendFile("/public/stylesheets/main.css", {"root": __dirname});
 	
 });
-app.get('/interact-1.2.2.js', function(request, response){
-	response.sendFile("/views/interact-1.2.2.js", {"root": __dirname});
-});
 app.get('/GUIDesign.js', function(request, response){
 	response.sendFile("/views/GUIDesign.js", {"root": __dirname});
 });
@@ -167,6 +164,14 @@ app.get('/img/search.png', function(request,response){
 });
 app.get('/js/main.js', function(request,response){
 	response.sendFile("/public/ClientJS/main.js", {"root": __dirname});
+	
+});
+app.get('/js/interact-1.2.2.js', function(request,response){
+	response.sendFile("/public/ClientJS/interact-1.2.2.js", {"root": __dirname});
+	
+});
+app.get('/js/network-topology.js', function(request,response){
+	response.sendFile("/public/ClientJS/network-topology.js", {"root": __dirname});
 	
 });
 
