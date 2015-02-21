@@ -1,0 +1,38 @@
+svg{
+	background-color: #f5f4e1;
+	width: 700px;
+  	height: 500px;
+  	border-style: solid;
+  	border-width: 1px;
+	position: relative;
+	left: -20px;
+}
+
+.scroll-box{
+	border: 1px solid #ccc;
+	font: 16px/26px Georgia, Garamond, Serif;
+	overflow: auto;
+}
+
+#simulation-log{
+	background-color: #e3dde6;
+	height: 200px;
+	width: 350px;
+}
+#device-log{
+	background-color: #f2f2f2;
+	height: 200px;
+	width: 680px;
+}
+
+#log-dates{
+	background-color: #f2f2f2;
+	height: 500px;
+	width: 350px;
+}
+.cell{
+	display:table-cell;
+}
+.row{
+	display:table-row;
+}

@@ -6,6 +6,7 @@ svg {
 	position: relative;
 	left: -20px;
 }
+
 .viable-partition{
 	fill:red;
 	stroke: blue;
