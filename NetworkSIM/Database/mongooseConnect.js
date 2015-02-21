@@ -18,6 +18,29 @@ Schema = db.Schema;
 
 
 //****Schemas
+
+//STATE - storing logs as a string
+var stateSchema = mongoose.Schema({
+	id : String,
+	state : [ 
+			  id : String, 
+			  timeStamp : String, 
+			  devices : [ device : Device, log : String, ] ,
+			]
+});
+
+//State complete
+var State = mongoose.model('State', stateSchema, ' newStateSchema');
+
+
+
+
+
+
+
+
+
+
 //DEVICE
 var deviceSchema = mongoose.Schema({
    deviceName : String,
