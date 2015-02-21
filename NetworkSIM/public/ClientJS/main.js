@@ -61,12 +61,10 @@ window.setInterval(function(){
 function overWriteAppState(new_state){
 	//replaces the current appstate with new_state
 	appstate = new_state;  
-	console.log(appstate.device);
 	//updates the user with the user of the new_state.
 	local_device = appstate.device;
 	//local session is the current session for this device, stored in local storage
 	local_session = appstate.current_simulation_session;
-	console.log(local_session.config_map);
 	
 	//if the current session has a configuration map
 	//WHEN WOULD THIS NOT HAPPEN? I guess on initialization?
@@ -169,7 +167,9 @@ function addToken(new_token){
  */
 function addNetworkCreated2User(new_network, Partition_name, Simulation_name, local_device){
 	//pushes the network to the list of networks created by this user
-	local_device.networks_created.push(new_network);	
+	var list = local_device.networks_created;
+	list.push(new_network);	
+	local_device.networks_created = list;
 	putinStorage( 'device', JSON.stringify(local_device) );
 }
 
@@ -181,7 +181,7 @@ function addNetworkCreated2User(new_network, Partition_name, Simulation_name, lo
  */
 function addNetworkCreated2Session(new_network, Partition_name, Simulation_name, local_session){
 	//Ryan would need to specify the simulation to be added to as well.
-	local_session.map_config[Partition_name][new_network] = {};
+	local_session.config_map[Partition_name][new_network] = {};
 	putinStorage( 'session', JSON.stringify(local_session) );	
 
 }
@@ -238,7 +238,7 @@ function addDevice2Network( device_name, network_name){
 			var url = '/add/Device/Network';
 			var timestamp = new Date();
 			//add to the event queue to sync with server
-			addToEventQueue(url, params, timeStamp);
+			addToEventQueue(url, params, timestamp);
 		}else{
 			console.log("The partition for the network does not exist");
 		}
@@ -254,9 +254,10 @@ function addDevice2Network( device_name, network_name){
  * @param device_name: the name of the device to add to the network
  * @param network_name: the name of the network to be added to
  */
-function addDevice2FreeList( device_name, simulation_name){
+function addDevice2FreeList( device_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
+	
 	//gets the information of local device
 	var local_device = get_local_device();
 	if( device_name == local_device.current_device_name){
@@ -277,7 +278,7 @@ function addDevice2FreeList( device_name, simulation_name){
 	var url = '/add/Device/FreeList';
 	var timestamp = new Date();
 	//add to the event queue to sync with server
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 	
 }
 
@@ -313,12 +314,12 @@ function addSimulation2Application(simulation){
  * @network_name: the name of the network to delete
  * @partition_name: the name of the partition in which that network resides
  */
-function deleteNetwork(network_name, Partition_name){
+function deleteNetwork(network_name){
 	var local_device = get_local_device();
 	var local_session = get_local_session();
 	//network should only be stored in one object not two
 	//should check if the network was created by the user
-	
+	var Partition_name = getPartition(network_name);
 	var list = local_device.networks_created;
 	for(var i = 0; i < list.length; i++ ){
 		if( list[i] == network_name){
@@ -337,7 +338,7 @@ function deleteNetwork(network_name, Partition_name){
 	var url = '/delete/Network';
 	var timestamp = new Date();
 	//add to the event queue to sync with server
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 	
 	
 }
@@ -408,7 +409,7 @@ function deleteDevice(device_name){
 		var url = '/delete/Device';
 		var timestamp = new Date();
 		//add to the event queue to sync with server
-		addToEventQueue(url, params, timeStamp);
+		addToEventQueue(url, params, timestamp);
 	}
 	
 }
@@ -432,7 +433,7 @@ function deleteSimulation(simulation_name){
 		var url = '/delete/Simulation';
 		var timestamp = new Date();
 		//add to the event queue to sync with server
-		addToEventQueue(url, params, timeStamp);
+		addToEventQueue(url, params, timestamp);
 	}else{
 		console.log("local_session does not exist");
 	}
@@ -496,6 +497,8 @@ function removeDevicefromNetwork( device_name, network){
 		if(partition !== null){
 			//deletes the device from the network
 			delete local_session.config_map[partition][network][device_name];
+			
+			addDevice2FreeList(device_name);
 			//updates the locally stored object
 			putinStorage( 'session', JSON.stringify(local_session) );
 			var params = { 
@@ -506,7 +509,7 @@ function removeDevicefromNetwork( device_name, network){
 					};
 			var url = '/remove/Device/Network';
 			var timestamp = new Date();
-			addToEventQueue(url, params, timeStamp);
+			addToEventQueue(url, params, timestamp);
 		}else{
 			console.log("partition not found!")
 		}
@@ -536,7 +539,7 @@ function removeDevicefromFreeList( device_name, simulation_name){
 				};
 		var url = '/remove/Device/FreeList';
 		var timestamp = new Date();
-		addToEventQueue(url, params, timeStamp);
+		addToEventQueue(url, params, timestamp);
 	}else{
 		console.log("local simulation session not found!");
 	}
@@ -563,7 +566,7 @@ function dividePartition(network, partition){
 				};
 		var url = '/divide/Partition';
 		var timestamp = new Date();
-		addToEventQueue(url, params, timeStamp);
+		addToEventQueue(url, params, timestamp);
 	}else{
 		console.log("Local simulation session not found")
 	}
@@ -609,15 +612,15 @@ function createNetwork(network_name){
 	
 	sim = local_device.current_simulation;
 	
-	var new_number = local_session.num_networks + 1;
-	updateNetworkNumber(new_number);
+	
 	//only add it to the user's list of networks created if the session is in device view
 	if(local_device.verified == true){
-		//partition = local_device.current_partition;
+		partition = local_device.current_partition;
 		addNetworkCreated2User(network_name, partition, sim, local_device);
 	}
 	addNetworkCreated2Session(network_name, partition, sim, local_session);
-	
+	var new_number = local_session.num_networks + 1;
+	updateNetworkNumber(new_number);
 	var params = { 
 			'token': local_device.token,
 			'network_name': network_name, 
@@ -626,7 +629,8 @@ function createNetwork(network_name){
 			};
 	var url = '/create/Network';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
+	appDefaultView();
 	//add to eventQueue
 	//render Application View
 	
@@ -640,7 +644,7 @@ function createNetwork(network_name){
  */
 function createDevice(device_name){
 	
-	addDevice2FreeList( device_name, local_session.name);
+	addDevice2FreeList( device_name );
 	
 	var local_session = get_local_session();
 	
@@ -654,7 +658,7 @@ function createDevice(device_name){
 			};
 	var url = '/create/Device';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 	
 	
 }
@@ -699,7 +703,7 @@ function mergePartition(partition_a, partition_b){
 			};
 	var url = '/merge/Partitions';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 }
  
 
@@ -894,7 +898,7 @@ function getToken(){
 function getVerified(){
 	var local_device = get_local_device();
 	
-	console.log(local_device.verified);
+	
 	return local_device.verified;
 }
 
@@ -1301,6 +1305,13 @@ function getContainer(){
  * ---------------------------------
  */
 
+function makeNetwork(element){
+	var network_name = document.getElementById(element).value;
+	if(network_name !== null){
+		createNetwork(network_name);
+	}
+}
+
 /**
  * not really sure what this does, I'll leave it to you olanre
  * @param timeout
@@ -1399,6 +1410,7 @@ function simulationSideBarView(){
 /****
  * Temporary function so that I can get the network topology GUI working
  ****/
+
 function tempGUIView(){
 	defaultheaderView(); 
 	
@@ -1467,7 +1479,6 @@ function simulationListView(){
 	//gets the local application and the local session
 	var local_application = get_local_application();
 	var local_simulation_list = get_local_session();
-	defaultheaderView();
 	
 	//gets the list of simulations
 	var simulations = local_application.simulation_list;
@@ -1632,20 +1643,23 @@ function AccountTemplate(){
  */
 function NetworksListTemplate(networks){
 	var local_device = get_local_device();
-	var local_device = get_local_device();
 	var sim = local_device.current_simulation;
 	var networks_created = local_device.networks_created;
 	var str = "<table>";
 
 		for(var i = 0; i< networks.length; i++){
-			
-			str += "<tr  id = '" + networks[i] + "'>" +
-					" <td> " + networks[i] + "   " +
-				//+ "<td> <div onclick = 'addDevice2Network(\'" + local_device.current_device_name + "\', \'" + networks[i] + "') '> " +
-						"Join Network </td> </tr>";
+			if(local_device.current_network == networks[i]){
+				str +=  "<td> <div onclick = \'removeDevicefromNetwork( '" + local_device.current_device_name + "', '" + networks[i] + "')\'> " +
+				"Leave Network </div> </td> </tr>";
+			}else{
+				str += "<tr  id = '" + networks[i] + "'>" +
+						" <td> " + networks[i] + "   " +
+					+ " <div onclick = \'addDevice2Network( '" + local_device.current_device_name + "', '" + networks[i] + "') \'> " +
+							"Join Network </div> </td> </tr>";
+			}
 			for(var j = 0; j < networks_created.length; j++){
 				if( networks[i] == networks_created[j] ){
-					str +=  "<td> <div onclick = 'deleteNetwork(\'" + networks_created[i] + "\', \'" + local_device.current_partition + "\')> " +
+					str +=  "<td> <div onclick = \'deleteNetwork( '" + networks[i] + "')\'> " +
 					"Join Network </div> </td> </tr>";
 				}
 			}
@@ -1667,6 +1681,22 @@ function DevicesListTemplate(devices){
 		str = "";
 		for(var i = 0; i< devices.length; i++){
 			str += "<tr  id = '" + devices[i] + "'> <td> " + devices[i] + "  </td> </tr>";
+		}
+		
+		return str;
+}
+
+/** 
+ * Function to give the list of devices as well as an option to delete one if needed
+ * @param devices, the device list
+ * @returns str, the generated html string which was rendered from the network list provided
+ */
+function AdminDevicesListTemplate(devices){
+	//console.log(devices);
+		str = "";
+		for(var i = 0; i< devices.length; i++){
+			str += "<tr  id = '" + devices[i] + "'> <td> " + devices[i] + "   </td>" +
+					"<td> <div onclick = 'deleteDevice(\'" + devices[i] + "\')' > Delete Device </div> </td> </tr>";
 		}
 		
 		return str;
@@ -1728,8 +1758,6 @@ function render(new_data){
 		}else{
 			//otherwise if the old and new states are not the same
 			//update the old state with the new state
-			//alert('New changes detected on server');
-			console.log(new_data);
 			overWriteAppState(new_data);
 			//update all of the views.
 			//updateAllViews(400);
@@ -2092,7 +2120,7 @@ function Sync2Server(){
 		var params = JSON.stringify(local_events);
 	}	
 	send2Server(url, params, render);
-	console.log(params);
+	//console.log(params);
 	
 }
 
@@ -2105,7 +2133,7 @@ send2Server = function(url, params, callback)
 {
 	
 	//optional list
-	console.log("About to send");
+	console.log("About to sync");
     var request = new XMLHttpRequest();
     if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
     	
@@ -2122,7 +2150,7 @@ send2Server = function(url, params, callback)
         {
         	resetEventQueue();
         	var obj = JSON.parse(request.responseText);
-        	console.log(obj);
+        	//console.log(obj);
             callback(obj); // Another callback here
         }else{
         	//alert("Please wait")
@@ -2332,7 +2360,7 @@ function updateDeviceName(old_name, new_name){
 			};
 	var url = '/update/DeviceName';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 	
 }
 
@@ -2372,7 +2400,7 @@ function updateNetworkName(old_name, new_name){
 			};
 	var url = '/update/NetworkName';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 }
 
 function updateSimulationName(old_name, new_name){
@@ -2409,7 +2437,7 @@ function updateSimulationName(old_name, new_name){
 			};
 	var url = '/update/SimulationName';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 }
 
 function updateDeviceNumber(new_number){
@@ -2432,7 +2460,7 @@ function updateDeviceNumber(new_number){
 			};
 	var url = '/update/DeviceNumber';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
+	addToEventQueue(url, params, timestamp);
 	
 	putinStorage( 'application', JSON.stringify(local_application) );
 	putinStorage( 'session', JSON.stringify(local_session) );
@@ -2444,8 +2472,7 @@ function updateNetworkNumber(new_number){
 	var local_application = get_local_application();
 	var sim = local_session.simulation_name;
 	local_application.total_networks = new_number;
-	local_session.num_devices = new_number;
-	
+	local_session.num_networks = new_number;
 	var list = local_application.simulation_list;
 	for(var i = 0; i < list.length; i++ ){
 		if( local_application.simulation_list[i].name == sim){
@@ -2458,8 +2485,9 @@ function updateNetworkNumber(new_number){
 			};
 	var url = '/update/NetworkNumber';
 	var timestamp = new Date();
-	addToEventQueue(url, params, timeStamp);
-	
+	addToEventQueue(url, params, timestamp);
+	console.log(new_number);
+	console.log(local_session);
 	putinStorage( 'application', JSON.stringify(local_application) );
 	putinStorage( 'session', JSON.stringify(local_session) );
 }

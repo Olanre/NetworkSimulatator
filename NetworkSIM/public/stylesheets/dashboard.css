@@ -26,6 +26,11 @@ body {
   border: 0;
 }
 
+footer{
+	position: absolute; /*or fixed*/
+    right: 5px;
+}
+
 aside{
 	font-size: 1.25em;
 }
