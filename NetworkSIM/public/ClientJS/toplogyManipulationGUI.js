@@ -32,37 +32,49 @@ var testConfigMap={
  * The main functions used in our GUI
  ***/
 function generateTopology(configMap){
-	var xpos,ypos,areaWidth,positioningRadius,numPartitions,numNetworks,rootXY;
+	var xpos,ypos,areaWidth,positioningRadius,numPartitions,numNetworks,numDevices,rootXY;
 	var networkIndex=0;
-	var root,connected;
+	var deviceIndex=0;
+	var root,connected,device;
 	
 	//these are all manually entered, but we will derive them from lengths of lists when we actually load the config map
 	numPartitions=5;
 	numNetworks=3;
+	numDevices=5;
 	areaWidth=800;
 	positioningRadius=areaWidth/(numPartitions-1);
 	rootXY=positioningRadius;
 	
 	for(partition in configMap){
-		console.log(partition);
 		if(partition!='freelist'){
 			for(network in configMap[partition]){
-				
+				var angle=(networkIndex-1)/numNetworks;
 				if(networkIndex==0){
 					root=createNetworkGraphicAt(rootXY,rootXY);
+					var angle2;
 					for(device in configMap[partition][network]){
-						console.log(device);
+						angle2=(deviceIndex)/numDevices;
+						console.log(device+" at "+angle2);
+						device=createObjectWithin(40,angle2*360,root.x,root.y,createDeviceGraphicAt);
+						//attachChild(root,device);
+						deviceIndex++;
 					}
-					
+					deviceIndex=0;
 				}
 				else{
-					xpos=positioningRadius*Math.sin((networkIndex-1)/numNetworks);
-					ypos=positioningRadius*Math.cos((networkIndex-1)/numNetworks);
-					connected=createNetworkGraphicAt(rootXY+xpos,rootXY+ypos);
+					
+					connected=createObjectWithin(positioningRadius,angle,rootXY,rootXY,createNetworkGraphicAt);
 					createPartitionGraphic(root,connected);
-					for(device in configMap[partition][network]){
-						console.log(device);
-					}
+					
+						var angle2;
+						for(device in configMap[partition][network]){
+							var angle2=(deviceIndex)/numDevices;
+							console.log(device+" at "+angle2);
+							device=createObjectWithin(40,angle2*360,connected.x,connected.y,createDeviceGraphicAt);
+							deviceIndex++;
+							//attachChild(connected,device);
+						}
+						deviceIndex=0;
 				}
 				networkIndex++;
 			}
@@ -78,6 +90,19 @@ function generateTopology(configMap){
 		}
 	}
 		
+}
+function attachChild(parentShape, childShape){
+	var index=shapes.indexOf(childShape);
+	console.log(index);
+	parentShape.children[index]=childShape;
+	index=shapes.indexOf(parent);
+	shapes[index]=parent;
+}
+function createObjectWithin(radius,angle,centerX,centerY,createFunction){
+	var xpos=radius*Math.sin(angle);
+	var ypos=radius*Math.cos(angle);
+	var graphic=createFunction(centerX+xpos,centerY+ypos);
+	return graphic;
 }
 function createNetworkGraphic(){
 	return createNetworkGraphicAt(100,500);
