@@ -1408,10 +1408,10 @@ function simulationSideBarView(){
 	
 }
 /****
- * Temporary function so that I can get the network topology GUI working
+ * A view which allows for manipulation of network topology through our GUI
  ****/
 
-function tempGUIView(){
+function networkTopologyView(){
 	defaultheaderView(); 
 	
 	clearNav();
