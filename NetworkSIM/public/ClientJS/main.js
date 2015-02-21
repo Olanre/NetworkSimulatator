@@ -50,8 +50,8 @@ window.onload = function(){
  */ 
 window.setInterval(function(){
 	  /// call our sync function here
-		Sync2Server();
-	}, 6000);
+		//Sync2Server();
+	}, 10000);
 
 
 /**
@@ -225,8 +225,13 @@ function addDevice2Network( device_name, network_name){
 				//updates the partition the device belongs to
 				updateCurrentPartition(Partition_name);
 			}
+			var list = local_session.config_map['freelist'];
+			//if the device can be found in the free list then delete it, otherwise get the partition
+			//the device belongs in as well as the network and delete it from the configuration map
+			if( list.hasOwnProperty(device_name) ){
+				delete local_session.config_map.free_list[device_name];
+			}
 			//add the device to the actual configuration map
-			device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
 			local_session.config_map[Partition_name][network_name][device_name] = device_num;
 			//send the information to the eventQueue for syncing with the server
 			var params = { 
