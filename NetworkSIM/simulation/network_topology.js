@@ -4,6 +4,8 @@ var networkList;
 var deviceList;
 //Required
 var partitionList;
+
+
 /****
  * Required
  ****/
@@ -153,6 +155,10 @@ function Partition(partitionName){
 	this.get
 
 	
+}
+
+function Simulation(simulationName){
+	this.simulation_name=simulationName;
 }
 
 exports.Device = Device;

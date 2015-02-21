@@ -174,6 +174,9 @@ app.get('/js/network-topology.js', function(request,response){
 	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
 	
 });
+app.get('../js/simulation-classes.js', function(request,response){
+	response.sendFile("/simulation/network_topology.js");
+});
 
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/

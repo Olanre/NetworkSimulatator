@@ -15,13 +15,26 @@ mongoose.connection.once('connected', function(){
   });
 Schema = db.Schema;
  
+                                    //****Schemas
 
+//STATE - storing logs as a string
+var stateSchema = mongoose.Schema({
+	id : String,
+	state : [ 
+			  id : Sim, 
+			  timeStamp : String, 
+			  devices : [ device : String, log : String, ] ,
+			]
+});
 
-//****Schemas
+//State complete
+var State = mongoose.model('State', stateSchema, ' newStateSchema');
+
+ 
 //DEVICE
 var deviceSchema = mongoose.Schema({
    deviceName : String,
-   deviceNumber : Number,
+   //deviceNumber : Number,
 	
 });
 
@@ -58,6 +71,7 @@ var simulationSchema = mongoose.Schema({
    globalcount : Number,
    //token_list : [tokens],
    activity_logs : String,
+
 });
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
@@ -79,8 +93,10 @@ var userSchema = mongoose.Schema({
 	globalcount: Number,
 	current_simulation: String,
 	current_device_name: String,
+	activity : String,
 	});
-	//STOP DELETTINGINGGEN SHIT                     
+
+//STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
 
 						 // objectname, schema, collectionname
@@ -92,7 +108,9 @@ var simulation_listSchema = mongoose.Schema({
 	 num_networks : Number,
 });	
 
+                                              
 //NEEED
+											   
 var Simulation_List = mongoose.model('Simulation_List', simulation_listSchema, 'newSim_ListFormat');
 
 var applicationSchema = mongoose.Schema({
@@ -107,9 +125,8 @@ var applicationSchema = mongoose.Schema({
 var App = mongoose.model('App', applicationSchema, 'newAppFormat');
 
 
-//****FUNCTIONS
-
-//SIM FUNCTIONS*****************!
+                                     //****FUNCTION
+									 //SIM FUNCTIONS*****************!
 function addSim(aSim)
 {
 	var LenneteSim = new Sim(aSim);
@@ -147,7 +164,8 @@ function modifySimByName(aString, aSim, callback)
 });		
 	
 }
-//USER FUNCTIONS**************!
+
+                        //USER FUNCTIONS**************!
 function addUser(aUser)
 { 
 
@@ -183,7 +201,8 @@ function getUserByToken(aToken, callback)
 }
 
 
-//APP FUNCTIONS
+                               //APP FUNCTIONS
+							   
 function addApp(anApp)
 {
    var LenneteApp = new App(anApp);
@@ -212,6 +231,16 @@ function modifyApp(NewApp)
      //callback(LenneteApp);
 });
 }
+
+                        
+//STATE FUNCTIONS
+
+	function newState(aState)
+	{
+		var LenneteState = new State(aState)
+		LenneteState.save();
+		//console.log("Saved state" + state);
+	}
 
 //exports, finished calls
 module.exports.addUser = addUser;
