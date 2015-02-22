@@ -1,8 +1,5 @@
 var templateLog="01/02/2014";
 
-function parseLogList{
-	
-}
 /**
  * Updates the title of the page with the name of the simulation
  */
@@ -22,10 +19,10 @@ function updateDeviceLogTitle(deviceName){
  * adds the dates of each simulation snapshot to the scroll menu
  * to view
  */
-function populateDates(log-dates){
+function populateDates(dates){
 	var logDates = document.getElementById("log-dates");
 	logDates.innerHTML="";
-	for (date in log-dates){
+	for (date in dates){
 		logDates.innerHTML+="<option value="+date+">"+date+"</option>";
 	}
 }
@@ -50,4 +47,11 @@ function populateDeviceLogs(deviceEvents){
 	for (event in deviceEvents){
 		deviceLogs.innerHTML+="<option value="+event+">"+event+"</option>";
 	}
+}
+/**
+ * function which is called when the user selects a date to view
+ * that simulation state from
+ */
+function selectSimulationDate(event){
+	//should render the current simulation in the simulation thingy
 }
