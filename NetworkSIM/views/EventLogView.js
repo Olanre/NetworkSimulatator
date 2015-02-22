@@ -1,4 +1,4 @@
-var templateLog="01/02/2014";
+var templateLog="01/02/2014";//put some log here for testing
 
 /**
  * Updates the title of the page with the name of the simulation
