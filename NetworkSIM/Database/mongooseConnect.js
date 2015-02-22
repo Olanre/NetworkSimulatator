@@ -72,10 +72,12 @@ var simulationSchema = mongoose.Schema({
    //token_list : [tokens],
    activity_logs : String,
 
+
 });
+
+
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
-
 
 //USER 
 var userSchema = mongoose.Schema({
@@ -242,6 +244,9 @@ function modifyApp(NewApp)
 		//console.log("Saved state" + state);
 	}
 
+	
+	
+	
 //exports, finished calls
 module.exports.addUser = addUser;
 module.exports.getUserByToken = getUserByToken;
