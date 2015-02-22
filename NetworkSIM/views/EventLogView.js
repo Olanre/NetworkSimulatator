@@ -54,4 +54,7 @@ function populateDeviceLogs(deviceEvents){
  */
 function selectSimulationDate(event){
 	//should render the current simulation in the simulation thingy
+	//look through the passed in list of all the shit, find the 
+	//correct date, render the simulation from there.
+	alert(event);
 }
