@@ -960,7 +960,7 @@ function getLoginView(){
  */
 function generateActivity(url, body, timestamp){
 	switch(url) {
-		case '/create/Simulation':  // should this be create/Simulation ?
+		case '/create/Simulation': 
 			var new_activity = "Simulation created " +  body.simulation_name + " at " + timestamp + "\n";
 			updateSimulationLog(new_activity);
 			break;
