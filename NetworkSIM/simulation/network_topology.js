@@ -2,7 +2,7 @@
 var networkList;
 //Required
 var deviceList;
-//Required
+
 var partitionList;
 
 
@@ -114,6 +114,8 @@ function Network(networkName, networkKind){
 /****
  * Required
  ****/
+
+
 function Device(deviceName){
   //Required
   this.current_device_name = deviceName;
@@ -121,6 +123,7 @@ function Device(deviceName){
   //Required
   this.joinNetwork = function(network){
     // Make the device join a network
+	  
   };
   //Required
   this.leaveNetwork = function(){

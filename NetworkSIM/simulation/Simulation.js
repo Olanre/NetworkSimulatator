@@ -4,6 +4,23 @@ objects and a network manager.
 @author Emily
 ******/
 
+function Simulation(simulationName){
+	
+	this.simulation_name=simulationName;
+	this.device_list = [];
+	this.network_list = [];
+	
+	this.addNetwork=function(network){
+		networks.push(network);
+	};
+	this.removeNetwork=function(network){
+		var networkIndex=networks.indexOf(network);
+		networks.splice(networkIndex,1);
+	};
+	this.get
+
+	
+}
 
 
 function getNetworks(map){

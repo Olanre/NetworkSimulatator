@@ -15,10 +15,13 @@ var simulation = require("./Simulation.js");
 var topography = require("./network_topography");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
+var admin = require("./admin.js");
 
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+
 
 
 
@@ -30,17 +33,17 @@ exports.ClientRequest = function(token, eventQueue, callback) {
 			case '/create/Simulation': 
 				createSimulation(eventQueue[i].Body);
 				break;
-				
+				 
 			case '/add/Device/Network':
-				AddDevice2Network(token, eventQueue[i].Body);
+				AddDevice2Network( eventQueue[i].Body);
 				break;
 				
 			case '/add/Device/FreeList':
-				Add2FreeList( token, eventQueue[i].Body);
+				Add2FreeList(  eventQueue[i].Body);
 				break;
 				
 			case '/create/Network' :
-				createNetwork(token, eventQueue[i].Body);
+				createNetwork( eventQueue[i].Body);
 				break;
 				
 			case '/create/Device' :
@@ -276,8 +279,15 @@ function createDevice(body) {
 
 
 function createNetwork(networkObject){
-	var simName=networkObject.networkName;
+	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
+	admin.addNetwork(networkName, networkType){
+		
+		//
+		
+	}
+	
+	
 	//Database.createNetwork(simName, partitionName, networkObject);
 }
 
@@ -316,6 +326,10 @@ function deletePartitionMap(partitionMapObject){
 function deleteSimulation(simulationObject){
 	var name=simulationObject.simulation_name;
 	//Database.deleteSimulation(name);
+}
+
+function deleteToken(token){
+	//function delete user by token
 }
 
 function updateAllCounts(userObject){
@@ -398,9 +412,43 @@ function addDevice(body) {
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
 	var token = body.token;
+	var Network = new topography.Network('hello');
+	Network.addDevice = function(device_name){
+	    //Device.
+	  };
 	
 }
 
+function AddDevice2Network( body){
+	var simulation_name = body.simulation_name;
+	var device_name = body.device_name;
+	var partition_name  = body.partition_name;
+	var network_name = body.network_name;
+	Network.add
+}
+
+function mergePartitions(body){
+	var partition_a = body.partition_a;
+	var partition_b = body.partition_b;
+	var simulation_name = body.simulation_name;
+}
+
+function dividePartition(body){
+	var partition_name = body.partition_name;
+	var simulation_name = body.simuation_name;
+	var network = body.network;
+}
+
+
+function addDevice2FreeList(body){
+	var simulation_name = body.simuation_name;
+	var device_name = body.device_name;
+}
+
+function removeDevicefromFreeList(body){
+	var simulation_name = body.simuation_name;
+	var device_name = body.device_name;
+}
 
 
 exports.authToken = authToken;

@@ -67,6 +67,7 @@ app.post("/getSync", function(req, res) {
 		var obj = JSON.parse(data);
 		var token = obj.token;
 		var eventqueue = obj.eventQueue;
+		var simulation = obj.simulation;
 		//console.log(obj);
 		SimulationManager.authToken(token, function(obj){
 			//for now allow empty tokens

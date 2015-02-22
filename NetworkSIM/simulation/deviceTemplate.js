@@ -22,4 +22,25 @@ function getDeviceTemplate(){
 	return device_data;
 }
 
+	this.joinNetwork = function(network){
+    // Make the device join a network
+	  
+  };
+  //Required
+  this.leaveNetwork = function(){
+    // Make the device leave connected network
+  };
+  //Required
+  this.returnNetwork = function(){
+    // Make the device re-join a previous network
+  };
+  //Required
+  this.replicateRDT = function(rdt){
+    // Register a replicated data type in the device
+  };
+  //Required
+  this.accessRDT = function(){
+    // Access the previously registered replicated data type in the device
+  };
+
 module.exports.getDeviceTemplate = getDeviceTemplate;
