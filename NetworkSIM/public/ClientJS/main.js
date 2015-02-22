@@ -60,11 +60,14 @@ window.setInterval(function(){
  */
 function overWriteAppState(new_state){
 	//replaces the current appstate with new_state
-	appstate = new_state;  
+	var appstate = new_state;  
 	//updates the user with the user of the new_state.
-	local_device = appstate.device;
+	var local_device = appstate.device;
 	//local session is the current session for this device, stored in local storage
-	local_session = appstate.current_simulation_session;
+	var local_session = appstate.current_simulation_session;
+	//the states of the simulation object
+	var states = appstate.states;
+	
 	
 	//if the current session has a configuration map
 	//WHEN WOULD THIS NOT HAPPEN? I guess on initialization?
@@ -84,6 +87,7 @@ function overWriteAppState(new_state){
 	local_application = appstate.application;
 	//places all of the changes into the local storage of the device
 	putinStorage( 'appstate', JSON.stringify(appstate) );
+	putinStorage('states', JSON.stringify(states) );
 	putinStorage( 'session', JSON.stringify(local_session) );
 	putinStorage( 'device', JSON.stringify(local_device) );
 	putinStorage( 'application', JSON.stringify(local_application) );
@@ -1554,6 +1558,34 @@ function DeviceListView(){
 	getSection().innerHTML = html;
 }
 
+function SimulationStatesView(){
+	var local_session  = get_local_session();
+	var local_states = get_local_states();
+	var timestamp = new Date();
+	var html = "<div class  = 'container'> <table>";
+	html += "<tr> <td> <div onclick = 'generateTopology(&quot;" + local_session.config_map + " &quot;)' > " +
+			"Current State at " + timestamp + " </div> </td> </tr>"
+	html += SimulationStatesTemplate(local_states.states);
+	html += "</table> </div>";
+	//noah call the divs you want to put the Simulation states list here
+}
+
+function updateStatesView(timestamp){
+	var local_states = get_local_states();
+	var states  = local_states.states;
+	for(var i = 0; i < states.length; i++){
+		if(states.timestamp == timestamp )
+			var simulation  = states.id;
+			//generate the topography from the configuration map
+			//should only be read only however, can't move anything around
+			generateTopology(simulation.configMap);
+			//update the logs with the simumation logs
+			var html = SimulationLogsTemplate(simulatin.activity_logs);
+			var footer = getFooter();
+			footer.innerHTML = html;
+	}
+}
+
 /**
  * changes the page view to the logs of this user.
  */
@@ -1659,17 +1691,17 @@ function NetworksListTemplate(networks){
 
 		for(var i = 0; i< networks.length; i++){
 			if(local_device.current_network == networks[i]){
-				str +=  "<td> <div onclick = \'removeDevicefromNetwork( '" + local_device.current_device_name + "', '" + networks[i] + "')\'> " +
+				str +=  "<td> <div onclick = 'removeDevicefromNetwork( &quot;" + local_device.current_device_name + "&quot;, &quot;" + networks[i] + "&quot;)'> " +
 				"Leave Network </div> </td> </tr>";
 			}else{
 				str += "<tr  id = '" + networks[i] + "'>" +
 						" <td> " + networks[i] + "   " +
-					+ " <div onclick = \'addDevice2Network( '" + local_device.current_device_name + "', '" + networks[i] + "') \'> " +
+					+ " <div onclick = 'addDevice2Network( &quot;" + local_device.current_device_name + "&quot;, &quot;" + networks[i] + "&quot;) '> " +
 							"Join Network </div> </td> </tr>";
 			}
 			for(var j = 0; j < networks_created.length; j++){
 				if( networks[i] == networks_created[j] ){
-					str +=  "<td> <div onclick = \'deleteNetwork( '" + networks[i] + "')\'> " +
+					str +=  "<td> <div onclick = 'deleteNetwork( &quot;" + networks[i] + "&quot;)'> " +
 					"Join Network </div> </td> </tr>";
 				}
 			}
@@ -1696,6 +1728,16 @@ function DevicesListTemplate(devices){
 		return str;
 }
 
+function SimulationStatesTemplate(states){
+	str = "";
+	
+	for(var i = 0; i < states.length; i++){
+		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView(&quot;" + states[i].timestamp + "&quot;) '> " +
+				states[i].timestamp + " </td> <td> Revert </td> </tr>";
+	}
+	return str;
+}
+
 /** 
  * Function to give the list of devices as well as an option to delete one if needed
  * @param devices, the device list
@@ -1706,7 +1748,7 @@ function AdminDevicesListTemplate(devices){
 		str = "";
 		for(var i = 0; i< devices.length; i++){
 			str += "<tr  id = '" + devices[i] + "'> <td> " + devices[i] + "   </td>" +
-					"<td> <div onclick = 'deleteDevice(\'" + devices[i] + "\')' > Delete Device </div> </td> </tr>";
+					"<td> <div onclick = 'deleteDevice(&quot;" + devices[i] + "&quot;s)' > Delete Device </div> </td> </tr>";
 		}
 		
 		return str;
@@ -2278,6 +2320,14 @@ function get_local_application(){
  */
 function get_local_appstate(){
 	return JSON.parse(getfromStorage('appstate'));
+}
+
+/** Function to get the current states saved for this simulation from local database
+ * 
+ * @returns
+ */
+function get_local_states(){
+	return JSON.parse(getfromStorage('states'));
 }
 
 /**

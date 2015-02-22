@@ -139,6 +139,7 @@ exports.startTemplate = function(callback) {
 		appstate.device = deviceTemplate.getDeviceTemplate();
 		///console.log(appstate.user);
 		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
+		appstate.states = stateTemplate.getStateTemplate();
 		//App.simulation_list = JSON.parse(App.simulation_list);
 		for(var i = 0; i < App.simulation_list.length; i++){
 			App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
