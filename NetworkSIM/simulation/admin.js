@@ -1,3 +1,5 @@
+
+
 function importRDT(rdtName){
   // Import a replicated data type to use in the simulation
 
@@ -32,16 +34,29 @@ function addNetwork(networkName, networkKind){
 }
 
 function removeNetwork(networkName){
+	var Network = new Network(networkName)
+	deviceList.add(Network);
   // Remove a network with the given name from the simulation
 }
 
 function addDevice(deviceName){
+	var Device = new Device(deviceName)
+	deviceList.add(Device);
   // Add a device with the given name to the simulation
 }
 
 function removeDevice(deviceName){
   // Remove a device with the given name from the simulation
 }
+
+function addPartition(partitionName){
+	  // Add a device with the given name to the simulation
+}
+
+function removePartition(partitionName){
+	  // Remove a device with the given name from the simulation
+}
+
 
 
 exports.importRDT = importRDT;

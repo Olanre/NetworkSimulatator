@@ -73,7 +73,7 @@ app.post("/getSync", function(req, res) {
 			//for now allow empty tokens
 			if(obj.Response == 'Success'){
 				console.log("successful authenication" );
-				SimulationManager.ClientRequest(token, eventqueue, function(){
+				SimulationManager.ClientRequest(token, eventqueue, simulation, function(){
 					SimulationManager.getNewState(token, function(data){
 						if(data == null){
 							SimulationManager.startTemplate(function(data){

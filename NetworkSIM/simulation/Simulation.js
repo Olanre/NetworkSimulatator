@@ -33,6 +33,14 @@ function getNetworks(map){
 	return list;
 }
 
+function getNetworksinPartition(map, partition){
+	var list = [];
+	for (network in map[partition]){
+		list.push(network);
+	}
+	return list;
+}
+
 function getDevices(map){
 	var networklist = getNetworks(map);
 	var list = [];
@@ -97,6 +105,9 @@ function getPartition(map, network_name){
 	return Partition_name;
 }
 
+
+
+module.exports.getNetworksinPartition = getNetworksinPartition;
 module.exports.getPartitions = getPartitions;
 module.exports.getPartition = getPartition;
 module.exports.getDevices = getDevices;

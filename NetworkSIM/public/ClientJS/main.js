@@ -222,7 +222,7 @@ function addDevice2Network( device_name, network_name){
 		var map = local_session.config_map;
 		//gets the partition of the network 
 		var Partition_name = getPartition(network_name);
-		if(Partition_names !== null){
+		if(Partition_name !== null){
 			//checks that the device_name passed as an argument is the same as the local device's current name
 			if( device_name == local_device.current_device_name){
 				//updates the network this device belongs to

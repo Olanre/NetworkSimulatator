@@ -123,11 +123,13 @@ function Device(deviceName){
   //Required
   this.joinNetwork = function(network){
     // Make the device join a network
+	  network.addDevice(this.current_device_name)
 	  
   };
   //Required
-  this.leaveNetwork = function(){
+  this.leaveNetwork = function(network){
     // Make the device leave connected network
+	  network.removeDevice(this.current_device_name);
   };
   //Required
   this.returnNetwork = function(){
@@ -155,16 +157,15 @@ function Partition(partitionName){
 		var networkIndex=networks.indexOf(network);
 		networks.splice(networkIndex,1);
 	};
-	this.get
 
 	
 }
 
-function Simulation(simulationName){
-	this.simulation_name=simulationName;
-}
+
+
 
 exports.Device = Device;
 exports.Network=Network;
+exports.Simulation = Simulation;
 exports.NetworkIterator = NetworkIterator;
 exports.DeviceIterator = DeviceIterator;
