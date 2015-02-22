@@ -12,7 +12,7 @@ var deviceTemplate = require("./deviceTemplate.js");
 var SimulationTemplate = require("./simulationTemplate.js");
 var stateTemplate=require("./stateTemplate.js");
 var simulation = require("./Simulation.js");
-var topography = require("./network_topography");
+var topography = require("./network_topology.js");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
 var admin = require("./admin.js");
@@ -303,15 +303,15 @@ function createDevice(body, simulation) {
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
-	admin.addNetwork(networkName, networkType){
+	admin.addNetwork(networkName, networkType);
 		
 		//
 		
-	};
+};
 	
 	
 	//Database.createNetwork(simName, partitionName, networkObject);
-}
+
 
 function addPartition(partitionObject, simulation){
 	var partitionName=partitionObject.partition_name;

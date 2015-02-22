@@ -18,7 +18,7 @@ Schema = db.Schema;
                                     //****Schemas
 
 //STATE - storing logs as a string
-var stateSchema = mongoose.Schema({
+/*var stateSchema = mongoose.Schema({
 	id : String,
 	state : [ 
 			  id : Sim, 
@@ -29,7 +29,7 @@ var stateSchema = mongoose.Schema({
 
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
-
+*/
  
 //DEVICE
 var deviceSchema = mongoose.Schema({
