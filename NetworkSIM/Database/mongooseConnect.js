@@ -23,7 +23,7 @@ Schema = db.Schema;
 	state : [ 
 			  id : Sim, 
 			  timeStamp : String, 
-			  devices : [ device : String, log : String, ] ,
+			  devices : [ device : User ] ,
 			]
 });
 
@@ -61,7 +61,9 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-   
+	
+   //networkList : [Netowrk],
+   //deviceList : [Device],
    num_devices: Number,
    num_networks: Number,
    simulation_population: Number,
@@ -71,8 +73,7 @@ var simulationSchema = mongoose.Schema({
    globalcount : Number,
    //token_list : [tokens],
    activity_logs : String,
-
-
+   
 });
 
 
@@ -189,7 +190,30 @@ function modifyUser(aToken, aUser, callback)
 	//console.log("User with token " + atoken + "edited " + example);	
   });
 }
+//ACTIVITY CHANGES
 
+function updateUserAcitivity(aString, aUser, callback)
+{ 
+	aUser.findOne({activity: activitylist}, function(err, obj)
+			{
+		      if(err) console.log("User does not have an activity log apparently.");
+		      aUser.activitylist = obj.concat(aString);
+		                        
+		     aUser.save(function (err) {
+		    	 if(err) {
+		    		 
+		    	 console.error("ERROR, USER NOT UPDATED");
+		    	 
+		    	   }
+		    	 
+		    	callback(); 
+		    	 });
+			});	
+	}
+	
+
+
+//FETCH BY TOKEN 
 function getUserByToken(aToken, callback)
 {
   User.findOne( {token: aToken}, function(err, obj)
@@ -244,6 +268,29 @@ function modifyApp(NewApp)
 		//console.log("Saved state" + state);
 	}
 
+	
+	       var simulationSchema = mongoose.Schema({
+		
+		   num_devices: Number,
+		   num_networks: Number,
+		   simulation_population: Number,
+		   simulation_name: String,
+		   config_map: String,
+		   tokenMethod : String,
+		   globalcount : Number,
+		   //token_list : [tokens],
+		   activity_logs : String,
+
+
+		});
+
+
+		//SIMULATION COMPLETE
+		var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
+
+	
+	
+	
 	
 	
 	
