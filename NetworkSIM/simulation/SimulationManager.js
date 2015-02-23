@@ -215,6 +215,9 @@ function createSimulation(body) {
 	var map = body.config_map;
 	var d = new Date();
 	var device_list = simulation.getDevices(map);
+	var Sim = new SimulationTemplate();
+	Sim.simulation_name = body.simulation_name;
+	Sim.config_map = JSON.stringify(body.config_map);
 	for( var i = 0; i < device_list.length; i++) {
 		
 		Device.current_simulation = body.simulation_name;
@@ -255,24 +258,29 @@ function createSimulation(body) {
 	Device = {};
 	Application = {};
 	Simulation = {};
-	
+	/**
 	var Sim = admin;
 	SimulationList.push(Sim);
 	var partitions = simulation.getPartitions(body.config_map);
 	for( var i = 0; i < partitions.length; i ++){
-		Sim.addPartition(partitions[i]);
+		var Partition = new partitionTemplate.partition(partitions[i]);
+		Sim.addPartition(Partition);
 		var networks = simulation.getNetworksinPartition(body.config_map, partitions[i]);
 		for(var j = 0; j < networks[i].length; j ++ ){
+			var network = network.Network(networks[i]);
+			Partition.addNetwork(network);
 			Sim.addNetwork(networks[i]);
 			var devices = getDevicesFromNetwork(map, network_name)
 			for(var k = 0; k < devices.length; k++ ){
-				Sim.addDevice([i]);
+				Device = new deviceTemplate.Device(devices[i]);
+				Sim.addDevice(Device);
+				Network.
 			}
 			
 		}
 		
 	}
-	
+	*/	
 	
 	//var AppState = TotalAppState.getTotalState();
 	//console.log(body);
@@ -303,16 +311,11 @@ function createDevice(body, simulation) {
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
-	admin.addNetwork(networkName, networkType);
-		
-		//
+	admin.addNetwork(networkName, partitionName,  'Wifi', simulation);
+
 		
 };
 	
-	
-	//Database.createNetwork(simName, partitionName, networkObject);
-
-
 function addPartition(partitionObject, simulation){
 	var partitionName=partitionObject.partition_name;
 	var simulationName=partitionObject.simulation_name;

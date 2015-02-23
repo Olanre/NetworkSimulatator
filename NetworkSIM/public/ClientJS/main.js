@@ -236,6 +236,7 @@ function addDevice2Network( device_name, network_name){
 			if( list.hasOwnProperty(device_name) ){
 				delete local_session.config_map.free_list[device_name];
 			}
+			device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
 			//add the device to the actual configuration map
 			local_session.config_map[Partition_name][network_name][device_name] = device_num;
 			//send the information to the eventQueue for syncing with the server
@@ -343,6 +344,7 @@ function deleteNetwork(network_name){
 	updateNetworkNumber(new_number);
 	var params = { 
 			'network_name': network_name, 
+			'partition_name' : Partition_name,
 			'simulation_name': local_session.simulation_name,
 			};
 	var url = '/delete/Network';
@@ -701,7 +703,7 @@ function CreateSimulation(){
 function mergePartition(partition_a, partition_b){
 	var local_session = get_local_session();
 	delete local_session.config_map[partition_b];
-	local_session.config_map[partition_a] = merge_objects(config_map[partition_a],config_map[partition_b]);
+	local_session.config_map[partition_a] = merge_objects(local_session.config_map[partition_a],local_session.config_map[partition_b]);
 	console.log(local_session.config_map[partition_a]);
 	putinStorage( 'session', JSON.stringify(local_session) );
 	

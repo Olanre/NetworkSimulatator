@@ -19,7 +19,7 @@ Schema = db.Schema;
 
 //DEVICE
 var deviceSchema = mongoose.Schema({
-   deviceName : String,
+   device_name : String,
    //deviceNumber : Number,
 	
 });
@@ -30,7 +30,8 @@ var Device= mongoose.model('Device', deviceSchema, 'newDeviceSchema');
 //NETWORK
 var networkSchema = mongoose.Schema({
 	
- networkName : String,
+ network_name : String,
+ network_type : String,
  device_list : [Device]
 
 });
@@ -42,7 +43,7 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 var simulationSchema = mongoose.Schema({
 	   networkList : [Network],
 	   deviceList : [Device],
-	   partionLIst : [Partition],
+	   partionList : [Partition],
 	   //num_devices: Number,
 	   //num_networks: Number,
 	   simulation_population: Number,
@@ -60,7 +61,7 @@ var simulationSchema = mongoose.Schema({
 	var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //STATE - storing logs as a string
-var stateSchema = mongoose.Schema({
+/** var stateSchema = mongoose.Schema({
 	id : String,
 	state : [{ id : Sim, 
 			  timeStamp : String, 
@@ -71,9 +72,9 @@ var stateSchema = mongoose.Schema({
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
 
-
+*/
 var partitionSchema = mongoose.Schema({
-	name: String,
+	partition_name: String,
 	network_list: [Network]
 });
 

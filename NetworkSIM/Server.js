@@ -11,7 +11,7 @@ var logger = require('express-logger');
 var eventHandler = require("./EventHandler.js");
 var SimulationManager = require('./simulation/SimulationManager');
 var Database = require("./Database/mongooseConnect.js");
-
+var SimulationTemplate = require("./simulation/simulationTemplate.js");
 
 /****
 var Add = require('./routes/Add');
@@ -30,9 +30,13 @@ var port = 3332;  // must be on port 3332 on excalibur for the grader
 
 
 var server = app.listen(port, function () { 
-	
+
 	var Application = {};
 	//var item =  { 'name' : body.name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
+	//var Sim = new SimulationTemplate.Simulation('Hallo');
+	//console.log(Sim);
+	//Sim.addDevice('Name');
+	//console.log(Sim);
 	
 	Database.getApp(function(data){
 		if(data == null){
