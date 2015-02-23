@@ -32,6 +32,7 @@ var networkSchema = mongoose.Schema({
 	
  network_name : String,
  network_type : String,
+ partition : String,
  device_list : [Device]
 
 });
@@ -96,8 +97,6 @@ var userSchema = mongoose.Schema({
 	admin: Boolean,
 	networks_created: [],
 	application_id:String,
-	localcount: Number,
-	globalcount: Number,
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,

@@ -9,12 +9,16 @@ function Device(deviceName){
 	
 	this.token = '';
 	this.networkObject={};
-	this.simulationObject={};
+	this.device_name  = '';
+	this.rdt = {};
 	this.networks_created = [];
 	this.deviceJSON={};
 	
 	this.attachJSON=function(deviceJSON){
 		this.deviceJSON=deviceJSON;
+		this.token = deviceJSON.token;
+		this.device_name = deviceJSON.curent_device_name;
+		this.networks_created = deviceJSON.networks_created;
 	};
 	this.getTemplate=function(){
 		  var device_data = {};
@@ -29,8 +33,6 @@ function Device(deviceName){
 		  device_data.current_device_name = device_name;
 		  device_data.application_id =  'default';
 		  device_data.admin = false;
-		  device_data.localcount = 0;
-		  device_data.globalcount = 0;
 		  device_data.activity = '';
 		  return device_data;
 		  
@@ -38,40 +40,69 @@ function Device(deviceName){
   //Required
   this.joinNetwork = function(network){
 	  
-	  var oldNetwork=deviceJSON.current_network;
+	  var oldNetwork= this.deviceJSON.current_network;
 
-	  Database.getSimByName(deviceJSON.current_simulation,function(simulationJSON){
-		  
-		 delete simulationJSON.config_map[deviceJSON.current_partition][oldNetwork][deviceJSON.current_device_name];
-		 var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.name]);
-		 simulationJSON.config_map[network.partition][network.name][deviceJSON.current_device_name]=indexInNetwork;
-		 Database.modifySimByName(deviceJSON.current_simulation,simulationJSON,function(){});
+	  Database.getSimByName(this.deviceJSON.current_simulation,function(simulationJSON){
+		 var list.simulationJSON.config_map['freelist'];
+		if( list.hasOwnProperty(this.deviceJSON.current_device_name) ){
+			delete simulationJSON.config_map.free_list[this.deviceJSON.current_device_name];
+		  }
+		 delete simulationJSON.config_map[this.deviceJSON.current_partition][oldNetwork][this.deviceJSON.current_device_name];
+		 var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
+		 simulationJSON.config_map[network.partition][network.network_name][this.deviceJSON.current_device_name]=indexInNetwork;
+		 Database.modifySimByName(this.deviceJSON.current_simulation,simulationJSON,function(){});
 		 
 	  });
 	  
-	  deviceJSON.current_network=network.name;
-	  deviceJSON.current_partition=network.partition;
-	  Database.modifyUser(this.token,deviceJSON,function(){});
-	  network.addDevice(this);
+	  this.deviceJSON.current_network=network.name;
+	  this.networkObject = network;
+	  this.deviceJSON.current_partition=network.partition;
+	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
+	  delete network.deviceList()
 	  
   };
   
   //Required
   this.leaveNetwork = function(network){
     // Make the device leave connected network
-	  network.removeDevice(this.current_device_name);
+	  network.removeDevice(this);
+	  Database.getSimByName(this.deviceJSON.current_simulation,function(simulationJSON){
+		  var num = Util.size(Sim.config_map['freelist']);
+		  Sim.config_map['freelist'][this.deviceJSON.current_device_name] = num;
+			
+		 delete simulationJSON.config_map[this.deviceJSON.current_partition][network.network_name][this.deviceJSON.current_device_name];
+		 var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
+		 simulationJSON.config_map[network.partition][network.network_name][this.deviceJSON.current_device_name]=indexInNetwork;
+		 Database.modifySimByName(this.deviceJSON.current_simulation,simulationJSON,function(){});
+			 
+	  });
+	  this.deviceJSON.current_network= '-';
+	  this.networkObject = {};
+	  this.deviceJSON.current_partition= 'freelist';
+	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
+	  var networkIndex= network.deviceList.indexOf(device);
+		networks.splice(networkIndex,1);
   };
+  
+  this.getJSON = function(){
+	  return this.deviceJSON;
+  }
   //Required
   this.returnNetwork = function(){
+	  //unsure about this
+	  return this.networkObject;
     // Make the device re-join a previous network
   };
+ 
   //Required
   this.replicateRDT = function(rdt){
     // Register a replicated data type in the device
+	  this.rdt = rdt
   };
   //Required
   this.accessRDT = function(){
     // Access the previously registered replicated data type in the device
+	return this.rdt;
   };
   
 };
