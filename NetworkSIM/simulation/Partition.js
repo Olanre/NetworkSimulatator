@@ -1,9 +1,10 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
-function Partition(partitionName){
+function Partition(partitionName, simulationName){
 	
 	this.partition_name=partitionName;
+	this.simulation_name=simulationName;
 	this.networks=[];
 	this.partitionJSON={};
 	
@@ -27,7 +28,7 @@ function Partition(partitionName){
 
 	this.addNetwork=function(network){
 		
-		Database.getSimulationByName(this.partitionJSON.simulation_name,function(simulation){
+		Database.getSimulationByName(this.simulation_name,function(simulation){
 			simulation.config_map[this.partition_name][network.network_name]=network.networkJSON.device_list;
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
@@ -35,11 +36,12 @@ function Partition(partitionName){
 	};
 	
 	this.removeNetwork=function(network){
-		Database.getSimulationByName(this.partitionJSON.simulation_name,function(simulation){
+		Database.getSimulationByName(this.simulation_name,function(simulation){
 			delete simulation.config_map[this.partition_name][network.network_name];
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
 		delete networks[networks.indexOf(network)];
 	};
+	
 	
 }

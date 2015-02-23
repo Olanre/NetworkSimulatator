@@ -164,10 +164,11 @@ function Device(deviceName){
   };
 }
 
-function Partition(partitionName){
+function Partition(partitionName, simulationName){
 	
 	this.partition_name=partitionName;
 	this.networks=[];
+	this.simulation_name=simulationName;
 	
 	this.addNetwork=function(network){
 		networks.push(network);
