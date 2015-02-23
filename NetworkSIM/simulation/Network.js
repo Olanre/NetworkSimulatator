@@ -1,25 +1,17 @@
 
 //Required
-this.addDevice = function(device){
+exports.addDevice = function(device){
   deviceList.push(device);
 };
 
 //Required
-this.removeDevice = function(device){
- var deviceIndex=deviceList.indexOf(device);
- deviceList.splice(deviceIndex,1);
+exports.removeDevice = function(device){
+	var deviceIndex=deviceList.indexOf(device);
+	deviceList.splice(deviceIndex,1);
 };
 //Required
-this.connectNetwork = function(network){
-  var partition=network.partition;
-  this.partition=partition;
-  partition.addNetwork(this);
+exports.connectNetwork = function(network){
 };
 //Required
-this.disconnectNetwork = function(network){
-  var partition=network.partition;
-  if(this.partition===partition){
-  	this.partition={};
-  }
-  partition.removeNetwork(this);
+exports.disconnectNetwork = function(network){
 };
