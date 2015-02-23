@@ -12,7 +12,7 @@ var deviceTemplate = require("./deviceTemplate.js");
 var SimulationTemplate = require("./simulationTemplate.js");
 var stateTemplate=require("./stateTemplate.js");
 var simulation = require("./Simulation.js");
-var topography = require("./network_topology.js");
+var topology = require("./network_topology.js");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
 var admin = require("./admin.js");
@@ -135,9 +135,9 @@ exports.startTemplate = function(callback) {
 	var appstate = {};
 	
 	Database.getApp(function(App){
+		//blank name for now as identified by token
+		appstate.device = new topology.device("");
 
-		appstate.device = deviceTemplate.getDeviceTemplate();
-		///console.log(appstate.user);
 		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
 		appstate.states = stateTemplate.getStateTemplate();
 		//App.simulation_list = JSON.parse(App.simulation_list);
@@ -149,7 +149,7 @@ exports.startTemplate = function(callback) {
 	});
 };
 
-//callback horror!!
+
 function getNewState(token, callback){
 	var Device ;
 	var Simulation;
