@@ -21,6 +21,7 @@ var testConfigMap={
 		 { 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
 		 'networkd' :
 		 		{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
+		 		'networkTest':{},
 		 				},
 		  'Partition3':
 		 { 'networke' : { 'devicek':'11'} },
@@ -31,50 +32,31 @@ var testConfigMap={
 /****
  * The main functions used in our GUI
  ***/
-function generateTopology(configMap){
-	var xpos,ypos,areaWidth,positioningRadius,numPartitions,numNetworks,numDevices,rootXY;
+function generateTopology(configMap, areaWidth){
+	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
-	var deviceIndex=0;
-	var root,connected,device;
+	var root,connected,connectedDevice;
 	
-	//these are all manually entered, but we will derive them from lengths of lists when we actually load the config map
-	numPartitions=5;
-	numNetworks=3;
-	numDevices=5;
-	areaWidth=800;
-	positioningRadius=areaWidth/(numPartitions-1);
+	numPartitions=Object.keys(configMap).length;
+	positioningRadius=areaWidth/(numPartitions);
 	rootXY=positioningRadius;
 	
 	for(partition in configMap){
+		
 		if(partition!='freelist'){
+			var angle=Math.PI/Object.keys(configMap[partition]).length;
+			
 			for(network in configMap[partition]){
-				var angle=(networkIndex-1)/numNetworks;
+				
 				if(networkIndex==0){
 					root=createNetworkGraphicAt(rootXY,rootXY);
-					var angle2;
-					for(device in configMap[partition][network]){
-						angle2=(deviceIndex)/numDevices;
-						console.log(device+" at "+angle2);
-						device=createObjectWithin(40,angle2*360,root.x,root.y,createDeviceGraphicAt);
-						//attachChild(root,device);
-						deviceIndex++;
-					}
-					deviceIndex=0;
+					connectDevicesToNetwork(configMap[partition][network],root);
 				}
+				
 				else{
-					
-					connected=createObjectWithin(positioningRadius,angle,rootXY,rootXY,createNetworkGraphicAt);
+					connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
 					createPartitionGraphic(root,connected);
-					
-						var angle2;
-						for(device in configMap[partition][network]){
-							var angle2=(deviceIndex)/numDevices;
-							console.log(device+" at "+angle2);
-							device=createObjectWithin(40,angle2*360,connected.x,connected.y,createDeviceGraphicAt);
-							deviceIndex++;
-							//attachChild(connected,device);
-						}
-						deviceIndex=0;
+					connectDevicesToNetwork(configMap[partition][network],connected);
 				}
 				networkIndex++;
 			}
@@ -82,27 +64,28 @@ function generateTopology(configMap){
 			rootXY+=positioningRadius;
 			networkIndex=0;
 		}
+		
 		else{
+			var distance=areaWidth/(1+Object.keys(configMap[partition]).length);
+			deviceIndex=0;
 			for(device in configMap[partition]){
-				createDeviceGraphicAt(100+networkIndex*50,20);
-				networkIndex++;
+				createDeviceGraphicAt(distance*(deviceIndex+1),20);
+				deviceIndex++;
 			}
 		}
+		
 	}
 		
 }
-function attachChild(parentShape, childShape){
-	var index=shapes.indexOf(childShape);
-	console.log(index);
-	parentShape.children[index]=childShape;
-	index=shapes.indexOf(parent);
-	shapes[index]=parent;
-}
-function createObjectWithin(radius,angle,centerX,centerY,createFunction){
-	var xpos=radius*Math.sin(angle);
-	var ypos=radius*Math.cos(angle);
-	var graphic=createFunction(centerX+xpos,centerY+ypos);
-	return graphic;
+function connectDevicesToNetwork(deviceList,networkObject){
+	var numDevices=Object.keys(deviceList).length;
+	var angle=2*Math.PI/numDevices;
+	var connectedDevice;
+	
+	for(var i=0;i<numDevices;i++){
+		connectedDevice=createObjectWithin(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
+		attachChild(networkObject,connectedDevice);
+	}
 }
 function createNetworkGraphic(){
 	return createNetworkGraphicAt(100,500);
@@ -141,7 +124,19 @@ function removePartition(sourceNetwork,destinationNetwork){
 	svgCanvas.removeChild(oldLine.element);
 	delete shapes[index];
 }
+function attachChild(parentShape, childShape){
+	var index=shapes.indexOf(childShape);
+	parentShape.children[index]=childShape;
+	childShape.element.classList.add('connected-device');
+	index=shapes.indexOf(parent);
+}
 
+function createObjectWithin(radius,angle,centerX,centerY,createFunction){
+	var xpos=radius*Math.sin(angle);
+	var ypos=radius*Math.cos(angle);
+	var graphic=createFunction(centerX+xpos,centerY+ypos);
+	return graphic;
+}
 /****
  * --------------
  * Object Interactions
@@ -166,21 +161,21 @@ interact('.device')
 	    
 	    onstart: function(event){
 			//adds class to make sure object you are moving is on top 
-			var circle = getShapeFromEvent(event);
-			circle.element.classList.add('held-object');
+			var shape = getShapeFromEvent(event);
+			shape.element.classList.add('held-object');
 		},
 
 		onmove: function (event) {
 		
 		//gets the circle from the list of shapes
-			var circle = getShapeFromEvent(event);
-			moveUIElementAndChildren(circle, event.dx,event.dy);
+			var shape = getShapeFromEvent(event);
+			moveUIElementAndChildren(shape, event.dx,event.dy);
 		},
 		
 		onend: function(event){
 			//stops ensuring that object is ontop after dropped
-			var circle = getShapeFromEvent(event);
-			circle.element.classList.remove('held-object');
+			var shape = getShapeFromEvent(event);
+			shape.element.classList.remove('held-object');
 			orderCanvas();
 		},
 	});
@@ -196,36 +191,32 @@ interact('.network')
 		
 		overlap: 0.7,
 		
-		//if a droppable object is being held
 		ondropactivate: function(event){
-			//display where you can drop the object
+			
 			event.target.classList.add('drop-locations');
 		},
 		
-		//if a droppable object is dragged within
 		ondragenter: function (event) {
-			//related target is the object  being dragged
+
 		    var draggableElement = event.relatedTarget,
 		        dropzoneElement = event.target;
 		    
 		    if (draggableElement.classList.contains('device')){
 			    dropzoneElement.classList.add('drop-target');
-			    draggableElement.classList.add('can-drop');
+			    draggableElement.classList.add('connected-device');
 			    draggableElement.textContent = 'Dragged in';
 		    }
 		},
-		//when an object leaves a droppable location
+
 		ondragleave: function (event) {
 			
-			  // remove the indication of the object being able to be dropped
 			  event.target.classList.remove('drop-target');
-			  event.relatedTarget.classList.remove('can-drop');
+			  event.relatedTarget.classList.remove('connected-device');
 			  var network=getShapeFromEvent(event);
 			  var networkIndex=event.target.getAttribute('data-index');
 			  var device=getRelatedShapeFromEvent(event);
 			  var deviceIndex=event.relatedTarget.getAttribute('data-index');
 			  delete network.children[deviceIndex];
-			  shapes[networkIndex]=network;
 			  
 		},
 
@@ -239,10 +230,7 @@ interact('.network')
 			var dragged=getRelatedShapeFromEvent(event);
 			
 			if(dragClass==='device'){
-				var deviceIndex=draggableElement.getAttribute('data-index');
-				var networkIndex=dropzoneElement.getAttribute('data-index');
-				dropzone.children[deviceIndex]=(dragged);
-				shapes[networkIndex]=dropzone;
+				attachChild(dropzone,dragged);
 			}
 			if(dragClass==='network'){
 				
@@ -256,9 +244,9 @@ interact('.network')
 			}
 		
 		},
-		//when no longer holding a droppable object,
+
 		ondropdeactivate: function (event) {
-			//remove css information
+			
 			event.target.classList.remove('drop-locations');
 		    event.target.classList.remove('drop-target');
 		},
@@ -276,24 +264,24 @@ interact('.network')
 		    },
 		
 			onmove: function (event) {
-				var circle = getShapeFromEvent(event);
-				moveUIElementAndChildren(circle,event.dx,event.dy);
-				updatePartitionLines(circle);
+				var shape = getShapeFromEvent(event);
+				moveUIElementAndChildren(shape,event.dx,event.dy);
+				updatePartitionLines(shape);
 			},
 			
 			onstart: function(event){
-		    	var circle = getShapeFromEvent(event);
-				origin.x=circle.x;
-				origin.y=circle.y;
+		    	var shape = getShapeFromEvent(event);
+				origin.x=shape.x;
+				origin.y=shape.y;
 				
 				//adds class to make sure object you are moving is on top 
-				var circle = getShapeFromEvent(event);
-				circle.element.classList.add('held-object');
+				var shape = getShapeFromEvent(event);
+				shape.element.classList.add('held-object');
 			},
 			onend: function(event){
 				//stops ensuring that object is ontop after dropped
-				var circle = getShapeFromEvent(event);
-				circle.element.classList.remove('held-object');
+				var shape = getShapeFromEvent(event);
+				shape.element.classList.remove('held-object');
 				orderCanvas();
 			},
 		});
@@ -339,8 +327,6 @@ function mouseOver(e){
 	function toString(el) { 
 		return el ? (el.id || el.nodeName) : 'null' ;
 	}
-	//don't delete this comment i need it
-	//console.log("From "+toString(fromElem)+ " to "+toString(toElem));
 	if(toString(toElem) == "circle"){
 		circleElem=shapes[toElem.getAttribute('data-index')];
 		circleElem.nameVisible=true;
@@ -361,18 +347,15 @@ function updatePartitionLines(networkShape){
 		var connectedNetwork=networkShape.connections[index];
 		var theLine=shapes[index];
 		theLine.update(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y);
-		shapes[index]=theLine;
 		theLine.draw();
 	}
 	
 }
 
-//checks if an object has a certain class
 function hasClass(element, Elclass) {
     return element.classList.contains(Elclass);
 }
 
-//moves an element in the GUI and all elements attached to it
 function moveUIElementAndChildren(UIShape,dx,dy){
 	UIShape.x +=dx;
 	UIShape.y += dy;
@@ -402,6 +385,7 @@ document.addEventListener('mousemove', function(e){
     mouse.x = e.clientX || e.pageX; 
     mouse.y = e.clientY || e.pageY;
 }, false);
+
 /****
  * orderCanvas orders all the shapes on the canvas so that devices
  * appear in front of networks, and so that connection lines appear behind the networks
@@ -523,4 +507,4 @@ line.prototype.update=function(x1,y1,x2,y2){
 	this.x2=x2;
 	this.y2=y2;
 }
-generateTopology(testConfigMap);
+generateTopology(testConfigMap,800);
