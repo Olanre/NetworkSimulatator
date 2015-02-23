@@ -87,6 +87,10 @@ function Device(deviceName){
   this.getJSON = function(){
 	  return this.deviceJSON;
   }
+  
+  this.save = function(){
+	  Database.modifyUserbyToken(this.deviceJSON.token, this.deviceJSON);
+  }
   //Required
   this.returnNetwork = function(){
 	  //unsure about this
