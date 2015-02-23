@@ -77,9 +77,9 @@ exports.generateActivity = function generateActivity(simulation, url, body, time
 	
 	case '/update/LocalCount':
 		var new_activity = "Updated Counter to " +  body.localcount + " At " + timestamp + "\n";
-		updateDeviceLog(new_activity, simulation );
+		updateDeviceLog(new_activity, simulation , body.token );
 		//add to activity log for the simulation
-		new_activity = Body.current_device_name + " " + new_activity;
+		new_activity = body.token + " " + new_activity;
 		updateSimulationLog(new_activity, simulation);
 		break;	
 	
@@ -127,7 +127,12 @@ exports.generateActivity = function generateActivity(simulation, url, body, time
 	
 }	
 
-export.updateDeviceLog = function updateDeviceLog()
+export.updateDeviceLog = function updateDeviceLog(new_activity, simulation, token){
+	Database.getUserbyToken(token, function(Device){
+		Device.activity += new_activity;
+		Database.modifyUserbyToken(token, Device);
+	});
+}
 	
 exports.updateSimulationLog = function updateSimulationLog(new_activity, simulation){
 	Database.getSimByName(simulation, function(Sim){
