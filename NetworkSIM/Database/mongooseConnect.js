@@ -16,9 +16,31 @@ mongoose.connection.once('connected', function(){
 Schema = db.Schema;
  
                                     //****Schemas
+
+//DEVICE
+var deviceSchema = mongoose.Schema({
+   deviceName : String,
+   //deviceNumber : Number,
+	
+});
+
+//DEVICE COMPLETE
+var Device= mongoose.model('Device', deviceSchema, 'newDeviceSchema');
+
+//NETWORK
+var networkSchema = mongoose.Schema({
+	
+ networkName : String,
+ device_list : [Device]
+
+});
+
+//NETWORK COMPLETE
+var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
+
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	   networkList : [Netowrk],
+	   networkList : [Network],
 	   deviceList : [Device],
 	   partionLIst : [Partition],
 	   //num_devices: Number,
@@ -50,35 +72,12 @@ var stateSchema = mongoose.Schema({
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
 
 
-
-
-
-//DEVICE
-var deviceSchema = mongoose.Schema({
-   deviceName : String,
-   //deviceNumber : Number,
-	
-});
-
-//DEVICE COMPLETE
-var Device= mongoose.model('Device', deviceSchema, 'newDeviceSchema');
-
-
-//NETWORK
-var networkSchema = mongoose.Schema({
-	
- networkName : String,
- device_list : [Device]
-
-});
-
 var partitionSchema = mongoose.Schema({
 	name: String,
 	network_list: [Network]
 });
 
-//NETWORK COMPLETE
-var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
+
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 //SIMULATION
