@@ -324,34 +324,6 @@ function modifyParitionByName(aString, aPartition)
 
 
 
-
-
-function modifyUser(aToken, aUser, callback)
-{
-  User.findOne({token: aToken}, function(err, obj)
-  {
-  if(err) console.log("No user with that token");
-    var example = new User();
-	example = obj;
-    example = aUser;
-	example.save();
-	callback();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	
 //exports, finished calls
 module.exports.addUser = addUser;
