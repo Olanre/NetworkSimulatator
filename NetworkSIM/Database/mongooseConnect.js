@@ -18,7 +18,7 @@ Schema = db.Schema;
                                     //****Schemas
 
 //STATE - storing logs as a string
-/*var stateSchema = mongoose.Schema({
+var stateSchema = mongoose.Schema({
 	id : String,
 	state : [ 
 			  id : Sim, 
@@ -29,8 +29,7 @@ Schema = db.Schema;
 
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
-*/
- 
+
 //DEVICE
 var deviceSchema = mongoose.Schema({
    deviceName : String,
@@ -61,11 +60,11 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	
-   //networkList : [Netowrk],
-   //deviceList : [Device],
-   num_devices: Number,
-   num_networks: Number,
+   networkList : [Netowrk],
+   deviceList : [Device],
+   partionLIst : [Partition],
+   //num_devices: Number,
+   //num_networks: Number,
    simulation_population: Number,
    simulation_name: String,
    config_map: String,
@@ -258,41 +257,18 @@ function modifyApp(NewApp)
 });
 }
 
+
+
                         
 //STATE FUNCTIONS
 
-	function newState(aState)
-	{
-		var LenneteState = new State(aState)
-		LenneteState.save();
-		//console.log("Saved state" + state);
-	}
+function newState(aState)
+{
+  var LenneteState = new State(aState)
+  LenneteState.save();
+  //console.log("Saved state" + state);
+}
 
-	
-	       var simulationSchema = mongoose.Schema({
-		
-		   num_devices: Number,
-		   num_networks: Number,
-		   simulation_population: Number,
-		   simulation_name: String,
-		   config_map: String,
-		   tokenMethod : String,
-		   globalcount : Number,
-		   //token_list : [tokens],
-		   activity_logs : String,
-
-
-		});
-
-
-		//SIMULATION COMPLETE
-		var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
-
-	
-	
-	
-	
-	
 	
 //exports, finished calls
 module.exports.addUser = addUser;
