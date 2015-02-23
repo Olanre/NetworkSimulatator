@@ -94,7 +94,7 @@ function Network(networkName, networkKind){
    var deviceIndex=deviceList.indexOf(device);
    deviceList.splice(deviceIndex,1);
   };
-  //Required.
+  //Required
   this.connectNetwork = function(network){
     var partition=network.partition;
     this.partition=partition;

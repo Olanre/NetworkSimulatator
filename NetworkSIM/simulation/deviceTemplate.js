@@ -3,7 +3,7 @@
  * This is the template for a user's device.
  */
 	
-function getDeviceTemplate(){
+function Device(){
 	var device_data = {}
 	device_data.token = '';
 	device_data.email = '';
@@ -43,4 +43,4 @@ function getDeviceTemplate(){
     // Access the previously registered replicated data type in the device
   };
 
-module.exports.getDeviceTemplate = getDeviceTemplate;
+module.exports.getDeviceTemplate = Device;
