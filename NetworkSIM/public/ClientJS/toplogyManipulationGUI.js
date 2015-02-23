@@ -9,7 +9,7 @@ var svgCanvas = document.querySelector('svg'),
 
 var origin = {x: 0, y: 0};
 var mouse = {x: 0, y: 0};
-var testConfigMap={
+var testConfigMap1={
 		 'Partition1': 
 		 {'networka' :
 		 { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
@@ -27,6 +27,30 @@ var testConfigMap={
 		 { 'networke' : { 'devicek':'11'} },
 		 'freelist' : {'devicew': '13', 'evicex' : '14'}
 		 };
+var testConfigMap2={
+		 'Partition1': 
+		 {'networka' :
+		 { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
+		 'networkb' :{ 'deviced': '1', 'devicee': '2'},
+ 		'networkc' :{ 'deviced': '1', 'devicee': '2'},
+ 		'networkd' :{ 'deviced': '1', 'devicee': '2'},
+ 		'networke' :{ 'deviced': '1', 'devicee': '2'},
+		 				},
+		 'freelist' : {'devicew': '13', 'evicex' : '14','device1' :'22','device2' :'22','device3' :'22','device4' :'22'}
+		 };
+var testConfigMap3={
+		'Partition1':
+		 { 'networka' : { 'deviceA':'11','deviceB':'11','deviceC':'11','deviceD':'11','deviceE':'11'} },
+		 'Partition2':
+		 { 'networkb' : { 'device':'11'} },
+		 'Partition3':
+		 { 'networkc' : { 'device':'11'} },
+		 'Partition4':
+		 { 'networkd' : { 'device':'11'} },
+		 'Partition5':
+		 { 'networke' : { 'device':'11'} },
+		 'freelist':{}
+}
 
 
 /****
@@ -521,3 +545,4 @@ line.prototype.update=function(x1,y1,x2,y2){
 	this.y2=y2;
 }
 //generateTopology(testConfigMap,800);
+//generateTopology(testConfigMap1,800);

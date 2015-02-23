@@ -77,6 +77,7 @@ var State = mongoose.model('State', stateSchema, ' newStateSchema');
 var partitionSchema = mongoose.Schema({
 	partition_name: String,
 	network_list: [Network]
+
 });
 
 

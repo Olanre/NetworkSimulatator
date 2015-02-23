@@ -7,32 +7,69 @@ var deviceTemplate = require("./deviceTemplate.js");
 var stateTemplate=require("./stateTemplate.js");
 
 function Simulation(simulation_name){
-	this.deviceList = [];
-	this.networkList = [];
+	this.freeList = new Network('freelist'); 
 	this.partitionList = [];
-	this.simulation_population = 0;
+	this.networkIterator = new NetworkIterator();
+	this.networkList = networkList;
+	this.deviceList = deviceList;
 	this.simulation_name = simulation_name;
-	this.config_map = {};
-	this.freelist = {};
-	this.tokenMethod = '';
-	this.globalcount = 0;
+	this.simulationJSON = {};
 	this.activity_logs = '';
+	this.app = '';
+	this.rdt = {};
 	
-	this.getSimulation = function(){
+	this.attachJSON=function(simulationJSON){
+		this.simulationJSON=simulationJSON;
+		this.simulation_name = simulationJSON.simulation_name;
+		this.activity_logs = simulationJSON.activity_logs;
+		this.partitionList = simulationJSON.partition_list;
+		
+	};
+	
+	this.getJSON = function(){
 		 
-		return session_data;
+		return this.simulationJSON;
 	}
 	
-	this.addNetwork = function(networkName, networkType){
-		var Network = new Network(networkName, networkType);
-		this.session_data.networkList.push(Network);
+	this.importRDT = function(rdt){
+		this.rdt = rdt;
+	}
+	
+	this.importApp = function(app){
+		this.app = app;
 		
 	}
 	
+	this.removeApp = function(app){
+		this.app = '';
+	}
 	
-	this.addDevice = function(deviceName){
-		var Device = new deviceTemplate.Device(deviceName);
-		this.deviceList.push(Device);
+	this.getNetworks = function(){
+		var merged = [];
+		for(var i = 0; i < this.partitionList.legnth; i++){
+			var Networks = this.partitionList[i].networkList;
+			for( var j = 0 ; j < Networks.length; j++){
+				merged = merged.concat.apply(merged, Networks[i]);
+			}
+							
+			}
+		}
+		return merged;
+	}
+	
+	this.getDevices = function(){
+		var merged = [];
+		for(var i = 0; i < this.partitionList.legnth; i++){
+			var Networks = this.partitionList[i].networkList;
+			for( var j = 0 ; j < Networks.length; j++){
+				var Devices = Networks[i].deviceList;
+				for( var k = 0; k < Devices.length; k++){
+					merged = merged.concat.apply(merged, Devices[i]);
+				}
+			}
+							
+		}
+		return merged;
 	}
 	
 	this.addPartition = function(partitionName){
@@ -40,23 +77,74 @@ function Simulation(simulation_name){
 		this.partitionList.push(Partition);
 	} 
 	
-	this.deleteDevice = function(device){
+	
+	this.modifyPartition = function(partition){
+		for(var i = 0; i < this.partitionList.length; i++){
+			if(this.partitionList[i].partition_name == partition.partition_name){
+				this.partitionList[i] = partition;
+			}
+		}
 		
-		var deviceIndex = deviceList.indexOf(device);
-		deviceList.spice(device);
-		for(var i = 0; i < networkList.length; i++ ){
-			for(var i = 0; i < networkList[i].deviceList.length; i++){
-				var deviceIndex = networkList[i].deviceList.indexOf(device);
-				if (deviceIndex != -1){
-					networkList[i].deviceList.splice(device);
+	}
+	this.addDevice = function(deviceName){
+		var Device = new Device(deviceName);
+		for(var i = 0; i < this.partitionList.length; i++){
+			if( partitionList[i].partition_name == 'freelist'){
+				freelist.addDevice(Device);
+			}
+		}
+		//Simulation.addDevice()
+	  // Add a device with the given name to the simulation
+	}
+	
+	this.addNetwork = function(networkName, networkType){
+		var Network = new Network(networkName, networkType);
+		var Partition = new Partition(networkName);
+	}
+	
+	this.deleteDevice = function(deviceName){
+		
+		//deviceList.spice(device);
+		for(var i = 0; i < this.partitionList.length; i++ ){
+			var Networks = this.partitionList[i].networkList;
+			for(var j = 0; j < Networks.length; j++){
+				var Devices = Networks[j].deviceList;
+					for( var k = 0; k < Devices.length; k++){
+						if(Devices[k].current_device_name == deviceName){
+							var deviceIndex = k;
+							this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
+							
+						}
+						if (deviceIndex != -1){
+							
+						}
+					}
+					var deviceIndex = Devices.indexOf(device););
+					
 				}
 			}
 		}
-		var deviceIndex= this.NetworkList.deviceList.indexOf(network);
+	
+		
 	}
 	
-	this.deleteNetwork = function(networkName){
-		
+	this.deleteNetwork = function(network){
+		//deviceList.spice(device);
+		for(var i = 0; i < this.partitionList.length; i++ ){
+			var Networks = this.partitionList[i].networkList
+			for(var j = 0; j < Networks.length; j++){
+				var Devices = Networks[j].deviceList;
+					var deviceIndex = Devices.indexOf(device););
+					if (deviceIndex != -1){
+						this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
+					}
+				}
+			}
+		}
+	}
+	
+	this.deletePartition(partition){
+		for(var i = 0; i < this.partitionList.length; i++ ){
 	}
 	
 	this.addPartition = function(partitionName){
@@ -64,22 +152,14 @@ function Simulation(simulation_name){
 		this.session_data.partitionList(Partition);
 	}
 	
-	this.save = function(){
-		var sim = {};
-		sim.deviceList = this.deviceList;
-		sim. = this.networkList ;
-		sim.partitionList = this.partitionList;
-		sim.simulation_population = this.simulation_population;
-		sim.simulation_name = this.simulation_name = simulation_name;
-		sim.config_map = this.config_map;
-		sim.tokenMethod = this.tokenMethod;
-		sim.globalCount = this.globalcount=;
-		sim.activity_logs = this.activity_logs;
-		Database.modifySimulationByName(this.simulation_name, sim);
+	this.save = function(timestamp){
+		
+		Database.modifySimulationByName(this.simulation_name, this.simulationJSON);
 	}
 }
 
-module.exports.getSimulationTemplate = getSimulationTemplate;/**
+module.exports.getSimulationTemplate = getSimulationTemplate;
+/**
  * New node file
  */
 
