@@ -1,6 +1,3 @@
-/**
- * Template for Network
- */
 function Network(networkName, networkType){
 	//Required
 	this.networkName = networkName; // String
@@ -9,7 +6,7 @@ function Network(networkName, networkType){
 	//Required
 	this.deviceIterator = new DeviceIterator(); // Returns an iterator that provides Device objects
 		  
-	this.partition='';
+	this.partition={};
 	this.deviceList=[];
 	this.networkJSON={};
 	this.simulationName='';
@@ -57,27 +54,17 @@ function Network(networkName, networkType){
 	};
 	
 	//Required
-	//pass in a network OBJECT not the JSON
-	this.connectNetwork = function connectNetwork(network){
-
-		Database.getSimByName(this.simulationName, function(Sim){
-			var thisPartitionName = this.networkJSON.partition;
-			//gets the partition name of the passed in network
-			var networkPartitionName = simulation.getPartition(Sim.config_map, network.networkJSON.network_name);
-			var devices = Sim.config_map[networkPartitionName][network.networkJSON.network_name];
-			delete Sim.config_map[networkPartitionName][network.networkJSON.network_name];
-			Sim.config_map[thisPartitionName][network.networkJSON.network_name] = devices;
-			
-			Database.modifySimByName(simulation, Sim);
-		});
+	this.connectNetwork = function (network){
+		this.partition.mergePartitions(network.partition);
+		network.partition=this.partition;
+		network.networkJSON.partition_name=this.partition_name;
+		Database.modifyNetworkByName(network.network_name,networkJSON);
 	};
 	//Required
-	exports.disconnectNetwork = function dividePartition(network, partition_name, simulation){
-		Database.getSimByName(simulation, function(Sim){
-			delete Sim.config_map[partiton][network];
-			Sim.config_map[network] = network;
-			Database.modifySimByName(simulation, Sim);
-		});
+	exports.disconnectNetwork = function(network){
+		this.partition.dividePartition(network)
+		network.partition={};
+		Database.modifyNetworkByName(network.network_name,networkJSON);
 	};
 
 };

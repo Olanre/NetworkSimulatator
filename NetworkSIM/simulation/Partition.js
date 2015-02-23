@@ -33,7 +33,7 @@ function Partition(partitionName, simulationName){
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
 		networks.push(network);
-	};
+	}
 	
 	this.removeNetwork=function(network){
 		Database.getSimulationByName(this.simulation_name,function(simulation){
@@ -41,7 +41,38 @@ function Partition(partitionName, simulationName){
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
 		delete networks[networks.indexOf(network)];
+	}
+	/****
+	 * This merges the partitions in the config map
+	 ****/
+	this.mergePartitions(partition){
+		//updates the configmap and the partition in the database
+		Database.getSimByName(this.simulation_name,function(simulation){
+			var partitionb=simulation.config_map[partition.partition_name]
+			delete simulation.config_map[partition.partition_name];
+			sim.config_map[this.partition_name]=Util.merge_objects(sim.config_map[this.partition_name],partitionb);
+			Database.modifySimByName(this.simulation_name, simulation);
+			Database.modifyPartitionByName(this.partition_name, this.partitionJSON);
+			
+			
+		});
+		//updates the partition object and the network object
+		for(network in partition.networks){
+			network.partition=this;
+			this.networks.push(partition.networks[network]);
+		}
 	};
-	
-	
+	this.dividePartition(network){
+		//updates the configmap and the partition in the database
+		Database.getSimByName(this.simulation_name,function(simulation){
+			delete Sim.config_map[this.partition_name][network.network_name];
+			simulation.config_map[network.network_name]=network.networkJSON;
+			Database.modifySimByName(this.simulation_name,simulation);
+			Database.modifyPartitionByName(this.partition_name,this.partitionJSON);
+			
+		}
+		//updates the partition object and the network object
+		delete this.networks[this.networks.indexOf(network)];
+		network.partition={};
+	};
 }
