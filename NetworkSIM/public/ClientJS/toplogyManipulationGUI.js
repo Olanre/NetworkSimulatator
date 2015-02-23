@@ -50,11 +50,13 @@ function generateTopology(configMap, areaWidth){
 				
 				if(networkIndex==0){
 					root=createNetworkGraphicAt(rootXY,rootXY);
+					root.name=network;
 					connectDevicesToNetwork(configMap[partition][network],root);
 				}
 				
 				else{
 					connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
+					connected.name=network;
 					createPartitionGraphic(root,connected);
 					connectDevicesToNetwork(configMap[partition][network],connected);
 				}
@@ -67,9 +69,12 @@ function generateTopology(configMap, areaWidth){
 		
 		else{
 			var distance=areaWidth/(1+Object.keys(configMap[partition]).length);
+			var freeDevice;
 			deviceIndex=0;
 			for(device in configMap[partition]){
-				createDeviceGraphicAt(distance*(deviceIndex+1),20);
+				freeDevice=createDeviceGraphicAt(distance*(deviceIndex+1),20);
+				freeDevice.name=device;
+				freeDevice.draw();
 				deviceIndex++;
 			}
 		}
@@ -81,10 +86,13 @@ function connectDevicesToNetwork(deviceList,networkObject){
 	var numDevices=Object.keys(deviceList).length;
 	var angle=2*Math.PI/numDevices;
 	var connectedDevice;
-	
-	for(var i=0;i<numDevices;i++){
+	var i=0;
+	for(device in deviceList){
 		connectedDevice=createObjectWithin(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
 		attachChild(networkObject,connectedDevice);
+		connectedDevice.name=device;
+		connectedDevice.draw();
+		i++;
 	}
 }
 function createNetworkGraphic(){
@@ -204,7 +212,7 @@ interact('.network')
 		    if (draggableElement.classList.contains('device')){
 			    dropzoneElement.classList.add('drop-target');
 			    draggableElement.classList.add('connected-device');
-			    draggableElement.textContent = 'Dragged in';
+			    //draggableElement.textContent = 'Dragged in';
 		    }
 		},
 
@@ -339,8 +347,8 @@ function mouseOver(e){
 	}
 }
 //adds the listener to the document
-//document.body.onmouseover =mouseOver;
-//document.body.onmouseout = mouseOver;
+document.body.onmouseover =mouseOver;
+document.body.onmouseout = mouseOver;
 
 function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){
@@ -415,6 +423,7 @@ function orderCanvas(){
 			}
 		}
 	}
+	
 }
 
 /****
@@ -433,6 +442,7 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.y=centerY;
 	this.r=radius;
 	this.stroke=1;
+	this.name="";
 	//whether the name of the device is visible
 	this.nameVisible=false;
 	
@@ -447,7 +457,6 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.displayName.setAttribute("class", 'name-text');
 	this.displayName.setAttribute("font-size","14");
 	this.displayName.setAttribute("text-anchor", "middle");
-	
 	this.draw();
 	svgCanvas.appendChild(this.element);
 	svgCanvas.appendChild(this.displayName);
@@ -461,17 +470,16 @@ circle.prototype.draw=function(){
 	
 	this.displayName.setAttribute("x", this.x);
 	this.displayName.setAttribute("y", this.y - this.r-2);
-	
-	orderCanvas();
-	
-	if( this.nameVisible == true){
-		//fill this in with actual device name
-		this.displayName.textContent=this.element.getAttribute("data-index");
+	if(this.nameVisible==true){
+		this.displayName.textContent=this.name;
 	}
 	else{
-		this.displayName.textContent='';
+		this.displayName.textContent="";
 	}
+	console.log(this.name);
+	orderCanvas();
 }
+
 
 /****
  * Line object to be rendered by SVG.
