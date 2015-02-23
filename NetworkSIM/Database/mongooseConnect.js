@@ -16,6 +16,26 @@ mongoose.connection.once('connected', function(){
 Schema = db.Schema;
  
                                     //****Schemas
+//SIMULATION
+var simulationSchema = mongoose.Schema({
+	   networkList : [Netowrk],
+	   deviceList : [Device],
+	   partionLIst : [Partition],
+	   //num_devices: Number,
+	   //num_networks: Number,
+	   simulation_population: Number,
+	   simulation_name: String,
+	   config_map: String,
+	   tokenMethod : String,
+	   globalcount : Number,
+	   //token_list : [tokens],
+	   activity_logs : String,
+	   
+	});
+
+
+	//SIMULATION COMPLETE
+	var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //STATE - storing logs as a string
 var stateSchema = mongoose.Schema({
@@ -59,25 +79,7 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 //SIMULATION
-var simulationSchema = mongoose.Schema({
-   networkList : [Netowrk],
-   deviceList : [Device],
-   partionLIst : [Partition],
-   //num_devices: Number,
-   //num_networks: Number,
-   simulation_population: Number,
-   simulation_name: String,
-   config_map: String,
-   tokenMethod : String,
-   globalcount : Number,
-   //token_list : [tokens],
-   activity_logs : String,
-   
-});
 
-
-//SIMULATION COMPLETE
-var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //USER 
 var userSchema = mongoose.Schema({
