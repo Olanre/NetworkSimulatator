@@ -170,15 +170,10 @@ function Partition(partitionName, simulationName){
 	this.networks=[];
 	this.simulation_name=simulationName;
 	
-	this.addNetwork=function(network){
-		networks.push(network);
-	};
-	this.removeNetwork=function(network){
-		var networkIndex=networks.indexOf(network);
-		networks.splice(networkIndex,1);
-	};
-
-	
+	this.addNetwork=function(network){};
+	this.removeNetwork=function(network){};
+	this.mergePartition(partition){};
+	this.dividePartition(network,partition){};
 }
 
 
