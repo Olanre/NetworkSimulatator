@@ -81,7 +81,7 @@ function Simulation(simulation_name){
 			Database.getDeviceByToken( device.token, function(Device){
 				Device.current_network = 'freelist';
 				Device.current_partition = 'freelist';
-				Database.modifyUserByToken(device.token, Device);
+				Database.modifyUserByToken(device.token, device.deviceJSON);
 			});
 			
 			

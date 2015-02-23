@@ -11,7 +11,6 @@ function Device(deviceName){
 	this.networkObject={};
 	this.device_name  = '';
 	this.rdt = {};
-	this.networks_created = [];
 	this.deviceJSON={};
 	
 	this.attachJSON=function(deviceJSON){
@@ -58,7 +57,7 @@ function Device(deviceName){
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.partition;
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
-	  delete network.deviceList()
+	  delete network.deviceList();
 	  
   };
   
