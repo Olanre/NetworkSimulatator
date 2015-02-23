@@ -40,15 +40,18 @@ var simulationSchema = mongoose.Schema({
 //STATE - storing logs as a string
 var stateSchema = mongoose.Schema({
 	id : String,
-	state : [ 
-			  id : Sim, 
+	state : [{ id : Sim, 
 			  timeStamp : String, 
-			  devices : [ device : User ] ,
-			]
+			  devices : [ {device : User} ] ,
+	}]
 });
 
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
+
+
+
+
 
 //DEVICE
 var deviceSchema = mongoose.Schema({
