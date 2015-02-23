@@ -1,51 +1,72 @@
+/**
+ * Template for Network
+ */
 function Network(networkName, networkType){
-	var network_data = {};
+	//Required
+	this.networkName = networkName; // String
+	//Required
+	this.networkKind = networkKind; // Constant: WiFi, GSM
+	//Required
+	this.deviceIterator = new DeviceIterator(); // Returns an iterator that provides Device objects
+		  
+	this.partition='';
+	this.deviceList=[];
+	this.networkJSON={};
+	this.simulationName='';
 	
-	exports.getNetwork = function getNetwork(){
+	this.attachJSON=function(networkJSON){
+		this.networkJSON=networkJSON;
+	}
+	
+	this.getTemplate = function getNetwork(){
 		network_data.network_name = networkName;
 		network_data.network_type = networkType;
 		network_data.deviceList = [];
+		network_data.partition = '';
 		return network_data;
-	}
+	};
+	
 	
 	//Required
-	exports.addDevice = function addDevice(device, network, partition, simulation){
-		Database.getSimByName(simulation, function(Sim){
-			var list.Sim.config_map['freelist'];
-			if( list.hasOwnProperty(device) ){
-				delete Sim.config_map.free_list[device];
-		  	}
-			device_num = size(local_session.config_map[Partition_name][network_name]) + 1;
-			//add the device to the actual configuration map
-			Sim.config_map[partition][network][device] = device_num;
-			Database.modifySimByName(simulation, Sim);
-			Database.getDeviceByName( device, function(Device){
-				Device.current_network = network;
-				Device.current_partition = partition;
-				Database.modifyUserByName(device_name, Device);
-			});
-			
-		}
+	
+	//we assume that we will only add devices through a network
+	this.addDevice = function addDevice(device){
+		this.networkJSON.deviceList.push(device.deviceJSON);
+		this.deviceList.push(device);
+		//need this function from andrew
+		Database.saveNetworkByName(this.networkJSON.network_name, this.networkJSON);
+		device.joinNetwork(this);
 	};
 	
 	//Required
-	exports = removeDevice = function(device, network, simulation, partition){
-		Database.getSimByName(simulation, function(Sim){
-			if(Sim !== null){
-				delete Sim.config_map[partition][network][device_name];
-				Database.modifySimByName(simulation, Sim);
-				var Partition = partitionTemplate.addDevice2FreeList(device);
+	this.removeDevice= function removeDevice(device){
+		//delete from the deviceList by token
+		for (var i =0; i< this.deviceList.length){
+			if (this.deviceList[i].token == device.token){
+				this.deviceList.splice(1,i);//this should remove the element at index i
 			}
-		});
+		}
+		//delete from the JSON device list
+		for (var i =0; i< this.networkJSON.deviceList.length){
+			if (this.networkJSON.deviceList[i].token == device.token){
+				this.networkJSON.deviceList.splice(1,i);//this should remove the element at index i
+			}
+		}
+		device.leaveNetwork(this);
+		Database.saveNetworkByName(this.networkJSON.network_name, this.networkJSON);
 	};
+	
 	//Required
-	exports = connectNetwork = function(networka, networkb simulation){
-		Database.getSimByName(simulation, function(Sim){
-			var partitiona = simulation.getPartition(Sim.config_map, networka);
-			var partitionb = simulation.getPartition(Sim.config_map, networkb);
-			var devices = Sim.config_map[partitionb][networkb];
-			delete Sim.config_map[partitionb][network];
-			Sim.config_map[partitiona][networkb] = devices;
+	//pass in a network OBJECT not the JSON
+	this.connectNetwork = function connectNetwork(network){
+
+		Database.getSimByName(this.simulationName, function(Sim){
+			var thisPartitionName = this.networkJSON.partition;
+			//gets the partition name of the passed in network
+			var networkPartitionName = simulation.getPartition(Sim.config_map, network.networkJSON.network_name);
+			var devices = Sim.config_map[networkPartitionName][network.networkJSON.network_name];
+			delete Sim.config_map[networkPartitionName][network.networkJSON.network_name];
+			Sim.config_map[thisPartitionName][network.networkJSON.network_name] = devices;
 			
 			Database.modifySimByName(simulation, Sim);
 		});
@@ -57,13 +78,6 @@ function Network(networkName, networkType){
 			Sim.config_map[network] = network;
 			Database.modifySimByName(simulation, Sim);
 		});
-	}
-	
-	function size(obj) {
-	    var size = 0, key;
-	    for (key in obj) {
-	        if (obj.hasOwnProperty(key)) size++;
-	    }
-	    return size;
 	};
-}
+
+};
