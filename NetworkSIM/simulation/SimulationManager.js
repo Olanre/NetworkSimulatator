@@ -301,7 +301,7 @@ function createDevice(body, simulation) {
 	var network_name = body.network_name;
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
-	var token = body.token;
+	//var token = body.token;
 	admin.addDevice(device_name);  // do you mean DeviceManager.addDevice(devID) ?
 	
 	
@@ -326,6 +326,8 @@ function addPartition(partitionObject, simulation){
 function deleteDevice(deviceObject, simulation){
 	var simulationName=deviceObject.simulation_name;
 	var deviceName=deviceObject.device_name;
+	var networkName = deviceObject.network_name;
+	var partitionName = deviceObject.partition_name; 
 	//Database.deleteDevice(simulationName,deviceName);
 }
 
@@ -475,6 +477,14 @@ function addDevice2FreeList(body, simulation){
 function removeDevicefromFreeList(body, simulation){
 	var simulation_name = body.simuation_name;
 	var device_name = body.device_name;
+}
+
+function removeDevice(body, simulation){
+	var network_name = body.network_name;
+	var partition_name = body.partition_name;
+	var simulation_name = body.simulation_name;
+	var device_name = body.device_name;
+	
 }
 
 

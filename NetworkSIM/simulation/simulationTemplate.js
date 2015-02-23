@@ -23,7 +23,7 @@ exports.getSimulation = function getSimulation(){
 }
 
 exports.addNetwork = function addNetwork(networkName, partition, networkType, simulation ){
-	var application = applicationTemplate.getApplication();
+	var application = applicationTemplate;
 	Database.getSimByName(simulation, function(Sim){
 		var new_number = Sim.networkList.length + 1;
 		Sim.config_map[partition][networkName] = {};
@@ -31,7 +31,8 @@ exports.addNetwork = function addNetwork(networkName, partition, networkType, si
 		var Network = =networkTemplate.getTemplate();
 		Sim.networkList.push(Network);
 		Database.modifySimByName(simulation, Sim);
-		
+		//need to update number of networks in the application and simulation here
+
 	});
 	
 	
@@ -49,12 +50,23 @@ exports.addDevice = function addDevice(deviceName, simulationName){
 	Database.getSimByName(simulationName, function(Sim){
 		Sim.deviceList.push(Device);
 		Database.modifySimByName(simulationName, Sim);
+		//need to update number of devices here for application and simulation
 		
 	});
 }
 
-exports.removeDevice = function addDevice(deviceName, simulationName){
-
+exports.removeDevice = function addDevice(device_name, network_name, partition_name,  simulationName){
+	Database.getSimByName(simulationName, function(Sim){
+		var list = Sim.config_map['freelist'];
+		if( list.hasOwnProperty(device_name) ){
+			delete Sim.config_map['freelist'][device_name];
+		}else{
+			delete Sim.config_map[partition][network][device_name];
+		}
+		//need to update number of devices here for application and simulation
+		Database.modifySimByName(simulationName, Sim);
+	});
+	
 	
 }
 
@@ -64,13 +76,14 @@ export.removeNetwork = function removeNetwork(network_name, partition_name, simu
 		Sim.config_map[partition_name]['-'] = temp;
 		//deletes the network
 		delete Sim.config_map[partition_name][network_name];
+		//var Application = applicationTemplate.updateNetworkNumber()
 		Database.modifySimByName(simulationName, Sim);
 		//not implemented yet
 		Database.getUsersByNetwork( network_name, function(Devices){
 			for(var i = 0; i  < Devices.length; i++){
 				add2FreeList( Devices[i].current_device_name, simulationName);
 			}
-			
+			//need to update number of networks in the application and simulation here
 		});
 		
 	});
@@ -99,6 +112,14 @@ exports.deleteSimulation = function deleteSimulation(simulation_name){
 			//not yet implemented
 			Database.deleteUser(Devices[i]);
 		}
+		
+	});
+}
+
+export.updateTokenMethod = function updateTokenMethod(simulation, new_method){
+	Database.getSimByName(simulation, function(Sim){
+		Sim.tokenMethod = new_method;
+		Database.modifySimByName(simulation, Sim);
 		
 	});
 }

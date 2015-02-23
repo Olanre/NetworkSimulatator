@@ -397,6 +397,8 @@ function deleteNetworkFromSession(network_name, Partition_name, local_session){
 function deleteDevice(device_name){
 	//gets the simulation from storage
 	var local_session = get_local_session();
+	var network = '';
+	var partition = '';
 	if(local_session !== null){
 		var new_number = local_session.num_devices - 1;
 		updateDeviceNumber(new_number);
@@ -415,7 +417,9 @@ function deleteDevice(device_name){
 		putinStorage( 'session', JSON.stringify(local_session) );
 		
 		var params = { 
-				'device_name': device_name, 
+				'device_name': device_name,
+				'network_name' : network_name,
+				'partition_name' : partition_name,
 				'simulation_name': local_session.simulation_name,
 				};
 		var url = '/delete/Device';
@@ -662,8 +666,12 @@ function createDevice(device_name){
 	var new_number = local_session.num_devices + 1;
 	
 	updateDeviceNumber(new_number);
+	network = getNetwork( device_name);
+	partition = getPartitionfromDevice( device_name);
 	
 	var params = { 
+			'network_name' : network,
+			'partition_name' : partition,
 			'device_name': device_name, 
 			'simulation_name': local_session.simulation_name,
 			};

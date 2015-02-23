@@ -28,6 +28,13 @@
     // Make the device join a network
 	  
   };
+  
+  export.updateDeviceName = function updateDeviceName(token, old_name, new_name, simulation){
+	  Database.getUserByToken(token, function(Device){
+		 Device.current_device_name =  new_name;
+		 Database.saveUserByToken(token, Device);
+	  });
+  }
   //Required
   exports.leaveNetwork = function(){
     // Make the device leave connected network
