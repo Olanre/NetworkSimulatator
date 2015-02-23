@@ -1,7 +1,7 @@
 //Required
-var networkList;
+var networkList = Simulation.getNetworks();
 //Required
-var deviceList;
+this.deviceList = Simulation.getDevices();
 
 var partitionList;
 
@@ -11,6 +11,8 @@ var partitionList;
  ****/
 function NetworkIterator(){
   // An iterator over networks in the simulation
+	networkList = Simulation.getNetworks();
+	
   this.index=0;
   //Required
   this.first = function() {
@@ -43,7 +45,8 @@ function NetworkIterator(){
  ****/
 function DeviceIterator(){
   // Similar to the NetworkIterator except the elements are devices
-  this.index=0;
+	
+	this.index=0;
   //Required
   this.first = function() {
 	  return deviceList[0];

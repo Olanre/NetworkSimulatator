@@ -31,17 +31,18 @@ function removeApp(appName){
 
 function addNetwork(networkName, networkKind){
   // Add a network with the given name and kind to the simulation
+	var Network = new Network(networkName, networkKind)
 }
 
 function removeNetwork(networkName){
-	var Network = new Network(networkName)
+	
 	deviceList.add(Network);
   // Remove a network with the given name from the simulation
 }
 
 function addDevice(deviceName){
 	var Device = new Device(deviceName)
-	deviceList.add(Device);
+	Simulation.addDevice()
   // Add a device with the given name to the simulation
 }
 
@@ -50,11 +51,11 @@ function removeDevice(deviceName){
 }
 
 function addPartition(partitionName){
-	  // Add a device with the given name to the simulation
+	  // Add a partition with the given name to the simulation
 }
 
 function removePartition(partitionName){
-	  // Remove a device with the given name from the simulation
+	  // Remove a partition with the given name from the simulation
 }
 
 
