@@ -8,8 +8,9 @@
  */
 function getSimulationTemplate(){
 	var session_data = {};
-	session_data.num_devices = 0;
-	session_data.num_networks = 0;
+	session_data.deviceList = [];
+	session_data.networkList = [];
+	session_data.partitionList = [];
 	session_data.simulation_population = 0;
 	session_data.simulation_name = '';
 	session_data.config_map = {};
