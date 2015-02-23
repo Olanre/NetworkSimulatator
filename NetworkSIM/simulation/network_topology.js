@@ -178,10 +178,5 @@ function Partition(partitionName){
 }
 
 
-
-
-exports.Device = Device;
-exports.Network=Network;
-//exports.Simulation = Simulation;
 exports.NetworkIterator = NetworkIterator;
 exports.DeviceIterator = DeviceIterator;

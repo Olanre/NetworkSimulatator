@@ -136,8 +136,8 @@ exports.startTemplate = function(callback) {
 	
 	Database.getApp(function(App){
 		//blank name for now as identified by token
-		appstate.device = new topology.device("");
-
+		var device = new Device("");
+		appstate.device=device.getTemplate();
 		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
 		appstate.states = stateTemplate.getStateTemplate();
 		//App.simulation_list = JSON.parse(App.simulation_list);
