@@ -45,7 +45,7 @@ svg {
 .drop-target{
 	fill: #FFC12B;
 }
-.can-drop{
+.connected-device{
 	fill: #0430FB;
 }
 
