@@ -127,7 +127,7 @@ exports.generateActivity = function generateActivity(simulation, url, body, time
 	
 }	
 
-export.updateDeviceLog = function updateDeviceLog(new_activity, simulation, token){
+exports.updateDeviceLog = function updateDeviceLog(new_activity, simulation, token){
 	Database.getUserbyToken(token, function(Device){
 		Device.activity += new_activity;
 		Database.modifyUserbyToken(token, Device);
@@ -141,5 +141,3 @@ exports.updateSimulationLog = function updateSimulationLog(new_activity, simulat
 	});
 	}
 }
-
-module.exports.getstateTemplate = getStateTemplate;

@@ -29,7 +29,7 @@
 	  
   };
   
-  export.updateDeviceName = function updateDeviceName(token, old_name, new_name, simulation){
+  exports.updateDeviceName = function updateDeviceName(token, old_name, new_name, simulation){
 	  Database.getUserByToken(token, function(Device){
 		 Device.current_device_name =  new_name;
 		 Database.saveUserByToken(token, Device);

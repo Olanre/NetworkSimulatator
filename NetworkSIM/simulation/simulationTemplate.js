@@ -28,7 +28,7 @@ exports.addNetwork = function addNetwork(networkName, partition, networkType, si
 		var new_number = Sim.networkList.length + 1;
 		Sim.config_map[partition][networkName] = {};
 		application.updateNetworkNumber(new_number);
-		var Network = =networkTemplate.getTemplate();
+		var Network = networkTemplate.getTemplate();
 		Sim.networkList.push(Network);
 		Database.modifySimByName(simulation, Sim);
 		//need to update number of networks in the application and simulation here
@@ -70,7 +70,7 @@ exports.removeDevice = function addDevice(device_name, network_name, partition_n
 	
 }
 
-export.removeNetwork = function removeNetwork(network_name, partition_name, simulationName){
+exports.removeNetwork = function removeNetwork(network_name, partition_name, simulationName){
 	Database.getSimByName(simulationName, function(Sim){
 		var temp = Sim.config_map[partition_name][network_name];
 		Sim.config_map[partition_name]['-'] = temp;
@@ -90,16 +90,15 @@ export.removeNetwork = function removeNetwork(network_name, partition_name, simu
 }
 
 exports.addPartition = function addPartition(partitionName, simulation){
-	var 
-	var Partition = partitionTemplate.getPartition();
+	var partition = partitionTemplate.getPartition();
 	partition.partition_name = partitionName;
 	Database.getSimByName(simulation, function(Sim){
-		Sim.partitionList.push(Partition);
+		Sim.partitionList.push(partition);
 		Database.modifySimByName(simulation, Sim);
 	});
 }
 
-export.createSimulation = function createSimulation( SimObject ){
+exports.createSimulation = function createSimulation( SimObject ){
 	Database.addSim(SimObject);
 	
 }
@@ -116,7 +115,7 @@ exports.deleteSimulation = function deleteSimulation(simulation_name){
 	});
 }
 
-export.updateTokenMethod = function updateTokenMethod(simulation, new_method){
+exports.updateTokenMethod = function updateTokenMethod(simulation, new_method){
 	Database.getSimByName(simulation, function(Sim){
 		Sim.tokenMethod = new_method;
 		Database.modifySimByName(simulation, Sim);
@@ -127,5 +126,3 @@ export.updateTokenMethod = function updateTokenMethod(simulation, new_method){
 exports.save = function save(){
 	Database.modifySimulationByName(this.session_data);
 }
-
-module.exports.getSimulationTemplate = getSimulationTemplate;

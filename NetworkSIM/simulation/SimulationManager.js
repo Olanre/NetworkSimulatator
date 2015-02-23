@@ -123,7 +123,9 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 				
 		}	
 	}
-	callback();
+	if (typeof(callback) == "function") {
+		callback();
+	}
 };
 
 /** 	-------------------------------------------

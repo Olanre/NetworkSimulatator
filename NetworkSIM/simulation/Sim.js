@@ -1,6 +1,3 @@
-/**
- * New node file
- */
 
 /**
  * session_data holds all of the variables related to the current simulation if one exists.
