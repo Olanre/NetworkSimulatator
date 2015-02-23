@@ -94,7 +94,7 @@ function Network(networkName, networkKind){
    var deviceIndex=deviceList.indexOf(device);
    deviceList.splice(deviceIndex,1);
   };
-  //Required
+  //Required.
   this.connectNetwork = function(network){
     var partition=network.partition;
     this.partition=partition;
@@ -117,6 +117,22 @@ function Network(networkName, networkKind){
 
 
 function Device(deviceName){
+	this.deviceName=deviceName;
+	this.token = '';
+	this.email = '';
+	this.verified = false;
+	this.current_network = '';
+	this.current_simulation = '';
+	this.registeredOn = '';
+	this.networks_created = [];
+	this.current_partition = '';
+	this.current_device_name = '';
+	this.application_id =  'default';
+	this.admin = false;
+	this.localcount = 0;
+	this.globalcount = 0;
+	this.activity = '';
+	
   //Required
   this.current_device_name = deviceName;
   this.device_number = deviceList.length;

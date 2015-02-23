@@ -67,7 +67,7 @@ function selectSimulationDate(selected){
 
 function updateSimulationEvents(time){
 	state=stateList[time];
-	state.devices
+	state.id.activity_logs
 }
 
 
