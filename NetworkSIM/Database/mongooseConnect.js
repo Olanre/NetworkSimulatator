@@ -21,7 +21,6 @@ Schema = db.Schema;
 var deviceSchema = mongoose.Schema({
    device_name : String,
    //deviceNumber : Number,
-	
 });
 
 //DEVICE COMPLETE
@@ -67,21 +66,23 @@ var simulationSchema = mongoose.Schema({
 
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
-
-
+	
 //State building block
 var stateObject = mongoose.Schema({
-   id : Sim,
+   simulation : String,
    timeStamp : String,
    devices : [User],
 });
+
+
 //state building block complete
 var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
 
-
+//Partition Schema
 var partitionSchema = mongoose.Schema({
+	
 	partition_name: String,
-	network_list: [Network]
+	network_list: [Network],
 
 });
 
