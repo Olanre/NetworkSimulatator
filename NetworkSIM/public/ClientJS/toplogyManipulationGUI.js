@@ -57,6 +57,8 @@ var testConfigMap3={
  * The main functions used in our GUI
  ***/
 function generateTopology(configMap, areaWidth){
+	//clear the svgCanvas
+	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
 	var root,connected,connectedDevice;
@@ -326,7 +328,10 @@ interact('.network')
 
 //clears the svg canvas
 function clearCanvas(){
-	
+	while (svgCanvas.lastChild) {
+		svgCanvas.removeChild(svgCanvas.lastChild);
+	}
+	shapes=[];
 }
 
 function snapToLocation(shape,coordinates){
