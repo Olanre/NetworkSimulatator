@@ -33,7 +33,7 @@ var networkSchema = mongoose.Schema({
  network_name : String,
  network_type : String,
  partition : String,
- device_list : [Device]
+ device_list : [Device],
 
 });
 
@@ -276,6 +276,11 @@ function newState(aState)
   LenneteState.save();
   //console.log("Saved state" + state);
 }
+
+
+
+//NETWORK FUNCTIONS
+
 
 	
 //exports, finished calls
