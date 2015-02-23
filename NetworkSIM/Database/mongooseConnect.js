@@ -280,7 +280,76 @@ function newState(aState)
 
 
 
+
+
+
 //NETWORK FUNCTIONS
+function saveNetwork(aNetwork)
+{ 
+	var newNetwork = new Network(aNetwork);
+	newNetwork.save();
+}
+
+function modifyNetworkByName(aString, aNetwork)
+{
+	Newtwork.findOne({netowrk_name : aString}, function(err, obj))
+	{
+		if(err) console.log("No network with that name");
+		var obj = aNetwork;
+		obj.save();
+		console.log("Network saved");
+	}
+}
+
+
+//Partition Methods
+function savePartition(aPartition)
+{
+	var newPartition = new Partition(aPartition);
+	newPartition.save();
+}
+
+function modifyParitionByName(aString, aPartition)
+{
+   Partition.findOne({partition_name : aString}, function(err,obj))
+   {
+	   if(err) console.lgo("no Partition exists with that name");
+	   
+	   var obj = aPartition;
+	   obj.save();
+	   console.log("partition saved");
+   }
+
+}
+
+
+
+
+
+function modifyUser(aToken, aUser, callback)
+{
+  User.findOne({token: aToken}, function(err, obj)
+  {
+  if(err) console.log("No user with that token");
+    var example = new User();
+	example = obj;
+    example = aUser;
+	example.save();
+	callback();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	
@@ -294,3 +363,9 @@ module.exports.getApp = getApp;
 module.exports.addApp = addApp;
 module.exports.modifyApp = modifyApp;
 module.exports.modifySimByName = modifySimByName;
+module.exports.saveNetwork = saveNetwork;
+module.exports.modifyNetworkByName = modifyNetworkByName;
+module.exports.savePartition = savePartition;
+module.exports.modifyPartitionByName = modifyPartitionByName;
+
+
