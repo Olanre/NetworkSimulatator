@@ -1,7 +1,29 @@
-var templateLog="01/02/2014";//put some log here for testing
+window.onload=function(){populatePage()}
+
+//for testing
+var configMapList={"01/02/2015:12:11:15" : {
+		 'Partition1': 
+		 {'networka' :
+		 { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
+		 'networkb' :
+		 		{ 'deviced': '4', 'devicee': '5'},
+		 				},
+		  'Partition2':
+		 { 'networkc' :
+		 { 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
+		 'networkd' :
+		 		{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
+		 		'networkTest':{},
+		 				},
+		  'Partition3':
+		 { 'networke' : { 'devicek':'11'} },
+		 'freelist' : {'devicew': '13', 'evicex' : '14'}
+		 }};//put some log here for testing
 
 var stateList={};
-var timeStampList=[];
+var timeStampList=["01/02/2015:12:11:15","01/02/2015:11:15:15","01/01/2015:08:35:09"];
+var simulationEvents=["Device1 moved to Network wyattsHouse", "Device2 stopped existing", "Device3 went to Emily's house"];
+
 
 /**
  * Updates the title of the page with the name of the simulation
@@ -25,19 +47,19 @@ function updateDeviceLogTitle(deviceName){
 function populateDates(dates){
 	var logDates = document.getElementById("log-dates");
 	logDates.innerHTML="";
-	for (date in dates){
-		logDates.innerHTML+="<option value="+date+">"+date+"</option>";
+	for (var i = 0; i<dates.length; i++){
+		logDates.innerHTML+="<option value="+dates[i]+">"+dates[i]+"</option>";
 	}
 }
 /**
  * Adds the list of all events that have occurred on this simulation up to this point
  * NOTE: should probably be reverse-chronological order
  */
-function populateSimulationLogs(simulationDates){
+function populateSimulationLogs(simulationEvents){
 	var simulationLogs= document.getElementById("simulation-log");
 	simulationLogs.innerHTML="";
-	for (event in simulationDates){
-		simulationLogs.innerHTML+="<option value="+event+">"+event+"</option>";
+	for (var i =0; i<simulationEvents.length;i++){
+		simulationLogs.innerHTML+="<option value="+simulationEvents[i]+">"+simulationEvents[i]+"</option>";
 	}
 }
 /**
@@ -56,18 +78,18 @@ function populateDeviceLogs(deviceEvents){
  * that simulation state from
  */
 function selectSimulationDate(selected){
-	//should render the current simulation in the simulation thingy
-	//look through the passed in list of all the shit, find the 
-	//correct date, render the simulation from there.
-	console.log(selected);//event should be the time at which this simulation is
-	//gets the configMap for that time stamp
-	configMap=configMapList[event];
-	
+	//gets the config map for that time stamp
+	configMap=configMapList[selected];
+	alert(configMap);
+	//this should be taken from the config map or wherever the events 
+	//are stored
+	populateSimulationLogs(simulationEvents);
+	generateTopology(configMapList["01/02/2015:12:11:15"],500);
 }
 
 function updateSimulationEvents(time){
 	state=stateList[time];
-	state.id.activity_logs
+	state.id.activity_logs;
 }
 
 
@@ -89,9 +111,33 @@ function parseStateList(statesObject){
 	}
 }
 
-device.activity
+function populatePage(){
 
-function loadPage(statesObject){
-	parseStateList(statesObject);
-	populateSimulationLogs(timeStampList);
+	//adds the listener to the document
+	document.body.onclick = mouseClick;
+	
+	alert(configMapList["01/02/2015:12:11:15"]);
+	updatePageTitle("Simulation 1");
+	populateDates(timeStampList);
+}
+
+
+function mouseClick(e){
+	e = e || event;
+	if (event.type == 'click'){
+		var target = e.target;
+	}
+	function toString(el) { 
+		return el ? (el.id || el.nodeName) : 'null' ;
+	}
+	if(toString(target) == "circle"){
+		circleElem=shapes[target.getAttribute('data-index')];
+		if (hasClass(circleElem.element, 'device')){
+			alert("WA");
+			deriveDeviceEvents(circleElem);
+		}
+	}
+}
+
+function deriveDeviceEvents(circleElem){
 }
