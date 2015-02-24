@@ -200,7 +200,9 @@ function addNetworkCreated2Session(new_network, Partition_name, Simulation_name,
  * 
  */
 function addDevice( device_name, network_name){
-	
+	//gets the information of this user
+	var local_device = get_local_device();
+	last_network = local_device.current_network;
 	removeDevicefromNetwork( device_name, network_name);
 	addDevice2Network( device_name, network_name);
 	//gets the default page for the user.
@@ -2266,7 +2268,7 @@ send2Server = function(url, params, callback)
         {
         	resetEventQueue();
         	var obj = JSON.parse(request.responseText);
-        	
+        	console.log(obj);
             callback(obj); // Another callback here
         }else{
         	

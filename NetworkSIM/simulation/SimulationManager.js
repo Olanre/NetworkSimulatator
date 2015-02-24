@@ -11,7 +11,7 @@ var Database = require("../Database/mongooseConnect.js");
 var Device = require("./Device.js");
 var Simulation = require("./Simulation.js");
 var admin = require("./admin.js");
-
+var stateTemplate = require("./stateTemplate");
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
@@ -118,6 +118,8 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 				
 		}	
 	}
+	
+	
 	if (typeof(callback) == "function") {
 		callback();
 	}
@@ -128,26 +130,27 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
  */
 exports.startTemplate = function(callback) {
 	
-	//entire encapsulated application Template
-	var appstate = {};
-	
-	Database.getApp(function(App){
+	//entire encapsulated application Template	
+	Database.getApp( function(App){
 		//blank name for now as identified by token
-		var device = new Device("");
-		appstate.device=device.getTemplate();
-		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-		appstate.states = stateTemplate.getStateTemplate();
 		//App.simulation_list = JSON.parse(App.simulation_list);
 		for(var i = 0; i < App.simulation_list.length; i++){
 			App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
 		}
+		var appstate = {};
+		appstate.device= Device.getTemplate();
+		console.log(Device.getTemplate());
+		appstate.current_simulation_session = Simulation.getTemplate();
+		appstate.states = stateTemplate.getStateTemplate();
 		appstate.application = App;
+		console.log(appstate);
 		callback(appstate);
 	});
+	
 };
 
 
-function getNewState(token, callback){
+exports.getNewState = function(token, callback){
 	var Device ;
 	var Simulation;
 	var Application;
@@ -174,14 +177,11 @@ function getNewState(token, callback){
 						//console.log(Simulation.config_map);
 						appstate.current_simulation_session = Simulation;
 						appstate.device = Device;
+						callback(appstate);
 					}else{
-						var appstate = {};
-						appstate.device = deviceTemplate.getDeviceTemplate();
-						///console.log(appstate.user);
-						appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-						appstate.application = applicationTemplate.getApplicationTemplate();
+						callback(null);
 					}
-					callback(appstate);
+					
 				});
 			 }); 
 		 }else{
@@ -226,6 +226,7 @@ function createSimulation(body) {
 			
 			for(deviceName in map[partitionName][networkName]){
 				var token=TokenManager.generateToken();
+				console.log(token);
 				device=Device.createNewNetwork(deviceName,token);
 				device.networkObject=network;
 				network.device_list.push(device);

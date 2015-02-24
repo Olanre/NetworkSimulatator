@@ -317,8 +317,6 @@ function save(state){
 
 module.exports.getTemplate=function(){
 	var session_data = {};
-	//session_data.partition_list = [];
-	//session_data.free_list=[];
 	session_data.num_devices=0;
 	session_data.num_networks=0;
 	session_data.simulation_population = 0;
