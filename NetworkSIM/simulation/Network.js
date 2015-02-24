@@ -1,17 +1,16 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
-
-function Network(networkName, networkType){
+function Network(networkName, networkKind){
 	//Required
 	this.networkName = networkName; // String
 	//Required
 	this.networkKind = networkKind; // Constant: WiFi, GSM
 	//Required
-	this.deviceIterator = new DeviceIterator(); // Returns an iterator that provides Device objects
+	//this.deviceIterator =new DeviceIterator(); // Returns an iterator that provides Device objects
 		  
 	this.partition={};
 	this.device_list=[];
-	this.networkJSON=getTemplate();
+	this.networkJSON=module.exports.getTemplate();
 	this.simulationName='';
 	
 	this.attachJSON=function(networkJSON){
@@ -45,13 +44,13 @@ function Network(networkName, networkType){
 	//Required
 	this.removeDevice= function(device){
 		//delete from the device_list by token
-		for (var i =0; i< this.device_list.length){
+		for (var i =0; i< this.device_list.length;i++){
 			if (this.device_list[i].token == device.token){
 				this.device_list.splice(1,i);//this should remove the element at index i
 			}
 		}
 		//delete from the JSON device list
-		for (var i =0; i< this.networkJSON.device_list.length){
+		for (var i =0; i< this.networkJSON.device_list.length;i++){
 			if (this.networkJSON.device_list[i].token == device.token){
 				this.networkJSON.device_list.splice(1,i);//this should remove the element at index i
 			}
@@ -76,8 +75,9 @@ function Network(networkName, networkType){
 
 };
 module.exports.getTemplate= function(){
-	network_data.network_name = networkName;
-	network_data.network_type = networkType;
+	var network_data={};
+	network_data.network_name = '';
+	network_data.network_type = 'Wi-Fi';
 	network_data.partition = '';
 	network_data.device_list = [];
 	return network_data;

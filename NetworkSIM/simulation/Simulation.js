@@ -1,16 +1,15 @@
 var Device = require("./Device.js");
-var state =require("./state.js");
 var Network = require("./Network.js");
 var Partition= require("./Partition.js");
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
 function Simulation(simulation_name){
-	this.freeList = new Network('freelist'); 
+	this.freeList = new Network.Network('freelist'); 
 	this.partition_list = [];
-	this.networkIterator = new NetworkIterator();
+	//this.networkIterator = new NetworkIterator();
 	this.simulation_name = simulation_name;
-	this.simulationJSON = getTemplate();
+	this.simulationJSON = module.exports.getTemplate();
 	this.app = '';
 	this.rdt = {};
 	
@@ -57,8 +56,8 @@ function Simulation(simulation_name){
 				merged = merged.concat.apply(merged, Networks[i]);
 			}
 							
-			}
 		}
+		
 		return merged;
 	}
 
@@ -167,7 +166,7 @@ function Simulation(simulation_name){
 		device.registeredOn = d.toString();
 		//use the partitionList or config map
 		Device.loadJSON(deviceTemplate);
-		Device.deviceJSON.current simulation = this.simulation_name;
+		Device.deviceJSON.current_simulation = this.simulation_name;
 		Device.deviceJSON.email = deviceName;
 		Device.deviceJSON.current_device_name = deviceName;
 		Device.deviceJSON.registeredOn = d.toString();
@@ -227,7 +226,7 @@ function Simulation(simulation_name){
 						}
 						
 					}
-					var deviceIndex = Devices.indexOf(device););
+					var deviceIndex = Devices.indexOf(device);
 					
 				}
 			}
@@ -271,7 +270,7 @@ function Simulation(simulation_name){
 		
 	}
 	
-	this.deletePartition(partition){
+	this.deletePartition=function(partition){
 		var partitionIndex = partitionList.indexOf(partition);
 		if(partitionIndex != null){
 			delete partitionList(partitionIndex);
@@ -284,6 +283,7 @@ function Simulation(simulation_name){
 		Database.saveState(state);
 	}
 }
+
 module.exports.getTemplate=function(){
 	var session_data = {};
 	//session_data.partition_list = [];
@@ -291,7 +291,7 @@ module.exports.getTemplate=function(){
 	session_data.num_devices=0;
 	session_data.num_networks=0;
 	session_data.simulation_population = 0;
-	session_data.simulation_name = simulation_name;
+	session_data.simulation_name ='';
 	session_data.config_map = {};
 	session_data.tokenMethod = 0;
 	//session_data.token_list=[];

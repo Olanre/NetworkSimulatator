@@ -12,7 +12,7 @@ function Partition(partitionName, simulationName){
 	
 	
 	
-	this.attachJSON(partitionJSON){
+	this.attachJSON=function(partitionJSON){
 		var networkObject;
 		this.partitionJSON=partitionJSON;
 		
@@ -23,7 +23,7 @@ function Partition(partitionName, simulationName){
 		}
 		
 	}
-	this.getJSON(){
+	this.getJSON=function(){
 		return Database.getPartitionByName(this.partition_name);
 	}
 	
@@ -46,7 +46,7 @@ function Partition(partitionName, simulationName){
 	/****
 	 * This merges the partitions in the config map
 	 ****/
-	this.mergePartitions(partition){
+	this.mergePartitions=function(partition){
 		//updates the configmap and the partition in the database
 		Database.getSimByName(this.simulation_name,function(simulation){
 			var partitionb=simulation.config_map[partition.partition_name]
@@ -63,7 +63,7 @@ function Partition(partitionName, simulationName){
 			this.networks.push(partition.networks[network]);
 		}
 	};
-	this.dividePartition(network){
+	this.dividePartition=function(network){
 		//updates the configmap and the partition in the database
 		Database.getSimByName(this.simulation_name,function(simulation){
 			delete Sim.config_map[this.partition_name][network.network_name];
@@ -71,7 +71,7 @@ function Partition(partitionName, simulationName){
 			Database.modifySimByName(this.simulation_name,simulation);
 			Database.modifyPartitionByName(this.partition_name,this.partitionJSON);
 			
-		}
+		});
 		//updates the partition object and the network object
 		delete this.networks[this.networks.indexOf(network)];
 		network.partition={};
