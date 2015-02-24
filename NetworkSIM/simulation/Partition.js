@@ -76,3 +76,5 @@ function Partition(partitionName, simulationName){
 		network.partition={};
 	};
 }
+
+module.exports.Partition = Partition;
