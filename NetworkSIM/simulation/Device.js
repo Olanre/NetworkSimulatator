@@ -38,7 +38,7 @@ function createNewDevice(deviceName,token){
 
 function loadDeviceFromJSON(deviceJSON){
 	var createdDevice=new Device('');
-	attachJSON(createdDevice,deviceJSON);r
+	attachJSON(createdDevice,deviceJSON);
 }
 
 function attachJSON(deviceObject,deviceJSON){
@@ -69,7 +69,7 @@ function joinNetwork(network){
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
-	  delete network.deviceList();
+	  delete network.device_list;
 	  
 };
   
@@ -90,7 +90,7 @@ function leaveNetwork(network){
 	  this.networkObject = {};
 	  this.deviceJSON.current_partition= 'freelist';
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
-	  var networkIndex= network.deviceList.indexOf(device);
+	  var networkIndex= network.device_list.indexOf(device);
 		networks.splice(networkIndex,1);
 };
   
