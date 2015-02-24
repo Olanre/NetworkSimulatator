@@ -20,6 +20,8 @@ var configMapList={"01/02/2015:12:11:15" : {
 		 'freelist' : {'devicew': '13', 'evicex' : '14'}
 		 }};//put some log here for testing
 
+//should hold a states object I guess 
+var availableStatesObject;
 var stateList={};
 var timeStampList=["01/02/2015:12:11:15","01/02/2015:11:15:15","01/01/2015:08:35:09"];
 var simulationEvents=["Device1 moved to Network wyattsHouse", "Device2 stopped existing", "Device3 went to Emily's house"];
@@ -81,34 +83,21 @@ function selectSimulationDate(selected){
 	//gets the config map for that time stamp
 	configMap=configMapList[selected];
 	alert(configMap);
-	//this should be taken from the config map or wherever the events 
-	//are stored
-	populateSimulationLogs(simulationEvents);
+	
+	//get the logs from the states object for that simulation snapshot
+	simulationLogs=parseSimulationLogs(availableStatesObject,selected);
+	
+	//puts the logs for this simulation snapshot into the html
+	populateSimulationLogs(simulationLogs);
+	
+	//sets the gui to be uninteractable and generates the gui
+	setInteractable(false);
 	generateTopology(configMapList["01/02/2015:12:11:15"],500);
 }
 
 function updateSimulationEvents(time){
 	state=stateList[time];
-	state.id.activity_logs;
-}
-
-
-//states.id.activity_logs;
-//localSession holds the current session and all events that have happened up to this point
-function parseStateList(statesObject){
-	//list of config maps as key value pairs indexed by dates
-	var states= statesObject.states;
-	for (var i =0; i<states.length;i++){
-		//HERE WE ARE ASSUMING THAT TIMESTAMP IS A STRING
-		
-		time=states[i].timeStamp; //timestamp for when that state occured
-		//configMap=states.id.config_map; //gets the config map for that state
-		
-		//add the timestamp to the list of timestamps
-		timeStampList.push(time);
-		
-		stateList[time]=states;
-	}
+	state.simulation.activity_logs;
 }
 
 function populatePage(){
@@ -133,11 +122,111 @@ function mouseClick(e){
 	if(toString(target) == "circle"){
 		circleElem=shapes[target.getAttribute('data-index')];
 		if (hasClass(circleElem.element, 'device')){
-			alert("WA");
-			deriveDeviceEvents(circleElem);
+			alert(circleElem.name);
+			deriveDeviceEvents(circleElem.name);
 		}
 	}
 }
 
 function deriveDeviceEvents(circleElem){
 }
+
+
+
+
+//this should work to parse a states object.
+function parseStates(states){
+	//iterate through all the states
+	for (var i=0; i<states.length; i++){
+		//gets all the timestamps from all of these states
+		timeStampList.push(states[i].simulation.timestamp);
+		//gets all of the config maps for each state
+		configMapList.push(states[i].id.configMap);
+	}
+}
+
+function parseSimulationLogs(states, timeStamp){
+	for (var i=0;i<states.length;i++){
+		if (states[i].timestamp==timeStamp){
+			//this is a string, I'm guessing at how to parse it
+			simulationLogs = states[i].activity_logs;
+			//split strings
+			var logsArray= simulationLogs.split('\n');
+			//return array of all logs 
+			return logsArray
+		}
+	}
+	//if could not find this simulation
+	return "failed";
+}
+
+var testState={'id' : 'blahdu3', 
+	'state':  [{ 
+		'simulation' : {
+			'num_devices': '13',
+			'num_networks': '6',
+			'simulation_name': 'Jeffs sim',
+			'id' : 'blahdu3',
+			'config_map' : {
+		 		'Partition1': {
+		 			'networka' : { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
+		 			'networkb' : { 'deviced': '4', 'devicee': '5'},
+		 		},
+		  		'Partition2':{ 
+		  			'networkc' :{ 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
+		 			'networkd' :{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
+		 			'networkTest' :{},
+		 		},
+		  		'Partition3':{ 
+		  			'networke' : { 'devicek':'11'} 
+		  		},
+		 		'freelist' : {'devicew': '13', 'evicex' : '14'}
+		 	},
+			'globalcount': 0,
+			'simulation_population': 0,
+			'token_list' : { }
+		}, 
+		'timestamp': '2015-01-012:44:00' 
+		'devices' : [
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+			{ device: 
+				'current_device_name': 'devicea',
+				'activity': 'moved home \n headed out \n got well'
+			},
+		]
+
+{‘simulation’ :  simulation_session, timestamp: ‘2015-02-013:44:00’,
+‘devices’: [{ device: device_object},{ device: device_object},{ device: device_object},{ device: device_object}]
+
+
+{ simulation’ : simulation_session, timestamp: ‘2015-02-022:44:00’ , 
+‘devices’: [{ device: device_object},{ device: device_object},{ device: device_object},{ device: device_object}]
+} ]
+};
