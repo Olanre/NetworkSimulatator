@@ -15,8 +15,8 @@ mongoose.connection.once('connected', function(){
   });
 Schema = db.Schema;
  
-                                    //****Schemas
 
+                                    //****Schemas
 //DEVICE
 var deviceSchema = mongoose.Schema({
    device_name : String,
@@ -171,7 +171,6 @@ function modifySimByName(aString, aSim, callback)
    LenneteSim = aSim;
 	LenneteSim.save();
 	callback();
-
 });		
 	
 }
@@ -190,11 +189,11 @@ function modifyUser(aToken, aUser, callback)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-    var example = new User();
-	example = obj;
-    example = aUser;
-	example.save();
-	callback();
+  var Lennete = new User;
+  Lennete = obj;
+   Lennete = aUser;
+   Lennete.save();
+   callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
 }
@@ -209,9 +208,7 @@ function updateUserAcitivity(aString, aUser, callback)
 		                        
 		     aUser.save(function (err) {
 		    	 if(err) {
-		    		 
 		    	 console.error("ERROR, USER NOT UPDATED");
-		    	 
 		    	   }
 		    	 
 		    	callback(); 
@@ -219,18 +216,14 @@ function updateUserAcitivity(aString, aUser, callback)
 			});	
 	}
 	
-
-
 //FETCH BY TOKEN 
 function getUserByToken(aToken, callback)
 {
   User.findOne( {token: aToken}, function(err, obj)
   { 
     if(err) console.log("no user with token " + aToken);
-	var Lennete = new User();
-	Lennete = obj;
 	//console.log("found User " );
-	callback(Lennete);
+	callback(obj);
   });
 }
 
@@ -265,9 +258,6 @@ function modifyApp(NewApp)
      //callback(LenneteApp);
 });
 }
-
-
-
                         
 //STATE FUNCTIONS
 
@@ -331,17 +321,12 @@ function modifyPartitionByName(aString, aPartition)
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
-	   
 	   var obj = aPartition;
 	   obj.save();
 	   console.log("partition saved");
    });
-
 }
-	
 
-
-	
 //*Exports, finished calls
 module.exports.addUser = addUser;
 module.exports.getUserByToken = getUserByToken;
