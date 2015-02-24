@@ -42,6 +42,7 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 //SIMULATION
 var simulationSchema = mongoose.Schema({
 	   partion_list : [Partition],
+	   free_list : [User],
 	   //num_devices: Number,
 	   //num_networks: Number,
 	   simulation_population: Number,
@@ -350,6 +351,8 @@ module.exports.getSimByName = getSimByName;
 module.exports.getApp = getApp;
 module.exports.addApp = addApp;
 module.exports.modifyApp = modifyApp;
+
+//New
 module.exports.modifySimByName = modifySimByName;
 module.exports.saveNetwork = saveNetwork;
 module.exports.modifyNetworkByName = modifyNetworkByName;
@@ -357,5 +360,3 @@ module.exports.savePartition = savePartition;
 module.exports.modifyPartitionByName = modifyPartitionByName;
 module.exports.getPartitionByName = getPartitionByName;
 module.exports.getNetworkByName = getNetworkByName;
-
-
