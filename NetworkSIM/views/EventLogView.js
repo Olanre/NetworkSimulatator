@@ -1,29 +1,10 @@
 window.onload=function(){populatePage()}
 
-//for testing
-var configMapList={"01/02/2015:12:11:15" : {
-		 'Partition1': 
-		 {'networka' :
-		 { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
-		 'networkb' :
-		 		{ 'deviced': '4', 'devicee': '5'},
-		 				},
-		  'Partition2':
-		 { 'networkc' :
-		 { 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
-		 'networkd' :
-		 		{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
-		 		'networkTest':{},
-		 				},
-		  'Partition3':
-		 { 'networke' : { 'devicek':'11'} },
-		 'freelist' : {'devicew': '13', 'evicex' : '14'}
-		 }};//put some log here for testing
-
+var configMapList={};
 //should hold a states object I guess 
 var availableStatesObject;
 var stateList={};
-var timeStampList=["01/02/2015:12:11:15","01/02/2015:11:15:15","01/01/2015:08:35:09"];
+var timeStampList=[];
 var simulationEvents=["Device1 moved to Network wyattsHouse", "Device2 stopped existing", "Device3 went to Emily's house"];
 
 
@@ -82,17 +63,12 @@ function populateDeviceLogs(deviceEvents){
 function selectSimulationDate(selected){
 	//gets the config map for that time stamp
 	configMap=configMapList[selected];
-	alert(configMap);
-	
+	//alert(configMap);
 	//get the logs from the states object for that simulation snapshot
-	simulationLogs=parseSimulationLogs(availableStatesObject,selected);
-	
-	//puts the logs for this simulation snapshot into the html
-	populateSimulationLogs(simulationLogs);
-	
-	//sets the gui to be uninteractable and generates the gui
+	//simulationLogs=parseSimulationLogs(availableStatesObject,selected);
+	//populateSimulationLogs(simulationLogs);
 	setInteractable(false);
-	generateTopology(configMapList["01/02/2015:12:11:15"],500);
+	generateTopology(configMapList[selected],500);
 }
 
 function updateSimulationEvents(time){
@@ -101,11 +77,10 @@ function updateSimulationEvents(time){
 }
 
 function populatePage(){
-
+	parseState(testState);
 	//adds the listener to the document
 	document.body.onclick = mouseClick;
 	
-	alert(configMapList["01/02/2015:12:11:15"]);
 	updatePageTitle("Simulation 1");
 	populateDates(timeStampList);
 }
@@ -127,21 +102,23 @@ function mouseClick(e){
 		}
 	}
 }
-
+//upon clicking a device
 function deriveDeviceEvents(circleElem){
 }
 
 
-
-
 //this should work to parse a states object.
-function parseStates(states){
+function parseState(state){
+	var states=state.states;
 	//iterate through all the states
 	for (var i=0; i<states.length; i++){
+		console.log(i);
+		timestamp=states[i].timestamp;
 		//gets all the timestamps from all of these states
-		timeStampList.push(states[i].simulation.timestamp);
+		timeStampList.push(states[i].timestamp);
 		//gets all of the config maps for each state
-		configMapList.push(states[i].id.configMap);
+		console.log(states[i].simulation.configMap);
+		configMapList[timestamp]=states[i].simulation.configMap;
 	}
 }
 
@@ -160,14 +137,14 @@ function parseSimulationLogs(states, timeStamp){
 	return "failed";
 }
 
-var testState={'id' : 'blahdu3', 
-	'state':  [{ 
-		'simulation' : {
-			'num_devices': '13',
-			'num_networks': '6',
-			'simulation_name': 'Jeffs sim',
-			'id' : 'blahdu3',
-			'config_map' : {
+var testState={id : 'blahdu3', 
+	states:  [{ 
+		simulation : {
+			num_devices: 14,
+			num_networks: 6,
+			simulation_name: 'Jeffs sim',
+			id : 'blahdu3',
+			config_map : {
 		 		'Partition1': {
 		 			'networka' : { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
 		 			'networkb' : { 'deviced': '4', 'devicee': '5'},
@@ -181,52 +158,76 @@ var testState={'id' : 'blahdu3',
 		  			'networke' : { 'devicek':'11'} 
 		  		},
 		 		'freelist' : {'devicew': '13', 'evicex' : '14'}
-		 	},
-			'globalcount': 0,
-			'simulation_population': 0,
-			'token_list' : { }
+		 	}
 		}, 
-		'timestamp': '2015-01-012:44:00' 
-		'devices' : [
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+		timestamp: '2015-01-012:44:00',
+		devices : [
+			{ 'devicea': { 
+				current_device_name: 'devicea',
+				activity: 'moved home \n headed out \n got well'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'deviceb@mun.ca': { 
+				current_device_name: 'deviceb@mun.ca',
+				activity: 'got very hungry \n didnt hang out'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'devicec@mun.ca': {
+				current_device_name: 'devicec@mun.ca',
+				activity: 'wwel'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'deviced': {
+				current_device_name: 'deviced',
+				activity: 'gave out fruit'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'devicee': {
+				current_device_name: 'devicee',
+				activity: 'NO MORE GAMEs'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'devicef': {
+				current_device_name: 'devicef',
+				activity: 'g \n o \n t '
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'deviceg@mun.ca': {
+				current_device_name: 'deviceg@mun.ca',
+				activity: 'made out'
+				}
 			},
-			{ device: 
-				'current_device_name': 'devicea',
-				'activity': 'moved home \n headed out \n got well'
+			{ 'deviceh@mun.ca': {
+				current_device_name: 'deviceh@mun.ca',
+				activity: 'working from home'
+				}
+			},
+			{ 'devicei@mun.ca': {
+				current_device_name: 'devicei@mun.ca',
+				activity: 'made a very good lunch'
+				}
+			},
+			{ 'device@mun.ca': {
+				current_device_name: 'device@mun.ca',
+				activity: 'donna batten'
+				}
+			},
+			{ 'devicek': {
+				current_device_name: 'devicek',
+				activity: 'i am going aways'
+				}
+			},
+			{ 'devicew': {
+				current_device_name: 'devicew',
+				activity: 'obese'
+				}
+			},
+			{ 'evicex': {
+				current_device_name: 'evicex',
+				activity: 'I am well'
+				}
 			},
 		]
-
-{‘simulation’ :  simulation_session, timestamp: ‘2015-02-013:44:00’,
-‘devices’: [{ device: device_object},{ device: device_object},{ device: device_object},{ device: device_object}]
-
-
-{ simulation’ : simulation_session, timestamp: ‘2015-02-022:44:00’ , 
-‘devices’: [{ device: device_object},{ device: device_object},{ device: device_object},{ device: device_object}]
-} ]
+	}]
 };
+
