@@ -21,7 +21,7 @@ var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
-
+//TODO We need to fill this in on load!
 var SimulationList = [];
 
 
@@ -213,16 +213,16 @@ function createSimulation(body) {
 	var device = Device.getTemplate;
 	var map = body.config_map;
 	var d = new Date();
-	//var device_list = simulation.getDevices(map);
 	var simulation = new Simulation.simulation(body.simulation_name);
 	var partition, network,device;
 	//the way I have it set up, the methods in the Simulation/Partition/Network/Device class will handle creating new stuff.
 	simulation.attachJSON(body);
-	
+	//just gotta add the simulation to the database and you're done!
 	Database.addSim(body);
 	
+	//Dunno what this is about, so I'll leave it here for now
 	Database.getApp(function(data){
-		//console.log(data);
+		
 		if(data !== null){
 			var Application = data;
 			var item =  { 'name' : body.simulation_name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
@@ -238,14 +238,12 @@ function createSimulation(body) {
 			//console.log('');
 		});
 	}, 800 );
-
+	SimulationList.push(simulation);
 }	
 
-function replaceAll(find, replace, str) {
-	  return str.replace(new RegExp(find, 'g'), replace);
-	}
 
-function createDevice(body, simulation) {
+//I didn't worry about this, we don't need it yet
+function createDevice(body, simulationName) {
 	var Sim = '';
 	for(var i = 0; i < simulationList.length; i ++){
 		if(simulationList[i].simulation_name == simulation){
@@ -262,7 +260,7 @@ function createDevice(body, simulation) {
 	
 }
 
-
+//TODO
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
@@ -270,7 +268,7 @@ function createNetwork(networkObject, simulation){
 
 		
 };
-	
+//TODO
 function addPartition(partitionObject, simulation){
 	var partitionName=partitionObject.partition_name;
 	var simulationName=partitionObject.simulation_name;
@@ -386,7 +384,7 @@ function updatePartitionMap(partitionObject, simulation){
 	var partition_name=partitionObject.partition_name;
 	//Database.updatePartitionMap(simulationName,partition_name,config_map);
 }
-
+//I don't think we need this yet?
 function createDevice(body, simulation) {
 
 	var device_name = body.device_name;
@@ -401,39 +399,55 @@ function createDevice(body, simulation) {
 	
 }
 
+
 function AddDevice2Network( body, simulation){
 	var simulation_name = body.simulation_name;
 	var device_name = body.device_name;
 	var partition_name  = body.partition_name;
 	var network_name = body.network_name;
-	Network.addDevice = function(device_name){
-	    //Device.
-	  };
-}
+	
+	var simulation,device,network;
+	for(var index=0;index<SimulationList;index++){
+		if(SimulationList[index].simulation_name==simulation_name)simulation=SimulationList[index];
+	}
+	
+	var networkList=simulation.getNetworks();
+	for(var index=0;index<networkList;index++){
+		if(networkList[index].networkName==simulation_name)network=networkList[index];
+	}
+	
+	var deviceList=simulation.getDevices();
+	for(var index=0;index<deviceList;index++){
+		if(deviceList[index].device_name==simulation_name)device=deviceList[index];
+	}
+	
+	network.addDevice(device);
 
+}
+//TODO
 function mergePartitions(body, simulation){
 	var partition_a = body.partition_a;
 	var partition_b = body.partition_b;
 	var simulation_name = body.simulation_name;
 }
-
+//TODO
 function dividePartition(body, simulation){
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
 	var network = body.network;
 }
 
-
+//TODO
 function addDevice2FreeList(body, simulation){
 	var simulation_name = body.simuation_name;
 	var device_name = body.device_name;
 }
-
+//TODO
 function removeDevicefromFreeList(body, simulation){
 	var simulation_name = body.simuation_name;
 	var device_name = body.device_name;
 }
-
+//TODO
 function removeDevice(body, simulation){
 	var network_name = body.network_name;
 	var partition_name = body.partition_name;

@@ -10,7 +10,7 @@ exports.size=function size(obj) {
 exports.merge_objects = function merge_objects(obj1,obj2){
 	    for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
 	    return obj1;
-}
+};
 exports.compareObjects=function(obj1,obj2){
 	if(Object.keys(obj1).length!=Object.keys(obj2).length)return false;
 	else{
@@ -23,4 +23,7 @@ exports.compareObjects=function(obj1,obj2){
 		}
 		return equal;
 	}
-}
+};
+exports.replaceAll=function(find, replace, str) {
+	  return str.replace(new RegExp(find, 'g'), replace);
+};
