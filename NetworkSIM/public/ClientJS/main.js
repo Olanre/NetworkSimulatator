@@ -1466,7 +1466,57 @@ function networkTopologyView(){
 /***
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
  */
-
+function eventLogsView(){
+	defaultheaderView(); 
+	
+	clearNav();
+	clearFooter();
+	clearSection();
+	
+	var local_application = get_local_application();
+	var local_simulation_list = get_local_session();
+	defaultheaderView();
+	
+	var simulations = local_application.simulation_list;
+	var html =  SimulationListTemplate(simulations);
+	var content = getContainer();
+	defaultsideBarView();
+	
+	loadStyleSheet('../css/topologyView.css');
+	loadStyleSheet('../css/EventLogView.css');
+	loadJSFile('../js/EventLogView.js');
+	loadJSFile('../js/interact-1.2.2.js');
+	loadJSFile('../JS/topologyManipulationGUI.js');
+	
+	var html = 
+	"<div id='title-bar'>"+
+		"<h1 id ='page-title'>Event Logs View</h1>"+
+	"</div>"+
+		"<div class = 'row'>"+
+			"<div class='cell'>"+
+				"<svg>"+
+				"</svg>"+
+			"</div>"+
+			"<div class = 'cell'>"+
+				"<select size = '10' id ='log-dates' onchange='selectSimulationDate(this.value)'>"+
+				"</select>"+
+			"</div>"+
+		"</div>"+
+		"<div class = 'row'>"+
+			"<div class= 'cell'>"+
+				"<h3 id='deviceLog-title'>Select a device in the GUI to view its logs</h3>"+
+				"<select size = '10' id ='device-log'>"+
+				"</select>"+
+			"</div>"+
+			"<div class='cell'>"+
+				"<h3 id='simulation-log-title'>Simulation logs</h3>"+
+				"<select size = '10' id ='simulation-log'>"+
+				"</select>"+
+			"</div>"+
+		"</div>"
+	var content = getContainer();
+	content.innerHTML = html;
+}
 
 /**
  * appDefaultView gets the front page of the application.

@@ -158,6 +158,10 @@ app.get('/css/topologyView.css',function(request,response){
 	response.sendFile("/public/stylesheets/topologyView.css",{"root":__dirname});
 });
 
+app.get('/css/EventLogView.css', function(request,response){
+	response.sendFile("/public/stylesheets/EventLogView.css",{"root":__dirname});
+});
+
 app.get('/img/img.png', function(request,response){
 	response.sendFile("/public/img/img.png", {"root": __dirname});
 	
@@ -180,8 +184,10 @@ app.get('/js/network-topology.js', function(request,response){
 	
 });
 app.get('../js/simulation-classes.js', function(request,response){
-	response.sendFile("/simulation/network_topology.js");
+	response.sendFile("/simulation/network_topology.js", {"root": __dirname}););
 });
-
+app.get('../js/EventLogView.js', function(request,response){
+	response.send("/public/ClientJS/EventLogView.js");
+});
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/
