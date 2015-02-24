@@ -35,7 +35,7 @@ function loadNetworkFromJSON(networkJSON){
 	var createdNetwork=new Network('','');
 	attachJSON(createdNetwork,networkJSON);
 	for(index in networkJSON.device_list){
-		var createdDevice=Device.createDeviceFromJSON(networkJSON.device_list[index]);
+		var createdDevice=Device.loadDeviceFromJSON(networkJSON.device_list[index]);
 		createdDevice.networkObject=createdNetwork;
 		this.device_list.push(createdDevice);
 	}

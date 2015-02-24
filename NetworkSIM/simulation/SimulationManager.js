@@ -17,7 +17,7 @@ var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 //TODO We need to fill this in on load!
-var SimulationList = [];
+var simulationList = [];
 
 
 exports.ClientRequest = function(token, eventQueue, simulation, callback) {
@@ -125,8 +125,7 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 
 /** 	-------------------------------------------
  * 				Getting and returning the states
- * 				I'm not sure we need these anymore!
- 
+ */
 exports.startTemplate = function(callback) {
 	
 	//entire encapsulated application Template
@@ -193,11 +192,10 @@ function getNewState(token, callback){
 
 	
 }
-*/
 
 function authToken(token, callback){
 		
-	tokenManager.authenticateToken(token, function(obj){
+	TokenManager.authenticateToken(token, function(obj){
 		console.log(obj);
 		callback(obj);
 	});
@@ -258,7 +256,7 @@ function createSimulation(body) {
 			//console.log('');
 		});
 	}, 800 );
-	SimulationList.push(simulation);
+	simulationList.push(simulation);
 }	
 
 
@@ -280,7 +278,7 @@ function createDevice(body, simulationName) {
 	
 }
 
-//TODO
+
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
@@ -427,8 +425,8 @@ function AddDevice2Network( body, simulation){
 	var network_name = body.network_name;
 	
 	var simulation,device,network;
-	for(var index=0;index<SimulationList;index++){
-		if(SimulationList[index].simulation_name==simulation_name)simulation=SimulationList[index];
+	for(var index=0;index<simulationList;index++){
+		if(simulationList[index].simulation_name==simulation_name)simulation=simulationList[index];
 	}
 	
 	var networkList=simulation.getNetworks();
@@ -482,4 +480,4 @@ exports.storeSimulationInDatabase=function(simulation){
 
 };
 //module.exports.getNewState = getNewState;
-
+module.exports.simulationList=simulationList;

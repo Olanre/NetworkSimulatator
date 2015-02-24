@@ -50,7 +50,7 @@ window.onload = function(){
  */ 
 window.setInterval(function(){
 	  /// call our sync function here
-		//Sync2Server();
+		Sync2Server();
 	}, 10000);
 
 

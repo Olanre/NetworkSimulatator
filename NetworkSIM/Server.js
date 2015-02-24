@@ -37,20 +37,23 @@ var server = app.listen(port, function () {
 	//Sim.addDevice('Name');
 	//console.log(Sim);
 	
-	Database.getApp(function(data){
-		if(data == null){
-			Application.simulation_list = [];
-			Application.total_devices = 0;
-			Application.total_networks = 0;
-			Application.super_admin = {};
-			Database.addApp(Application);
-		}else{
-			console.log('App already exists');
+Database.getApp(function(data){
+	if(data == null){
+		Application.simulation_list = [];
+		Application.total_devices = 0;
+		Application.total_networks = 0;
+		Application.super_admin = {};
+		Database.addApp(Application);
+	}
+	else{
+		console.log('App already exists');
 		}
 	});
   var host = server.address().address;
   console.log('Server listening at http://%s:%s', host, port);
 });
+
+
 
 app.use(logger({path: "./logfile.txt"}));
 
@@ -71,7 +74,6 @@ app.post("/getSync", function(req, res) {
 		var token = obj.token;
 		var eventqueue = obj.eventQueue;
 		var simulation = obj.simulation;
-		//console.log(obj);
 		SimulationManager.authToken(token, function(obj){
 			//for now allow empty tokens
 			if(obj.Response == 'Success'){

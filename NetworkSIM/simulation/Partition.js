@@ -29,7 +29,7 @@ function loadPartitionFromJSON(partitionJSON){
 	attachJSON(createdPartition,partitionJSON);
 
 	for(var i=0;i<partitionJSON.network_list.length;i++){
-			var createdNetwork=Network.createNetworkFromJSON(partitionJSON.network_list[i]);
+			var createdNetwork=Network.loadNetworkFromJSON(partitionJSON.network_list[i]);
 			createdNetwork.partition=createdPartition;
 			this.network_list.push(createdNetwork);
 			
