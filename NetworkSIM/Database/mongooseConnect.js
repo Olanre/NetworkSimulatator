@@ -32,7 +32,7 @@ var networkSchema = mongoose.Schema({
  network_name : String,
  network_type : String,
  partition : String,
- device_list : [Device],
+ device_list : [User],
 
 });
 
