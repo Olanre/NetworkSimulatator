@@ -319,17 +319,12 @@ function modifyPartitionByName(aString, aPartition)
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
-	   
 	   var obj = aPartition;
 	   obj.save();
 	   console.log("partition saved");
    });
-
 }
-	
 
-
-	
 //*Exports, finished calls
 module.exports.addUser = addUser;
 module.exports.getUserByToken = getUserByToken;
