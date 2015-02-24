@@ -27,12 +27,18 @@ function Network(networkName, networkKind){
 
 function createNewNetwork(networkName,networkKind){
 	var createdNetwork=new Network(networkName,networkKind);
+	Database.saveNetwork(createdNetwork.networkJSON);
 	return createdNetwork;
 }
 
-function createNetworkFromJSON(networkJSON){
+function loadNetworkFromJSON(networkJSON){
 	var createdNetwork=new Network('','');
 	attachJSON(createdNetwork,networkJSON);
+	for(index in networkJSON.device_list){
+		var createdDevice=Device.createDeviceFromJSON(networkJSON.device_list[index]);
+		createdDevice.networkObject=createdNetwork;
+		this.device_list.push(createdDevice);
+	}
 	return createdNetwork;
 	
 }
@@ -41,7 +47,7 @@ function attachJSON(networkObject,networkJSON){
 		networkObject.networkJSON=networkJSON;
 		networkObject.networkName=networkJSON.network_name;
 		networkObject.networkKind=networkJSON.network_kind;
-		networkObject.partition=networkJSON.partition;
+		networkObject.partitionObject=networkJSON.partition;
 		
 }
 function getJSON(){
@@ -79,15 +85,15 @@ function removeDevice(device){
 	
 
 function connectNetwork(network){
-		this.partition.mergePartitions(network.partition);
-		network.partition=this.partition;
+		this.partitionObject.mergePartitions(network.partitionObject);
+		network.partitionObject=this.partitionObject;
 		network.networkJSON.partition_name=this.partition_name;
 		Database.modifyNetworkByName(network.network_name,networkJSON);
 };
 
 function disconnectNetwork(network){
-		this.partition.dividePartition(network)
-		network.partition={};
+		this.partitionObject.dividePartition(network)
+		network.partitionObject={};
 		Database.modifyNetworkByName(network.network_name,networkJSON);
 };
 
@@ -100,5 +106,5 @@ function getTemplate(){
 	return network_data;
 };
 module.exports.createNewNetwork = createNewNetwork;
-module.exports.createNetworkFromJSON=createNetworkFromJSON;
+module.exports.loadNetworkFromJSON=loadNetworkFromJSON;
 module.exports.getTemplate=getTemplate;

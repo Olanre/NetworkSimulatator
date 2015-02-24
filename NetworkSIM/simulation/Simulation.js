@@ -34,11 +34,23 @@ function Simulation(simulation_name){
 
 function createNewSimulation(simulation_name){
 	var createdSimulation=new Simulation(simulation_name);
+	Database.addSim(createdSimulation.simulationJSON);
 	return createdSimulation;
 }
-function createSimulationFromJSON(simulationJSON){
+function loadSimulationFromJSON(simulationJSON){
+	
 	var createdSimulation=new Simulation('');
 	attachJSON(simulationJSON);
+	
+	for(partitionName in simulationJSON.config_map){
+		
+		Database.getPartitionByName(partitionName,function(partitionJSON)){
+			var createdPartition=Partition.createPartitionFromJSON(partitionJSON);
+			this.partition_list.push(createdPartition);
+		});
+		
+	}
+	
 	return createdSimulation;
 }
 
@@ -47,14 +59,6 @@ function attachJSON(simulationJSON){
 		this.simulationJSON=simulationJSON;
 		this.simulation_name = simulationJSON.simulation_name;
 		this.activity_logs = simulationJSON.activity_logs;
-		
-		for(partitionName in simulationJSON.config_map){
-			
-			var createdPartition=new Partition.createNewPartition(partitionName,config_map[partitionName]);
-			Database.savePartition(createdPartition.partitionJSON);
-			this.partition_list.push(createdPartition);
-			
-		}
 };
 
 function getJSON(){
@@ -148,21 +152,23 @@ function getDevices(){
 		
 		
 }
-	
-function addPartition(partitionName, simulationName){
-		var Partition = new Partition(partitionName, simulationName);
-		this.partition_list.push(Partition);
+/*
+ * 1. Create the new partition object
+ * 2. Add the partition object to the simulation's list
+ * 3. Update the simulation JSON object to reflect the changes
+ * 4. Update the simulation in the database.
+ * 5. Return the new partition because why not.
+ */
+function addPartition(partitionName){
+		var newPartition = Partition.createNewPartition(partitionName, this.simulation_name);
+		this.partition_list.push(newPartition);
 		
-		partitonJSON = Partition.getPartition(); 
-		this.simulationJSON.partition_list.push(Partition);
+		partitonJSON = newPartition.partitionJSON; 
+		this.simulationJSON.partition_list.push(partitionJSON);
+		this.simulationJSON.config_map[partitionName]={};
 		
-		Database.getSimByName(this.simulationJSON.simulation_name, function(Sim){
-			Sim.partitionList.push(partitionJSON);
-
-			Database.modifySimByName(this.simulation_name, Sim);
-			
-			
-		});
+		Database.modifySimByName(this.simulation_name, this.simulationJSON);
+		return newPartition;
 } 
 	
 function modifyPartition(partition){
@@ -325,4 +331,4 @@ module.exports.getTemplate=function(){
 	
 };
 module.exports.createNewSimulation=createNewSimulation;
-module.exports.createSimulationFromJSON=createSimulationFromJSON;
+module.exports.loadSimulationFromJSON=loadSimulationFromJSON;

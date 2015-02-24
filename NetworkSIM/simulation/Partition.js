@@ -5,10 +5,11 @@ function Partition(partitionName, simulationName){
 	
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
-	this.networks=[];
+	this.network_list=[];
 	this.partitionJSON=getTemplate();
 	this.partitionJSON.simulation_name=simulation_name;
 	this.partitionJSON.network_list=[];
+	
 	
 	this.addNetwork=addNetwork;
 	this.removeNetwork=removeNetwork;
@@ -19,17 +20,28 @@ function Partition(partitionName, simulationName){
 
 function createNewPartition(partitionName,simulationName){
 	var createdPartition=new Partition(partitionName, simulationName);
+	Database.savePartition(createdPartition.partitionJSON);
 	return createdPartition;
 }
 
-function createPartitionFromJSON(partitionJSON){
+function loadPartitionFromJSON(partitionJSON){
 	var createdPartition=new Partition('','');
 	attachJSON(createdPartition,partitionJSON);
+
+	for(var i=0;i<partitionJSON.network_list.length;i++){
+			var createdNetwork=Network.createNetworkFromJSON(partitionJSON.network_list[i]);
+			createdNetwork.partition=createdPartition;
+			this.network_list.push(createdNetwork);
+			
+		});
+		
+	}
 	return createdPartition;
 }
 
 function attachJSON(partitionObject,partitionJSON){
-		partitionObject.partitionJSON=partitionJSON;		
+		partitionObject.partitionJSON=partitionJSON;
+		
 }
 function getJSON(){
 		return Database.getPartitionByName(this.partition_name);
@@ -41,7 +53,7 @@ function addNetwork(network){
 			simulation.config_map[this.partition_name][network.network_name]=network.networkJSON.device_list;
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
-		networks.push(network);
+		network_list.push(network);
 }
 
 function removeNetwork(network){
@@ -49,7 +61,7 @@ function removeNetwork(network){
 			delete simulation.config_map[this.partition_name][network.network_name];
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
-		delete networks[networks.indexOf(network)];
+		delete network_list[network_list.indexOf(network)];
 }
 
 function mergePartitions(partition){
@@ -64,9 +76,9 @@ function mergePartitions(partition){
 			
 		});
 		//updates the partition object and the network object
-		for(network in partition.networks){
+		for(network in partition.network_list){
 			network.partition=this;
-			this.networks.push(partition.networks[network]);
+			this.network_list.push(partition.network_list[network]);
 		}
 };
 
@@ -80,7 +92,7 @@ function dividePartition(network){
 			
 		});
 		//updates the partition object and the network object
-		delete this.networks[this.networks.indexOf(network)];
+		delete this.network_list[this.network_list.indexOf(network)];
 		network.partition={};
 };
 module.exports.getTemplate=function(){
@@ -90,4 +102,4 @@ module.exports.getTemplate=function(){
 	return partitionTemplate;
 }
 module.exports.createNewPartition = createNewPartition;
-module.exports.createPartitionFromJSON=createPartitionFromJSON;
+module.exports.loadPartitionFromJSON=loadPartitionFromJSON;

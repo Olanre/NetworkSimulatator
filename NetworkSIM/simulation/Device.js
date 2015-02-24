@@ -6,18 +6,19 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
-function Device(deviceName){
+function Device(deviceName,token){
 	
 	//Required variables//
 	this.device_name=deviceName;
 	
 	//Our Variables//
-	this.token = '';
+	this.token = token;
 	this.networkObject={};
 	this.device_name  = deviceName;
 	this.rdt = {};
 	this.deviceJSON=module.exports.getTemplate();
 	this.deviceJSON.current_device_name=this.device_name;
+	this.deviceJSON.token=this.token;
 	
 	//Required Functions//
 	this.joinNetwork=joinNetwork;
@@ -29,12 +30,13 @@ function Device(deviceName){
 	this.save=save;
 }
 
-function createNewDevice(deviceName){
-	var createdDevice=new Device(deviceName);
+function createNewDevice(deviceName,token){
+	var createdDevice=new Device(deviceName,token);
+	Database.addUser(createdDevice);
 	return createdDevice;
 }
 
-function createDeviceFromJSON(deviceJSON){
+function loadDeviceFromJSON(deviceJSON){
 	var createdDevice=new Device('');
 	attachJSON(createdDevice,deviceJSON);r
 }
@@ -57,15 +59,15 @@ function joinNetwork(network){
 			delete simulationJSON.config_map.free_list[this.deviceJSON.current_device_name];
 		  }
 		 delete simulationJSON.config_map[this.deviceJSON.current_partition][oldNetwork][this.deviceJSON.current_device_name];
-		 var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
-		 simulationJSON.config_map[network.partition][network.network_name][this.deviceJSON.current_device_name]=indexInNetwork;
+		 var indexInNetwork=util.size(simulationJSON.config_map[network.networkJSON.partition][network.network_name]);
+		 simulationJSON.config_map[network.networkJSON.partition][network.network_name][this.deviceJSON.current_device_name]=indexInNetwork;
 		 Database.modifySimByName(this.deviceJSON.current_simulation,simulationJSON,function(){});
 		 
 	  });
 	  
 	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
-	  this.deviceJSON.current_partition=network.partition;
+	  this.deviceJSON.current_partition=network.networkJSON.partition;
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
 	  delete network.deviceList();
 	  
@@ -134,4 +136,4 @@ module.exports.getTemplate=function(){
 };
 
 module.exports.createNewDevice = createNewDevice;
-module.exports.createDeviceFromJSON=createDeviceFromJSON;
+module.exports.loadDeviceFromJSON=loadDeviceFromJSON;
