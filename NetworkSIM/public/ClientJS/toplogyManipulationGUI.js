@@ -1,5 +1,6 @@
 // We are using uniqueDataIndex to track shapes. It only ever increases.
- 
+
+var interactable=true;
 var uniqueDataIndex=0;
 var svgCanvas = document.querySelector('svg'),
 
@@ -57,6 +58,8 @@ var testConfigMap3={
  * The main functions used in our GUI
  ***/
 function generateTopology(configMap, areaWidth){
+	//clear the svgCanvas
+	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
 	var root,connected,connectedDevice;
@@ -326,7 +329,15 @@ interact('.network')
 
 //clears the svg canvas
 function clearCanvas(){
-	
+	while (svgCanvas.lastChild) {
+		svgCanvas.removeChild(svgCanvas.lastChild);
+	}
+	shapes=[];
+}
+
+//here bool is a true/false boolean
+function setInteractable(bool){
+	interactable=bool;
 }
 
 function snapToLocation(shape,coordinates){
@@ -394,14 +405,16 @@ function hasClass(element, Elclass) {
 }
 
 function moveUIElementAndChildren(UIShape,dx,dy){
-	UIShape.x +=dx;
-	UIShape.y += dy;
-	for(index in UIShape.children){
-		UIShape.children[index].x+=dx;
-		UIShape.children[index].y+=dy;
-		UIShape.children[index].draw();
+	if(interactable==true){
+		UIShape.x +=dx;
+		UIShape.y += dy;
+		for(index in UIShape.children){
+			UIShape.children[index].x+=dx;
+			UIShape.children[index].y+=dy;
+			UIShape.children[index].draw();
+		}
+		UIShape.draw();
 	}
-	UIShape.draw();
 }
 
 function partitionExists(dropzoneObject, dragObject){
