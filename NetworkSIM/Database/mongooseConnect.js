@@ -41,15 +41,15 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	   partion_list : [Partition],
-	   free_list : [User],
-	   //num_devices: Number,
-	   //num_networks: Number,
+	  // partion_list : [Partition],
+	   //free_list : [User],
+	   num_devices: Number,
+	   num_networks: Number,
 	   simulation_population: Number,
 	   simulation_name: String,
 	   config_map: String,
 	   tokenMethod : String,
-	   globalcount : Number,
+	   tokenMethod : Number,
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
