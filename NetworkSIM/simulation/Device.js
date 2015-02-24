@@ -32,7 +32,7 @@ function Device(deviceName,token){
 
 function createNewDevice(deviceName,token){
 	var createdDevice=new Device(deviceName,token);
-	Database.addUser(createdDevice);
+	Database.addUser(createdDevice.deviceJSON);
 	return createdDevice;
 }
 

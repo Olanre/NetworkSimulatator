@@ -235,7 +235,7 @@ function addApp(anApp)
    //console.log("saved application " + anApp);
 }
 
-function getApp(callback)
+function getApp( callback)
 {
    App.findOne( function(err, obj)
    {
