@@ -1,4 +1,3 @@
-//Required
 var networkList = Simulation.getNetworks();
 //Required
 this.deviceList = Simulation.getDevices();

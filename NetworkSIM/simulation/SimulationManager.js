@@ -5,16 +5,11 @@ The purpose of this class is to manage creating and modifying simulations.
 
 var NetworkManager=require("./NetworkManager");
 var DeviceManager=require("./DeviceManager");
-var tokenManager = require("./TokenManager.js");
+var TokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var Device = require("./Device.js");
-var SimulationTemplate = require("./simulationTemplate.js");
-var stateTemplate=require("./stateTemplate.js");
 var Simulation = require("./Simulation.js");
-var topology = require("./network_topology.js");
-var applicationTemplate = require("./applicationTemplate.js");
-var TotalAppTemplate = require("./TotalAppTemplate.js");
 var admin = require("./admin.js");
 
 var express = require('express');
@@ -210,15 +205,40 @@ function authToken(token, callback){
 }
 
 function createSimulation(body) {
-	var device = Device.getTemplate;
+	var device = Device.getTemplate();
 	var map = body.config_map;
 	var d = new Date();
-	var simulation = new Simulation.simulation(body.simulation_name);
+	
+	var simulation = new Simulation.cerateNewSimulation(body.simulation_name);
 	var partition, network,device;
-	//the way I have it set up, the methods in the Simulation/Partition/Network/Device class will handle creating new stuff.
-	simulation.attachJSON(body);
-	//just gotta add the simulation to the database and you're done!
-	Database.addSim(body);
+	simulation.simulationJSON=body;
+	
+	for(partitionName in map){
+		
+		partition=Partition.createNewPartition(partitionName,simulation.simulation_name);
+		simulation.JSON.partition_list.push(partitionJSON);
+		simulation.partition_list.push(partitionJSON);
+		
+		for(networkName in map[partitionName]){
+			
+			network=Network.createNewNetwork(networkName,'WiFI');
+			partition.network_list.push(network);
+			network.partitionObject=partition;
+			network.networkJSON.partition=partition.partition_name;
+			
+			for(deviceName in map[partitionName][networkName]){
+				var token=TokenManager.generateToken();
+				device=Device.createNewNetwork(deviceName,token);
+				device.networkObject=network;
+				network.device_list.push(device);
+				network.networkJSON.device_list.push(device.deviceJSON);
+				Database.modifyUser(token,device.deviceJSON);
+			}
+			Database.modifyNetworkByName(network.network_name,network.networkJSON);
+		}
+		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+	}
+	Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	
 	//Dunno what this is about, so I'll leave it here for now
 	Database.getApp(function(data){
@@ -461,5 +481,5 @@ exports.authToken = authToken;
 exports.storeSimulationInDatabase=function(simulation){	
 
 };
-module.exports.getNewState = getNewState;
+//module.exports.getNewState = getNewState;
 

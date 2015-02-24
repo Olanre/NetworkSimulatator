@@ -18,8 +18,8 @@ var Create = require('./routes/Create');
 var Delete = require('./routes/Delete');
 var Update = require('./routes/Update');
 var start = require('./routes/start');
-****/
 var Get = require('./routes/Get');
+****/
 var Authenticate = require('./routes/Authenticate');
 
 
