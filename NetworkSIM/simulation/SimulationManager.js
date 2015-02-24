@@ -9,6 +9,8 @@ var TokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var Device = require("./Device.js");
+var Partition = require("./Partition.js");
+var Network = require("./Network.js");
 var Simulation = require("./Simulation.js");
 var admin = require("./admin.js");
 var stateTemplate = require("./stateTemplate");
@@ -207,15 +209,15 @@ function createSimulation(body) {
 	var map = body.config_map;
 	var d = new Date();
 	
-	var simulation = new Simulation.cerateNewSimulation(body.simulation_name);
+	var simulation = new Simulation.createNewSimulation(body.simulation_name);
 	var partition, network,device;
 	simulation.simulationJSON=body;
 	
 	for(partitionName in map){
 		
 		partition=Partition.createNewPartition(partitionName,simulation.simulation_name);
-		simulation.JSON.partition_list.push(partitionJSON);
-		simulation.partition_list.push(partitionJSON);
+		simulation.partition_list.push(partition);
+		//simulation.partition_list.push(partitionJSON);
 		
 		for(networkName in map[partitionName]){
 			
@@ -227,7 +229,7 @@ function createSimulation(body) {
 			for(deviceName in map[partitionName][networkName]){
 				var token=TokenManager.generateToken();
 				console.log(token);
-				device=Device.createNewNetwork(deviceName,token);
+				device=Device.createNewDevice(deviceName,token);
 				device.networkObject=network;
 				network.device_list.push(device);
 				network.networkJSON.device_list.push(device.deviceJSON);

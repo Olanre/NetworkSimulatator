@@ -286,7 +286,7 @@ function getNetworkByName(aName, callback)
 
 function modifyNetworkByName(aString, aNetwork)
 {
-	Newtwork.findOne({network_name : aString}, function(err, obj)
+	Network.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
 		var obj = aNetwork;
