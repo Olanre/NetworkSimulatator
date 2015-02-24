@@ -6,8 +6,8 @@ function Partition(partitionName, simulationName){
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.network_list=[];
-	this.partitionJSON=getTemplate();
-	this.partitionJSON.simulation_name=simulation_name;
+	this.partitionJSON=module.exports.getTemplate();
+	this.partitionJSON.simulation_name=simulationName;
 	this.partitionJSON.network_list=[];
 	
 	
