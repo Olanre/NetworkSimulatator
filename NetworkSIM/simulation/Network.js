@@ -18,14 +18,6 @@ function Network(networkName, networkType){
 		this.networkJSON=networkJSON;
 	}
 	
-	this.getTemplate = function getNetwork(){
-		network_data.network_name = networkName;
-		network_data.network_type = networkType;
-		network_data.device_list = [];
-		network_data.partition = '';
-		return network_data;
-	};
-	
 	
 	//Required
 	
@@ -39,7 +31,7 @@ function Network(networkName, networkType){
 	};
 	
 	//Required
-	this.removeDevice= function removeDevice(device){
+	this.removeDevice= function(device){
 		//delete from the device_list by token
 		for (var i =0; i< this.device_list.length){
 			if (this.device_list[i].token == device.token){
@@ -71,5 +63,11 @@ function Network(networkName, networkType){
 	};
 
 };
-
+module.exports.getTemplate= function(){
+	network_data.network_name = networkName;
+	network_data.network_type = networkType;
+	network_data.partition = '';
+	network_data.device_list = [];
+	return network_data;
+};
 module.exports.Network = Network;

@@ -20,23 +20,7 @@ function Device(deviceName){
 		this.device_name = deviceJSON.curent_device_name;
 		this.networks_created = deviceJSON.networks_created;
 	};
-	this.getTemplate=function(){
-		  var device_data = {};
-		  device_data.token = '';
-		  device_data.email = '';
-		  device_data.verified = false;
-		  device_data.current_network = '';
-		  device_data.current_simulation = '';
-		  device_data.registeredOn = '';
-		  device_data.networks_created = [];
-		  device_data.current_partition = '';
-		  device_data.current_device_name = device_name;
-		  device_data.application_id =  'default';
-		  device_data.admin = false;
-		  device_data.activity = '';
-		  return device_data;
-		  
-	};
+	
   //Required
   this.joinNetwork = function(network){
 	  
@@ -110,4 +94,22 @@ function Device(deviceName){
   };
   
 }
-module.exports.Device = Device
+
+module.exportsdevi.getTemplate=function(){
+	  var device_data = {};
+	  device_data.token = '';
+	  device_data.email = '';
+	  device_data.verified = false;
+	  device_data.current_partition = '';
+	  device_data.current_network = '';
+	  device_data.registeredOn = '';
+	  device_data.admin = false;
+	  device_data.networks_created = [];
+	  device_data.application_id =  'default';
+	  device_data.current_simulation = '';
+	  device_data.current_device_name = device_name;
+	  device_data.activity = '';
+	  return device_data;
+	  
+};
+module.exports.Device = Device;

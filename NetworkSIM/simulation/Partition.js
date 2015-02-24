@@ -8,12 +8,7 @@ function Partition(partitionName, simulationName){
 	this.networks=[];
 	this.partitionJSON={};
 	
-	this.getTemplate=function(){
-		var partitionTemplate={};
-		partitionTemplate.partition_name="";
-		partitionTemplate.network_list=[];
-		return partitionTemplate;
-	}
+	
 	
 	this.attachJSON(partitionJSON){
 		var networkObject;
@@ -76,5 +71,10 @@ function Partition(partitionName, simulationName){
 		network.partition={};
 	};
 }
-
+module.exports.getTemplate=function(){
+	var partitionTemplate={};
+	partitionTemplate.partition_name="";
+	partitionTemplate.network_list=[];
+	return partitionTemplate;
+}
 module.exports.Partition = Partition;
