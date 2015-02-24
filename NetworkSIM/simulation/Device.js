@@ -5,6 +5,7 @@
 
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
+
 function Device(deviceName){
 	
 	this.token = '';
@@ -108,4 +109,5 @@ function Device(deviceName){
 	return this.rdt;
   };
   
-};
+}
+module.exports.Device = Device

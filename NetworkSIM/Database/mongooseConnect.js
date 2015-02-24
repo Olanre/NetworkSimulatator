@@ -41,14 +41,15 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	   partion_list : [Partition],
-	   //num_devices: Number,
-	   //num_networks: Number,
+	  // partion_list : [Partition],
+	   //free_list : [User],
+	   num_devices: Number,
+	   num_networks: Number,
 	   simulation_population: Number,
 	   simulation_name: String,
 	   config_map: String,
 	   tokenMethod : String,
-	   globalcount : Number,
+	   tokenMethod : Number,
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
@@ -341,7 +342,7 @@ function modifyPartitionByName(aString, aPartition)
 
 
 	
-//exports, finished calls
+//*Exports, finished calls
 module.exports.addUser = addUser;
 module.exports.getUserByToken = getUserByToken;
 module.exports.addSim = addSim;
@@ -350,6 +351,8 @@ module.exports.getSimByName = getSimByName;
 module.exports.getApp = getApp;
 module.exports.addApp = addApp;
 module.exports.modifyApp = modifyApp;
+
+//New Since Refactor
 module.exports.modifySimByName = modifySimByName;
 module.exports.saveNetwork = saveNetwork;
 module.exports.modifyNetworkByName = modifyNetworkByName;
@@ -357,5 +360,3 @@ module.exports.savePartition = savePartition;
 module.exports.modifyPartitionByName = modifyPartitionByName;
 module.exports.getPartitionByName = getPartitionByName;
 module.exports.getNetworkByName = getNetworkByName;
-
-
