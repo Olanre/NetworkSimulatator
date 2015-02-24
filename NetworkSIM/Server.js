@@ -11,7 +11,6 @@ var logger = require('express-logger');
 var eventHandler = require("./EventHandler.js");
 var SimulationManager = require('./simulation/SimulationManager');
 var Database = require("./Database/mongooseConnect.js");
-var SimulationTemplate = require("./simulation/simulationTemplate.js");
 
 /****
 var Add = require('./routes/Add');
