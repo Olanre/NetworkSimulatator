@@ -2348,6 +2348,7 @@ function wrapCreateSimulation() {
 	create_simulation.globalcount = 0;
 	create_simulation.tokenMethod = tokenMethod;
 	create_simulation.config_map = JSON.parse(string);
+	create_simulation.config_map['freelist'] = {};
 	create_simulation.activity_logs = '';
 	
 	console.log(create_simulation);
