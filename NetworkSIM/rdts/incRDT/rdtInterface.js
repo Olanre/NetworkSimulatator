@@ -1,11 +1,8 @@
+var Counter = require('./counter');
+
 exports.init = function(networkIterator, deviceIterator) {
-  // To be implemented
+  while (deviceIterator.hasNext()) {
+    deviceIterator.next().replicateRDT(new Counter());
+  }
 };
 
-exports.inc = function() {
-  // To be implemented
-};
-
-exports.val = function() {
-  // To be implemented
-};
