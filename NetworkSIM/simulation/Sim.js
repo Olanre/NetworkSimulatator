@@ -3,18 +3,18 @@
  * session_data holds all of the variables related to the current simulation if one exists.
  * This is the template for a simulation.
  */
-var deviceTemplate = require("./deviceTemplate.js");
-var stateTemplate=require("./stateTemplate.js");
+var device = require("./device.js");
+var state =require("./state.js");
+var network = require("./network.js");
 
 function Simulation(simulation_name){
 	this.freeList = new Network('freelist'); 
 	this.partitionList = [];
 	this.networkIterator = new NetworkIterator();
-	this.networkList = networkList;
-	this.deviceList = deviceList;
+	this.networkList = [];
+	this.deviceList = [];
 	this.simulation_name = simulation_name;
 	this.simulationJSON = {};
-	this.activity_logs = '';
 	this.app = '';
 	this.rdt = {};
 	
@@ -26,6 +26,18 @@ function Simulation(simulation_name){
 		
 	};
 	
+	this.getSimulation(){
+		var session_data = {};
+		session_data.partitionList = [];
+		session_data.simulation_name = simulation_name;
+		session_data.simulation_population = 0;
+		session_data.activity_logs = '';
+		session_data.tokenMethod = '';
+		session_data.globalcount = 0;
+		session_data.config_map = {};
+		return session_data;
+		
+	}
 	this.getJSON = function(){
 		 
 		return this.simulationJSON;
@@ -56,6 +68,40 @@ function Simulation(simulation_name){
 		}
 		return merged;
 	}
+
+	this.add2FreeList = function(device){
+		this.freeList.addDevice(device);
+		Database.getSimByName(simulation, function(Sim){
+			free_num = size(Sim.config_map['freelist']) + 1;
+			Sim.config_map['freelist'][device.current_device_name] = free_num;
+			
+			Device.joinNetwork(this.freeList);
+			Database.modifySimByName(this.simulation_name, Sim);
+			
+			Database.getDeviceByToken( device.token, function(Device){
+				Device.current_network = 'freelist';
+				Device.current_partition = 'freelist';
+				Database.modifyUserByToken(device.token, device.deviceJSON);
+			});
+			
+			
+		});
+	}
+	
+	this.removeDevicefromFreeList = function(device){
+		
+		Database.getSimByName(this.simulation, function(Sim){
+			var list = Sim.config_map['freelist'];
+			if( list.hasOwnProperty(device.current_device_name) ){
+				delete Sim.config_map['freelist'][device_name];
+			}
+
+			Database.modifySimByName(this.simulation_name, Sim);
+			
+			
+		});
+		
+	}
 	
 	this.getDevices = function(){
 		var merged = [];
@@ -72,9 +118,17 @@ function Simulation(simulation_name){
 		return merged;
 	}
 	
-	this.addPartition = function(partitionName){
-		var Partition = new Partition(partitionName);
+	this.addPartition = function(partitionName, simulationName){
+		var Partition = new Partition(partitionName, simulationName);
 		this.partitionList.push(Partition);
+		partitonJSON = Partition.getPartition(); 
+		Database.getSimByName(this.simulation, function(Sim){
+			Sim.partitionList.push(partitionJSON);
+
+			Database.modifySimByName(this.simulation_name, Sim);
+			
+			
+		});
 	} 
 	
 	
@@ -85,14 +139,11 @@ function Simulation(simulation_name){
 			}
 		}
 		
+		
 	}
 	this.addDevice = function(deviceName){
 		var Device = new Device(deviceName);
-		for(var i = 0; i < this.partitionList.length; i++){
-			if( partitionList[i].partition_name == 'freelist'){
-				freelist.addDevice(Device);
-			}
-		}
+		this.add2FreeList(Device);
 		//Simulation.addDevice()
 	  // Add a device with the given name to the simulation
 	}
@@ -102,7 +153,7 @@ function Simulation(simulation_name){
 		var Partition = new Partition(networkName);
 	}
 	
-	this.deleteDevice = function(deviceName){
+	this.removeDevice = function(deviceName){
 		
 		//deviceList.spice(device);
 		for(var i = 0; i < this.partitionList.length; i++ ){
@@ -123,38 +174,50 @@ function Simulation(simulation_name){
 					
 				}
 			}
-		}
+			Database.getSimByName(this.simulation_name, function(Sim){
+				var list = Sim.config_map['freelist'];
+				if( list.hasOwnProperty(device_name) ){
+					delete Sim.config_map['freelist'][device_name];
+				}else{
+					delete Sim.config_map[partition][network][device_name];
+				}
+				//need to update number of devices here for application and simulation
+				Database.modifySimByName(this.simulation_name, Sim);
+			});
 	
 		
 	}
 	
-	this.deleteNetwork = function(network){
+	this.removeNetwork = function(networkName){
 		//deviceList.spice(device);
 		for(var i = 0; i < this.partitionList.length; i++ ){
 			var Networks = this.partitionList[i].networkList
 			for(var j = 0; j < Networks.length; j++){
-				var Devices = Networks[j].deviceList;
-					var deviceIndex = Devices.indexOf(device););
-					if (deviceIndex != -1){
-						this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
-					}
+				if(Networks[j].network_name == networkName){
+					var networkIndex = j; 
+					this.partitionList[i].networkList.splice(Networks[j], 1);
 				}
+					
 			}
 		}
+		
 	}
 	
 	this.deletePartition(partition){
-		for(var i = 0; i < this.partitionList.length; i++ ){
+		var partitionIndex = partitionList.indexOf(partition);
+		if(partitionIndex != null){
+			delete partitionList(partitionIndex);
+		}
 	}
 	
 	this.addPartition = function(partitionName){
 		var Partition = new Partition(partitionName);
-		this.session_data.partitionList(Partition);
+		this.session_data.partitionList.push(Partition);
 	}
 	
-	this.save = function(timestamp){
-		
+	this.save = function(state){
 		Database.modifySimulationByName(this.simulation_name, this.simulationJSON);
+		Database.saveState(state);
 	}
 }
 

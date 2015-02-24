@@ -21,7 +21,6 @@ Schema = db.Schema;
 var deviceSchema = mongoose.Schema({
    device_name : String,
    //deviceNumber : Number,
-	
 });
 
 //DEVICE COMPLETE
@@ -33,7 +32,7 @@ var networkSchema = mongoose.Schema({
  network_name : String,
  network_type : String,
  partition : String,
- device_list : [Device]
+ device_list : [User],
 
 });
 
@@ -42,9 +41,7 @@ var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	   networkList : [Network],
-	   deviceList : [Device],
-	   partionList : [Partition],
+	   partion_list : [Partition],
 	   //num_devices: Number,
 	   //num_networks: Number,
 	   simulation_population: Number,
@@ -62,25 +59,32 @@ var simulationSchema = mongoose.Schema({
 	var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //STATE - storing logs as a string
-/** var stateSchema = mongoose.Schema({
+ var stateSchema = mongoose.Schema({
 	id : String,
-	state : [{ id : Sim, 
-			  timeStamp : String, 
-			  devices : [ {device : User} ] ,
-	}]
+	state : [StateObject],
 });
 
 //State complete
 var State = mongoose.model('State', stateSchema, ' newStateSchema');
-
-*/
-var partitionSchema = mongoose.Schema({
-	partition_name: String,
-	network_list: [Network]
-
+	
+//State building block
+var stateObject = mongoose.Schema({
+   simulation : String,
+   timeStamp : String,
+   devices : [User],
 });
 
 
+//state building block complete
+var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
+
+//Partition Schema
+var partitionSchema = mongoose.Schema({
+	
+	partition_name: String,
+	network_list: [Network],
+
+});
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 //SIMULATION
@@ -88,7 +92,6 @@ var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 
 //USER 
 var userSchema = mongoose.Schema({
-
 	token:String,
 	email:String,
 	verified: Boolean,
@@ -274,6 +277,69 @@ function newState(aState)
   //console.log("Saved state" + state);
 }
 
+//NETWORK FUNCTIONS
+function saveNetwork(aNetwork)
+{ 
+	var newNetwork = new Network(aNetwork);
+	newNetwork.save();
+}
+
+function getNetworkByName(aName, callback)
+{
+	Network.findOne( {network_name: aName}, function(err, obj)
+	{
+		if(err) console.log("no network with name: " + aName );
+		
+		console.log("found network");
+		callback(obj);
+	});
+}
+
+function modifyNetworkByName(aString, aNetwork)
+{
+	Newtwork.findOne({network_name : aString}, function(err, obj)
+	{
+		if(err) console.log("No network with that name");
+		var obj = aNetwork;
+		obj.save();
+		console.log("Network saved");
+	});
+}
+
+
+//Partition Methods
+function savePartition(aPartition)
+{
+	var newPartition = new Partition(aPartition);
+	newPartition.save();
+}
+
+function getPartitionByName(aName, callback)
+{
+	Partition.findOne({partition_name : aName}, function(err, obj)
+	{
+		if(err) console.log("No partition with name " + aName);
+		console.log("found partition");
+		callback(obj);
+	});
+}
+
+
+function modifyPartitionByName(aString, aPartition)
+{
+   Partition.findOne({partition_name : aString}, function(err,obj)
+   {
+	   if(err) console.lgo("no Partition exists with that name");
+	   
+	   var obj = aPartition;
+	   obj.save();
+	   console.log("partition saved");
+   });
+
+}
+	
+
+
 	
 //exports, finished calls
 module.exports.addUser = addUser;
@@ -285,3 +351,11 @@ module.exports.getApp = getApp;
 module.exports.addApp = addApp;
 module.exports.modifyApp = modifyApp;
 module.exports.modifySimByName = modifySimByName;
+module.exports.saveNetwork = saveNetwork;
+module.exports.modifyNetworkByName = modifyNetworkByName;
+module.exports.savePartition = savePartition;
+module.exports.modifyPartitionByName = modifyPartitionByName;
+module.exports.getPartitionByName = getPartitionByName;
+module.exports.getNetworkByName = getNetworkByName;
+
+
