@@ -190,8 +190,10 @@ function modifyUser(aToken, aUser, callback)
   {
   if(err) console.log("No user with that token");
   	var Lennete = new User();
+  	var Lennete2 = new User();
   	Lennete = obj;
-   Lennete = aUser;
+   Lennete2 = aUser;
+   Lennete = Lennete2;
    Lennete.save();
    callback();
 	//console.log("User with token " + atoken + "edited " + example);	
