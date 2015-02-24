@@ -1,7 +1,9 @@
 /**
  * Device Iterator
+ * @param deviceList is an ARRAY of device OBJECTS
  **/
-function DeviceIterator(){
+function DeviceIterator(deviceList){
+	this.deviceList=deviceList
 	
 	this.index=0;
   //Required
@@ -23,6 +25,9 @@ function DeviceIterator(){
 	  this.index=0;
   };
   //Required
+  /**
+   * Does some callback function on each item in the deviceList
+   */
   this.each = function(callback) {
 	  for (var item = this.first(); this.hasNext(); item = this.next()) {
 	      callback(item);
