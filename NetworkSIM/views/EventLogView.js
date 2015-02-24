@@ -117,8 +117,8 @@ function parseState(state){
 		//gets all the timestamps from all of these states
 		timeStampList.push(states[i].timestamp);
 		//gets all of the config maps for each state
-		console.log(states[i].simulation.configMap);
-		configMapList[timestamp]=states[i].simulation.configMap;
+		console.log(states[i].simulation.config_map);
+		configMapList[timestamp]=states[i].simulation.config_map;
 	}
 }
 
