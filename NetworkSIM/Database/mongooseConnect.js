@@ -316,7 +316,7 @@ function savePartition(aPartition)
 
 function getPartitionByName(aName, callback)
 {
-	Partition.findOne({partition_name : aString}, function(err, obj)
+	Partition.findOne({partition_name : aName}, function(err, obj)
 	{
 		if(err) console.log("No partition with name " + aName);
 		console.log("found partition");
