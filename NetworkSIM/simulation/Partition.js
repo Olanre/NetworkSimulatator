@@ -33,11 +33,11 @@ function loadPartitionFromJSON(partitionJSON){
 			createdNetwork.partition=createdPartition;
 			this.network_list.push(createdNetwork);
 			
-		});
-		
-	}
-	return createdPartition;
+	};
+
+		return createdPartition;
 }
+
 
 function attachJSON(partitionObject,partitionJSON){
 		partitionObject.partitionJSON=partitionJSON;

@@ -140,8 +140,8 @@ function Partition(partitionName, simulationName){
 	
 	this.addNetwork=function(network){};
 	this.removeNetwork=function(network){};
-	this.mergePartition(partition){};
-	this.dividePartition(network,partition){};
+	this.mergePartition=function(partition){};
+	this.dividePartition=function(network,partition){};
 }
 
 

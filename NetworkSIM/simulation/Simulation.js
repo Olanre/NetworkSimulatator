@@ -44,7 +44,7 @@ function loadSimulationFromJSON(simulationJSON){
 	
 	for(partitionName in simulationJSON.config_map){
 		
-		Database.getPartitionByName(partitionName,function(partitionJSON)){
+		Database.getPartitionByName(partitionName,function(partitionJSON){
 			var createdPartition=Partition.createPartitionFromJSON(partitionJSON);
 			this.partition_list.push(createdPartition);
 		});
