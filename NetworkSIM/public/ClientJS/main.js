@@ -1462,6 +1462,12 @@ function networkTopologyView(){
 	var content = getContainer();
 	content.innerHTML = html;
 }
+
+/***
+ * A view which allows you to view the logs for devices and simulations based on a particular timestamp
+ */
+
+
 /**
  * appDefaultView gets the front page of the application.
  */
@@ -2213,10 +2219,9 @@ send2Server = function(url, params, callback)
         {
         	resetEventQueue();
         	var obj = JSON.parse(request.responseText);
-        	//console.log(obj);
+        	
             callback(obj); // Another callback here
         }else{
-        	//alert("Please wait")
         	
         }
     }; 

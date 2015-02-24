@@ -10,8 +10,9 @@
 </head>
 
 <body>
-	<div id="test"></div>
-	<h1 id ="page-title">Event Logs for Simulation "SIMULATIONNAME"</h1>
+	<div id='title-bar'>
+		<h1 id ="page-title">Event Logs View</h1>
+	</div>
 		<div class = "row">
 			<div class="cell">
 				<svg>
@@ -27,15 +28,13 @@
 		</div>
 		<div class = "row">
 			<div class= "cell">
-				<h3 id="deviceLog-title">Viewing Event Log For: Device[i]</h3>
+				<h3 id="deviceLog-title">Select a device in the GUI to view its logs</h3>
 				<select size = "10" id ="device-log">
-					<option>Select a device in the GUI to view its logs</option>
 				</select>
 			</div>
 			<div class="cell">
-				<h3>Simulation Event Logs</h3>
+				<h3 id='simulation-log-title'>Simulation logs</h3>
 				<select size = "10" id ="simulation-log">
-					<option>Select a date to view the simulation logs</option>
 				</select>
 			</div>
 		</div>

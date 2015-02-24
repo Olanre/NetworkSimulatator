@@ -1,4 +1,4 @@
-window.onload=function(){populatePage()}
+window.onload=function(){populatePage(testState)}
 
 var configMapList={};
 //should hold a states object I guess 
@@ -11,9 +11,14 @@ var simulationEvents=["Device1 moved to Network wyattsHouse", "Device2 stopped e
 /**
  * Updates the title of the page with the name of the simulation
  */
-function updatePageTitle(simulationName){
+function updatePageTitle(timestamp){
 	var title= document.getElementById("page-title");
-	title.innerHTML="Event logs for "+simulationName;
+	title.innerHTML="Viewing event logs up to "+timestamp;
+}
+
+function updateSimulationLogTitle(timestamp){
+	var title = document.getElementById('simulation-log-title');
+	title.innerHTML='logs for this simulation at '+timestamp;
 }
 
 /**
@@ -51,9 +56,9 @@ function populateSimulationLogs(simulationEvents){
  */
 function populateDeviceLogs(deviceEvents){
 	var deviceLogs = document.getElementById("device-log");
-	deviceLogs="";
-	for (event in deviceEvents){
-		deviceLogs.innerHTML+="<option value="+event+">"+event+"</option>";
+	deviceLogs.innerHTML="";
+	for (var i =0; i<deviceEvents.length;i++){
+		deviceLogs.innerHTML+="<option value="+deviceEvents[i]+">"+deviceEvents[i]+"</option>";
 	}
 }
 /**
@@ -61,31 +66,30 @@ function populateDeviceLogs(deviceEvents){
  * that simulation state from
  */
 function selectSimulationDate(selected){
+	updatePageTitle(selected);
+	updateSimulationLogTitle(selected);
 	//gets the config map for that time stamp
 	configMap=configMapList[selected];
-	//alert(configMap);
 	//get the logs from the states object for that simulation snapshot
-	//simulationLogs=parseSimulationLogs(availableStatesObject,selected);
-	//populateSimulationLogs(simulationLogs);
+	simulationLogs=parseSimulationLogs(availableStatesObject,selected);
+	populateSimulationLogs(simulationLogs);
 	setInteractable(false);
 	generateTopology(configMapList[selected],500);
 }
 
-function updateSimulationEvents(time){
-	state=stateList[time];
-	state.simulation.activity_logs;
-}
-
-function populatePage(){
-	parseState(testState);
+/**
+ *Initiates initial loading of the page, parses the test state and puts up dates
+ */ 
+function populatePage(state){
+	parseState(state);
 	//adds the listener to the document
 	document.body.onclick = mouseClick;
-	
-	updatePageTitle("Simulation 1");
 	populateDates(timeStampList);
 }
 
-
+/**
+ * Handles getting mouse clicks on a device
+ */
 function mouseClick(e){
 	e = e || event;
 	if (event.type == 'click'){
@@ -97,22 +101,49 @@ function mouseClick(e){
 	if(toString(target) == "circle"){
 		circleElem=shapes[target.getAttribute('data-index')];
 		if (hasClass(circleElem.element, 'device')){
-			alert(circleElem.name);
-			deriveDeviceEvents(circleElem.name);
+			updateDeviceLogTitle(circleElem.name);
+			var events=deriveDeviceEvents(circleElem);
+			populateDeviceLogs(events);
 		}
 	}
 }
-//upon clicking a device
+
+/**
+ * Upon clicking a device, this should derive all of the events that 
+ */
 function deriveDeviceEvents(circleElem){
+	var deviceName=circleElem.name;
+	//holds the events for this device
+	var deviceEvents='';
+	var logDates = document.getElementById("log-dates")
+	var timeStamp = logDates.options[logDates.selectedIndex].innerHTML;
+	//find the simulation index for this timestamp
+	for (var i=0;i<availableStatesObject.length;i++){
+		console.log(availableStatesObject[i].timestamp);
+		if (availableStatesObject[i].timestamp==timeStamp){
+			//find the device this corresponds to
+			for (var j=0;j<availableStatesObject[i].devices.length;j++){
+				console.log(availableStatesObject[i].devices[j].device.current_device_name);
+				if(availableStatesObject[i].devices[j].device.current_device_name==deviceName){
+					deviceEvents=availableStatesObject[i].devices[j].device.activity;
+				}
+			}
+		}
+	}
+	//split the device events into an array
+	deviceArray=deviceEvents.split('\n');
+	return deviceArray;
 }
 
 
-//this should work to parse a states object.
+/**
+ *Parses a given state object into config maps and timestamps
+ */
 function parseState(state){
 	var states=state.states;
+	availableStatesObject=states;
 	//iterate through all the states
 	for (var i=0; i<states.length; i++){
-		console.log(i);
 		timestamp=states[i].timestamp;
 		//gets all the timestamps from all of these states
 		timeStampList.push(states[i].timestamp);
@@ -122,11 +153,16 @@ function parseState(state){
 	}
 }
 
+/**
+ *Takes the state object and retrieves the logs for the simulation corresponnding to that particular timestamp
+ */ 
 function parseSimulationLogs(states, timeStamp){
 	for (var i=0;i<states.length;i++){
+		console.log(states[i].timestamp +" and original is "+timestamp);
 		if (states[i].timestamp==timeStamp){
 			//this is a string, I'm guessing at how to parse it
 			simulationLogs = states[i].activity_logs;
+			console.log(simulationLogs);
 			//split strings
 			var logsArray= simulationLogs.split('\n');
 			//return array of all logs 
@@ -137,6 +173,8 @@ function parseSimulationLogs(states, timeStamp){
 	return "failed";
 }
 
+
+// a test states object
 var testState={id : 'blahdu3', 
 	states:  [{ 
 		simulation : {
@@ -161,68 +199,69 @@ var testState={id : 'blahdu3',
 		 	}
 		}, 
 		timestamp: '2015-01-012:44:00',
+		activity_logs: 'devicea: moved home \n devicea: headed out \n devicea: got well \n deviceb@mun.ca: got very hungry \n deviceb@mun.ca: didnt hang out',
 		devices : [
-			{ 'devicea': { 
+			{ device: { 
 				current_device_name: 'devicea',
 				activity: 'moved home \n headed out \n got well'
 				}
 			},
-			{ 'deviceb@mun.ca': { 
+			{ device: { 
 				current_device_name: 'deviceb@mun.ca',
 				activity: 'got very hungry \n didnt hang out'
 				}
 			},
-			{ 'devicec@mun.ca': {
+			{ device: {
 				current_device_name: 'devicec@mun.ca',
 				activity: 'wwel'
 				}
 			},
-			{ 'deviced': {
+			{ device: {
 				current_device_name: 'deviced',
 				activity: 'gave out fruit'
 				}
 			},
-			{ 'devicee': {
+			{ device: {
 				current_device_name: 'devicee',
 				activity: 'NO MORE GAMEs'
 				}
 			},
-			{ 'devicef': {
+			{ device: {
 				current_device_name: 'devicef',
 				activity: 'g \n o \n t '
 				}
 			},
-			{ 'deviceg@mun.ca': {
+			{ device: {
 				current_device_name: 'deviceg@mun.ca',
 				activity: 'made out'
 				}
 			},
-			{ 'deviceh@mun.ca': {
+			{ device: {
 				current_device_name: 'deviceh@mun.ca',
 				activity: 'working from home'
 				}
 			},
-			{ 'devicei@mun.ca': {
+			{ device: {
 				current_device_name: 'devicei@mun.ca',
 				activity: 'made a very good lunch'
 				}
 			},
-			{ 'device@mun.ca': {
+			{ device: {
 				current_device_name: 'device@mun.ca',
 				activity: 'donna batten'
 				}
 			},
-			{ 'devicek': {
+			{ device: {
 				current_device_name: 'devicek',
 				activity: 'i am going aways'
 				}
 			},
-			{ 'devicew': {
+			{ device: {
 				current_device_name: 'devicew',
 				activity: 'obese'
 				}
 			},
-			{ 'evicex': {
+			{ device: {
 				current_device_name: 'evicex',
 				activity: 'I am well'
 				}
