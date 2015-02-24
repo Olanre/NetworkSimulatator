@@ -12,6 +12,7 @@ console.log("Constructor test for the device class");
 
 console.log(newDevice.deviceJSON);
 
+//cannot test connect and disconnect from a network, need to work on this
 /*console.log("Testing device joining a network. This won't work as device is not connected to a simulation.");
 console.log(newDevice.deviceJSON.current_device_name);
 var newNetwork=new Network.createNewNetwork("testNetwork");
@@ -20,4 +21,8 @@ console.log(newNetwork.device_list);*/
 
 console.log("testing getting the JSON from device");
 console.log(newDevice.getJSON());
+
+//this method does not exist in mongoose connect
+/*console.log("testing getting the JSON from device");
+console.log(newDevice.save());*/
 

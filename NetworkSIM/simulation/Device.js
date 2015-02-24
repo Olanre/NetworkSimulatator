@@ -100,13 +100,15 @@ function leaveNetwork(network){
 function getJSON(){
 	  return this.deviceJSON;
 }
-  
+
+//this method does not exist in mongooseConnect, Emily.
 function save(){
 	  Database.modifyUserbyToken(this.deviceJSON.token, this.deviceJSON);
 }
 
+//returns the network this device is connected to
 function returnNetwork(){
-    // Make the device re-join a previous network
+	return this.networkObject;
 };
  
 function replicateRDT(rdt){
