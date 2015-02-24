@@ -1,3 +1,6 @@
+var Database=require("../Database/mongooseConnect.js");
+var Util=require("./utilities.js");
+
 function Network(networkName, networkType){
 	//Required
 	this.networkName = networkName; // String
@@ -7,7 +10,7 @@ function Network(networkName, networkType){
 	this.deviceIterator = new DeviceIterator(); // Returns an iterator that provides Device objects
 		  
 	this.partition={};
-	this.deviceList=[];
+	this.device_list=[];
 	this.networkJSON={};
 	this.simulationName='';
 	
@@ -18,7 +21,7 @@ function Network(networkName, networkType){
 	this.getTemplate = function getNetwork(){
 		network_data.network_name = networkName;
 		network_data.network_type = networkType;
-		network_data.deviceList = [];
+		network_data.device_list = [];
 		network_data.partition = '';
 		return network_data;
 	};
@@ -28,29 +31,29 @@ function Network(networkName, networkType){
 	
 	//we assume that we will only add devices through a network
 	this.addDevice = function addDevice(device){
-		this.networkJSON.deviceList.push(device.deviceJSON);
-		this.deviceList.push(device);
+		this.networkJSON.device_list.push(device.deviceJSON);
+		this.device_list.push(device);
 		//need this function from andrew
-		Database.saveNetworkByName(this.networkJSON.network_name, this.networkJSON);
+		Database.saveNetwork( this.networkJSON);
 		device.joinNetwork(this);
 	};
 	
 	//Required
 	this.removeDevice= function removeDevice(device){
-		//delete from the deviceList by token
-		for (var i =0; i< this.deviceList.length){
-			if (this.deviceList[i].token == device.token){
-				this.deviceList.splice(1,i);//this should remove the element at index i
+		//delete from the device_list by token
+		for (var i =0; i< this.device_list.length){
+			if (this.device_list[i].token == device.token){
+				this.device_list.splice(1,i);//this should remove the element at index i
 			}
 		}
 		//delete from the JSON device list
-		for (var i =0; i< this.networkJSON.deviceList.length){
-			if (this.networkJSON.deviceList[i].token == device.token){
-				this.networkJSON.deviceList.splice(1,i);//this should remove the element at index i
+		for (var i =0; i< this.networkJSON.device_list.length){
+			if (this.networkJSON.device_list[i].token == device.token){
+				this.networkJSON.device_list.splice(1,i);//this should remove the element at index i
 			}
 		}
 		device.leaveNetwork(this);
-		Database.saveNetworkByName(this.networkJSON.network_name, this.networkJSON);
+		Database.saveNetwork( this.networkJSON);
 	};
 	
 	//Required
@@ -61,10 +64,12 @@ function Network(networkName, networkType){
 		Database.modifyNetworkByName(network.network_name,networkJSON);
 	};
 	//Required
-	exports.disconnectNetwork = function(network){
+	this.disconnectNetwork = function(network){
 		this.partition.dividePartition(network)
 		network.partition={};
 		Database.modifyNetworkByName(network.network_name,networkJSON);
 	};
 
 };
+
+module.exports.Network = Network;
