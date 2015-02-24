@@ -10,7 +10,6 @@ var partitionList;
  * Required
  ****/
 function NetworkIterator(){
-  // An iterator over networks in the simulation
 	networkList = Simulation.getNetworks();
 	
   this.index=0;
@@ -44,7 +43,6 @@ function NetworkIterator(){
  * Required
  ****/
 function DeviceIterator(){
-  // Similar to the NetworkIterator except the elements are devices
 	
 	this.index=0;
   //Required
@@ -89,27 +87,17 @@ function Network(networkName, networkKind){
   
   //Required
   this.addDevice = function(device){
-    deviceList.push(device);
   };
 
   //Required
   this.removeDevice = function(device){
-   var deviceIndex=deviceList.indexOf(device);
-   deviceList.splice(deviceIndex,1);
   };
   //Required
   this.connectNetwork = function(network){
-    var partition=network.partition;
-    this.partition=partition;
-    partition.addNetwork(this);
   };
   //Required
   this.disconnectNetwork = function(network){
-    var partition=network.partition;
-    if(this.partition===partition){
-    	this.partition={};
-    }
-    partition.removeNetwork(this);
+   
   };
   
 }
@@ -120,36 +108,16 @@ function Network(networkName, networkKind){
 
 
 function Device(deviceName){
-	this.deviceName=deviceName;
 	this.token = '';
-	this.email = '';
-	this.verified = false;
-	this.current_network = '';
-	this.current_simulation = '';
-	this.registeredOn = '';
-	this.networks_created = [];
-	this.current_partition = '';
-	this.current_device_name = '';
-	this.application_id =  'default';
-	this.admin = false;
-	this.localcount = 0;
-	this.globalcount = 0;
-	this.activity = '';
-	
+	this.networkObject={};
+	this.device_name  = '';
+	this.rdt = {};
+	this.deviceJSON={};
+ 
   //Required
-  this.current_device_name = deviceName;
-  this.device_number = deviceList.length;
+  this.joinNetwork = function(network){};
   //Required
-  this.joinNetwork = function(network){
-    // Make the device join a network
-	  network.addDevice(this.current_device_name)
-	  
-  };
-  //Required
-  this.leaveNetwork = function(network){
-    // Make the device leave connected network
-	  network.removeDevice(this.current_device_name);
-  };
+  this.leaveNetwork = function(network){};
   //Required
   this.returnNetwork = function(){
     // Make the device re-join a previous network
@@ -178,4 +146,3 @@ function Partition(partitionName, simulationName){
 
 
 exports.NetworkIterator = NetworkIterator;
-exports.DeviceIterator = DeviceIterator;

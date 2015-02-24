@@ -6,7 +6,9 @@ function Partition(partitionName, simulationName){
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.networks=[];
-	this.partitionJSON={};
+	this.partitionJSON=getTemplate();
+	this.partitionJSON.simulation_name=simulation_name;
+	this.partitionJSON.network_list=[];
 	
 	
 	
@@ -20,7 +22,10 @@ function Partition(partitionName, simulationName){
 		}
 		
 	}
-
+	this.getJSON(){
+		return Database.getPartitionByName(this.partition_name);
+	}
+	
 	this.addNetwork=function(network){
 		
 		Database.getSimulationByName(this.simulation_name,function(simulation){

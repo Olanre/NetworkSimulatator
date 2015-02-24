@@ -12,7 +12,7 @@ function Device(deviceName){
 	this.networkObject={};
 	this.device_name  = '';
 	this.rdt = {};
-	this.deviceJSON={};
+	this.deviceJSON=getTemplate();
 	
 	this.attachJSON=function(deviceJSON){
 		this.deviceJSON=deviceJSON;
@@ -95,7 +95,7 @@ function Device(deviceName){
   
 }
 
-module.exportsdevi.getTemplate=function(){
+module.exports.getTemplate=function(){
 	  var device_data = {};
 	  device_data.token = '';
 	  device_data.email = '';

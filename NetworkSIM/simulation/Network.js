@@ -11,11 +11,21 @@ function Network(networkName, networkType){
 		  
 	this.partition={};
 	this.device_list=[];
-	this.networkJSON={};
+	this.networkJSON=getTemplate();
 	this.simulationName='';
 	
 	this.attachJSON=function(networkJSON){
 		this.networkJSON=networkJSON;
+		this.networkName=networkJSON.network_name;
+		this.networkKind=networkJSON.network_kind;
+		this.partition=networkJSON.partition;
+		
+		for(deviceName in networkJSON.device_list){
+			this.device_list.push(new Device.device(deviceName));
+		}
+	}
+	this.getJSON=function(){
+		return Database.getNetworkByName(this.networkName);
 	}
 	
 	

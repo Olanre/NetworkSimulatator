@@ -1,16 +1,16 @@
 /**
  * New node file
  */
-var deviceTemplate = require("./deviceTemplate.js");
-var SimulationTemplate = require("./simulationTemplate");
+var Device = require("./Device.js");
+var Simulation = require("./Simulation.js");
 var applicationTemplate = require("./applicationTemplate");
 
 
 
 function getTotalTemplate(){
 	var appTemplate = {};
-	appTemplate.user = deviceTemplate.getDeviceTemplate();
-	appTemplate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
+	appTemplate.user = Device.getTemplate;
+	appTemplate.current_simulation_session = Simulation.getTemplate();
 	appTemplate.application = applicationTemplate.getApplicationTemplate();
 	return appTemplate;
 }

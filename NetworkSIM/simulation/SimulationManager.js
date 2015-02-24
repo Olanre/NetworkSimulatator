@@ -8,10 +8,10 @@ var DeviceManager=require("./DeviceManager");
 var tokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
-var deviceTemplate = require("./deviceTemplate.js");
+var Device = require("./Device.js");
 var SimulationTemplate = require("./simulationTemplate.js");
 var stateTemplate=require("./stateTemplate.js");
-var simulation = require("./Simulation.js");
+var Simulation = require("./Simulation.js");
 var topology = require("./network_topology.js");
 var applicationTemplate = require("./applicationTemplate.js");
 var TotalAppTemplate = require("./TotalAppTemplate.js");
@@ -130,7 +130,8 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 
 /** 	-------------------------------------------
  * 				Getting and returning the states
- */
+ * 				I'm not sure we need these anymore!
+ 
 exports.startTemplate = function(callback) {
 	
 	//entire encapsulated application Template
@@ -197,14 +198,10 @@ function getNewState(token, callback){
 
 	
 }
-
-/** --------------------------------------------------
- * authorizing a token 
- */
+*/
 
 function authToken(token, callback){
 		
-	//var token = body.token; 
 	tokenManager.authenticateToken(token, function(obj){
 		console.log(obj);
 		callback(obj);
@@ -213,13 +210,23 @@ function authToken(token, callback){
 }
 
 function createSimulation(body) {
-	var Device = deviceTemplate.getDeviceTemplate();
+	var device = Device.getTemplate;
 	var map = body.config_map;
 	var d = new Date();
-	var device_list = simulation.getDevices(map);
-	var Sim = new SimulationTemplate();
-	Sim.simulation_name = body.simulation_name;
-	Sim.config_map = JSON.stringify(body.config_map);
+	//var device_list = simulation.getDevices(map);
+	var simulation = new Simulation.simulation(body.simulation_name);
+	var partition, network,device;
+	simulation.attachJSON(body);
+	for(partitionIndex in body.config_map){
+		
+		partition=new Partition.partition(partitionIndex);
+		
+		for(networkIndex in body.config_map[partition]){
+			for(deviceIndex in body.config_map[partition][network]){
+				
+			}
+		}
+	}
 	for( var i = 0; i < device_list.length; i++) {
 		
 		Device.current_simulation = body.simulation_name;
@@ -256,36 +263,7 @@ function createSimulation(body) {
 			//console.log('');
 		});
 	}, 800 );
-	
-	Device = {};
-	Application = {};
-	Simulation = {};
-	/**
-	var Sim = admin;
-	SimulationList.push(Sim);
-	var partitions = simulation.getPartitions(body.config_map);
-	for( var i = 0; i < partitions.length; i ++){
-		var Partition = new partitionTemplate.partition(partitions[i]);
-		Sim.addPartition(Partition);
-		var networks = simulation.getNetworksinPartition(body.config_map, partitions[i]);
-		for(var j = 0; j < networks[i].length; j ++ ){
-			var network = network.Network(networks[i]);
-			Partition.addNetwork(network);
-			Sim.addNetwork(networks[i]);
-			var devices = getDevicesFromNetwork(map, network_name)
-			for(var k = 0; k < devices.length; k++ ){
-				Device = new deviceTemplate.Device(devices[i]);
-				Sim.addDevice(Device);
-				Network.
-			}
-			
-		}
-		
-	}
-	*/	
-	
-	//var AppState = TotalAppState.getTotalState();
-	//console.log(body);
+
 }	
 
 function replaceAll(find, replace, str) {

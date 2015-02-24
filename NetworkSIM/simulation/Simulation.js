@@ -3,9 +3,10 @@
  * session_data holds all of the variables related to the current simulation if one exists.
  * This is the template for a simulation.
  */
-var device = require("./device.js");
+var Device = require("./Device.js");
 var state =require("./state.js");
-var network = require("./network.js");
+var Network = require("./Network.js");
+var Partition= require("./Partition.js");
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
@@ -14,7 +15,7 @@ function Simulation(simulation_name){
 	this.partition_list = [];
 	this.networkIterator = new NetworkIterator();
 	this.simulation_name = simulation_name;
-	this.simulationJSON = {};
+	this.simulationJSON = getTemplate();
 	this.app = '';
 	this.rdt = {};
 	
@@ -23,7 +24,9 @@ function Simulation(simulation_name){
 		this.simulation_name = simulationJSON.simulation_name;
 		this.activity_logs = simulationJSON.activity_logs;
 		this.partitionList = simulationJSON.partition_list;
-		
+		for(partitionName in simulationJSON.partition_list){
+			this.partition_list.push(new Partition.partition(partitionName));
+		}
 	};
 	
 	this.getJSON = function(){
