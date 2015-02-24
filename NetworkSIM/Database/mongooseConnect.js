@@ -284,6 +284,17 @@ function saveNetwork(aNetwork)
 	newNetwork.save();
 }
 
+function getNetworkByName(aName, callback)
+{
+	Network.findOne( {network_name: aName}, function(err, obj)
+	{
+		if(err) console.log("no network with name: " + aName );
+		
+		console.log("found network");
+		callback(obj);
+	});
+}
+
 function modifyNetworkByName(aString, aNetwork)
 {
 	Newtwork.findOne({network_name : aString}, function(err, obj)
@@ -302,6 +313,17 @@ function savePartition(aPartition)
 	var newPartition = new Partition(aPartition);
 	newPartition.save();
 }
+
+function getPartitionByName(aName, callback)
+{
+	Partition.findOne({partition_name : aString}, function(err, obj)
+	{
+		if(err) console.log("No partition with name " + aName);
+		console.log("found partition");
+		callback(obj);
+	});
+}
+
 
 function modifyPartitionByName(aString, aPartition)
 {
@@ -333,5 +355,7 @@ module.exports.saveNetwork = saveNetwork;
 module.exports.modifyNetworkByName = modifyNetworkByName;
 module.exports.savePartition = savePartition;
 module.exports.modifyPartitionByName = modifyPartitionByName;
+module.exports.getPartitionByName = getPartitionByName;
+module.exports.getNetworkByName = getNetworkByName;
 
 
