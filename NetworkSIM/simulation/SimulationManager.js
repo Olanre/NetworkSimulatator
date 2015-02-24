@@ -231,10 +231,13 @@ function createSimulation(body) {
 				console.log(token);
 				device=Device.createNewDevice(deviceName,token);
 				device.networkObject=network;
+				device.deviceJSON.email = deviceName;
+				device.deviceJSON.registeredOn = d.toString();
 				network.device_list.push(device);
 				network.networkJSON.device_list.push(device.deviceJSON);
 				Database.modifyUser(token,device.deviceJSON);
 			}
+			console.log(network.networkJSON);
 			Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
 		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);

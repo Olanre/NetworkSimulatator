@@ -189,8 +189,8 @@ function modifyUser(aToken, aUser, callback)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  var Lennete = new User;
-  Lennete = obj;
+  	var Lennete = new User();
+  	Lennete = obj;
    Lennete = aUser;
    Lennete.save();
    callback();
@@ -293,7 +293,7 @@ function modifyNetworkByName(aString, aNetwork)
 		if(err) console.log("No network with that name");
 		var LenneteNetwork = new Network();
 		LenneteNetwork = obj;
-	    LennneteNetwork = aNetwork;
+	    LenneteNetwork = aNetwork;
 	    LenneteNetwork.save();
 		console.log("Network saved");
 	});
