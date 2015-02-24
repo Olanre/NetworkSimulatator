@@ -92,7 +92,6 @@ var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
 
 //USER 
 var userSchema = mongoose.Schema({
-
 	token:String,
 	email:String,
 	verified: Boolean,
@@ -278,11 +277,6 @@ function newState(aState)
   //console.log("Saved state" + state);
 }
 
-
-
-
-
-
 //NETWORK FUNCTIONS
 function saveNetwork(aNetwork)
 { 
@@ -292,13 +286,13 @@ function saveNetwork(aNetwork)
 
 function modifyNetworkByName(aString, aNetwork)
 {
-	Newtwork.findOne({netowrk_name : aString}, function(err, obj))
+	Newtwork.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
 		var obj = aNetwork;
 		obj.save();
 		console.log("Network saved");
-	}
+	});
 }
 
 
@@ -309,19 +303,19 @@ function savePartition(aPartition)
 	newPartition.save();
 }
 
-function modifyParitionByName(aString, aPartition)
+function modifyPartitionByName(aString, aPartition)
 {
-   Partition.findOne({partition_name : aString}, function(err,obj))
+   Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
 	   
 	   var obj = aPartition;
 	   obj.save();
 	   console.log("partition saved");
-   }
+   });
 
 }
-
+	
 
 
 	
