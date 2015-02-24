@@ -21,7 +21,10 @@ function Network(networkName, networkType){
 		this.partition=networkJSON.partition;
 		
 		for(deviceName in networkJSON.device_list){
-			this.device_list.push(new Device.device(deviceName));
+			var createdDevice=new Device.device(deviceName);
+			Database.addUser(createdDevice.deviceJSON);
+			createdDevice.joinNetwork(this);
+			this.device_list.push(createdDevice);
 		}
 	}
 	this.getJSON=function(){
@@ -35,7 +38,6 @@ function Network(networkName, networkType){
 	this.addDevice = function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON);
 		this.device_list.push(device);
-		//need this function from andrew
 		Database.saveNetwork( this.networkJSON);
 		device.joinNetwork(this);
 	};

@@ -1,8 +1,3 @@
-
-/**
- * session_data holds all of the variables related to the current simulation if one exists.
- * This is the template for a simulation.
- */
 var Device = require("./Device.js");
 var state =require("./state.js");
 var Network = require("./Network.js");
@@ -19,13 +14,20 @@ function Simulation(simulation_name){
 	this.app = '';
 	this.rdt = {};
 	
+	
 	this.attachJSON=function(simulationJSON){
+		
 		this.simulationJSON=simulationJSON;
 		this.simulation_name = simulationJSON.simulation_name;
 		this.activity_logs = simulationJSON.activity_logs;
 		this.partitionList = simulationJSON.partition_list;
+		
 		for(partitionName in simulationJSON.partition_list){
-			this.partition_list.push(new Partition.partition(partitionName));
+			
+			var createdPartition=new Partition.partition(partitionName)
+			Database.savePartition(createdPartition.partitionJSON);
+			this.partition_list.push(createdPartition);
+			
 		}
 	};
 	

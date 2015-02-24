@@ -10,10 +10,10 @@ function Device(deviceName){
 	
 	this.token = '';
 	this.networkObject={};
-	this.device_name  = '';
+	this.device_name  = deviceName;
 	this.rdt = {};
-	this.deviceJSON=getTemplate();
-	
+	this.deviceJSON=module.exports.getTemplate();
+	this.deviceJSON.current_device_name=this.device_name;
 	this.attachJSON=function(deviceJSON){
 		this.deviceJSON=deviceJSON;
 		this.token = deviceJSON.token;
@@ -27,7 +27,7 @@ function Device(deviceName){
 	  var oldNetwork= this.deviceJSON.current_network;
 
 	  Database.getSimByName(this.deviceJSON.current_simulation,function(simulationJSON){
-		 var list.simulationJSON.config_map['freelist'];
+		var list=simulationJSON.config_map['freelist'];
 		if( list.hasOwnProperty(this.deviceJSON.current_device_name) ){
 			delete simulationJSON.config_map.free_list[this.deviceJSON.current_device_name];
 		  }
@@ -107,7 +107,7 @@ module.exports.getTemplate=function(){
 	  device_data.networks_created = [];
 	  device_data.application_id =  'default';
 	  device_data.current_simulation = '';
-	  device_data.current_device_name = device_name;
+	  device_data.current_device_name = '';
 	  device_data.activity = '';
 	  return device_data;
 	  

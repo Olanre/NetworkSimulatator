@@ -18,6 +18,7 @@ function Partition(partitionName, simulationName){
 		
 		for(network in partitionJSON.network_list){
 			networkObject=new Network(network.name);
+			Database.addNetwork(networkObject.networkJSON);
 			network.atttachJSON(partitionJSON.network_list[network]);
 		}
 		

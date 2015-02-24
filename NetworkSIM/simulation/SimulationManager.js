@@ -216,33 +216,8 @@ function createSimulation(body) {
 	//var device_list = simulation.getDevices(map);
 	var simulation = new Simulation.simulation(body.simulation_name);
 	var partition, network,device;
+	//the way I have it set up, the methods in the Simulation/Partition/Network/Device class will handle creating new stuff.
 	simulation.attachJSON(body);
-	for(partitionIndex in body.config_map){
-		
-		partition=new Partition.partition(partitionIndex);
-		
-		for(networkIndex in body.config_map[partition]){
-			for(deviceIndex in body.config_map[partition][network]){
-				
-			}
-		}
-	}
-	for( var i = 0; i < device_list.length; i++) {
-		
-		Device.current_simulation = body.simulation_name;
-		Device.registeredOn = d.toString();
-		Device.current_device_name = device_list[i];
-		Device.current_network = simulation.getNetwork(map, Device.name);
-		Device.current_partition = simulation.getPartition(map, Device.current_network);
-		Device.email = device_list[i];
-		
-		Device.token = DeviceManager.getToken();	
-		TokenPropagator.mailToken(Device.email, Device.token, body.name);
-		//console.log(Device);
-		Database.addUser(Device);
-	}
-	
-	body.config_map = JSON.stringify(body.config_map);
 	
 	Database.addSim(body);
 	
