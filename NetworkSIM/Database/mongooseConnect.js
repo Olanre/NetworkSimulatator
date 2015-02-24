@@ -189,8 +189,10 @@ function modifyUser(aToken, aUser, callback)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-   obj = aUser;
-   obj.save();
+  var Lennete = new User;
+  Lennete = obj;
+   Lennete = aUser;
+   Lennete.save();
    callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
