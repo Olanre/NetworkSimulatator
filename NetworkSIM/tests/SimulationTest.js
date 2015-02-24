@@ -7,5 +7,5 @@ console.log("This is what a blank simulation looks like in the database");
 console.log(blankSimulationJSON);
 
 console.log("Constructor test for the simulation class");
-var newSimulation=new Simulation.Simulation("test");
+var newSimulation=new Simulation.createNewSimulation("test");
 console.log(newSimulation.simulationJSON);

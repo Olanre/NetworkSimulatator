@@ -10,43 +10,49 @@ function Partition(partitionName, simulationName){
 	this.partitionJSON.simulation_name=simulation_name;
 	this.partitionJSON.network_list=[];
 	
+	this.addNetwork=addNetwork;
+	this.removeNetwork=removeNetwork;
+	this.mergePartitions=mergePartitions;
+	this.dividePartition=dividePartition;
 	
-	
-	this.attachJSON=function(partitionJSON){
-		var networkObject;
-		this.partitionJSON=partitionJSON;
-		
-		for(network in partitionJSON.network_list){
-			networkObject=new Network(network.name);
-			Database.addNetwork(networkObject.networkJSON);
-			network.atttachJSON(partitionJSON.network_list[network]);
-		}
-		
-	}
-	this.getJSON=function(){
+}
+
+function createNewPartition(partitionName,simulationName){
+	var createdPartition=new Partition(partitionName, simulationName);
+	return createdPartition;
+}
+
+function createPartitionFromJSON(partitionJSON){
+	var createdPartition=new Partition('','');
+	attachJSON(createdPartition,partitionJSON);
+	return createdPartition;
+}
+
+function attachJSON(partitionObject,partitionJSON){
+		partitionObject.partitionJSON=partitionJSON;		
+}
+function getJSON(){
 		return Database.getPartitionByName(this.partition_name);
-	}
+}
 	
-	this.addNetwork=function(network){
+function addNetwork(network){
 		
 		Database.getSimulationByName(this.simulation_name,function(simulation){
 			simulation.config_map[this.partition_name][network.network_name]=network.networkJSON.device_list;
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
 		networks.push(network);
-	}
-	
-	this.removeNetwork=function(network){
+}
+
+function removeNetwork(network){
 		Database.getSimulationByName(this.simulation_name,function(simulation){
 			delete simulation.config_map[this.partition_name][network.network_name];
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
 		delete networks[networks.indexOf(network)];
-	}
-	/****
-	 * This merges the partitions in the config map
-	 ****/
-	this.mergePartitions=function(partition){
+}
+
+function mergePartitions(partition){
 		//updates the configmap and the partition in the database
 		Database.getSimByName(this.simulation_name,function(simulation){
 			var partitionb=simulation.config_map[partition.partition_name]
@@ -62,8 +68,9 @@ function Partition(partitionName, simulationName){
 			network.partition=this;
 			this.networks.push(partition.networks[network]);
 		}
-	};
-	this.dividePartition=function(network){
+};
+
+function dividePartition(network){
 		//updates the configmap and the partition in the database
 		Database.getSimByName(this.simulation_name,function(simulation){
 			delete Sim.config_map[this.partition_name][network.network_name];
@@ -75,12 +82,12 @@ function Partition(partitionName, simulationName){
 		//updates the partition object and the network object
 		delete this.networks[this.networks.indexOf(network)];
 		network.partition={};
-	};
-}
+};
 module.exports.getTemplate=function(){
 	var partitionTemplate={};
 	partitionTemplate.partition_name="";
 	partitionTemplate.network_list=[];
 	return partitionTemplate;
 }
-module.exports.Partition = Partition;
+module.exports.createNewPartition = createNewPartition;
+module.exports.createPartitionFromJSON=createPartitionFromJSON;

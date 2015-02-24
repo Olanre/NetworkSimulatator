@@ -5,50 +5,77 @@ var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
 function Simulation(simulation_name){
-	this.freeList = new Network.Network('freelist'); 
+	
+	this.freeList = new Network.createNewNetwork('freelist',''); 
 	this.partition_list = [];
 	//this.networkIterator = new NetworkIterator();
 	this.simulation_name = simulation_name;
 	this.simulationJSON = module.exports.getTemplate();
 	this.app = '';
 	this.rdt = {};
+	this.simulationJSON.simulation_name=this.simulation_name;
 	
-	
-	this.attachJSON=function(simulationJSON){
+	this.importRDT=importRDT;
+	this.importApp=importApp;
+	this.removeApp=removeApp;
+	this.getNetworks=getNetworks;
+	this.add2FreeList=add2FreeList;
+	this.removeDeviceFromFreeList=removeDeviceFromFreeList;
+	this.getDevices=getDevices;
+	this.addPartition=addPartition;
+	this.modifyPartition=modifyPartition;
+	this.addDevice=addDevice;
+	this.addNetwork=addNetwork
+	this.removeDevice=removeDevice;
+	this.removeNetwork=removeNetwork;
+	this.removePartition=removePartition;
+	this.save=save;
+}
+
+function createNewSimulation(simulation_name){
+	var createdSimulation=new Simulation(simulation_name);
+	return createdSimulation;
+}
+function createSimulationFromJSON(simulationJSON){
+	var createdSimulation=new Simulation('');
+	attachJSON(simulationJSON);
+	return createdSimulation;
+}
+
+function attachJSON(simulationJSON){
 		
 		this.simulationJSON=simulationJSON;
 		this.simulation_name = simulationJSON.simulation_name;
 		this.activity_logs = simulationJSON.activity_logs;
-		this.partitionList = simulationJSON.partition_list;
 		
-		for(partitionName in simulationJSON.partition_list){
+		for(partitionName in simulationJSON.config_map){
 			
-			var createdPartition=new Partition.partition(partitionName)
+			var createdPartition=new Partition.createNewPartition(partitionName,config_map[partitionName]);
 			Database.savePartition(createdPartition.partitionJSON);
 			this.partition_list.push(createdPartition);
 			
 		}
-	};
-	
-	this.getJSON = function(){
+};
+
+function getJSON(){
 		 
-		return this.simulationJSON;
-	}
+		return Database.getSimulationByName(this.simulation_name);
+}
 	
-	this.importRDT = function(rdt){
+function importRDT(rdt){
 		this.rdt = rdt;
-	}
+}
 	
-	this.importApp = function(app){
+function importApp(app){
 		this.app = app;
 		
-	}
+}
 	
-	this.removeApp = function(app){
+function removeApp(app){
 		this.app = '';
-	}
+}
 	
-	this.getNetworks = function(){
+function getNetworks(){
 		var merged = [];
 		for(var i = 0; i < this.partition_list.legnth; i++){
 			var Networks = this.partition_list[i].networkList;
@@ -59,9 +86,9 @@ function Simulation(simulation_name){
 		}
 		
 		return merged;
-	}
+}
 
-	this.add2FreeList = function(device){
+function add2FreeList(device){
 		this.freeList.device_list.push(device);
 		device.current_network = 'freelist';
 		device.current_partition = 'freelist';
@@ -84,9 +111,8 @@ function Simulation(simulation_name){
 			
 			
 		});
-	}
-	
-	this.removeDevicefromFreeList = function(device){
+}
+function removeDeviceFromFreeList(device){
 		
 		
 		var deviceIndex = this.freeList.device_list.indexOf(device)
@@ -104,9 +130,9 @@ function Simulation(simulation_name){
 			
 		});
 		
-	}
-	
-	this.getDevices = function(){
+}
+
+function getDevices(){
 		var merged = [];
 		//merge the javascript objects
 		for(var i = 0; i < this.partitionJSON.partition_list.legnth; i++){
@@ -121,9 +147,9 @@ function Simulation(simulation_name){
 		}
 		
 		
-	}
+}
 	
-	this.addPartition = function(partitionName, simulationName){
+function addPartition(partitionName, simulationName){
 		var Partition = new Partition(partitionName, simulationName);
 		this.partition_list.push(Partition);
 		
@@ -137,10 +163,9 @@ function Simulation(simulation_name){
 			
 			
 		});
-	} 
+} 
 	
-	
-	this.modifyPartition = function(partition){
+function modifyPartition(partition){
 		for(var i = 0; i < this.partitionList.length; i++){
 			if(this.partitionList[i].partition_name == partition.partition_name){
 				this.partitionList[i] = partition;
@@ -154,8 +179,9 @@ function Simulation(simulation_name){
 		}
 		
 		
-	}
-	this.addDevice = function(deviceName){
+}
+
+function addDevice(deviceName){
 		var d = new Date();
 		var Device = new Device(deviceName);
 		var deviceTemplate = Device.getTemplate();
@@ -186,9 +212,9 @@ function Simulation(simulation_name){
 		
 		//Simulation.addDevice()
 	  // Add a device with the given name to the simulation
-	}
+}
 	
-	this.addNetwork = function(networkName, networkType){
+function addNetwork(networkName, networkType){
 		var Network = new Network(networkName, networkType);
 		var Partition = new Partition(networkName);
 		Partition.addNetwork(Network);
@@ -208,9 +234,9 @@ function Simulation(simulation_name){
 			
 			
 		});
-	}
+}
 	
-	this.removeDevice = function(deviceName){
+function removeDevice(deviceName){
 		
 		//deviceList.spice(device);
 		for(var i = 0; i < this.partitionList.length; i++ ){
@@ -242,9 +268,9 @@ function Simulation(simulation_name){
 			});
 	
 		
-	}
+}
 	
-	this.removeNetwork = function(networkName){
+function removeNetwork(networkName){
 		//deviceList.spice(device);
 		for(var i = 0; i < this.partitionList.length; i++ ){
 			var Networks = this.partitionList[i].networkList
@@ -268,21 +294,20 @@ function Simulation(simulation_name){
 			}
 		}
 		
-	}
+}
 	
-	this.deletePartition=function(partition){
+function removePartition(partition){
 		var partitionIndex = partitionList.indexOf(partition);
 		if(partitionIndex != null){
 			delete partitionList(partitionIndex);
 		}
-	}
+}
 	
-	
-	this.save = function(state){
+function save(state){
 		Database.modifySimulationByName(this.simulation_name, this.simulationJSON);
 		Database.saveState(state);
-	}
 }
+
 
 module.exports.getTemplate=function(){
 	var session_data = {};
@@ -299,4 +324,5 @@ module.exports.getTemplate=function(){
 	return session_data;
 	
 };
-module.exports.Simulation = Simulation;
+module.exports.createNewSimulation=createNewSimulation;
+module.exports.createSimulationFromJSON=createSimulationFromJSON;

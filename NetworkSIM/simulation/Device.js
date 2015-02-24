@@ -8,21 +8,46 @@ var Util=require("./utilities.js");
 
 function Device(deviceName){
 	
+	//Required variables//
+	this.device_name=deviceName;
+	
+	//Our Variables//
 	this.token = '';
 	this.networkObject={};
 	this.device_name  = deviceName;
 	this.rdt = {};
 	this.deviceJSON=module.exports.getTemplate();
 	this.deviceJSON.current_device_name=this.device_name;
-	this.attachJSON=function(deviceJSON){
-		this.deviceJSON=deviceJSON;
-		this.token = deviceJSON.token;
-		this.device_name = deviceJSON.curent_device_name;
-		this.networks_created = deviceJSON.networks_created;
-	};
 	
-  //Required
-  this.joinNetwork = function(network){
+	//Required Functions//
+	this.joinNetwork=joinNetwork;
+	this.leaveNetwork=leaveNetwork;
+	this.replicateRDT=replicateRDT;
+	this.accessRDT=accessRDT;
+	
+	//Our Functions//
+	this.save=save;
+}
+
+function createNewDevice(deviceName){
+	var createdDevice=new Device(deviceName);
+	return createdDevice;
+}
+
+function createDeviceFromJSON(deviceJSON){
+	var createdDevice=new Device('');
+	attachJSON(createdDevice,deviceJSON);r
+}
+
+function attachJSON(deviceObject,deviceJSON){
+	deviceObject.deviceJSON=deviceJSON;
+	deviceObject.device_name=deviceJSON.current_device_name;
+	deviceObject.token = deviceJSON.token;
+	deviceObject.networks_created = deviceJSON.networks_created;
+};
+	
+
+function joinNetwork(network){
 	  
 	  var oldNetwork= this.deviceJSON.current_network;
 
@@ -44,10 +69,9 @@ function Device(deviceName){
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
 	  delete network.deviceList();
 	  
-  };
+};
   
-  //Required
-  this.leaveNetwork = function(network){
+function leaveNetwork(network){
     // Make the device leave connected network
 	  network.removeDevice(this);
 	  Database.getSimByName(this.deviceJSON.current_simulation,function(simulationJSON){
@@ -66,34 +90,30 @@ function Device(deviceName){
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
 	  var networkIndex= network.deviceList.indexOf(device);
 		networks.splice(networkIndex,1);
-  };
+};
   
-  this.getJSON = function(){
+function getJSON(){
 	  return this.deviceJSON;
-  }
+}
   
-  this.save = function(){
+function save(){
 	  Database.modifyUserbyToken(this.deviceJSON.token, this.deviceJSON);
-  }
-  //Required
-  this.returnNetwork = function(){
-	  //unsure about this
-	  return this.networkObject;
+}
+
+function returnNetwork(){
     // Make the device re-join a previous network
-  };
+};
  
-  //Required
-  this.replicateRDT = function(rdt){
+function replicateRDT(rdt){
     // Register a replicated data type in the device
 	  this.rdt = rdt
-  };
-  //Required
-  this.accessRDT = function(){
+};
+
+function accessRDT(){
     // Access the previously registered replicated data type in the device
 	return this.rdt;
-  };
-  
-}
+};
+
 
 module.exports.getTemplate=function(){
 	  var device_data = {};
@@ -112,4 +132,6 @@ module.exports.getTemplate=function(){
 	  return device_data;
 	  
 };
-module.exports.Device = Device;
+
+module.exports.createNewDevice = createNewDevice;
+module.exports.createDeviceFromJSON=createDeviceFromJSON;
