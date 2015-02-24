@@ -2090,9 +2090,7 @@ function deletefromConfigTable(delete_point, name, map){
  */
 function removeDevices( element){
 	var allDevices = element.getElementsByClassName('device');
-	//console.log(allDevices.length);
 	for(var i = 0; i < allDevices.length; i++){
-		//console.log('Removing Device');
 		avail_devices += 1;
 	}
 }
@@ -2101,7 +2099,6 @@ function removeDevices( element){
  * @param element: the node cluster to be removed
  */
 function removeNetworks( element){
-	//console.log(element);
 	var allNetworks = element.getElementsByClassName('network');
 	for(var i = 0; i < allNetworks.length; i++){
 		deletefromConfigTable(allNetworks[i].parentNode.parentNode, 'Network', 'config-map')
