@@ -12,9 +12,12 @@ console.log("Constructor test for the device class");
 
 console.log(newDevice.deviceJSON);
 
-console.log("Testing device joining a network");
+/*console.log("Testing device joining a network. This won't work as device is not connected to a simulation.");
 console.log(newDevice.deviceJSON.current_device_name);
 var newNetwork=new Network.createNewNetwork("testNetwork");
 newDevice.joinNetwork(newNetwork);
-console.log(newNetwork.device_list);
+console.log(newNetwork.device_list);*/
+
+console.log("testing getting the JSON from device");
+console.log(newDevice.getJSON());
 

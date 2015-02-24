@@ -28,6 +28,7 @@ function Device(deviceName,token){
 	
 	//Our Functions//
 	this.save=save;
+	this.getJSON=getJSON;
 }
 
 function createNewDevice(deviceName,token){
@@ -82,10 +83,10 @@ function leaveNetwork(network){
 		  var num = Util.size(Sim.config_map['freelist']);
 		  Sim.config_map['freelist'][deviceThisObject.deviceJSON.current_device_name] = num;
 			
-		 delete simulationJSON.config_map[deviceThisObject.deviceJSON.current_partition][network.network_name][deviceThisObject.deviceJSON.current_device_name];
-		 var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
-		 simulationJSON.config_map[network.partition][network.network_name][deviceThisObject.deviceJSON.current_device_name]=indexInNetwork;
-		 Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,simulationJSON,function(){});
+		  delete simulationJSON.config_map[deviceThisObject.deviceJSON.current_partition][network.network_name][deviceThisObject.deviceJSON.current_device_name];
+		  var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
+		  simulationJSON.config_map[network.partition][network.network_name][deviceThisObject.deviceJSON.current_device_name]=indexInNetwork;
+		  Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,simulationJSON,function(){});
 			 
 	  });
 	  this.deviceJSON.current_network= '-';
