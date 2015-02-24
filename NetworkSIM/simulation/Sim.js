@@ -71,20 +71,23 @@ function Simulation(simulation_name){
 
 	this.add2FreeList = function(device){
 		this.freeList.device_list.push(device);
+		device.current_network = 'freelist';
+		device.current_partition = 'freelist';
+		
 		var size = util.size(this.simulationJSON.config_map['freelist']);
 		this.simulationJSON.config_map['freelist'][device.device_name] = size + 1;
-		this.simulationJSON.partition_list[freeList.networkJSON]
+		
 		Database.getSimByName(this.simulationJSON.simulation_name , function(Sim){
 			free_num = util.size(Sim.config_map['freelist']) + 1;
-			Sim.config_map['freelist'][device.current_device_name] = free_num;
+			Sim.config_map['freelist'][device.deviceJSON.current_device_name] = free_num;
 			
-			Device.joinNetwork(this.freeList);
+			
 			Database.modifySimByName(this.simulationJSON.simulation_name, Sim);
 			
 			Database.getDeviceByToken( device.deviceJSON.token, function(Device){
 				Device.current_network = 'freelist';
 				Device.current_partition = 'freelist';
-				Database.modifyUserByToken(device.deviceJSON.token, device.deviceJSON);
+				Database.modifyUserByToken(Device.token, device.deviceJSON);
 			});
 			
 			
@@ -101,7 +104,7 @@ function Simulation(simulation_name){
 		Database.getSimByName(this.simulationJSON.simulation_name, function(Sim){
 			var list = Sim.config_map['freelist'];
 			if( list.hasOwnProperty(device.deviceJSON.current_device_name) ){
-				delete Sim.config_map['freelist'][.device.deviceJSON.current_device_name];
+				delete Sim.config_map['freelist'][device.deviceJSON.current_device_name];
 			}
 
 			Database.modifySimByName(this.simulationJSON.simulation_name, Sim);
@@ -161,13 +164,30 @@ function Simulation(simulation_name){
 		
 	}
 	this.addDevice = function(deviceName){
+		var d = new Date();
 		var Device = new Device(deviceName);
-		this.add2FreeList(Device);
+		var deviceTemplate = Device.getTemplate();
+		
+		Device.current_simulation = this.simulation_name;
+		Device.email = deviceName;
+		device.current_device_name = deviceName;
+		device.registeredOn = d.toString();
+		//use the partitionList or config map
+		Device.loadJSON(deviceTemplate);
+		Device.deviceJSON.current simulation = this.simulation_name;
+		Device.deviceJSON.email = deviceName;
+		Device.deviceJSON.current_device_name = deviceName;
+		Device.deviceJSON.registeredOn = d.toString();
+		
 		
 		Database.getSimByName(this.simulationJSON.simulation_name, function(Sim){
-			Sim.partitionList.push(partitionJSON);
-
-			Database.modifySimByName(this.simulation_name, Sim);
+			
+			Sim.num_devices += 1;
+			Database.getApplication(function(App){
+				App.total_devices += 1;
+				Database.modifySimByName(this.simulation_name, Sim);
+				this.add2FreeList(Device);
+			});
 			
 			
 		});
@@ -181,16 +201,16 @@ function Simulation(simulation_name){
 		var Partition = new Partition(networkName);
 		Partition.addNetwork(Network);
 		this.partition_list.push(Partition);
-		
+		//use the partitionList or config map
 		partitonJSON = Partition.getTemplate(); 
 		networkJSON = Network.getTemplate();
 		partitionJSON.network_list.push(networkJSON);
 		this.simulationJSON.partition_list.push(partitionJSON);
 		
 		Database.getSimByName(this.simulationJSON.simulation_name, function(Sim){
-			partitionJSON.network_list.push(networkJSON);
 			//this.simulationJSON.partition_list.push(partitionJSON);
-			Sim.partition_list.push(partitionJSON);
+			Sim.config_map[networkName][networkName] = {};
+			Sim.num_network += 1;
 
 			Database.modifySimByName(this.simulation_name, Sim);
 			
@@ -208,12 +228,11 @@ function Simulation(simulation_name){
 					for( var k = 0; k < Devices.length; k++){
 						if(Devices[k].current_device_name == deviceName){
 							var deviceIndex = k;
-							this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
-							
+							if (deviceIndex != -1){
+								this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
+							}
 						}
-						if (deviceIndex != -1){
-							
-						}
+						
 					}
 					var deviceIndex = Devices.indexOf(device););
 					
@@ -237,6 +256,17 @@ function Simulation(simulation_name){
 		//deviceList.spice(device);
 		for(var i = 0; i < this.partitionList.length; i++ ){
 			var Networks = this.partitionList[i].networkList
+			for(var j = 0; j < Networks.length; j++){
+				if(Networks[j].network_name == networkName){
+					var networkIndex = j; 
+					this.partitionList[i].networkList.splice(Networks[j], 1);
+				}
+					
+			}
+		}
+		//use the partitionList or config map
+		for(var i = 0; i < this.partitionJSON.partitionList.length; i++ ){
+			var Networks = this.partitionJSON.partitionList[i].networkList
 			for(var j = 0; j < Networks.length; j++){
 				if(Networks[j].network_name == networkName){
 					var networkIndex = j; 
