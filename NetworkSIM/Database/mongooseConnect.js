@@ -291,8 +291,10 @@ function modifyNetworkByName(aString, aNetwork)
 	Network.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
-		var obj = aNetwork;
-		obj.save();
+		var LenneteNetwork = new Network();
+		LenneteNetwork = obj;
+	    LennneteNetwork = aNetwork;
+	    LenneteNetwork.save();
 		console.log("Network saved");
 	});
 }

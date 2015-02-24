@@ -322,7 +322,7 @@ module.exports.getTemplate=function(){
 	session_data.simulation_population = 0;
 	session_data.simulation_name ='';
 	session_data.config_map = {'freelist' : {} };
-	session_data.tokenMethod = 0;
+	session_data.tokenMethod = '';
 	//session_data.token_list=[];
 	session_data.activity_logs = '';
 	return session_data;
