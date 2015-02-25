@@ -74,7 +74,7 @@ function selectSimulationDate(selected){
 	simulationLogs=parseSimulationLogs(availableStatesObject,selected);
 	populateSimulationLogs(simulationLogs);
 	setInteractable(false);
-	generateTopology(configMapList[selected],500);
+	generateTopology(configMapList[selected],700);
 }
 
 /**

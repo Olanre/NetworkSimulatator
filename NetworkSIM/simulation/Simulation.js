@@ -307,12 +307,12 @@ function removeNetwork(networkName){
 function removePartition(partitionName){
 	
 	
-	for(index in partition_list){
+	for(index in this.partition_list){
 		if(this.partition_list[index].partition_name==partitionName){
 			for(netIndex in this.partition_list[index].network_list){
-				partition_list[index].removeNetwork(partition_list[index].network_list[netIndex]);
+				this.partition_list[index].removeNetwork(partition_list[index].network_list[netIndex]);
 			}
-			partition_list.splice(index,1);
+			this.partition_list.splice(index,1);
 			break;
 		}
 	}

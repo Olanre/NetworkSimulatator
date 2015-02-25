@@ -3,7 +3,7 @@ body{
 #svgCanv{
 	background-color: #f5f4e1;
 	width: 700px;
-  	height: 500px;
+  	height: 700px;
   	border-style: solid;
   	border-width: 0px;
 	position: relative;
@@ -42,7 +42,7 @@ h1{
 
 #log-dates{
 	background-color: #f2f2f2;
-	height: 500px;
+	height:700px;
 	width: 350px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
