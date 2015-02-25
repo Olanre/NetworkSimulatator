@@ -27,6 +27,7 @@ function Network(networkName, networkKind, partitionName){
 
 function createNewNetwork(networkName,networkKind, partitionName){
 	var createdNetwork=new Network(networkName,networkKind, partitionName);
+	console.log("THis is what is created for network " + createdNetwork.networkJSON.partition_name);
 	Database.saveNetwork(createdNetwork.networkJSON);
 	return createdNetwork;
 }
@@ -108,7 +109,7 @@ function getTemplate(){
 	var network_data={};
 	network_data.network_name = '';
 	network_data.network_type = '';
-	network_data.partition = '';
+	network_data.partition_name = '';
 	network_data.device_list = [];
 	return network_data;
 };

@@ -212,43 +212,46 @@ function createSimulation(body) {
 	var simulation = new Simulation.createNewSimulation(body.simulation_name);
 	var partition, network,device;
 	simulation.simulationJSON=body;
-	//console.log(simulation.simulationJSON);
+	console.log(map);
 	for(partitionName in map){
-		
-		partition=Partition.createNewPartition(partitionName,body.simulation_name);
-		partition.partitionJSON.partition_name = partitionName;
-		
-		//simulation.partition_list.push(partitionJSON);
-		
-		for(networkName in map[partitionName]){
+		if(partitionName !== null){
+			partition=Partition.createNewPartition(partitionName,body.simulation_name);
+			partition.partitionJSON.partition_name = partitionName;
 			
-			network=Network.createNewNetwork(networkName,'WiFI', partitionName);
+			//simulation.partition_list.push(partitionJSON);
 			
-			network.partitionObject=partition;
-			network.networkJSON.partition=partition.partition_name;
-			
-			for(deviceName in map[partitionName][networkName]){
-				var token=TokenManager.generateToken();
-				//console.log(token);
-				device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
-				setTimeout(function(){
-					network.addDevice(device);
-				}, 300);
-				
-				//network.networkJSON.device_list(device.deviceJSON);
+			for(networkName in map[partitionName]){
+				if(networkName !== null){
+					//console.log(networkName);
+					network=Network.createNewNetwork(networkName,'WiFI', partitionName);
+					
+					network.partitionObject=partition;
+					network.networkJSON.partition=partition.partition_name;
+					
+					for(deviceName in map[partitionName][networkName]){
+						if(deviceName !== null){
+							var token=TokenManager.generateToken();
+							//console.log(token);
+							device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
+							setTimeout(function(){
+								network.addDevice(device);
+							}, 300);
+						}	
+						//network.networkJSON.device_list(device.deviceJSON);
+					}
+					setTimeout(function(){
+						partition.addNetwork(network);
+					}, 300);
+				}
+				//console.log(network.networkJSON);
+				//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 			}
 			setTimeout(function(){
-				partition.addNetwork(network);
-			}, 300);
-			//console.log(network.networkJSON);
-			//Database.modifyNetworkByName(network.network_name,network.networkJSON);
+				//simulation.modifyPartition(partition)
+			},300);
+			//simulation.partition_list.push(partition);
+			//console.log(simulation);
 		}
-		setTimeout(function(){
-			simulation.modifyPartition(partition)
-		},300);
-		//simulation.partition_list.push(partition);
-		//console.log(simulation);
-		
 	}
 	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	

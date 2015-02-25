@@ -76,7 +76,10 @@ function mergePartitions(partition){
 			delete simulation.config_map[partition.partition_name];
 			sim.config_map[this.partition_name]=Util.merge_objects(sim.config_map[this.partition_name],partitionb);
 			Database.modifySimByName(this.simulation_name, simulation);
-			Database.modifyPartitionByName(this.partition_name, this.partitionJSON);
+			//Database.getPartitionByName(this.partitionJSON.partition_name, function(Part){
+				//Part.
+			//});
+			//Database.modifyPartitionByName(this.partition_name, this.partitionJSON);
 			
 			
 		});
