@@ -37,7 +37,7 @@ var networkSchema = mongoose.Schema({
 });
 
 //NETWORK COMPLETE
-var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
+var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
@@ -87,7 +87,7 @@ var partitionSchema = mongoose.Schema({
 
 });
 
-var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
+var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
 //SIMULATION
 
 
@@ -170,7 +170,7 @@ function modifySimByName(aString, aSim, callback)
    LenneteSim = obj;
    LenneteSim = aSim;
 	LenneteSim.save();
-	callback();
+	//callback();
 });		
 	
 }
@@ -184,7 +184,7 @@ function addUser(aUser)
   //console.log("saved user " + aUser);
 }
 
-function modifyUser(aToken, aUser, callback)
+function modifyUser(aToken, aUser)
 {
   User.findOne({token: aToken}, function(err, obj)
   {
@@ -195,7 +195,7 @@ function modifyUser(aToken, aUser, callback)
    Lennete2 = aUser;
    Lennete = Lennete2;
    Lennete.save();
-   callback();
+   //callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
 }
@@ -298,6 +298,7 @@ function modifyNetworkByName(aString, aNetwork)
 	    LenneteNetwork = aNetwork;
 	    LenneteNetwork.save();
 		console.log("Network saved");
+		//callback();
 	});
 }
 
@@ -329,8 +330,10 @@ function modifyPartitionByName(aString, aPartition)
 	   LennetePartition = obj;
 	   
 	   LennetePartition = aPartition;
+	   //console.log(aPartition);
 	   LennetePartition.save();
 	   console.log("partition saved");
+	   //callback();
    });
 }
 
