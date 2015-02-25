@@ -95,8 +95,10 @@ app.post("/getSync", function(req, res) {
 				});
 			}else{
 				console.log("failed authenication" );
-				SimulationManager.ClientRequest(token, eventqueue, function(){
+				SimulationManager.ClientRequest(token, eventqueue, simulation, function(){
+					console.log("Done");
 					SimulationManager.startTemplate(function(data){
+						console.log(data);
 						console.log("Send blank state");
 						res.send(data);
 					});

@@ -233,13 +233,14 @@ function createSimulation(body) {
 				device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
 				//network.networkJSON.device_list(device.deviceJSON);
 			}
-			//partition.addNetwork(network);
+			partition.addNetwork(network);
 			//partition.network_list.push(network);
 			//partition.partitionJSON.network_list.push(network.networkJSON);
 			//console.log(network.networkJSON);
 			//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
 		simulation.partition_list.push(partition);
+		console.log(simulation);
 		//simulation.simulationJSON.partition_list.push(partition.partitionJSON);
 		//console.log(partition.partitionJSON.network_list.);
 		//Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
@@ -247,29 +248,35 @@ function createSimulation(body) {
 	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	
 	//Dunno what this is about, so I'll leave it here for now
-	Database.getApp(function(data){
-		
-		if(data !== null){
-			var Application = data;
-			var item =  { 'name' : body.simulation_name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
-			Application.total_devices += body.num_devices;
-			Application.total_networks += body.num_networks;
-			item = JSON.stringify(item);
-			Application.simulation_list.push(item);
-			Database.modifyApp(Application);
-		}
-	});
 	setTimeout(function() {
-		Database.getSimByName(body.simulation_name, function(obj){
-			obj.num_devices = body.num_devices;
-			obj.num_networks = body.num_networks;
-			obj.config_map = body.config_map;
-			obj.tokenMethod = body.tokenMethod;
-			Database.modifySimByName(body.simulation_name, obj);
-			//console.log('');
+		Database.getApp(function(data){
+			
+			if(data !== null){
+				var Application = data;
+				var item =  { 'name' : body.simulation_name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
+				Application.total_devices += body.num_devices;
+				Application.total_networks += body.num_networks;
+				item = JSON.stringify(item);
+				Application.simulation_list.push(item);
+				Database.modifyApp(Application);
+				Database.getSimByName(body.simulation_name, function(obj){
+					obj.num_devices = body.num_devices;
+					obj.num_networks = body.num_networks;
+					obj.config_map = body.config_map;
+					obj.tokenMethod = body.tokenMethod;
+					Database.modifySimByName(body.simulation_name, obj);
+					//console.log('');
+					console.log("DOne");
+					simulationList.push(simulation);
+					//callback();
+				});
+			}
 		});
-	}, 800 );
-	simulationList.push(simulation);
+	//
+		
+	}, 1000 );
+	
+	
 }	
 
 
