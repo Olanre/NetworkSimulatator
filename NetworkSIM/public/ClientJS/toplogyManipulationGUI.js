@@ -272,6 +272,12 @@ interact('.network')
 				//THIS IS STUFF TO INTERACT WITH MAINJS
 				//addDevice(deviceName, newNetworkName);
 				//this does not handle moving in and out of the free-list
+				//THIS IS THE STUFF I HAVE CHANGED TO INTERACT WITH MAINJS
+				//var originalNetwork = getNetwork(device_name);
+				
+				//THIS IS THE STUFF I HAVE CHANGED TO INTERACT WITH MAINJS
+				//var originalNetwork = getNetwork(device_name);
+				
 			}
 			if(dragClass==='network'){
 				var circleDragging = shapes[draggableElement.getAttribute('data-index')];

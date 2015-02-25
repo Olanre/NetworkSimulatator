@@ -10,6 +10,7 @@
 
 <"C:/Users/Noah/git/sim-2"body>
 	<script src='../public/ClientJS/interact-1.2.2.js'></script>
+	<div id="bigDiv">
 	<svg>
 	</svg>
 	
@@ -17,12 +18,13 @@
 
 	<script src='../public/ClientJS/toplogyManipulationGUI.js'></script>
 	<br>
-	<button type="button" onclick = createDeviceGraphic()>New Device</button>
-	<button type="button" onclick = createNetworkGraphic()>New Network</button>
-	<button type="button" onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>
-	<button type="button" onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>
-	<button type="button" onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>
-	<button type="button" onclick = clearCanvas()>Clear Canvas</button>
+	<button class="buttton" type="button" onclick = createDeviceGraphic()>New Device</button>
+	<button class="buttton"  type="button" onclick = createNetworkGraphic()>New Network</button>
+	<button class="buttton"  type="button" onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>
+	<button class="buttton" type="button" onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>
+	<button class="buttton" type="button" onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>
+	<button class="buttton" type="button" onclick = clearCanvas()>Clear Canvas</button>
+	</div>
 </body>
 
 </html>

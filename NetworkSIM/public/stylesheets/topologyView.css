@@ -1,12 +1,17 @@
 svg {
-  width: 800px;
+	background: #F0F1F2;
+  	width: 800px;
   height: 800px;
-  border-style: solid;
-  border-width: 1px;
+  	border-style: solid;
+  	border-width: 0px;
 	position: relative;
 	left: -20px;
+	border-radius: 25px;
+	
 }
-
+#bigDiv{
+	margin-left: 31%;
+}
 .viable-partition{
 	fill:red;
 	stroke: blue;
@@ -22,33 +27,46 @@ svg {
 	
 }
 .network-connection{
-	fill:black;
+	fill: #71EEB8;
 	stroke-width:5;
-	stroke:black;
+	stroke:#71EEB8;
 }
 
 .device {
-	fill: #FF8300;
+	fill: #ff9999;
 }
 
 .network{
-	fill: #33CCFF;
-	stroke: black;
+	fill: #71EEB8;
 }
 
 .drop-locations{
-	stroke: #FFC12B;
+	stroke: #29CE87;
 	stroke-dasharray: 10,5;
 	stroke-width:4;
 }
 
 .drop-target{
-	fill: #FFC12B;
+	fill: #9FF7D1;
 }
 .connected-device{
-	fill: #0430FB;
+	fill: #29CE87;
 }
 
 body { 
 	margin: 0; 
+}
+.buttton {
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 16px;
+  background: #ff9999;
+  padding: 4px 4px 4px 4px;
+  border: 0px solid black;
+}
+
+.buttton:hover {
+  background: #D86161;
+  text-decoration: none;
 }

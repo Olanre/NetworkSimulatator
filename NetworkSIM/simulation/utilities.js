@@ -27,3 +27,29 @@ exports.compareObjects=function(obj1,obj2){
 exports.replaceAll=function(find, replace, str) {
 	  return str.replace(new RegExp(find, 'g'), replace);
 };
+
+exports.findSimulationByName=function(simulationName,simulationList){
+	for(index in simulationList){
+		if (simulationList[index].simulation_name==simulationName) return simulationList[index];
+
+	}
+};
+
+exports.findDeviceByName=function(deviceName,deviceList){
+	for(index in deviceList){
+		if (deviceList[index].device_name==deviceName) return deviceList[index];
+
+	}
+};
+exports.findNetworkByName=function(networkName,networkList){
+	for(index in networkList){
+		if (networkList[index].network_name==networkName) return networkList[index];
+
+	}
+};
+exports.findPartitionByName=function(partitionName,partitionList){
+	for(index in partitionList){
+		if (partitionList[index].partition_name==partitionName) return partitionList[index];
+
+	}
+};

@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 
 //connect to db
-var db = mongoose.connect('mongodb://username:password@ds033601.mongolab.com:33601/sc2');
+var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:53139/sc-2');
 
 //attach lister to connected even
 mongoose.connection.once('connected', function(){
@@ -193,16 +193,10 @@ function modifyUser(aToken, aUser)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  console.log("awdawdadawd");	
-  var Lennete = new User();
-  var temp = new User(obj);
-  	
-   //temp.delete();
-   var Lennete2 = new User(aUser);
-   for(var key in aUser){
-	   console.log(key + aUser[key]);
-   }
-   Lennete2.save();
+  console.log("hello");
+  obj= aUser;
+  obj.save();
+  
    //callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
@@ -229,10 +223,11 @@ function updateUserAcitivity(aString, aUser, callback)
 //FETCH BY TOKEN 
 function getUserByToken(aToken, callback)
 {
+	//console.log(aToken);
   User.findOne( {token: aToken}, function(err, obj)
   { 
     if(err) console.log("no user with token " + aToken);
-	//console.log("found User " );
+    
 	callback(obj);
   });
 }
@@ -251,9 +246,7 @@ function getApp(callback)
 {
    App.findOne( function(err, obj)
    {
-	   var LenetteApp = new App();
-	   LenetteApp = obj;
-	   callback(LenetteApp);
+	   callback(obj);
 });
 }
 
@@ -261,10 +254,9 @@ function modifyApp(NewApp)
 {
    App.findOne( function(err, obj)
    {
-     var LenneteApp = new App();
-     LenneteAppy = obj;
-     LeneteApp = NewApp;
-     LeneteApp.save();
+     obj = NewApp;
+     obj.save();
+     
      //callback(LenneteApp);
 });
 }
@@ -301,10 +293,8 @@ function modifyNetworkByName(aString, aNetwork)
 	Network.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
-		var LenneteNetwork = new Network();
-		LenneteNetwork = obj;
-	    LenneteNetwork = aNetwork;
-	    LenneteNetwork.save();
+		obj = aNetwork;
+	    obj.save();
 		console.log("Network saved");
 		//callback();
 	});

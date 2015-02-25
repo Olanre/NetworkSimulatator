@@ -31,7 +31,7 @@ function Device(deviceName,token){
 	this.getJSON=getJSON;
 }
 
-function createNewDevice(deviceName,token){
+function createNewDevice(deviceName,token, callback){
 	var createdDevice=new Device(deviceName,token);
 	console.log(createdDevice.deviceJSON);
 	Database.addUser(createdDevice.deviceJSON);
@@ -49,7 +49,7 @@ function attachJSON(deviceObject,deviceJSON){
 	deviceObject.token = deviceJSON.token;
 	deviceObject.networks_created = deviceJSON.networks_created;
 };
-	
+
 
 function joinNetwork(network){
 	  var oldNetwork= this.deviceJSON.current_network;
@@ -61,9 +61,11 @@ function joinNetwork(network){
 		  if( list.hasOwnProperty(deviceThisObject.deviceJSON.current_device_name )){
 			  delete simulationJSON.config_map.free_list[deviceThisObject.deviceJSON.current_device_name];
 		  }
+		  /* this probably doesn't have to be done. SimulationManager takes care of the config map for us :)
 		  delete simulationJSON.config_map[deviceThisObject.deviceJSON.current_partition][oldNetwork][deviceThisObject.deviceJSON.current_device_name];
 		  var indexInNetwork=util.size(simulationJSON.config_map[network.networkJSON.partition][network.network_name]);
 		  simulationJSON.config_map[network.networkJSON.partition][network.network_name][deviceThisObject.deviceJSON.current_device_name]=indexInNetwork;
+		  */
 		  Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,simulationJSON,function(){});
 		 
 	  });
@@ -71,6 +73,7 @@ function joinNetwork(network){
 	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
+	  this.deviceJSON.current_network=network.network_name;
 	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
 	  delete network.device_list;
 	  
