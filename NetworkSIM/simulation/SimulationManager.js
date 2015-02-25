@@ -233,6 +233,7 @@ function createSimulation(body) {
 							var token=TokenManager.generateToken();
 							//console.log(token);
 							device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
+							TokenPropagator.mailToken(deviceName, token, simulation.simulation_name);
 							//setTimeout(function(){
 								//network.addDevice(device);
 							//}, 300);
