@@ -50,15 +50,15 @@ function getJSON(){
 	
 function addNetwork(network){
 		
-		Database.getSimulationByName(this.simulation_name,function(simulation){
-			simulation.config_map[this.partition_name][network.network_name]=network.networkJSON.device_list;
+		Database.getSimByName(this.simulation_name,function(simulation){
+			simulation.config_map[this.partition_name][network.network_name]= network.networkJSON.device_list;
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
-		network_list.push(network);
+		this.network_list.push(network);
 }
 
 function removeNetwork(network){
-		Database.getSimulationByName(this.simulation_name,function(simulation){
+		Database.getSimByName(this.simulation_name,function(simulation){
 			delete simulation.config_map[this.partition_name][network.network_name];
 			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
 		});
