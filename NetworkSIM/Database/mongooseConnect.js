@@ -325,8 +325,11 @@ function modifyPartitionByName(aString, aPartition)
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
-	   var obj = aPartition;
-	   obj.save();
+	   var LennetePartition = new Partition();
+	   LennetePartition = obj;
+	   
+	   LennetePartition = aPartition;
+	   LennetePartition.save();
 	   console.log("partition saved");
    });
 }
