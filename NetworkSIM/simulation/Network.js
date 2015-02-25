@@ -53,9 +53,6 @@ function getJSON(){
 	return Database.getNetworkByName(this.networkName);
 }
 
-	
-
-
 //we assume that we will only add devices through a network
 function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON);

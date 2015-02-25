@@ -165,7 +165,6 @@ function addPartition(partitionName){
 		
 		partitonJSON = newPartition.partitionJSON; 
 		this.simulationJSON.partition_list.push(partitionJSON);
-		this.simulationJSON.config_map[partitionName]={};
 		
 		Database.modifySimByName(this.simulation_name, this.simulationJSON);
 		return newPartition;
@@ -241,79 +240,92 @@ function addNetwork(networkName, networkType){
 			
 		});
 }
-	
+/*
+ * 1. Disconnect the device from its network
+ * 2. Remove the device from the device list
+ * 3. Update the config_map
+ * 4. Update the simulation in the database.
+ */
 function removeDevice(deviceName){
+	var deviceList=this.getDevices();
+	for(index in deviceList){
 		
-		//deviceList.spice(device);
-		for(var i = 0; i < this.partitionList.length; i++ ){
-			var Networks = this.partitionList[i].networkList;
-			for(var j = 0; j < Networks.length; j++){
-				var Devices = Networks[j].deviceList;
-					for( var k = 0; k < Devices.length; k++){
-						if(Devices[k].current_device_name == deviceName){
-							var deviceIndex = k;
-							if (deviceIndex != -1){
-								this.partitionList[i].networkList[j].deviceList.splice(deviceIndex, 1);
-							}
-						}
-						
-					}
-					var deviceIndex = Devices.indexOf(device);
-					
-				}
+		if(deviceList[index].device_name==deviceName){
+			deviceList[index].networkObject.removeDevice(deviceList[index]);
+			deviceList.splice(index,1);
+			break;
+		}
+		
+	}
+	var configmap=this.simulationJSON.config_map;
+	for(partition in configmap){
+		for(network in configmap[partition]){
+			for(device in configmap[partition][network]){
+				if(device==deviceName) delete configmap[partition][network][device];
 			}
-			Database.getSimByName(this.simulation_name, function(Sim){
-				var list = Sim.config_map['freelist'];
-				if( list.hasOwnProperty(device_name) ){
-					delete Sim.config_map['freelist'][device_name];
-				}else{
-					delete Sim.config_map[partition][network][device_name];
-				}
-				//need to update number of devices here for application and simulation
-				Database.modifySimByName(this.simulation_name, Sim);
-			});
+		}
+	}
+	Database.modifySimByName(this.simulation_name,this.simulationJSON);
 	
 		
 }
-	
+/*
+ * 1. Disconnect all devices from the network
+ * 2. Remove the network from its partition
+ * 3. Remove the network from the network list
+ * 4. Update the configmap
+ * 5. Update the simulation in the database
+ */
 function removeNetwork(networkName){
-		//deviceList.spice(device);
-		for(var i = 0; i < this.partitionList.length; i++ ){
-			var Networks = this.partitionList[i].networkList
-			for(var j = 0; j < Networks.length; j++){
-				if(Networks[j].network_name == networkName){
-					var networkIndex = j; 
-					this.partitionList[i].networkList.splice(Networks[j], 1);
+		var networkList=this.getNetworks();
+		
+		for(index in networkList){
+			if(networkList[index].network_name==networkName){
+				for(devIndex in networkList[index].device_list){
+					networkList[index].removeDevice(networkList[index].device_list[devIndex]);
 				}
-					
+				networkList[index].partitionObject.removeNetwork(networkList[index]);
+				networkList.splice(index,1);
+			}
+			break;
+		}
+		var configmap=this.simulationJSON.config_map;
+		for(partition in configmap){
+			for(network in configmap[partition]){
+				if(network==networkName)delete configmap[partition][network];
 			}
 		}
-		//use the partitionList or config map
-		for(var i = 0; i < this.partitionJSON.partitionList.length; i++ ){
-			var Networks = this.partitionJSON.partitionList[i].networkList
-			for(var j = 0; j < Networks.length; j++){
-				if(Networks[j].network_name == networkName){
-					var networkIndex = j; 
-					this.partitionList[i].networkList.splice(Networks[j], 1);
-				}
-					
-			}
-		}
+		Database.modifySimByName(this.simulation_name,this.simulationJSON);
 		
 }
+/*
+ * 1. Disconnect all networks from the partition
+ * 2. Remove the partition from the simulation's partition list
+ * 3. Update the configmap
+ * 4. Update the simulation in the database
+ */
+function removePartition(partitionName){
 	
-function removePartition(partition){
-		var partitionIndex = partitionList.indexOf(partition);
-		if(partitionIndex != null){
-			delete partitionList(partitionIndex);
+	
+	for(index in partition_list){
+		if(this.partition_list[index].partition_name==partitionName){
+			for(netIndex in this.partition_list[index].network_list){
+				partition_list[index].removeNetwork(partition_list[index].network_list[netIndex]);
+			}
+			partition_list.splice(index,1);
+			break;
 		}
+	}
+	var configmap=this.simulationJSON.config_map;
+	for(partition in configmap){
+		if (partition==partitionName) delete configmap[partition]
+	}
+	Database.modifySimByName(this.simulation_name,this.simulationJSON);
 }
-	
 function save(state){
 		Database.modifySimulationByName(this.simulation_name, this.simulationJSON);
 		Database.saveState(state);
 }
-
 
 module.exports.getTemplate=function(){
 	var session_data = {};

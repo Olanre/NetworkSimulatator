@@ -228,8 +228,9 @@ function createSimulation(body) {
 			
 			for(deviceName in map[partitionName][networkName]){
 				var token=TokenManager.generateToken();
-				console.log(token);
+				//console.log(token);
 				device=Device.createNewDevice(deviceName,token);
+				
 				device.networkObject=network;
 				device.deviceJSON.email = deviceName;
 				device.deviceJSON.registeredOn = d.toString();
@@ -238,13 +239,18 @@ function createSimulation(body) {
 				Database.modifyUser(token,device.deviceJSON, function(){});
 			}
 			partition.network_list.push(network);
+			partition.partitionJSON.network_list.push(network.networkJSON);
+			break;
 			//console.log(network.networkJSON);
-			Database.modifyNetworkByName(network.network_name,network.networkJSON);
+			//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
-		
-		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+		simulation.partition_list.push(partition);
+		//simulation.simulationJSON.partition_list.push(partition.partitionJSON);
+		//console.log(partition.partitionJSON.network_list.);
+		//Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+		break;
 	}
-	Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
+	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	
 	//Dunno what this is about, so I'll leave it here for now
 	Database.getApp(function(data){
@@ -286,7 +292,7 @@ function createDevice(body, simulationName) {
 	
 }
 
-
+//TODO
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
@@ -298,46 +304,37 @@ function createNetwork(networkObject, simulation){
 function addPartition(partitionObject, simulation){
 	var partitionName=partitionObject.partition_name;
 	var simulationName=partitionObject.simulation_name;
-	//Database.addPartition(simulationName,partitionName,partitionObject);
+	var simulationObject=Util.findSimulationByName(simulationList,simulationName);
+	simulationObject.addPartition(partitionName);
+	Database.modifySimByName(simulationName,simulationObject.simulationJSON);
 }
 
-
+//TODO
 function deleteDevice(deviceObject, simulation){
 	var simulationName=deviceObject.simulation_name;
 	var deviceName=deviceObject.device_name;
 	var networkName = deviceObject.network_name;
 	var partitionName = deviceObject.partition_name; 
+	var simulationObject=Util.findSimulationByName(simulationList,simulationName);l
+	Database.modifySimByName(simulationName,simulationObject.simulationJSON);
 	//Database.deleteDevice(simulationName,deviceName);
 }
-
+//TODO
 function deleteNetwork(networkObject, simulation){
 	var networkName=networkObject.network_name;
 	var simulationName=networkObject.simulation_name;
 	//Database.deleteNetwork(simulationName,networkName);
 }
-
+//TODO
 function removeToken(tokenObject){
 	//Database.removeToken(tokenObject);
 }
-
-
-
-function deletePartitionMap(partitionMapObject, simulation){
-	var token = partitionMapObject.token;
-	var simname=partitionMapObject.simulation_name;
-	var partitionName=partitionMapObject.partition_name;
-	//Database.deletePartitionMap(simname,partitionName,token);
-}
-
+//TODO
 function deleteSimulation(simulationObject, simulation){
 	var name=simulationObject.simulation_name;
 	//Database.deleteSimulation(name);
 }
-
-function deleteToken(token, simulation){
-	//function delete user by token
-}
-
+//TODO
 function updateAllCounts(userObject){
 	var token=userObject.token;
 	var localCount=userObject.localCount;
@@ -346,7 +343,7 @@ function updateAllCounts(userObject){
 }
 
 var incr = 0;
-
+//TODO
 function updateLocalCount(token, body) {
 	incr += 1;
 	var localcount = body.localcount;
@@ -368,49 +365,43 @@ function updateLocalCount(token, body) {
 		});
 	});
 }
+//TODO
 function updateNetworkName(networkObject, simulation){
 	var newName=networkObject.new_name;
 	var oldName=networkObject.old_name;
 	//Database.updateNetworkName(oldName,newName);
 }
-
+//TODO
 function updateDeviceName(deviceObject, simulation){
 	var newName=deviceObject.new_name;
 	var oldName=deviceObject.old_name;
 	//Database.updateDeviceName(oldName,newName);
 }
-
+//TODO
 function updateSimulationName(simulationObject, simulation){
 	var newName=simulationObject.new_name;
 	var oldName=simulationObject.old_name;
 	//Database.updateSimulationName(oldName,newName);
 }
-
+//TODO
 function updateTokenMethod(simulationObject, simulation){
 	var simulationName=simulationObject.simulation_name;
 	var newMethod=simulationObject.new_method;
 	//Database.updateTokenMethod(simulationName,newMethod);
 }
-
+//TODO
 function updateDeviceNumber(deviceObject, simulation){
 	var number=deviceObject.device_number;
 	var simulation=deviceObject.simulation_name;
 	//Database.updateDeviceNumber(simulation,number);
 }
-
+//TODO
 function updateNetworkNumber(networkObject, simulation){
 	var number=networkObject.network_number;
 	var simulation=networkObject.simulation_name;
 	//Database.updateNetworkNumber(simulation,number);
 }
-
-function updatePartitionMap(partitionObject, simulation){
-	var simulationName=partitionObject.simulation_name;
-	var config_map=partitionObject.config_map;
-	var partition_name=partitionObject.partition_name;
-	//Database.updatePartitionMap(simulationName,partition_name,config_map);
-}
-//I don't think we need this yet?
+//TODO
 function createDevice(body, simulation) {
 
 	var device_name = body.device_name;
@@ -418,49 +409,69 @@ function createDevice(body, simulation) {
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
 	var token = body.token;
-	var Network = new topography.Network('hello');
-	admin.addDevice = function(device_name){
-	    //Device.
-	  };
+	admin.addDevice(device_name,simulation_name);
 	
 }
 
-
-function AddDevice2Network( body, simulation){
+/*
+ * 1. Find the simulation object
+ * 2. Find the network object
+ * 3. Find the device object
+ * 4. Connect the device object to the network object
+ * 5. Update the simulation's config map (is this cheating? lol)
+ * 6. Save the simulation in the database.
+ */
+function AddDevice2Network(body, simulation){
 	var simulation_name = body.simulation_name;
 	var device_name = body.device_name;
 	var partition_name  = body.partition_name;
 	var network_name = body.network_name;
 	
-	var simulation,device,network;
-	for(var index=0;index<simulationList;index++){
-		if(simulationList[index].simulation_name==simulation_name)simulation=simulationList[index];
-	}
+	var networks=simulation.getNetworks();
+	var devices=simulation.getDevices();
 	
-	var networkList=simulation.getNetworks();
-	for(var index=0;index<networkList;index++){
-		if(networkList[index].networkName==simulation_name)network=networkList[index];
-	}
-	
-	var deviceList=simulation.getDevices();
-	for(var index=0;index<deviceList;index++){
-		if(deviceList[index].device_name==simulation_name)device=deviceList[index];
-	}
-	
+	var simulation=Util.findSimulationByName(simulationList,simulation_name);
+	var network=Util.findNetworkByName(networks,network_name);
+	var device=Util.findDeviceByName(devices,device_name);
+
 	network.addDevice(device);
+	
+	simulation.simulationJSON.config_map=body.config_map;
+	Database.modifySimbyName(simulation.simulation_name,simulation.simulationJSON);
+	
+
 
 }
-//TODO
+
 function mergePartitions(body, simulation){
 	var partition_a = body.partition_a;
 	var partition_b = body.partition_b;
 	var simulation_name = body.simulation_name;
+	var config_map=body.config_map;
+	var partitionA, partitionB;
+	
+	var simulation=Util.findSimulationByName(simulation_name,simulationList);
+	var partitionA=Util.findPartitionByName(partition_a,simulation.partition_list);
+	var partitionB=Util.findPartitionByName(partition_b,simulation.partition_list);
+	partitionA.mergePartitions(partitionB);
+	simulation.removePartition(partitionB);
+	simulation.simulationJSON.config_map=body.config_map;
+	Database.modifySimByName(simulation_name,simulation.simulationJSON);
 }
-//TODO
+
 function dividePartition(body, simulation){
 	var partition_name = body.partition_name;
 	var simulation_name = body.simuation_name;
-	var network = body.network;
+	var networkName = body.network;
+	
+	var simulation=Util.findSimulationByName(simulation_name,simulationList);
+	var partition=Util.findPartitionByName(partition_name,simulation.partition_list);
+	var network=Util.findNetworkByName(networkName,partition.network_list);
+	
+	partition.dividePartition(network);
+	simulation.simulationJSON.config_map=body.config_map;
+	Database.modifySimByName(simulation_name,simulation.simulationJSON);
+	
 }
 
 //TODO
