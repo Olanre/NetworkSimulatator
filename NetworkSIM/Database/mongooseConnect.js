@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 
 //connect to db
-var db = mongoose.connect('mongodb://username:password@ds033601.mongolab.com:33601/sc2');
+var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:53139/sc2');
 
 //attach lister to connected even
 mongoose.connection.once('connected', function(){
@@ -193,16 +193,12 @@ function modifyUser(aToken, aUser)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  console.log("awdawdadawd");	
-  var Lennete = new User();
-  var temp = new User(obj);
-  	
-   //temp.delete();
-   var Lennete2 = new User(aUser);
-   for(var key in aUser){
-	   console.log(key + aUser[key]);
-   }
-   Lennete2.save();
+ 
+  obj = 
+  
+  
+  
+  }
    //callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
