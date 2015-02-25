@@ -186,11 +186,11 @@ app.get('/js/network-topology.js', function(request,response){
 	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
 	
 });
-app.get('../js/simulation-classes.js', function(request,response){
-	response.sendFile("/simulation/topologyManipulationGUI.js", {"root": __dirname});
+app.get('/js/simulation-classes.js', function(request,response){
+	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
 });
-app.get('../js/EventLogView.js', function(request,response){
-	response.send("/public/ClientJS/EventLogView.js");
+app.get('/js/EventLogView.js', function(request,response){
+	response.sendFile("/public/ClientJS/EventLogView.js",{"root": __dirname});
 });
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/
