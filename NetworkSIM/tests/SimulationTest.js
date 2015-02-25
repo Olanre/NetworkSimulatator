@@ -13,3 +13,7 @@ console.log(newSimulation.simulationJSON);
 console.log("testing getJSON");
 console.log(newSimulation.getJSON());
 
+console.log(newSimulation.simulationJSON);
+>>>>>>> branch 'master' of eai540@garfield.cs.mun.ca:/users/labnet3/st6/gz8240/cs4770/sim-2
+console.log(newSimulation.simulationJSON);
+>>>>>>> branch 'master' of eai540@garfield.cs.mun.ca:/users/labnet3/st6/gz8240/cs4770/sim-2
