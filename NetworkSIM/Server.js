@@ -185,7 +185,7 @@ app.get('/js/network-topology.js', function(request,response){
 	
 });
 app.get('../js/simulation-classes.js', function(request,response){
-	response.sendFile("/simulation/network_topology.js", {"root": __dirname});
+	response.sendFile("/simulation/topologyManipulationGUI.js", {"root": __dirname});
 });
 app.get('../js/EventLogView.js', function(request,response){
 	response.send("/public/ClientJS/EventLogView.js");

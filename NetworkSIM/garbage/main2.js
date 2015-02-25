@@ -37,8 +37,8 @@ local_events.token = '';
  */
 window.onload = function(){
 	defaultsideBarView();
-	loadStyleSheet('../css/bootstrap.min.css');
-	loadStyleSheet('../css/dashboard.css');
+//	loadStyleSheet('../css/bootstrap.min.css');
+	//loadStyleSheet('../css/dashboard.css');
 	
 	loadAppContent();	
 
@@ -1361,7 +1361,7 @@ function updateAllViews( timeout){
  * loadStyleSheet loads a css style sheet to the page
  * @param src: the stylesheet to load to the page (I believe)
  */
-function loadStyleSheet(src){
+/*function loadStyleSheet(src){
     if (document.createStyleSheet) document.createStyleSheet(src);
     else {
         var stylesheet = document.createElement('link');
@@ -1376,7 +1376,7 @@ function loadJSFile(path){
      fileref.setAttribute("type","text/javascript");
      fileref.setAttribute("src", path);
      document.getElementsByTagName("head")[0].appendChild(fileref)
-}
+}*/
 //Here all the different pages are stored in different scripts 
 //labeled "template[n]" in the html file.
 
@@ -1454,8 +1454,8 @@ function networkTopologyView(){
 	var content = getContainer();
 	defaultsideBarView();
 
-	loadJSFile('../js/network-topology.js');
-	loadStyleSheet('../css/topologyView.css');
+	//loadJSFile('../js/network-topology.js');
+	//loadStyleSheet('../css/topologyView.css');
 	var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
 			"<script src='../public/ClientJS/interact-1.2.2.js'></script>" +
@@ -1490,11 +1490,11 @@ function eventLogsView(){
 	var content = getContainer();
 	defaultsideBarView();
 	
-	loadStyleSheet('../css/topologyView.css');
-	loadStyleSheet('../css/EventLogView.css');
-	loadJSFile('../js/EventLogView.js');
-	loadJSFile('../js/interact-1.2.2.js');
-	loadJSFile('../JS/topologyManipulationGUI.js');
+//	loadStyleSheet('../css/topologyView.css');
+	//loadStyleSheet('../css/EventLogView.css');
+	//loadJSFile('../js/EventLogView.js');
+	//loadJSFile('../js/interact-1.2.2.js');
+	//loadJSFile('../JS/topologyManipulationGUI.js');
 	
 	var html = 
 	"<div id='title-bar'>"+
@@ -2280,8 +2280,8 @@ send2Server = function(url, params, callback)
         	
         }
     }; 
-    request.open('POST', url);
-    request.send(params);
+   // request.open('POST', url);
+//    request.send(params);
 }
 
 

@@ -222,7 +222,7 @@ interact('.network')
 	
 	.dropzone({
 		
-		accept: '.device, .network',
+		accept: '.device, .network', 
 		
 		overlap: 0.7,
 		
@@ -267,17 +267,60 @@ interact('.network')
 			if(dragClass==='device'){
 				attachChild(dropzone,dragged);
 				
-				//THIS IS THE STUFF I HAVE CHANGED TO INTERACT WITH MAINJS
-				//var originalNetwork = getNetwork(device_name);
+				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
+				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+				//THIS IS STUFF TO INTERACT WITH MAINJS
+				//addDevice(deviceName, newNetworkName);
+				//this does not handle moving in and out of the free-list
 				
 			}
 			if(dragClass==='network'){
+				var circleDragging = shapes[draggableElement.getAttribute('data-index')];
+				var circleDraggedTo = shapes[dropzoneElement.getAttribute('data-index')];
 				
 				if(!partitionExists(dropzone,dragged)){
+					//check if already in this partition
 					var partition=createPartitionGraphic(dropzone,dragged);
+					/*
+					//THIS IS STUFF TO INTERACT WITH MAINJS
+					oldNetworkName=shapes[draggableElement.getAttribute('data-index')].name;
+					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+					
+					oldNetworkPartition= getPartition(oldNetworkName);
+					newNetworkPartition= getPartition(newNetworkName);
+					
+					mergePartition(oldNetworkPartition, newNetworkPartition);*/
 				}
 				else{
 					removePartition(dropzone,dragged);
+					/*
+					//what if we're breaking in half or just removing an extraneous line
+					//THIS IS STUFF TO INTERACT WITH MAINJS
+					breakApart=shapes[draggableElement.getAttribute('data-index')].name;
+					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+					
+					newNetworkPartition= getPartition(newNetworkName);
+					
+					dividePartition(oldNetwork)*/
+					var newpartitionlist=breadthFirstSearch(dropzone,dragged);
+					var connected=false;
+					for(partition in newpartitionlist){
+						if(newpartitionlist[partition]==dragged){
+							connected=true;
+						}
+					}
+					if(!connected){
+						var oldpartition=buildPartition(newpartitionlist);
+						newpartitionlist=breadthFirstSearch(dragged);
+						var newpartition=buildPartition(newpartitionlist);
+						//depends on bad.js :)
+						var localsession=get_local_session();
+						var partitionname=getPartition(dragged.name);
+						localsession.config_map[partitionname]=oldpartition;
+						//depends on utilities.js
+						partitionname=generateUniqueId();
+						localsession.config_map[partitionname]=newpartition;
+					}
 				}
 				snapToLocation(dragged,origin);
 			}
@@ -288,6 +331,8 @@ interact('.network')
 			
 			event.target.classList.remove('drop-locations');
 		    event.target.classList.remove('drop-target');
+		    //HERE SHOULD BE WHERE YOU TEST IF YOU DROP THIS INTO
+		    //THE FREE LIST
 		},
 	})
 	
@@ -542,7 +587,6 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.element = document.createElementNS(svgNS, 'line');
 	this.element.setAttribute('data-index', uniqueDataIndex);
 	this.element.setAttribute('class', elementClass);
-	
 	this.draw();
 	svgCanvas.appendChild(this.element);
 }
