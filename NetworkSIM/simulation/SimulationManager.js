@@ -229,8 +229,9 @@ function createSimulation(body) {
 			
 			for(deviceName in map[partitionName][networkName]){
 				var token=TokenManager.generateToken();
-				console.log(token);
+				//console.log(token);
 				device=Device.createNewDevice(deviceName,token);
+				
 				device.networkObject=network;
 				device.deviceJSON.email = deviceName;
 				device.deviceJSON.registeredOn = d.toString();
@@ -238,19 +239,26 @@ function createSimulation(body) {
 				network.networkJSON.device_list.push(device.deviceJSON);
 				
 				console.log(device.deviceJSON);
-				Database.modifyUser(token,device.deviceJSON);
+				Database.getUserByToken('377d0cf326f287b1a9b9aeccc5fa02d25c85416f', function(User){
+					User.email = "Heloo@mun.ca";
+					Database.modifyUser(token,User);
+				});
+				
+				break;
 			}
 			partition.network_list.push(network);
 			partition.partitionJSON.network_list.push(network.networkJSON);
+			break;
 			//console.log(network.networkJSON);
-			Database.modifyNetworkByName(network.network_name,network.networkJSON);
+			//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
 		simulation.partition_list.push(partition);
 		//simulation.simulationJSON.partition_list.push(partition.partitionJSON);
-		console.log(partition.partitionJSON);
-		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+		//console.log(partition.partitionJSON.network_list.);
+		//Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+		break;
 	}
-	Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
+	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	
 	//Dunno what this is about, so I'll leave it here for now
 	Database.getApp(function(data){

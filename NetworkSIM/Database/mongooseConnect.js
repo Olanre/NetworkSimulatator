@@ -193,12 +193,16 @@ function modifyUser(aToken, aUser)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  	var Lennete = new User();
-  	var Lennete2 = new User();
-  	Lennete = obj;
-   Lennete2 = aUser;
-   Lennete = Lennete2;
-   Lennete.save();
+  console.log("awdawdadawd");	
+  var Lennete = new User();
+  var temp = new User(obj);
+  	
+   //temp.delete();
+   var Lennete2 = new User(aUser);
+   for(var key in aUser){
+	   console.log(key + aUser[key]);
+   }
+   Lennete2.save();
    //callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
@@ -334,7 +338,7 @@ function modifyPartitionByName(aString, aPartition)
 	   LennetePartition = obj;
 	   
 	   LennetePartition = aPartition;
-	   //console.log(aPartition);
+	   console.log("HEEEERE" + aPartition);
 	   LennetePartition.save();
 	   console.log("partition saved");
 	   //callback();
