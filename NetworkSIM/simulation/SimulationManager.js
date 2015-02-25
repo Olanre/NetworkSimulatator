@@ -300,7 +300,6 @@ function createDevice(body, simulationName) {
 	
 }
 
-//TODO
 function createNetwork(networkObject, simulation){
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
@@ -308,7 +307,6 @@ function createNetwork(networkObject, simulation){
 
 		
 };
-//TODO
 function addPartition(partitionObject, simulation){
 	var partitionName=partitionObject.partition_name;
 	var simulationName=partitionObject.simulation_name;
