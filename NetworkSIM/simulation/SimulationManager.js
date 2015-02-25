@@ -222,7 +222,7 @@ function createSimulation(body) {
 		for(networkName in map[partitionName]){
 			
 			network=Network.createNewNetwork(networkName,'WiFI');
-			partition.network_list.push(network);
+			
 			network.partitionObject=partition;
 			network.networkJSON.partition=partition.partition_name;
 			
@@ -231,12 +231,17 @@ function createSimulation(body) {
 				console.log(token);
 				device=Device.createNewDevice(deviceName,token);
 				device.networkObject=network;
+				device.deviceJSON.email = deviceName;
+				device.deviceJSON.registeredOn = d.toString();
 				network.device_list.push(device);
 				network.networkJSON.device_list.push(device.deviceJSON);
-				Database.modifyUser(token,device.deviceJSON);
+				Database.modifyUser(token,device.deviceJSON, function(){});
 			}
+			partition.network_list.push(network);
+			//console.log(network.networkJSON);
 			Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
+		
 		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
 	}
 	Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);

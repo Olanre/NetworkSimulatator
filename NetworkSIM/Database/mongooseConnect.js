@@ -189,9 +189,11 @@ function modifyUser(aToken, aUser, callback)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  var Lennete = new User;
-  Lennete = obj;
-   Lennete = aUser;
+  	var Lennete = new User();
+  	var Lennete2 = new User();
+  	Lennete = obj;
+   Lennete2 = aUser;
+   Lennete = Lennete2;
    Lennete.save();
    callback();
 	//console.log("User with token " + atoken + "edited " + example);	
@@ -293,7 +295,7 @@ function modifyNetworkByName(aString, aNetwork)
 		if(err) console.log("No network with that name");
 		var LenneteNetwork = new Network();
 		LenneteNetwork = obj;
-	    LennneteNetwork = aNetwork;
+	    LenneteNetwork = aNetwork;
 	    LenneteNetwork.save();
 		console.log("Network saved");
 	});
@@ -323,8 +325,11 @@ function modifyPartitionByName(aString, aPartition)
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
-	   var obj = aPartition;
-	   obj.save();
+	   var LennetePartition = new Partition();
+	   LennetePartition = obj;
+	   
+	   LennetePartition = aPartition;
+	   LennetePartition.save();
 	   console.log("partition saved");
    });
 }
