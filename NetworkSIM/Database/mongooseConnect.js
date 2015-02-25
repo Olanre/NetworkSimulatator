@@ -17,6 +17,27 @@ Schema = db.Schema;
  
 
                                     //****Schemas
+//USER SCHEMA
+//USER 
+var userSchema = mongoose.Schema({
+	token:String,
+	email:String,
+	verified: Boolean,
+	current_partition: String,
+	current_network: String,
+	registeredOn: String,
+	admin: Boolean,
+	networks_created: [],
+	application_id:String,
+	current_simulation: String,
+	current_device_name: String,
+	activity : String,
+	});
+
+//STOP DELETTINGINGGEN SHIT                     
+var User = mongoose.model('User', userSchema, 'newUserFormat');
+
+
 //DEVICE
 var deviceSchema = mongoose.Schema({
    device_name : String,
@@ -91,24 +112,7 @@ var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat
 //SIMULATION
 
 
-//USER 
-var userSchema = mongoose.Schema({
-	token:String,
-	email:String,
-	verified: Boolean,
-	current_partition: String,
-	current_network: String,
-	registeredOn: String,
-	admin: Boolean,
-	networks_created: [],
-	application_id:String,
-	current_simulation: String,
-	current_device_name: String,
-	activity : String,
-	});
 
-//STOP DELETTINGINGGEN SHIT                     
-var User = mongoose.model('User', userSchema, 'newUserFormat');
 
 						 // objectname, schema, collectionname
 
