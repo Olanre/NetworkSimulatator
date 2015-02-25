@@ -302,7 +302,25 @@ interact('.network')
 					newNetworkPartition= getPartition(newNetworkName);
 					
 					dividePartition(oldNetwork)*/
-					alert(breadthFirstSearch(circleDragging, circleDraggedTo));
+					var newpartitionlist=breadthFirstSearch(dropzone,dragged);
+					var connected=false;
+					for(partition in newpartitionlist){
+						if(newpartitionlist[partition]==dragged){
+							connected=true;
+						}
+					}
+					if(!connected){
+						var oldpartition=buildPartition(newpartitionlist);
+						newpartitionlist=breadthFirstSearch(dragged);
+						var newpartition=buildPartition(newpartitionlist);
+						//depends on bad.js :)
+						var localsession=get_local_session();
+						var partitionname=getPartition(dragged.name);
+						localsession.config_map[partitionname]=oldpartition;
+						//depends on utilities.js
+						partitionname=generateUniqueId();
+						localsession.config_map[partitionname]=newpartition;
+					}
 				}
 				snapToLocation(dragged,origin);
 			}
@@ -549,7 +567,6 @@ circle.prototype.draw=function(){
 	else{
 		this.displayName.textContent="";
 	}
-	console.log(this.name);
 	orderCanvas();
 }
 
