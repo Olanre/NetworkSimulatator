@@ -9,3 +9,7 @@ console.log(blankSimulationJSON);
 console.log("Constructor test for the simulation class");
 var newSimulation=new Simulation.createNewSimulation("test");
 console.log(newSimulation.simulationJSON);
+
+console.log("testing getJSON");
+console.log(newSimulation.getJSON());
+
