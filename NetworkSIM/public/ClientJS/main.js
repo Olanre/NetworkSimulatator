@@ -51,7 +51,7 @@ window.onload = function(){
 window.setInterval(function(){
 	  /// call our sync function here
 		Sync2Server();
-	}, 1000000);
+	}, 2000);
 
 
 /**
