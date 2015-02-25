@@ -1496,7 +1496,7 @@ function eventLogsView(){
 	loadJSFile('../js/interact-1.2.2.js');
 	loadJSFile('../js/network-topology.js');
 	
-	var html = 
+	var html =
 	"<div id='title-bar'>"+
 		"<h1 id ='page-title'>Event Logs View</h1>"+
 	"</div>"+
