@@ -233,22 +233,22 @@ function createSimulation(body) {
 							var token=TokenManager.generateToken();
 							//console.log(token);
 							device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
-							setTimeout(function(){
-								network.addDevice(device);
-							}, 300);
+							//setTimeout(function(){
+								//network.addDevice(device);
+							//}, 300);
 						}	
 						//network.networkJSON.device_list(device.deviceJSON);
 					}
-					setTimeout(function(){
-						partition.addNetwork(network);
-					}, 300);
+					//setTimeout(function(){
+						//partition.addNetwork(network);
+					//}, 300);
 				}
 				//console.log(network.networkJSON);
 				//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 			}
-			setTimeout(function(){
+			//setTimeout(function(){
 				//simulation.modifyPartition(partition)
-			},300);
+			//},300);
 			//simulation.partition_list.push(partition);
 			//console.log(simulation);
 		}
