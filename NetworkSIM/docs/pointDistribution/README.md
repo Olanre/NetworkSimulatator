@@ -1,1 +1,1 @@
-Provide point distribution for each group member for each iteration here. 
+To be decided with Dr. Fiech on friday.

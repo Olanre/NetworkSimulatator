@@ -1505,9 +1505,9 @@ function eventLogsView(){
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../js/EventLogView.js');
 	loadJSFile('../js/interact-1.2.2.js');
-	loadJSFile('../JS/topologyManipulationGUI.js');
+	loadJSFile('../js/network-topology.js');
 	
-	var html = 
+	var html =
 	"<div id='title-bar'>"+
 		"<h1 id ='page-title'>Event Logs View</h1>"+
 	"</div>"+

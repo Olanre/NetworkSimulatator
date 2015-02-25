@@ -1,4 +1,101 @@
-window.onload=function(){populatePage(testState)}
+
+
+var testState={id : 'blahdu3', 
+	states:  [{ 
+		simulation : {
+			num_devices: 14,
+			num_networks: 6,
+			simulation_name: 'Jeffs sim',
+			id : 'blahdu3',
+			config_map : {
+		 		'Partition1': {
+		 			'networka' : { 'NoahiPad' : '1',  'OlanreiPhone': '2', 'devicec@mun.ca':'3'},
+		 			'networkb' : { 'deviced': '4', 'MarkMacBook': '5'},
+		 		},
+		  		'Partition2':{ 
+		  			'networkc' :{ 'EmilyPC': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
+		 			'networkd' :{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
+		 			'networkTest' :{},
+		 		},
+		  		'Partition3':{ 
+		  			'networke' : { 'devicek':'11'} 
+		  		},
+		 		'freelist' : {'donna@mun.ca': '13', 'evicex' : '14'}
+		 	}
+		}, 
+		timestamp: '2015-01-01:02:44:00',
+		activity_logs: 'devicea: moved home \n devicea: headed out \n devicea: got well \n deviceb@mun.ca: got very hungry \n deviceb@mun.ca: didnt hang out',
+		devices : [
+			{ device: { 
+				current_device_name: 'NoahiPad',
+				activity: '2015-01-27-012:06:02: NoahiPad : Accessed RDT'
+				}
+			},
+			{ device: { 
+				current_device_name: 'OlanreiPhone',
+				activity: '2015-01-04:06:02: OlanreiPhone : Accessed RDT'
+				}
+			},
+			{ device: {
+				current_device_name: 'devicec@mun.ca',
+				activity: '2015-01-22-10:06:02: devicec@mun.ca : Joined Network'
+				}
+			},
+			{ device: {
+				current_device_name: 'deviced',
+				activity: '2015-01-22-10:06:02: deviced: Accessed RDT'
+				}
+			},
+			{ device: {
+				current_device_name: 'MarkMacBook',
+				activity: '2014-12-31-23:59:02: MarkMacBook: Joined Network'
+				}
+			},
+			{ device: {
+				current_device_name: 'EmilyPC',
+				activity: '2014-12-31-23:00:22: EmilyPC: Logged Off'
+				}
+			},
+			{ device: {
+				current_device_name: 'deviceg@mun.ca',
+				activity: '2014-01-07:42:00: deviceg@mun.ca: I am the best device'
+				}
+			},
+			{ device: {
+				current_device_name: 'deviceh@mun.ca',
+				activity: '2015-01-012:42:00: deviceh@mun.ca: Accessed RDT'
+				}
+			},
+			{ device: {
+				current_device_name: 'devicei@mun.ca',
+				activity: '2015-01-012:42:00: devicei@mun.ca: Logged On'
+				}
+			},
+			{ device: {
+				current_device_name: 'device@mun.ca',
+				activity: ''
+				}
+			},
+			{ device: {
+				current_device_name: 'devicek',
+				activity: '2014-11-31-4:42:04: devicek: Logged Off'
+				}
+			},
+			{ device: {
+				current_device_name: 'donna@mun.ca',
+				activity: '2014-11-29-11:12:33: donna@mun.ca: Registered Token'
+				}
+			},
+			{ device: {
+				current_device_name: 'evicex',
+				activity: '2014-11-29-22:42:22: evicex: Left Network'
+				}
+			},
+		]
+	}]
+};
+
+
 
 var configMapList={};
 //should hold a states object I guess 
@@ -173,100 +270,5 @@ function parseSimulationLogs(states, timeStamp){
 	return "failed";
 }
 
-
+populatePage(testState)
 // a test states object
-var testState={id : 'blahdu3', 
-	states:  [{ 
-		simulation : {
-			num_devices: 14,
-			num_networks: 6,
-			simulation_name: 'Jeffs sim',
-			id : 'blahdu3',
-			config_map : {
-		 		'Partition1': {
-		 			'networka' : { 'devicea' : '1',  'deviceb@mun.ca': '2', 'devicec@mun.ca':'3'},
-		 			'networkb' : { 'deviced': '4', 'devicee': '5'},
-		 		},
-		  		'Partition2':{ 
-		  			'networkc' :{ 'devicef': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
-		 			'networkd' :{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
-		 			'networkTest' :{},
-		 		},
-		  		'Partition3':{ 
-		  			'networke' : { 'devicek':'11'} 
-		  		},
-		 		'freelist' : {'devicew': '13', 'evicex' : '14'}
-		 	}
-		}, 
-		timestamp: '2015-01-012:44:00',
-		activity_logs: 'devicea: moved home \n devicea: headed out \n devicea: got well \n deviceb@mun.ca: got very hungry \n deviceb@mun.ca: didnt hang out',
-		devices : [
-			{ device: { 
-				current_device_name: 'devicea',
-				activity: 'moved home \n headed out \n got well'
-				}
-			},
-			{ device: { 
-				current_device_name: 'deviceb@mun.ca',
-				activity: 'got very hungry \n didnt hang out'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicec@mun.ca',
-				activity: 'wwel'
-				}
-			},
-			{ device: {
-				current_device_name: 'deviced',
-				activity: 'gave out fruit'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicee',
-				activity: 'NO MORE GAMEs'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicef',
-				activity: 'g \n o \n t '
-				}
-			},
-			{ device: {
-				current_device_name: 'deviceg@mun.ca',
-				activity: 'made out'
-				}
-			},
-			{ device: {
-				current_device_name: 'deviceh@mun.ca',
-				activity: 'working from home'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicei@mun.ca',
-				activity: 'made a very good lunch'
-				}
-			},
-			{ device: {
-				current_device_name: 'device@mun.ca',
-				activity: 'donna batten'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicek',
-				activity: 'i am going aways'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicew',
-				activity: 'obese'
-				}
-			},
-			{ device: {
-				current_device_name: 'evicex',
-				activity: 'I am well'
-				}
-			},
-		]
-	}]
-};
-
