@@ -231,6 +231,8 @@ function createSimulation(body) {
 				var token=TokenManager.generateToken();
 				//console.log(token);
 				device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
+				//network.device_list.push(device);
+				//network.networkJSON.device_list(device.deviceJSON);
 			}
 			partition.network_list.push(network);
 			partition.partitionJSON.network_list.push(network.networkJSON);
