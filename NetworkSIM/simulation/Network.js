@@ -49,15 +49,21 @@ function attachJSON(networkObject,networkJSON){
 		networkObject.partitionObject=networkJSON.partition;
 		
 }
-function getJSON(){
-	return Database.getNetworkByName(this.networkName);
+function getJSON(callback){
+	return Database.getNetworkByName(this.networkName, function(obj){
+		callback(obj);
+	});
 }
 
 //we assume that we will only add devices through a network
 function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON);
 		this.device_list.push(device);
-		Database.saveNetwork( this.networkJSON);
+		Database.getNetworkByName(this.networkName, function(Network){
+			Network.device_list.push(device.deviceJSON);
+			Database.modifyNetworkByName( Network);
+		});
+		
 		device.joinNetwork(this);
 };
 	
@@ -76,7 +82,12 @@ function removeDevice(device){
 			}
 		}
 		device.leaveNetwork(this);
-		Database.saveNetwork( this.networkJSON);
+		Database.getNetworkByName(this.networkName, function(Network){
+			var index = Network.device_list.indexOf(device.deviceJSON);
+			delete Network.device_list[index];
+			Database.modifyNetworkByName( Network);
+		});
+		
 };
 	
 

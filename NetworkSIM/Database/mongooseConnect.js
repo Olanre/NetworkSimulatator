@@ -282,7 +282,7 @@ function getNetworkByName(aName, callback)
 	{
 		if(err) console.log("no network with name: " + aName );
 		
-		console.log("found network");
+		console.log("found network" + obj);
 		callback(obj);
 	});
 }
@@ -323,12 +323,8 @@ function modifyPartitionByName(aString, aPartition)
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
 	   if(err) console.lgo("no Partition exists with that name");
-	   var LennetePartition = new Partition();
-	   LennetePartition = obj;
-	   
-	   LennetePartition = aPartition;
-	   //console.log("HEEEERE" + aPartition);
-	   LennetePartition.save();
+	   obj = aPartition;
+	   obj.save();
 	   console.log("partition saved");
 	   //callback();
    });

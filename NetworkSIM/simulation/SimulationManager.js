@@ -145,7 +145,7 @@ exports.startTemplate = function(callback) {
 		appstate.current_simulation_session = Simulation.getTemplate();
 		appstate.states = stateTemplate.getStateTemplate();
 		appstate.application = App;
-		console.log(appstate);
+		//console.log(appstate);
 		callback(appstate);
 	});
 	
@@ -215,7 +215,7 @@ function createSimulation(body) {
 	//console.log(simulation.simulationJSON);
 	for(partitionName in map){
 		
-		partition=Partition.createNewPartition(partitionName,simulation.simulation_name);
+		partition=Partition.createNewPartition(partitionName,body.simulation_name);
 		partition.partitionJSON.partition_name = partitionName;
 		
 		//simulation.partition_list.push(partitionJSON);
@@ -231,19 +231,24 @@ function createSimulation(body) {
 				var token=TokenManager.generateToken();
 				//console.log(token);
 				device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
+				setTimeout(function(){
+					network.addDevice(device);
+				}, 300);
+				
 				//network.networkJSON.device_list(device.deviceJSON);
 			}
-			partition.addNetwork(network);
-			//partition.network_list.push(network);
-			//partition.partitionJSON.network_list.push(network.networkJSON);
+			setTimeout(function(){
+				partition.addNetwork(network);
+			}, 300);
 			//console.log(network.networkJSON);
 			//Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
-		simulation.partition_list.push(partition);
-		console.log(simulation);
-		//simulation.simulationJSON.partition_list.push(partition.partitionJSON);
-		//console.log(partition.partitionJSON.network_list.);
-		//Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
+		setTimeout(function(){
+			simulation.modifyPartition(partition)
+		},300);
+		//simulation.partition_list.push(partition);
+		//console.log(simulation);
+		
 	}
 	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
 	
@@ -274,7 +279,7 @@ function createSimulation(body) {
 		});
 	//
 		
-	}, 1000 );
+	}, 3000 );
 	
 	
 }	

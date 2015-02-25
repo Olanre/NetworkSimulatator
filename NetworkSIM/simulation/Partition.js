@@ -44,23 +44,27 @@ function attachJSON(partitionObject,partitionJSON){
 		partitionObject.partitionJSON=partitionJSON;
 		
 }
-function getJSON(){
-		return Database.getPartitionByName(this.partition_name);
+function getJSON(callback){
+		return Database.getPartitionByName(this.partition_name, function(obj){
+			callback(obj)
+		});
 }
 	
 function addNetwork(network){
 		
-		Database.getSimByName(this.simulation_name,function(simulation){
+		Database.getSimByName(this.simulation_name,function(simulation){ 
+			console.log(simulation);
 			simulation.config_map[this.partition_name][network.network_name]= network.networkJSON.device_list;
-			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
+			Database.modifySimByName(simulation.simulation_name,simulation);
 		});
 		this.network_list.push(network);
+		this.partitionJSON.network_list.push(network.networkJSON);
 }
 
 function removeNetwork(network){
 		Database.getSimByName(this.simulation_name,function(simulation){
 			delete simulation.config_map[this.partition_name][network.network_name];
-			Database.modifySimByName(simulation.simulation_name,simulation,function(){});
+			Database.modifySimByName(simulation.simulation_name,simulation );
 		});
 		delete network_list[network_list.indexOf(network)];
 }

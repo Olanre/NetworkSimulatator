@@ -14,6 +14,7 @@ function Device(deviceName,token, simulation_name ,email, registeredOn, partitio
 	//Our Variables//
 	this.token = token;
 	this.networkObject={};
+	this.networks_created = [];
 	this.device_name  = deviceName;
 	this.rdt = {};
 	this.deviceJSON=module.exports.getTemplate();
@@ -50,10 +51,10 @@ function loadDeviceFromJSON(deviceJSON){
 }
 
 function attachJSON(deviceObject,deviceJSON){
-	deviceObject.deviceJSON=deviceJSON;
-	deviceObject.device_name=deviceJSON.current_device_name;
-	deviceObject.token = deviceJSON.token;
-	deviceObject.networks_created = deviceJSON.networks_created;
+	this.deviceJSON=deviceJSON;
+	this.deviceJSON.device_name=deviceJSON.current_device_name;
+	this.deviceJSON.token = deviceJSON.token;
+	this.deviceJSON.networks_created = deviceJSON.networks_created;
 };
 
 
@@ -62,8 +63,9 @@ function joinNetwork(network){
 	  //we have to assign this to an object so that we can handle it within the callback. Actually this is
 	  //a big problem and should be avoided and we must redo this next iteration.
 	  var deviceThisObject=this;
-	  Database.getSimByName(deviceThisObject.deviceJSON.current_simulation,function(simulationJSON){
-		  var list=simulationJSON.config_map['freelist'];
+	  Database.getSimByName(this.deviceJSON.current_simulation,function(simulationJSON){
+		  //console.log(simulationJSON);
+		  var list= simulationJSON.config_map['freelist'];
 		  if( list.hasOwnProperty(deviceThisObject.deviceJSON.current_device_name )){
 			  delete simulationJSON.config_map.free_list[deviceThisObject.deviceJSON.current_device_name];
 		  }
@@ -72,7 +74,7 @@ function joinNetwork(network){
 		  var indexInNetwork=util.size(simulationJSON.config_map[network.networkJSON.partition][network.network_name]);
 		  simulationJSON.config_map[network.networkJSON.partition][network.network_name][deviceThisObject.deviceJSON.current_device_name]=indexInNetwork;
 		  */
-		  Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,simulationJSON,function(){});
+		  Database.modifySimByName(this.deviceJSON.current_simulation,simulationJSON,function(){});
 		 
 	  });
 	  
@@ -80,8 +82,14 @@ function joinNetwork(network){
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
 	  this.deviceJSON.current_network=network.network_name;
-	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
-	  delete network.device_list;
+	  Database.getUserByToken(this.deviceJSON.token, function(User){
+		  User.current_network=network.name;
+		  User.current_partition=network.networkJSON.partition;
+		  User.current_network=network.network_name;
+		  Database.modifyUserByToken(this.deviceJSON.token, User);
+	  });
+	 
+	  //delete network.device_list;
 	  
 };
   
@@ -96,19 +104,30 @@ function leaveNetwork(network){
 		  delete simulationJSON.config_map[deviceThisObject.deviceJSON.current_partition][network.network_name][deviceThisObject.deviceJSON.current_device_name];
 		  var indexInNetwork=util.size(simulationJSON.config_map[network.partition][network.network_name]);
 		  simulationJSON.config_map[network.partition][network.network_name][deviceThisObject.deviceJSON.current_device_name]=indexInNetwork;
-		  Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,simulationJSON,function(){});
+		  
+		  
+		  
+		  Database.modifySimByName(deviceThisObject.deviceJSON.current_simulation,Sim);
 			 
 	  });
 	  this.deviceJSON.current_network= '-';
 	  this.networkObject = {};
 	  this.deviceJSON.current_partition= 'freelist';
-	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON,function(){});
+	  Database.getUserByToken(this.deviceJSON.token, function(User){
+		  User.current_network= 'freelist';
+		  User.current_partition='freelist';
+		  Database.modifyUser(this.deviceJSON.token, User);
+	  });
+	  Database.modifyUser(this.deviceJSON.token,this.deviceJSON);
 	  var networkIndex= network.device_list.indexOf(device);
 		networks.splice(networkIndex,1);
 };
   
-function getJSON(){
+function getJSON(callback){
 	  return this.deviceJSON;
+	  Database.getUserByToken(this.deviceJSON.token, function(obj){
+			callback(obj);
+	  });
 }
 
 //this method does not exist in mongooseConnect, Emily.

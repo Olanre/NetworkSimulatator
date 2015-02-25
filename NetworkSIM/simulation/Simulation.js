@@ -65,7 +65,9 @@ function attachJSON(simulationJSON){
 
 function getJSON(){
 		 
-		return Database.getSimulationByName(this.simulation_name);
+		return Database.getSimulationByName(this.simulation_name, function(obj){
+			callback(obj);
+		});
 }
 	
 function importRDT(rdt){
@@ -168,22 +170,23 @@ function addPartition(partitionName){
 		partitonJSON = newPartition.partitionJSON; 
 		this.simulationJSON.partition_list.push(partitionJSON);
 		
-		Database.modifySimByName(this.simulation_name, this.simulationJSON);
+		Database.savePartition(newPartition);
 		return newPartition;
 } 
 	
 function modifyPartition(partition){
-		for(var i = 0; i < this.partitionList.length; i++){
-			if(this.partitionList[i].partition_name == partition.partition_name){
-				this.partitionList[i] = partition;
+		for(var i = 0; i < this.partition_list.length; i++){
+			if(this.partition_list[i].partition_name == partition.partition_name){
+				this.partition_list[i] = partition;
 			}
 		}
 		
-		for(var i = 0; i < this.simulationJSON.partitionList.length; i++){
-			if(this.simulationJSON.partitionList[i].partition_name == partition.partitionJSON.partition_name){
-				this.simulationJSON.partitionList[i] = partition.partitionJSON.partition_name;
-			}
-		}
+		Database.modifyPartitionByName(partition.partition_name, partition);
+		//for(var i = 0; i < this.simulationJSON.partitionList.length; i++){
+			//if(this.simulationJSON.partitionList[i].partition_name == partition.partitionJSON.partition_name){
+				//this.simulationJSON.partitionList[i] = partition.partitionJSON.partition_name;
+			//}
+		//}
 		
 		
 }
