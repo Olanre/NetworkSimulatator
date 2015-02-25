@@ -40,7 +40,6 @@ function loadNetworkFromJSON(networkJSON){
 		this.device_list.push(createdDevice);
 	}
 	return createdNetwork;
-	
 }
 
 function attachJSON(networkObject,networkJSON){
@@ -53,7 +52,7 @@ function attachJSON(networkObject,networkJSON){
 function getJSON(){
 	return Database.getNetworkByName(this.networkName);
 }
-	
+
 	
 
 
