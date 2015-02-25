@@ -23,37 +23,37 @@ var testState={id : 'blahdu3',
 		 		'freelist' : {'donna@mun.ca': '13', 'evicex' : '14'}
 		 	}
 		}, 
-		timestamp: '2015-01-012:44:00',
+		timestamp: '2015-01-01:02:44:00',
 		activity_logs: 'devicea: moved home \n devicea: headed out \n devicea: got well \n deviceb@mun.ca: got very hungry \n deviceb@mun.ca: didnt hang out',
 		devices : [
 			{ device: { 
 				current_device_name: 'NoahiPad',
-				activity: '2015-01-27-012:06:02: NoahiPad : Reading books'
+				activity: '2015-01-27-012:06:02: NoahiPad : Accessed RDT'
 				}
 			},
 			{ device: { 
 				current_device_name: 'OlanreiPhone',
-				activity: '2015-01-04:06:02: OlanreiPhone : Certainly not sleeping'
+				activity: '2015-01-04:06:02: OlanreiPhone : Accessed RDT'
 				}
 			},
 			{ device: {
 				current_device_name: 'devicec@mun.ca',
-				activity: '2015-01-22-10:06:02: devicec@mun.ca : Emailin'
+				activity: '2015-01-22-10:06:02: devicec@mun.ca : Joined Network'
 				}
 			},
 			{ device: {
 				current_device_name: 'deviced',
-				activity: '2015-01-22-10:06:02: deviced: gave out fruit'
+				activity: '2015-01-22-10:06:02: deviced: Accessed RDT'
 				}
 			},
 			{ device: {
 				current_device_name: 'MarkMacBook',
-				activity: '2014-12-31-23:59:02: MarkMacBook: Just hang up the phone.'
+				activity: '2014-12-31-23:59:02: MarkMacBook: Joined Network'
 				}
 			},
 			{ device: {
 				current_device_name: 'EmilyPC',
-				activity: '2014-12-31-23:00:22: EmilyPC: #ff9999 salmon pink '
+				activity: '2014-12-31-23:00:22: EmilyPC: Logged Off'
 				}
 			},
 			{ device: {
@@ -63,12 +63,12 @@ var testState={id : 'blahdu3',
 			},
 			{ device: {
 				current_device_name: 'deviceh@mun.ca',
-				activity: '2015-01-012:42:00: deviceh@mun.ca: working from home'
+				activity: '2015-01-012:42:00: deviceh@mun.ca: Accessed RDT'
 				}
 			},
 			{ device: {
 				current_device_name: 'devicei@mun.ca',
-				activity: '2015-01-012:42:00: devicei@mun.ca: made a very good lunch'
+				activity: '2015-01-012:42:00: devicei@mun.ca: Logged On'
 				}
 			},
 			{ device: {
@@ -78,17 +78,17 @@ var testState={id : 'blahdu3',
 			},
 			{ device: {
 				current_device_name: 'devicek',
-				activity: '2014-11-31-12:42:00: devicek: team project'
+				activity: '2014-11-31-4:42:04: devicek: Logged Off'
 				}
 			},
 			{ device: {
 				current_device_name: 'donna@mun.ca',
-				activity: '2014-11-29-12:42:00: donna@mun.ca: Donna'
+				activity: '2014-11-29-11:12:33: donna@mun.ca: Registered Token'
 				}
 			},
 			{ device: {
 				current_device_name: 'evicex',
-				activity: 'I am well'
+				activity: '2014-11-29-22:42:22: evicex: Left Network'
 				}
 			},
 		]
