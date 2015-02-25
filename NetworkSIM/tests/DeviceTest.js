@@ -1,3 +1,5 @@
+//cannot test connect and disconnect from a network
+//cannot test getDevice from JSON or whatever it's called
 var Device=require("../simulation/Device.js");
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("../simulation/utilities.js");
@@ -12,7 +14,6 @@ console.log("Constructor test for the device class");
 
 console.log(newDevice.deviceJSON);
 
-//cannot test connect and disconnect from a network, need to work on this
 /*console.log("Testing device joining a network. This won't work as device is not connected to a simulation.");
 console.log(newDevice.deviceJSON.current_device_name);
 var newNetwork=new Network.createNewNetwork("testNetwork");
