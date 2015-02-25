@@ -317,14 +317,12 @@ function save(state){
 
 module.exports.getTemplate=function(){
 	var session_data = {};
-	//session_data.partition_list = [];
-	//session_data.free_list=[];
 	session_data.num_devices=0;
 	session_data.num_networks=0;
 	session_data.simulation_population = 0;
 	session_data.simulation_name ='';
-	session_data.config_map = {};
-	session_data.tokenMethod = 0;
+	session_data.config_map = {'freelist' : {} };
+	session_data.tokenMethod = '';
 	//session_data.token_list=[];
 	session_data.activity_logs = '';
 	return session_data;

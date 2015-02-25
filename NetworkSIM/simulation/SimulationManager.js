@@ -9,9 +9,11 @@ var TokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var Device = require("./Device.js");
+var Partition = require("./Partition.js");
+var Network = require("./Network.js");
 var Simulation = require("./Simulation.js");
 var admin = require("./admin.js");
-
+var stateTemplate = require("./stateTemplate");
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
@@ -118,6 +120,8 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 				
 		}	
 	}
+	
+	
 	if (typeof(callback) == "function") {
 		callback();
 	}
@@ -128,26 +132,27 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
  */
 exports.startTemplate = function(callback) {
 	
-	//entire encapsulated application Template
-	var appstate = {};
-	
-	Database.getApp(function(App){
+	//entire encapsulated application Template	
+	Database.getApp( function(App){
 		//blank name for now as identified by token
-		var device = new Device("");
-		appstate.device=device.getTemplate();
-		appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-		appstate.states = stateTemplate.getStateTemplate();
 		//App.simulation_list = JSON.parse(App.simulation_list);
 		for(var i = 0; i < App.simulation_list.length; i++){
 			App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
 		}
+		var appstate = {};
+		appstate.device= Device.getTemplate();
+		console.log(Device.getTemplate());
+		appstate.current_simulation_session = Simulation.getTemplate();
+		appstate.states = stateTemplate.getStateTemplate();
 		appstate.application = App;
+		console.log(appstate);
 		callback(appstate);
 	});
+	
 };
 
 
-function getNewState(token, callback){
+exports.getNewState = function(token, callback){
 	var Device ;
 	var Simulation;
 	var Application;
@@ -174,14 +179,11 @@ function getNewState(token, callback){
 						//console.log(Simulation.config_map);
 						appstate.current_simulation_session = Simulation;
 						appstate.device = Device;
+						callback(appstate);
 					}else{
-						var appstate = {};
-						appstate.device = deviceTemplate.getDeviceTemplate();
-						///console.log(appstate.user);
-						appstate.current_simulation_session = SimulationTemplate.getSimulationTemplate();
-						appstate.application = applicationTemplate.getApplicationTemplate();
+						callback(null);
 					}
-					callback(appstate);
+					
 				});
 			 }); 
 		 }else{
@@ -207,33 +209,39 @@ function createSimulation(body) {
 	var map = body.config_map;
 	var d = new Date();
 	
-	var simulation = new Simulation.cerateNewSimulation(body.simulation_name);
+	var simulation = new Simulation.createNewSimulation(body.simulation_name);
 	var partition, network,device;
 	simulation.simulationJSON=body;
 	
 	for(partitionName in map){
 		
 		partition=Partition.createNewPartition(partitionName,simulation.simulation_name);
-		simulation.JSON.partition_list.push(partitionJSON);
-		simulation.partition_list.push(partitionJSON);
+		simulation.partition_list.push(partition);
+		//simulation.partition_list.push(partitionJSON);
 		
 		for(networkName in map[partitionName]){
 			
 			network=Network.createNewNetwork(networkName,'WiFI');
-			partition.network_list.push(network);
+			
 			network.partitionObject=partition;
 			network.networkJSON.partition=partition.partition_name;
 			
 			for(deviceName in map[partitionName][networkName]){
 				var token=TokenManager.generateToken();
-				device=Device.createNewNetwork(deviceName,token);
+				console.log(token);
+				device=Device.createNewDevice(deviceName,token);
 				device.networkObject=network;
+				device.deviceJSON.email = deviceName;
+				device.deviceJSON.registeredOn = d.toString();
 				network.device_list.push(device);
 				network.networkJSON.device_list.push(device.deviceJSON);
-				Database.modifyUser(token,device.deviceJSON);
+				Database.modifyUser(token,device.deviceJSON, function(){});
 			}
+			partition.network_list.push(network);
+			//console.log(network.networkJSON);
 			Database.modifyNetworkByName(network.network_name,network.networkJSON);
 		}
+		
 		Database.modifyPartitionByName(partition.partition_name,partition.partitionJSON);
 	}
 	Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
