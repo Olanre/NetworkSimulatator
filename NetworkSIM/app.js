@@ -25,7 +25,7 @@ app.set('view engine', 'hjs');
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  ///app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
