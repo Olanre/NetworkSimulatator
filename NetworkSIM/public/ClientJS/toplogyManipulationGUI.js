@@ -586,6 +586,7 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.element = document.createElementNS(svgNS, 'line');
 	this.element.setAttribute('data-index', uniqueDataIndex);
 	this.element.setAttribute('class', elementClass);
+	
 	this.draw();
 	svgCanvas.appendChild(this.element);
 }
