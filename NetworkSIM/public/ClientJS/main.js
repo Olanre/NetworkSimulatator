@@ -244,6 +244,7 @@ function addDevice2Network( device_name, network_name){
 			//send the information to the eventQueue for syncing with the server
 			var params = { 
 					'network_name': network_name, 
+					'config_map' : local_session.config_map,
 					'partition_name': Partition_name , 
 					'simulation_name': local_session.simulation_name,
 					'device_name' :  device_name
@@ -286,7 +287,8 @@ function addDevice2FreeList( device_name){
 	putinStorage( 'session', JSON.stringify(local_session) );
 	var params = { 
 			'simulation_name': local_session.simulation_name,
-			'device_name' :  device_name
+			'device_name' :  device_name,
+			'config_map' : local_session.config_map,
 			};
 	var url = '/add/Device/FreeList';
 	var timestamp = new Date();
@@ -345,6 +347,7 @@ function deleteNetwork(network_name){
 	var new_number = local_session.num_networks - 1;
 	updateNetworkNumber(new_number);
 	var params = { 
+			'config_map' : local_session.config_map,
 			'network_name': network_name, 
 			'partition_name' : Partition_name,
 			'simulation_name': local_session.simulation_name,
@@ -419,6 +422,7 @@ function deleteDevice(device_name){
 		putinStorage( 'session', JSON.stringify(local_session) );
 		
 		var params = { 
+				'config_map' : local_session.config_map,
 				'device_name': device_name,
 				'network_name' : network_name,
 				'partition_name' : partition_name,
@@ -445,6 +449,7 @@ function deleteSimulation(simulation_name){
 			deleteCurrentSimulation(simulation_name);
 		}
 		var params = { 
+				'config_map' : local_session.config_map,
 				'simulation_name': local_session.simulation_name,
 				};
 		
@@ -520,6 +525,7 @@ function removeDevicefromNetwork( device_name, network){
 			//updates the locally stored object
 			putinStorage( 'session', JSON.stringify(local_session) );
 			var params = { 
+					'config_map' : local_session.config_map,
 					'network_name': network, 
 					'partition_name': partition , 
 					'simulation_name': local_session.simulation_name,
@@ -552,6 +558,7 @@ function removeDevicefromFreeList( device_name, simulation_name){
 		putinStorage( 'session', JSON.stringify(local_session) );
 		
 		var params = { 
+				'config_map' : local_session.config_map,
 				'simulation_name': local_session.simulation_name,
 				'device_name' :  device_name
 				};
@@ -578,6 +585,7 @@ function dividePartition(network, partition){
 		putinStorage( 'session', JSON.stringify(local_session) );
 		
 		var params = { 
+				'config_map' : local_session.config_map,
 				'network': network_name, 
 				'partition_name': network_name , 
 				'simulation_name': local_session.simulation_name,
@@ -639,6 +647,7 @@ function createNetwork(network_name){
 	var new_number = local_session.num_networks + 1;
 	updateNetworkNumber(new_number);
 	var params = { 
+			'config_map' : local_session.config_map,
 			'token': local_device.token,
 			'network_name': network_name, 
 			'partition_name': partition , 
@@ -672,6 +681,7 @@ function createDevice(device_name){
 	partition = getPartitionfromDevice( device_name);
 	
 	var params = { 
+			'config_map' : local_session.config_map,
 			'network_name' : network,
 			'partition_name' : partition,
 			'device_name': device_name, 
@@ -718,6 +728,7 @@ function mergePartition(partition_a, partition_b){
 	putinStorage( 'session', JSON.stringify(local_session) );
 	
 	var params = { 
+			'config_map' : local_session.config_map,
 			'partition_a': partition_a, 
 			'partition_b' : partition_b,
 			'simulation_name': local_session.simulation_name,
@@ -2486,6 +2497,7 @@ function updateDeviceName(old_name, new_name){
 	
 	//send to event queue
 	var params = { 
+			'config_map' : local_session.config_map,
 			'old_name': old_name, 
 			'new_name': new_name,
 			'simulation_name': local_session.simulation_name,
@@ -2526,6 +2538,7 @@ function updateNetworkName(old_name, new_name){
 	
 	//send to event queue
 	var params = { 
+			'config_map' : local_session.config_map,
 			'old_name': old_name, 
 			'new_name': new_name,
 			'simulation_name': local_session.simulation_name,
@@ -2563,6 +2576,7 @@ function updateSimulationName(old_name, new_name){
 	
 	//send to event queue
 	var params = { 
+			'config_map' : local_session.config_map,
 			'old_name': old_name, 
 			'new_name': new_name,
 			'simulation_name': local_session.simulation_name,
@@ -2587,6 +2601,7 @@ function updateDeviceNumber(new_number){
 	}
 	
 	var params = { 
+			'config_map' : local_session.config_map,
 			'device_number': new_number, 
 			'simulation_name': local_session.simulation_name,
 			};
@@ -2612,6 +2627,7 @@ function updateNetworkNumber(new_number){
 		}
 	}
 	var params = { 
+			'config_map' : local_session.config_map,
 			'network_number': new_number, 
 			'simulation_name': local_session.simulation_name,
 			};
