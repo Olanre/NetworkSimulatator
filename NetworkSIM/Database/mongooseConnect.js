@@ -246,9 +246,7 @@ function getApp(callback)
 {
    App.findOne( function(err, obj)
    {
-	   var LenetteApp = new App();
-	   LenetteApp = obj;
-	   callback(LenetteApp);
+	   callback(obj);
 });
 }
 
@@ -256,10 +254,9 @@ function modifyApp(NewApp)
 {
    App.findOne( function(err, obj)
    {
-     var LenneteApp = new App();
-     LenneteAppy = obj;
-     LeneteApp = NewApp;
-     LeneteApp.save();
+     obj = NewApp;
+     obj.save();
+     
      //callback(LenneteApp);
 });
 }
@@ -296,10 +293,8 @@ function modifyNetworkByName(aString, aNetwork)
 	Network.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
-		var LenneteNetwork = new Network();
-		LenneteNetwork = obj;
-	    LenneteNetwork = aNetwork;
-	    LenneteNetwork.save();
+		obj = aNetwork;
+	    obj.save();
 		console.log("Network saved");
 		//callback();
 	});

@@ -37,11 +37,15 @@ var testConfigMap2={
  		'networkd' :{ 'deviced': '1', 'devicee': '2'},
  		'networke' :{ 'deviced': '1', 'devicee': '2'},
 		 				},
-		 'freelist' : {'devicew': '13', 'evicex' : '14','device1' :'22','device2' :'22','device3' :'22','device4' :'22'}
+		 'freelist' : {'devicew': '13', 'evicex' : '14','device1' :'22','device2' 
+
+:'22','device3' :'22','device4' :'22'}
 		 };
 var testConfigMap3={
 		'Partition1':
-		 { 'networka' : { 'deviceA':'11','deviceB':'11','deviceC':'11','deviceD':'11','deviceE':'11'} },
+		 { 'networka' : { 
+
+'deviceA':'11','deviceB':'11','deviceC':'11','deviceD':'11','deviceE':'11'} },
 		 'Partition2':
 		 { 'networkb' : { 'device':'11'} },
 		 'Partition3':
@@ -78,14 +82,20 @@ function generateTopology(configMap, areaWidth){
 				if(networkIndex==0){
 					root=createNetworkGraphicAt(rootXY,rootXY);
 					root.name=network;
-					connectDevicesToNetwork(configMap[partition][network],root);
+					connectDevicesToNetwork(configMap[partition]
+
+[network],root);
 				}
 				
 				else{
-					connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
+					connected=createObjectWithin
+
+(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
 					connected.name=network;
 					createPartitionGraphic(root,connected);
-					connectDevicesToNetwork(configMap[partition][network],connected);
+					connectDevicesToNetwork(configMap[partition]
+
+[network],connected);
 				}
 				networkIndex++;
 			}
@@ -95,11 +105,15 @@ function generateTopology(configMap, areaWidth){
 		}
 		
 		else{
-			var distance=areaWidth/(1+Object.keys(configMap[partition]).length);
+			var distance=areaWidth/(1+Object.keys(configMap
+
+[partition]).length);
 			var freeDevice;
 			deviceIndex=0;
 			for(device in configMap[partition]){
-				freeDevice=createDeviceGraphicAt(distance*(deviceIndex+1),20);
+				freeDevice=createDeviceGraphicAt(distance*(deviceIndex
+
++1),20);
 				freeDevice.name=device;
 				freeDevice.draw();
 				deviceIndex++;
@@ -115,7 +129,9 @@ function connectDevicesToNetwork(deviceList,networkObject){
 	var connectedDevice;
 	var i=0;
 	for(device in deviceList){
-		connectedDevice=createObjectWithin(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
+		connectedDevice=createObjectWithin
+
+(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
 		attachChild(networkObject,connectedDevice);
 		connectedDevice.name=device;
 		connectedDevice.draw();
@@ -145,7 +161,9 @@ function createDeviceGraphicAt(xPosition, yPosition){
 }
 
 function createPartitionGraphic(sourceNetwork, destinationNetwork){
-	var connection=new line(sourceNetwork.x,sourceNetwork.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
+	var connection=new line(sourceNetwork.x,sourceNetwork.y,destinationNetwork.x, 
+
+destinationNetwork.y,svgCanvas,'network-connection');
 	shapes[uniqueDataIndex]=(connection);
 	sourceNetwork.connections[uniqueDataIndex]=destinationNetwork;
 	destinationNetwork.connections[uniqueDataIndex]=sourceNetwork;
@@ -222,7 +240,7 @@ interact('.network')
 	
 	.dropzone({
 		
-		accept: '.device, .network', 
+		accept: '.device, .network',
 		
 		overlap: 0.7,
 		
@@ -267,60 +285,27 @@ interact('.network')
 			if(dragClass==='device'){
 				attachChild(dropzone,dragged);
 				
-				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
-				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
-				//THIS IS STUFF TO INTERACT WITH MAINJS
-				//addDevice(deviceName, newNetworkName);
-				//this does not handle moving in and out of the free-list
+				deviceName=shapes[draggableElement.getAttribute('data-
+
+index')].name;
+				newNetworkName=shapes[dropzoneElement.getAttribute('data-
+
+index')].name;
+				alert(newNetworkName);
+				//THIS IS THE STUFF I HAVE CHANGED TO INTERACT WITH MAINJS
+				//var originalNetwork = getNetwork(deviceName);
+				//addDevice(devi)
 				
 			}
 			if(dragClass==='network'){
-				var circleDragging = shapes[draggableElement.getAttribute('data-index')];
-				var circleDraggedTo = shapes[dropzoneElement.getAttribute('data-index')];
 				
 				if(!partitionExists(dropzone,dragged)){
-					//check if already in this partition
-					var partition=createPartitionGraphic(dropzone,dragged);
-					/*
-					//THIS IS STUFF TO INTERACT WITH MAINJS
-					oldNetworkName=shapes[draggableElement.getAttribute('data-index')].name;
-					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
-					
-					oldNetworkPartition= getPartition(oldNetworkName);
-					newNetworkPartition= getPartition(newNetworkName);
-					
-					mergePartition(oldNetworkPartition, newNetworkPartition);*/
+					var partition=createPartitionGraphic
+
+(dropzone,dragged);
 				}
 				else{
 					removePartition(dropzone,dragged);
-					/*
-					//what if we're breaking in half or just removing an extraneous line
-					//THIS IS STUFF TO INTERACT WITH MAINJS
-					breakApart=shapes[draggableElement.getAttribute('data-index')].name;
-					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
-					
-					newNetworkPartition= getPartition(newNetworkName);
-					
-					dividePartition(oldNetwork)*/
-					var newpartitionlist=breadthFirstSearch(dropzone,dragged);
-					var connected=false;
-					for(partition in newpartitionlist){
-						if(newpartitionlist[partition]==dragged){
-							connected=true;
-						}
-					}
-					if(!connected){
-						var oldpartition=buildPartition(newpartitionlist);
-						newpartitionlist=breadthFirstSearch(dragged);
-						var newpartition=buildPartition(newpartitionlist);
-						//depends on bad.js :)
-						var localsession=get_local_session();
-						var partitionname=getPartition(dragged.name);
-						localsession.config_map[partitionname]=oldpartition;
-						//depends on utilities.js
-						partitionname=generateUniqueId();
-						localsession.config_map[partitionname]=newpartition;
-					}
 				}
 				snapToLocation(dragged,origin);
 			}
@@ -331,8 +316,6 @@ interact('.network')
 			
 			event.target.classList.remove('drop-locations');
 		    event.target.classList.remove('drop-target');
-		    //HERE SHOULD BE WHERE YOU TEST IF YOU DROP THIS INTO
-		    //THE FREE LIST
 		},
 	})
 	
@@ -443,7 +426,9 @@ function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){
 		var connectedNetwork=networkShape.connections[index];
 		var theLine=shapes[index];
-		theLine.update(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y);
+		theLine.update
+
+(networkShape.x,networkShape.y,connectedNetwork.x,connectedNetwork.y);
 		theLine.draw();
 	}
 	
@@ -504,13 +489,17 @@ function orderCanvas(){
 	}
 	//orders held objects on top
 	for (index in shapes){
-		if(hasClass(shapes[index].element, 'held-object')==true&&shapes[index]!=null){
+		if(hasClass(shapes[index].element, 'held-object')==true&&shapes[index]!
+
+=null){
 			svgCanvas.appendChild(shapes[index].element);
 			svgCanvas.appendChild(shapes[index].displayName);
 			//order the children devices
 			for (var i =0; i<shapes[index].children.length;i++){
 				if(shapes[index].children[i]!= null)
-					svgCanvas.appendChild(shapes[index].children[i].element);
+					svgCanvas.appendChild(shapes[index].children
+
+[i].element);
 			}
 		}
 	}
@@ -567,6 +556,7 @@ circle.prototype.draw=function(){
 	else{
 		this.displayName.textContent="";
 	}
+	console.log(this.name);
 	orderCanvas();
 }
 
@@ -586,6 +576,7 @@ function line(x1, y1, x2, y2, svgCanvas, elementClass){
 	this.element = document.createElementNS(svgNS, 'line');
 	this.element.setAttribute('data-index', uniqueDataIndex);
 	this.element.setAttribute('class', elementClass);
+	
 	this.draw();
 	svgCanvas.appendChild(this.element);
 }
