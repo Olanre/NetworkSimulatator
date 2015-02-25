@@ -1,7 +1,7 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
-function Network(networkName, networkKind){
+function Network(networkName, networkKind, partitionName){
 	//Required Variables//
 	this.networkName = networkName; // String
 	this.networkKind = networkKind; // Constant: WiFi, GSM
@@ -14,7 +14,7 @@ function Network(networkName, networkKind){
 	this.simulationName='';
 	this.networkJSON.network_name=networkName;
 	this.networkJSON.network_type=networkKind;
-	
+	this.networkJSON.partition_name = partitionName;
 	//Required Functions//
 	this.addDevice=addDevice;
 	this.removeDevice=removeDevice;
@@ -25,8 +25,8 @@ function Network(networkName, networkKind){
 	this.getJSON=getJSON;
 }
 
-function createNewNetwork(networkName,networkKind){
-	var createdNetwork=new Network(networkName,networkKind);
+function createNewNetwork(networkName,networkKind, partitionName){
+	var createdNetwork=new Network(networkName,networkKind, partitionName);
 	Database.saveNetwork(createdNetwork.networkJSON);
 	return createdNetwork;
 }

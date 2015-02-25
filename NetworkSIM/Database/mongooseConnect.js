@@ -70,7 +70,6 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String,
 	   config_map: String,
 	   tokenMethod : String,
-	   tokenMethod : Number,
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
@@ -155,17 +154,17 @@ function getSimByName(aString, callback)
  Sim.findOne( {simulation_name: aString}, function(err,obj)
  { 
    if(err) console.log("no sim with name " + aString);
-   var LenneteSim = new Sim();
-   LenneteSim = obj;
+   
+   callback(obj);
    //console.log("found Simulation");
    //console.log(LenneteSim);
-   callback(LenneteSim);
+   
 });		
 	
 }
 
 //Find simulation by name
-function modifySimByName(aString, aSim, callback)
+function modifySimByName(aString, aSim)
 {
  Sim.findOne( {simulation_name: aString}, function(err,obj)
  { 
@@ -193,7 +192,7 @@ function modifyUser(aToken, aUser)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  console.log("hello");
+  console.log("user saved");
   obj= aUser;
   obj.save();
   
@@ -313,7 +312,7 @@ function getPartitionByName(aName, callback)
 	Partition.findOne({partition_name : aName}, function(err, obj)
 	{
 		if(err) console.log("No partition with name " + aName);
-		console.log("found partition");
+		//console.log("found partition" + obj);
 		callback(obj);
 	});
 }
@@ -328,7 +327,7 @@ function modifyPartitionByName(aString, aPartition)
 	   LennetePartition = obj;
 	   
 	   LennetePartition = aPartition;
-	   console.log("HEEEERE" + aPartition);
+	   //console.log("HEEEERE" + aPartition);
 	   LennetePartition.save();
 	   console.log("partition saved");
 	   //callback();

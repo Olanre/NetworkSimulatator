@@ -11,6 +11,7 @@ function Simulation(simulation_name){
 	//this.networkIterator = new NetworkIterator();
 	this.simulation_name = simulation_name;
 	this.simulationJSON = module.exports.getTemplate();
+	this.simulationJSON.simulation_name = simulation_name;
 	this.app = '';
 	this.rdt = {};
 	this.simulationJSON.simulation_name=this.simulation_name;
@@ -34,6 +35,7 @@ function Simulation(simulation_name){
 
 function createNewSimulation(simulation_name){
 	var createdSimulation=new Simulation(simulation_name);
+	//console.log(createdSimulation);
 	Database.addSim(createdSimulation.simulationJSON);
 	return createdSimulation;
 }
@@ -334,7 +336,7 @@ module.exports.getTemplate=function(){
 	session_data.simulation_population = 0;
 	session_data.simulation_name ='';
 	session_data.config_map = {'freelist' : {} };
-	session_data.tokenMethod = '';
+	session_data.tokenMethod = "";
 	//session_data.token_list=[];
 	session_data.activity_logs = '';
 	return session_data;

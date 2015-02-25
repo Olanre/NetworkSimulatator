@@ -6,7 +6,7 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
-function Device(deviceName,token){
+function Device(deviceName,token, simulation_name ,email, registeredOn, partition_name, current_network){
 	
 	//Required variables//
 	this.device_name=deviceName;
@@ -19,6 +19,11 @@ function Device(deviceName,token){
 	this.deviceJSON=module.exports.getTemplate();
 	this.deviceJSON.current_device_name=this.device_name;
 	this.deviceJSON.token=this.token;
+	this.deviceJSON.email = email;
+	this.deviceJSON.registeredOn = registeredOn;
+	this.deviceJSON.current_simulation = simulation_name;
+	this.deviceJSON.current_partition = partition_name;
+	this.deviceJSON.current_network = current_network;
 	
 	//Required Functions//
 	this.joinNetwork=joinNetwork;
@@ -31,9 +36,10 @@ function Device(deviceName,token){
 	this.getJSON=getJSON;
 }
 
-function createNewDevice(deviceName,token, callback){
-	var createdDevice=new Device(deviceName,token);
-	console.log(createdDevice.deviceJSON);
+
+function createNewDevice(deviceName,token, simulation_name,email, registeredOn, partition_name, current_network){
+	var createdDevice=new Device(deviceName,token, simulation_name ,email, registeredOn, partition_name, current_network);
+	//console.log(createdDevice.deviceJSON);
 	Database.addUser(createdDevice.deviceJSON);
 	return createdDevice;
 }

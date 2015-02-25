@@ -7,7 +7,7 @@ function Partition(partitionName, simulationName){
 	this.simulation_name=simulationName;
 	this.network_list=[];
 	this.partitionJSON=module.exports.getTemplate();
-	this.partitionJSON.simulation_name=simulationName;
+	this.partitionJSON.partition_name=partitionName;
 	this.partitionJSON.network_list=[];
 	
 	
@@ -20,6 +20,7 @@ function Partition(partitionName, simulationName){
 
 function createNewPartition(partitionName,simulationName){
 	var createdPartition=new Partition(partitionName, simulationName);
+	
 	Database.savePartition(createdPartition.partitionJSON);
 	return createdPartition;
 }
