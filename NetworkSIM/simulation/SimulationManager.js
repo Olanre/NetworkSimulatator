@@ -216,7 +216,8 @@ function createSimulation(body) {
 	for(partitionName in map){
 		
 		partition=Partition.createNewPartition(partitionName,simulation.simulation_name);
-		simulation.partition_list.push(partition);
+		partition.partitionJSON.partition_name = partitionName;
+		
 		//simulation.partition_list.push(partitionJSON);
 		
 		for(networkName in map[partitionName]){
@@ -236,7 +237,14 @@ function createSimulation(body) {
 				device.deviceJSON.registeredOn = d.toString();
 				network.device_list.push(device);
 				network.networkJSON.device_list.push(device.deviceJSON);
-				Database.modifyUser(token,device.deviceJSON, function(){});
+				
+				console.log(device.deviceJSON);
+				Database.getUserByToken('377d0cf326f287b1a9b9aeccc5fa02d25c85416f', function(User){
+					User.email = "Heloo@mun.ca";
+					Database.modifyUser(token,User);
+				});
+				
+				break;
 			}
 			partition.network_list.push(network);
 			partition.partitionJSON.network_list.push(network.networkJSON);

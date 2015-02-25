@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 
 //connect to db
-var db = mongoose.connect('mongodb://username:password@ds033601.mongolab.com:33601/sc2');
+var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:53139/sc2');
 
 //attach lister to connected even
 mongoose.connection.once('connected', function(){
@@ -17,6 +17,27 @@ Schema = db.Schema;
  
 
                                     //****Schemas
+//USER SCHEMA
+//USER 
+var userSchema = mongoose.Schema({
+	token:String,
+	email:String,
+	verified: Boolean,
+	current_partition: String,
+	current_network: String,
+	registeredOn: String,
+	admin: Boolean,
+	networks_created: [],
+	application_id:String,
+	current_simulation: String,
+	current_device_name: String,
+	activity : String,
+	});
+
+//STOP DELETTINGINGGEN SHIT                     
+var User = mongoose.model('User', userSchema, 'newUserFormat');
+
+
 //DEVICE
 var deviceSchema = mongoose.Schema({
    device_name : String,
@@ -37,7 +58,7 @@ var networkSchema = mongoose.Schema({
 });
 
 //NETWORK COMPLETE
-var Network = mongoose.model('Network', networkSchema, 'newDeviceFormat');
+var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
@@ -87,28 +108,11 @@ var partitionSchema = mongoose.Schema({
 
 });
 
-var Partition = mongoose.model('Partition', partitionSchema, 'newSimFormat');
+var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
 //SIMULATION
 
 
-//USER 
-var userSchema = mongoose.Schema({
-	token:String,
-	email:String,
-	verified: Boolean,
-	current_partition: String,
-	current_network: String,
-	registeredOn: String,
-	admin: Boolean,
-	networks_created: [],
-	application_id:String,
-	current_simulation: String,
-	current_device_name: String,
-	activity : String,
-	});
 
-//STOP DELETTINGINGGEN SHIT                     
-var User = mongoose.model('User', userSchema, 'newUserFormat');
 
 						 // objectname, schema, collectionname
 
@@ -170,7 +174,7 @@ function modifySimByName(aString, aSim, callback)
    LenneteSim = obj;
    LenneteSim = aSim;
 	LenneteSim.save();
-	callback();
+	//callback();
 });		
 	
 }
@@ -184,18 +188,18 @@ function addUser(aUser)
   //console.log("saved user " + aUser);
 }
 
-function modifyUser(aToken, aUser, callback)
+function modifyUser(aToken, aUser)
 {
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  	var Lennete = new User();
-  	var Lennete2 = new User();
-  	Lennete = obj;
-   Lennete2 = aUser;
-   Lennete = Lennete2;
-   Lennete.save();
-   callback();
+ 
+  obj = 
+  
+  
+  
+  }
+   //callback();
 	//console.log("User with token " + atoken + "edited " + example);	
   });
 }
@@ -298,6 +302,7 @@ function modifyNetworkByName(aString, aNetwork)
 	    LenneteNetwork = aNetwork;
 	    LenneteNetwork.save();
 		console.log("Network saved");
+		//callback();
 	});
 }
 
@@ -329,8 +334,10 @@ function modifyPartitionByName(aString, aPartition)
 	   LennetePartition = obj;
 	   
 	   LennetePartition = aPartition;
+	   console.log("HEEEERE" + aPartition);
 	   LennetePartition.save();
 	   console.log("partition saved");
+	   //callback();
    });
 }
 

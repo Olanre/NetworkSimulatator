@@ -51,7 +51,7 @@ window.onload = function(){
 window.setInterval(function(){
 	  /// call our sync function here
 		Sync2Server();
-	}, 10000);
+	}, 1000000);
 
 
 /**
@@ -202,8 +202,8 @@ function addNetworkCreated2Session(new_network, Partition_name, Simulation_name,
 function addDevice( device_name, network_name){
 	//gets the information of this user
 	var local_device = get_local_device();
-	last_network = local_device.current_network;
-	removeDevicefromNetwork( device_name, network_name);
+	last_network = getNetwork(device_name);
+	removeDevicefromNetwork( device_name, last_name);
 	addDevice2Network( device_name, network_name);
 	//gets the default page for the user.
 	appDefaultView();
@@ -820,7 +820,7 @@ function getPartitions(){
  * getNetworks retrieves a list of networks in the simulation
  */
 function getNetworks(){
-	//gets the local simulation
+	//gets the local simulation//
 	var local_session = get_local_session();
 	//gets the configuration map of the current simulation on the users side
 	var map = local_session.config_map;

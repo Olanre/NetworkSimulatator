@@ -266,6 +266,10 @@ interact('.network')
 			
 			if(dragClass==='device'){
 				attachChild(dropzone,dragged);
+				
+				//THIS IS THE STUFF I HAVE CHANGED TO INTERACT WITH MAINJS
+				var originalNetwork = getNetwork(device_name);
+				
 			}
 			if(dragClass==='network'){
 				
