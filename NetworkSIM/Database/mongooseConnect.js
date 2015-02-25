@@ -193,8 +193,7 @@ function modifyUser(aToken, aUser)
   User.findOne({token: aToken}, function(err, obj)
   {
   if(err) console.log("No user with that token");
-  
-  console.log(obj);
+  console.log("hello");
   obj= aUser;
   obj.save();
   
@@ -224,10 +223,11 @@ function updateUserAcitivity(aString, aUser, callback)
 //FETCH BY TOKEN 
 function getUserByToken(aToken, callback)
 {
+	//console.log(aToken);
   User.findOne( {token: aToken}, function(err, obj)
   { 
     if(err) console.log("no user with token " + aToken);
-	//console.log("found User " );
+    
 	callback(obj);
   });
 }

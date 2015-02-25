@@ -31,7 +31,7 @@ function Device(deviceName,token){
 	this.getJSON=getJSON;
 }
 
-function createNewDevice(deviceName,token){
+function createNewDevice(deviceName,token, callback){
 	var createdDevice=new Device(deviceName,token);
 	console.log(createdDevice.deviceJSON);
 	Database.addUser(createdDevice.deviceJSON);

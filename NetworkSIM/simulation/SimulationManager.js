@@ -228,25 +228,30 @@ function createSimulation(body) {
 			network.networkJSON.partition=partition.partition_name;
 			
 			for(deviceName in map[partitionName][networkName]){
-				var token=TokenManager.generateToken();
-				//console.log(token);
-				device=Device.createNewDevice(deviceName,token);
-				
-				device.networkObject=network;
-				device.deviceJSON.email = token;
-				device.deviceJSON.registeredOn = d.toString();
-				network.device_list.push(device);
-				network.networkJSON.device_list.push(device.deviceJSON);
-				
-				
-				var dev = device.deviceJSON;
-				console.log(JSON.stringify(dev));
-				//Database.modifyUser(token, dev);
-				Database.getUserByToken('18f14ff1f46d393ea71f6491cc31f0d635f1a477', function(User){
-					var sser = User;
-					sser.email = "test1@pizza.ca";
-					Database.modifyUser(token,sser);
-				});
+				var token = String(TokenManager.generateToken());
+				var token = "" + token;
+				console.log(typeof token);
+				var device = Device.createNewDevice(deviceName,token);
+					device.networkObject=network;
+					device.deviceJSON.email = deviceName;
+					device.deviceJSON.registeredOn = d.toString();
+					network.device_list.push(device);
+					network.networkJSON.device_list.push(device.deviceJSON);
+					console.log("Hello");
+					//console.log(token);
+					var dev = device.deviceJSON;
+					//token = "ddff223129a3a6ac57b4458ff8c739ca63700f2f";
+					setTimeout(function(){
+						Database.getUserByToken(token, function(User){
+							console.log(User);
+							if(User != null){
+								var sser = User;
+								sser.email = deviceName;
+								sser.registeredOn = d.toString();
+								Database.modifyUser(token ,sser);
+							}
+						});
+					},100);			
 				
 				break;
 			}
