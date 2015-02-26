@@ -20,3 +20,6 @@
     implemented retrieving the actual logs, this will be an initial focus of the next iteration.
     -> Press on a timestamp to view the simulation snapshot of that time
     -> press on a device object in the GUI of the simulation snapshot to view the events for that device
+    
+    * Please note that our counter is still active within our project code. We made an error in telling Dr. Fiech that it does not in the presentation.
+      Feel free to test this. 
