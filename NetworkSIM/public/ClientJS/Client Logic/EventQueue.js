@@ -1,4 +1,3 @@
-
 function newEventQueue(){
 	var queue = {};
 	queue.token = '';
@@ -7,17 +6,12 @@ function newEventQueue(){
 	return queue;
 }
 
-function addToEventQueue(route, params, timeStamp){
-	//gets the list of the events which have occurred on this device since it last contacted the server.
+function addToEventQueue(route, event_data, time_stamp){
 	var local_events = get_local_events();
 	if(local_events !== null){
-		//now add it to the simulation logging or device logging
-		generateActivity(route, params, timeStamp);
-		
-		//gets the eventQueue from the local storage.
 		var events = local_events.eventQueue;
 		//creates the query to the server, this constitutes an event in the event queue
-		var query = {'route': route, 'Body' : params, 'timestamp': timeStamp}
+		var query = {'route': route, 'event_data' : event_data, 'time_stamp': time_stamp}
 		//adds the event to the event queue
 		events.push(query);
 		//updates the localEvents to the new list of local events.
@@ -30,5 +24,4 @@ function addToEventQueue(route, params, timeStamp){
 	else{
 		console.log("Local events not found")
 	}
-	
 }

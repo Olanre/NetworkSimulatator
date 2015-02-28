@@ -2533,7 +2533,7 @@ function updateNetworkName(old_name, new_name){
 	//deletes the network
 	delete local_session.config_map[Partition_name][old_name];
 
-	pputinStorage( 'device', JSON.stringify(local_device) );
+	putinStorage( 'device', JSON.stringify(local_device) );
 	putinStorage( 'session', JSON.stringify(local_session) );
 	
 	//send to event queue
