@@ -1,20 +1,22 @@
-var Database=require("../Database/mongooseConnect.js");
 var Util=require("./utilities.js");
 
 function Network(networkName, networkKind, partitionName){
 	//Required Variables//
 	this.networkName = networkName; // String
 	this.networkKind = networkKind; // Constant: WiFi, GSM
-	//this.deviceIterator =new DeviceIterator(); // Returns an iterator that provides Device objects
+	this.deviceIterator =new DeviceIterator(); // Returns an iterator that provides Device objects
 		  
 	//Our Variables//
-	this.partition={};
+	this.partitionObject={};
 	this.device_list=[];
-	this.networkJSON=module.exports.getTemplate();
-	this.simulationName='';
+	this.networkJSON={};
+
 	this.networkJSON.network_name=networkName;
 	this.networkJSON.network_type=networkKind;
 	this.networkJSON.partition_name = partitionName;
+
+	this.deviceIterator=new DeviceIterator(device_list);
+
 	//Required Functions//
 	this.addDevice=addDevice;
 	this.removeDevice=removeDevice;
@@ -22,13 +24,13 @@ function Network(networkName, networkKind, partitionName){
 	this.disconnectNetwork=disconnectNetwork;
 	
 	//Our Functions//
-	this.getJSON=getJSON;
+	this.attachJSON=attachJSON;
 }
 
 function createNewNetwork(networkName,networkKind, partitionName){
 	var createdNetwork=new Network(networkName,networkKind, partitionName);
-	console.log("THis is what is created for network " + createdNetwork.networkJSON.partition_name);
-	Database.saveNetwork(createdNetwork.networkJSON);
+	//wrapper class will be responsible for this.
+	//Database.saveNetwork(createdNetwork.networkJSON);
 	return createdNetwork;
 }
 
@@ -37,82 +39,53 @@ function loadNetworkFromJSON(networkJSON){
 	attachJSON(createdNetwork,networkJSON);
 	for(index in networkJSON.device_list){
 		var createdDevice=Device.loadDeviceFromJSON(networkJSON.device_list[index]);
-		createdDevice.networkObject=createdNetwork;
-		this.device_list.push(createdDevice);
+		createdNetwork.addDevice(createdDevice);
 	}
 	return createdNetwork;
 }
 
-function attachJSON(networkObject,networkJSON){
-		networkObject.networkJSON=networkJSON;
-		networkObject.networkName=networkJSON.network_name;
-		networkObject.networkKind=networkJSON.network_kind;
-		networkObject.partitionObject=networkJSON.partition;
-		
-}
-function getJSON(callback){
-	return Database.getNetworkByName(this.networkName, function(obj){
-		callback(obj);
-	});
+function attachJSON(networkJSON){
+		this.networkJSON=networkJSON;
+		this.networkName=networkJSON.network_name;
+		this.networkKind=networkJSON.network_type;
 }
 
 //we assume that we will only add devices through a network
 function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON);
 		this.device_list.push(device);
-		Database.getNetworkByName(this.networkName, function(Network){
-			Network.device_list.push(device.deviceJSON);
-			Database.modifyNetworkByName( Network);
-		});
-		
 		device.joinNetwork(this);
 };
-	
-
+//we assume that we will only remove devices through a network
 function removeDevice(device){
-		//delete from the device_list by token
 		for (var i =0; i< this.device_list.length;i++){
 			if (this.device_list[i].token == device.token){
-				this.device_list.splice(1,i);//this should remove the element at index i
+				this.device_list.splice(i,1);
+				break;
 			}
 		}
 		//delete from the JSON device list
 		for (var i =0; i< this.networkJSON.device_list.length;i++){
 			if (this.networkJSON.device_list[i].token == device.token){
-				this.networkJSON.device_list.splice(1,i);//this should remove the element at index i
+				this.networkJSON.device_list.splice(i,1);//this should remove the element at index i
+				break;
 			}
 		}
+
 		device.leaveNetwork(this);
-		Database.getNetworkByName(this.networkName, function(Network){
-			var index = Network.device_list.indexOf(device.deviceJSON);
-			delete Network.device_list[index];
-			Database.modifyNetworkByName( Network);
-		});
-		
 };
-	
 
 function connectNetwork(network){
 		this.partitionObject.mergePartitions(network.partitionObject);
 		network.partitionObject=this.partitionObject;
-		network.networkJSON.partition_name=this.partition_name;
-		Database.modifyNetworkByName(network.network_name,networkJSON);
+		network.networkJSON.partition_name=this.networkJSON.partition_name;
 };
 
 function disconnectNetwork(network){
-		this.partitionObject.dividePartition(network)
+		this.partitionObject.removeNetwork(network);
 		network.partitionObject={};
-		Database.modifyNetworkByName(network.network_name,networkJSON);
+		network.networkJSON.partition_name="";
 };
 
-function getTemplate(){
-	var network_data={};
-	network_data.network_name = '';
-	network_data.network_type = '';
-	network_data.partition_name = '';
-	network_data.device_list = [];
-	return network_data;
-};
 module.exports.createNewNetwork = createNewNetwork;
 module.exports.loadNetworkFromJSON=loadNetworkFromJSON;
-module.exports.getTemplate=getTemplate;
