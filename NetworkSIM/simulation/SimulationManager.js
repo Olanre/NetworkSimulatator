@@ -204,59 +204,16 @@ function authToken(token, callback){
 		
 }
 
-function createSimulation(body) {
+function createSimulation(simulationJSON) {
 	var device = Device.getTemplate();
-	var map = body.config_map;
 	var d = new Date();
-	body.config_map = JSON.stringify(body.config_map);
-	var simulation = new Simulation.createNewSimulation(body.simulation_name);
-	var partition, network,device;
-	simulation.simulationJSON=body;
-	console.log(map);
-	for(partitionName in map){
-		if(partitionName !== null){
-			partition=Partition.createNewPartition(partitionName,body.simulation_name);
-			partition.partitionJSON.partition_name = partitionName;
-			
-			//simulation.partition_list.push(partitionJSON);
-			
-			for(networkName in map[partitionName]){
-				if(networkName !== null){
-					//console.log(networkName);
-					network=Network.createNewNetwork(networkName,'WiFI', partitionName);
-					
-					network.partitionObject=partition;
-					network.networkJSON.partition=partition.partition_name;
-					
-					for(deviceName in map[partitionName][networkName]){
-						if(deviceName !== null){
-							var token=TokenManager.generateToken();
-							//console.log(token);
-							device= Device.createNewDevice(deviceName,token, simulation.simulation_name, deviceName, d.toString());
-							TokenPropagator.mailToken(deviceName, token, simulation.simulation_name);
-							//setTimeout(function(){
-								//network.addDevice(device);
-							//}, 300);
-						}	
-						//network.networkJSON.device_list(device.deviceJSON);
-					}
-					//setTimeout(function(){
-						//partition.addNetwork(network);
-					//}, 300);
-				}
-				//console.log(network.networkJSON);
-				//Database.modifyNetworkByName(network.network_name,network.networkJSON);
-			}
-			//setTimeout(function(){
-				//simulation.modifyPartition(partition)
-			//},300);
-			//simulation.partition_list.push(partition);
-			//console.log(simulation);
-		}
-	}
-	//Database.modifySimByName(simulation.simulation_name,simulation.simulationJSON);
-	
-	//Dunno what this is about, so I'll leave it here for now
+	var simulation = loadSimulationFromJSON(simulationJSON);
+	simulationList[simulationJSON.simulation_name]=simulationJSON;
+
+	// Add database stuff
+
+
+
 	setTimeout(function() {
 		Database.getApp(function(data){
 			
@@ -275,7 +232,7 @@ function createSimulation(body) {
 					obj.tokenMethod = body.tokenMethod;
 					Database.modifySimByName(body.simulation_name, obj);
 					//console.log('');
-					console.log("DOne");
+					console.log("Done");
 					simulationList.push(simulation);
 					//callback();
 				});
@@ -289,31 +246,30 @@ function createSimulation(body) {
 }	
 
 
-//I didn't worry about this, we don't need it yet
-function createDevice(body, simulationName) {
-	var Sim = '';
+function createDevice(deviceJSON, simulationName) {
+
+	var sim = '';
 	for(var i = 0; i < simulationList.length; i ++){
-		if(simulationList[i].simulation_name == simulation){
-			Sim = simulationList[i].simulation_name;
+		if(simulationList[i].simulationJSON.simulation_name == simulation){
+			sim=simulationList[i];
 		}
 	}
-	var device_name = body.device_name;
-	var network_name = body.network_name;
-	var partition_name = body.partition_name;
-	var simulation_name = body.simuation_name;
-	//var token = body.token;
-	admin.addDevice(device_name);  // do you mean DeviceManager.addDevice(devID) ?
-	
-	
+
+	var device=Device.loadDeviceFromJSON(deviceJSON);
+	sim.addDevice(device);
+
+	//Add database calls
+
 }
 
 
-function createNetwork(networkObject, simulation){
+function createNetwork(networkJSON, simulationName){
+
 	var networkName = networkObject.networkName;
 	var partitionName=networkObject.partition_name;
 	admin.addNetwork(networkName, partitionName,  'Wifi', simulation);
 
-		
+
 };
 //TODO
 function addPartition(partitionObject, simulation){

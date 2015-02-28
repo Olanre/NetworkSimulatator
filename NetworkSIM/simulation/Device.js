@@ -41,7 +41,7 @@ function createNewDevice(deviceName,token, simulation_name,email, registeredOn, 
 
 function loadDeviceFromJSON(deviceJSON){
 	var createdDevice=new Device('');
-	attachJSON(createdDevice,deviceJSON);
+	createdDevice.attachJSON(deviceJSON);
 }
 
 function attachJSON(deviceJSON){
