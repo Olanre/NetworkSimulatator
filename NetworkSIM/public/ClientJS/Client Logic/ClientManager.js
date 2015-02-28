@@ -5,5 +5,3 @@
 window.setInterval(function(){
 	Sync2Server();
 	}, 2000);
-
-//overwrite 
