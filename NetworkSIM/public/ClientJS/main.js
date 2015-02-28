@@ -43,7 +43,7 @@ window.onload = function(){
 	loadAppContent();	
 
 }
-
+.
 /**
  * set a request to refresh our application with the server every 3 seconds
  * Will be changed later to using websockets with socket.io
