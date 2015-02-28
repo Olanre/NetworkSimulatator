@@ -1690,7 +1690,7 @@ function loadAppContent(){
 	
 }
 
-
+/* *** MOVED TO HTMLTemplates.js MODULE UNDER THE FOLDER HTML TEMPLATES *** */
 /**
  * Template for rendering the device view
  * this function obtains the values needed from the local_device and session
@@ -1876,7 +1876,7 @@ function SimulationListTemplate(simulations){
 	}	
 	str +=  " </table> 	</div>";
 	return str;
-}
+}  /* ** MOVED TO HTMLTemplates.js MODULE UNDER HTML TEMPLATE FOLDER ** */
 
 /** 
  * Function to render the new state based on new data provided by out server
@@ -2371,8 +2371,8 @@ function wrapCreateSimulation() {
 	console.log(create_simulation);
 	return create_simulation;
 }
-
-
+/* BELOW HAS ALREADY BEEN MOVED OUT  */
+/*    **@** All code below moved to DBModel.js under Database Model folder! **@**   */
 /********* Model Modifiers ***************************/
 
 /**
@@ -2533,7 +2533,7 @@ function updateNetworkName(old_name, new_name){
 	//deletes the network
 	delete local_session.config_map[Partition_name][old_name];
 
-	putinStorage( 'device', JSON.stringify(local_device) );
+	pputinStorage( 'device', JSON.stringify(local_device) );
 	putinStorage( 'session', JSON.stringify(local_session) );
 	
 	//send to event queue
@@ -2708,4 +2708,4 @@ function updateAppState(){
 	appstate.application = get_local_application();
 	putinStorage( 'appstate', JSON.stringify(appstate) );
 }
- 
+*/ 

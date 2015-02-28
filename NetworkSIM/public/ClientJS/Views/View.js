@@ -1,3 +1,3 @@
 /**
- * This module handles the View portion of project (of the MVC pattern)
+ * This module handles the views of project (of the MVC pattern)
  */
