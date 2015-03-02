@@ -1,29 +1,40 @@
-//cannot test connect and disconnect from a network
-//cannot test getDevice from JSON or whatever it's called
 var Device=require("../simulation/Device.js");
-var Database=require("../Database/mongooseConnect.js");
-var Util=require("../simulation/utilities.js");
-var Network=require("../simulation/Network.js");
+var Util=require("../simulation/Utilities.js");
+var JSONDeviceTemplate={
+	current_device_name:undefined,
+	token:undefined,
+	email:undefined,
+	registeredOn:undefined,
+	current_simulation:undefined,
+	current_partition:undefined,
+	current_network:undefined,
+};
 
-var blankDeviceJSON=Device.getTemplate();
-console.log("This is what a blank device looks like in the database");
-console.log(blankDeviceJSON);
-blankDeviceJSON.current_device_name="test";
-var newDevice=new Device.createNewDevice("test", "ABIGTOKEN");
-console.log("Constructor test for the device class");
+var deviceJSON={
+		current_device_name:"testname",
+		token:"xyz1234",
+		email:undefined,
+		registeredOn:undefined,
+		current_simulation:"sim sim",
+		current_partition:undefined,
+		current_network:undefined,
+}
 
-console.log(newDevice.deviceJSON);
 
-/*console.log("Testing device joining a network. This won't work as device is not connected to a simulation.");
-console.log(newDevice.deviceJSON.current_device_name);
-var newNetwork=new Network.createNewNetwork("testNetwork");
-newDevice.joinNetwork(newNetwork);
-console.log(newNetwork.device_list);*/
+module.exports.testDeviceCreation=function(){
+	var createdDevice=Device.createNewDevice();
+	var result=Util.compareObjects(createdDevice.deviceJSON,JSONDeviceTemplate);
+	var text=result? 'passed': 'failed';
+	console.log("createNewDevice " +text);
+}
 
-console.log("testing getting the JSON from device");
-console.log(newDevice.getJSON());
+module.exports.testDeviceLoading=function(){
+	var loadedDevice=Device.loadDeviceFromJSON(deviceJSON);
+	var result=Util.compareObjects(loadedDevice.deviceJSON,deviceJSON);
+	var text=result?'passed':'failed';
+	console.log("loadDeviceFromJSON "+text);
+}
 
-//this method does not exist in mongoose connect
-/*console.log("testing getting the JSON from device");
-console.log(newDevice.save());*/
 
+module.exports.testDeviceCreation();
+module.exports.testDeviceLoading();

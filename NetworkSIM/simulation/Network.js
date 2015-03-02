@@ -4,7 +4,7 @@ function Network(networkName, networkKind, partitionName){
 	//Required Variables//
 	this.networkName = networkName; // String
 	this.networkKind = networkKind; // Constant: WiFi, GSM
-	this.deviceIterator =new DeviceIterator(); // Returns an iterator that provides Device objects
+	this.deviceIterator ={};// Returns an iterator that provides Device objects
 		  
 	//Our Variables//
 	this.partitionObject={};
@@ -14,8 +14,8 @@ function Network(networkName, networkKind, partitionName){
 	this.networkJSON.network_name=networkName;
 	this.networkJSON.network_type=networkKind;
 	this.networkJSON.partition_name = partitionName;
-
-	this.deviceIterator=new DeviceIterator(device_list);
+	this.networkJSON.device_list=[];
+	//this.deviceIterator=new DeviceIterator(device_list);
 
 	//Required Functions//
 	this.addDevice=addDevice;
@@ -36,7 +36,7 @@ function createNewNetwork(networkName,networkKind, partitionName){
 
 function loadNetworkFromJSON(networkJSON){
 	var createdNetwork=new Network('','');
-	attachJSON(createdNetwork,networkJSON);
+	createdNetwork.attachJSON(networkJSON);
 	for(index in networkJSON.device_list){
 		var createdDevice=Device.loadDeviceFromJSON(networkJSON.device_list[index]);
 		createdNetwork.addDevice(createdDevice);
