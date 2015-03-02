@@ -5,8 +5,8 @@ window.setInterval(function(){
 	SyncWithServer();
 }, 2000);
 
-/**
- * sends the event queue to the server
+/***
+ * Handles creating a connection to the server
  */
 function SyncWithServer(){
 	var route = '/getSync';
@@ -22,6 +22,9 @@ function SyncWithServer(){
 	sendEventsToServer(route, event_data, getsimulationFromServer);
 }
 
+/**
+ * sends the event queue to the server
+ */
 function sendEventsToServer(route, event_data, callback){
 	
     var request = new XMLHttpRequest();
