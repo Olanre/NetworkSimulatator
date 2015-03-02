@@ -1155,7 +1155,6 @@ function notAuthorized() {
 	var str = "<error> <h3> Sorry you are not authorized </h3>" +
 			"</error>";
 	return str;
-	
 }
 
 
@@ -1177,7 +1176,6 @@ function size(obj) {
  */
 function getfromStorage(id){
 	return sessionStorage.getItem(id);
-	
 }
 
 /**

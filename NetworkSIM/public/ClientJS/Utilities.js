@@ -80,6 +80,35 @@ function removeItem(array, item){
     return array;
 }
 
+/**
+ * returns the size of an object
+ */
+function size(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+/**
+ * Helper function to remove an element from its parent
+ * @param element, the element to be removed
+ * @param element
+ */
+function removeElement(element){
+	element.parentNode.removeChild(element);
+}
+
+/**
+ * insertAfter inserts as a child of the parent "reference node" in a tree.
+ * @param newNode: the new node to be inserted
+ * @param referenceNode: the parent node 
+ */
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 //delete me after test
 module.exports.generateUniqueId=generateUniqueId;
 module.exports.buildPartition=buildPartition;
