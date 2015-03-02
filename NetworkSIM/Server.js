@@ -3,7 +3,6 @@
  * Please note that the routing javascript code is located under
  * the routes folder within src.
  * @Author: Noah
- * @editedBy Ryan (Jan. 30)
  ****/
 
 var express = require('express');
@@ -191,6 +190,14 @@ app.get('/js/simulation-classes.js', function(request,response){
 });
 app.get('/js/EventLogView.js', function(request,response){
 	response.sendFile("/public/ClientJS/EventLogView.js",{"root": __dirname});
+});
+
+//Noah's junk, maybe will throw out
+app.get('/js/ClientManager.js', function(request,response){
+	response.sendFile("/public/ClientJS/ClientLogic/ClientManager.js",{"root": __dirname});
+});
+app.get('/js/ServerSync.js', function(request,response){
+	response.sendFile("/public/ClientJS/ClientLogic/ServerSync.js",{"root": __dirname});
 });
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/
