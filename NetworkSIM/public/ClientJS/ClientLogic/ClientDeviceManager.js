@@ -17,7 +17,7 @@ function createDevice(device_name){
 	var url = '/create/Device';
 	var timestamp = new Date();
 	addToEventQueue(url, params, timestamp);
-	addDevice2FreeList( device_name );
+	addDeviceToFreeList( device_name );
 	
 }
 
@@ -26,7 +26,7 @@ function createDevice(device_name){
  * @param device_name: the name of the device to add to the network
  * @param network_name: the name of the network to be added to
  */
-function addDevice2FreeList( device_name){
+function addDeviceToFreeList( device_name){
 	
 	//gets the current state of the simulation
 	var local_session = get_local_session();
