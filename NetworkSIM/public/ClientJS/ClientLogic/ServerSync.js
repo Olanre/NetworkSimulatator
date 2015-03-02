@@ -2,13 +2,13 @@
  * syncs with the server every 2 seconds
  */
 window.setInterval(function(){
-	SyncWithServer();
+	syncWithServer();
 }, 2000);
 
 /***
  * Handles creating a connection to the server
  */
-function SyncWithServer(){
+function syncWithServer(){
 	var route = '/getSync';
 	var event_data = '';
 	

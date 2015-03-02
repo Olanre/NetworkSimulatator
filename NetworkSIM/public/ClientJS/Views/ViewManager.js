@@ -12,26 +12,55 @@ function updateAllViews( timeout){
 	
 	setTimeout(function() {
 		appDefaultView();
-	}, timeout);
-		
+	}, timeout);	
+}
+
+
+/**
+ * Shows the user's account information
+ */
+function AccountView(){
+	var html = AccountTemplate();
+	var content = getContainer();
+	content.innerHTML = html;
 }
 
 /**
- * SHOULD NOT USE ALERT
- * Displays the default front page for the 
+ * Displays the user's information
  */
 function appDefaultView(){
+	//sets the top bar to be the default look
 	defaultheaderView();
 	if(getVerified() == false){
 		alert('You do not have permission to access this. Please get a token first.');
-		//AccountView();
 	}else{
-		var app = viewDeviceView();
+		//sets the page to view to 'user information' page
+		var app = viewDeviceTemplate();
 		var content = getContainer();
 		content.innerHTML = app;
+		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
 	}
 }
+
+/**
+ * Sets the sidebar to the appropriate sidebar for being within a simulation
+ */
+function simulationSideBarView(){
+	var sidebar = document.getElementById('template9');
+	var aside = getSideBar();
+	aside.innerHTML = sidebar.innerHTML;
+}
+
+/**
+ * sets the sidebar of the page to look as it should when the page is opened
+ */
+function defaultheaderView(){
+	var header = document.getElementById('template6');
+	var head= getHeader();
+	head.innerHTML = header.innerHTML;
+}
+
 
 /**
  *Gets the view which displays a list of available simulations
