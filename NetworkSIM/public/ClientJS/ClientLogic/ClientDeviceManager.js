@@ -27,6 +27,7 @@ function createDevice(device_name){
  * @param network_name: the name of the network to be added to
  */
 function addDevice2FreeList( device_name){
+	
 	//gets the current state of the simulation
 	var local_session = get_local_session();
 	//gets the information of local device
