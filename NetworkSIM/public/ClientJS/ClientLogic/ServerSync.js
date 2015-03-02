@@ -19,7 +19,7 @@ function SyncWithServer(){
 	else{
 		var event_data = JSON.stringify(local_events);
 	}	
-	sendEventsToServer(route, event_data, getsimulationFromServer);
+	sendEventsToServer(route, event_data, getInformationFromServer);
 }
 
 /**
@@ -49,10 +49,13 @@ function sendEventsToServer(route, event_data, callback){
 }
 
 /**
- * Callback function for receiving a new simulation object from the server
- * Renders the simulation object
+ * Callback function for receiving a new appState object (all information we need from the server)
  */
-function getsimulationFromServer(new_simulation){
+function getInformationFromServer(appState){
+	store_local_simulation(appState.simulation);
+	store_local_device(appState.device);
+	store_local_simulation_names(appState.simulation_names);
+	
 	
 	//get the previous simulation object from storage
 	var old_simulation = get_local_simulation();
