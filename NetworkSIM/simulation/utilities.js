@@ -31,6 +31,7 @@ exports.findSimulationByName=function(simulationName,simulationList){
 		if (simulationList[index].simulation_name==simulationName) return simulationList[index];
 
 	}
+	return -1;
 };
 
 exports.findDeviceByName=function(deviceName,deviceList){
@@ -38,16 +39,19 @@ exports.findDeviceByName=function(deviceName,deviceList){
 		if (deviceList[index].device_name==deviceName) return deviceList[index];
 
 	}
+	return -1;
 };
 exports.findNetworkByName=function(networkName,networkList){
 	for(index in networkList){
 		if (networkList[index].network_name==networkName) return networkList[index];
 
 	}
+	return -1;
 };
 exports.findPartitionByName=function(partitionName,partitionList){
 	for(index in partitionList){
 		if (partitionList[index].partition_name==partitionName) return partitionList[index];
 
 	}
+	return -1;
 };

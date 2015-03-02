@@ -64,8 +64,8 @@ function leaveNetwork(network){
 	  this.deviceJSON.current_network= '';
 	  this.networkObject = {};
 	  this.deviceJSON.current_partition= 'freelist';
-	  var networkIndex= network.device_list.indexOf(device);
-	  networks.splice(networkIndex,1);
+	  var networkIndex= network.device_list.indexOf(this);
+	  network.device_list.splice(networkIndex,1);
 };
 
 //This is supposed to make the device join the network it used to be in. idk lol

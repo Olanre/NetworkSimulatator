@@ -1,5 +1,5 @@
 var Util=require("./utilities.js");
-
+var Partition= require('./Partition.js');
 function Network(networkName, networkKind, partitionName){
 	//Required Variables//
 	this.networkName = networkName; // String
@@ -7,7 +7,8 @@ function Network(networkName, networkKind, partitionName){
 	this.deviceIterator ={};// Returns an iterator that provides Device objects
 		  
 	//Our Variables//
-	this.partitionObject={};
+	this.partitionObject=Partition.createNewPartition();
+	this.partitionObject.addNetwork(this);
 	this.device_list=[];
 	this.networkJSON={};
 
@@ -83,8 +84,6 @@ function connectNetwork(network){
 
 function disconnectNetwork(network){
 		this.partitionObject.removeNetwork(network);
-		network.partitionObject={};
-		network.networkJSON.partition_name="";
 };
 
 module.exports.createNewNetwork = createNewNetwork;

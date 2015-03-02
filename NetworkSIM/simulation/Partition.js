@@ -5,7 +5,7 @@ function Partition(partitionName, simulationName){
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.network_list=[];
-	this.partitionJSON=module.exports.getTemplate();
+	this.partitionJSON={};
 	this.partitionJSON.partition_name=partitionName;
 	this.partitionJSON.network_list=[];
 
@@ -50,21 +50,23 @@ function removeNetwork(network){
 
 	for(index in this.network_list){
 		if(this.network_list[index]==network){
-			network.partitionObject={};
-			network.networkJSON.partition='';
+
+			network.partitionObject=createNewPartition();
+			network.networkJSON.partition_name='';
 			this.network_list.splice(index,1);
-			this.networkJSON.network_list.splice(index,1);
+			this.partitionJSON.network_list.splice(index,1);
+			
 		}
 	}
 }
 
 function mergePartitions(partition){
-
-		for(network in partition.network_list){
-			network.partition=this;
-			network.networkJSON.partition_name=this.networkJSON.partition_name;
-			this.partitionJSON.network_list.push(network.networkJSON);
-			this.network_list.push(partition.network_list[network]);
+		var networks=partition.network_list;
+		for(key in networks){
+			networks[key].partitionObject=this;
+			networks[key].networkJSON.partition_name=this.partition_name;
+			this.partitionJSON.network_list.push(networks[key]);
+			this.network_list.push(partition.network_list[key]);
 		}
 };
 
