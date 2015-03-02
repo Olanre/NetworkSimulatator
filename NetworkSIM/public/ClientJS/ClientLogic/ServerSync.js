@@ -3,13 +3,12 @@
  */
 window.setInterval(function(){
 	SyncWithServer();
-	}, 2000);
+}, 2000);
 
 /**
  * sends the event queue to the server
  */
 function SyncWithServer(){
-	console.log("SSSS");
 	var route = '/getSync';
 	var event_data = '';
 	
@@ -20,7 +19,7 @@ function SyncWithServer(){
 	else{
 		var event_data = JSON.stringify(local_events);
 	}	
-	sendEventsToServer(route, event_data, render);
+	sendEventsToServer(route, event_data, getApplicationFromServer);
 }
 
 function sendEventsToServer(route, event_data, callback){
@@ -38,6 +37,7 @@ function sendEventsToServer(route, event_data, callback){
         	//resets the event queue to empty
         	resetEventQueue();
         	var parsedObject = JSON.parse(request.responseText);
+        	//calls the callback function on the object returned from the server
             callback(parsedObject);
         }
     }; 
@@ -49,23 +49,21 @@ function sendEventsToServer(route, event_data, callback){
  * Callback function for receiving a new simulation object from the server
  * Renders the simulation object
  */
-function render(new_data){
-	var old_state = get_local_appstate();
-	if(new_data !== null && new_data.appstate !== null){
-		if( JSON.stringify(old_state) === JSON.stringify(new_data) ){
-			//overwrite the app state with the old state as they are the same
-			//actually, could we just leave everything as is?
-			overWriteAppState(old_state);
-		}else{
-			//otherwise if the old and new states are not the same
-			//update the old state with the new state
-			overWriteAppState(new_data);
-			//update all of the views.
-			//updateAllViews(400);
+function getApplicationFromServer(new_application){
+	
+	//get the previous simulation object from storage
+	var old_application = get_local_application();
+	if(new_application !== null && new_application !== null){
+		if( JSON.stringify(old_application) === JSON.stringify(new_application) ){
 		}
-		
-	}else{
-		//if recieved an empty response
-		alert('Something went wrong. Please try again');
+		else{
+			store_local_application(new_application);
+			//SHOULD UPDATE ALL OF THE VIEWS
+		}
 	}
+	else{
+		//if recieved an empty response
+		console.log('ERROR: Retrieved null application object from server');
+	}
+	console.log(new_application);
 }

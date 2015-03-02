@@ -86,7 +86,6 @@ app.post("/getSync", function(req, res) {
 							});
 						}else{
 							console.log("Send newstate");
-							//console.log(data);
 							res.send(data);
 						}
 					});

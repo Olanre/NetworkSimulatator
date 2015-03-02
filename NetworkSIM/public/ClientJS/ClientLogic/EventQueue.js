@@ -6,12 +6,6 @@ function newEventQueue(){
 	return queue;
 }
 
-/**
- * Gets the event queue out of local storage
- */
-function get_local_events(){
-	return JSON.parse(getFromStorage('localevents'));
-}
 
 /**
  * Adds an event to the event queue

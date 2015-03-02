@@ -24,3 +24,21 @@ function clearStorage(){
     localStorage.clear();
     sessionStorage.clear();
 }
+
+function get_local_application(){
+	return JSON.parse(getfromStorage('application'));
+}
+
+/**
+ * overwrites the previous application with the new application
+ */
+function store_local_application(new_application){
+	putinStorage( 'application', JSON.stringify(new_application));
+}
+
+/**
+ * Gets the event queue out of local storage
+ */
+function get_local_events(){
+	return JSON.parse(getFromStorage('localevents'));
+}

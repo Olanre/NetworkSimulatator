@@ -186,9 +186,9 @@ exports.getNewState = function(token, callback){
 					
 				});
 			 }); 
-		 }else{
-			 callback(null);
-					
+		 }
+		 else{
+			 callback(null);		
 		 }
 	 });
 

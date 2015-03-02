@@ -55,9 +55,6 @@ window.setInterval(function(){
 
 
 /**
- * DIDNT COPY OVER
- * 
- * 
  * function overwrites the "appstate" array above with new data.
  * The "new_state" object will be an "appstate" as outlined in the JSON API Calls document"
  */
@@ -2707,4 +2704,4 @@ function updateAppState(){
 	appstate.application = get_local_application();
 	putinStorage( 'appstate', JSON.stringify(appstate) );
 }
-*/ 
+

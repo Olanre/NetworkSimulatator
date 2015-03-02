@@ -73,11 +73,11 @@ var simulationSchema = mongoose.Schema({
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
-	});
+});
 
 
-	//SIMULATION COMPLETE
-	var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
+//SIMULATION COMPLETE
+var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //STATE - storing logs as a string
  var stateSchema = mongoose.Schema({
