@@ -13,8 +13,8 @@ var State = mongoose.model('State', stateSchema, ' newStateSchema');
 	
 //State building block
 var stateObject = mongoose.Schema({
-   simulation : String,
-   timeStamp : String,
+   simulation : Sim,
+   timeStamp : Date,
    devices : [User],
 });
 
