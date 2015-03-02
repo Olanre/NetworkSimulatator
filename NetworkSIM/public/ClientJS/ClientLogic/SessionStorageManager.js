@@ -29,6 +29,10 @@ function get_local_application(){
 	return JSON.parse(getfromStorage('application'));
 }
 
+function get_token(){
+	return JSON.parse(getFromStorage('token'))
+}
+
 /**
  * overwrites the previous application with the new application
  */
