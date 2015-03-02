@@ -126,9 +126,7 @@ function getDevices(){
 function addPartition(partition){
 		
 		this.partition_list.push(partition);
-
-		partitonJSON = newPartition.partitionJSON; 
-		this.simulationJSON.partition_list.push(partitionJSON);
+		this.simulationJSON.partition_list.push(partition.partitionJSON);
 } 
 	
 

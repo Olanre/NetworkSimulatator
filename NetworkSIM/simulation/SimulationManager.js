@@ -204,14 +204,34 @@ function authToken(token, callback){
 		
 }
 
-function createSimulation(simulationJSON) {
+function createSimulation(body) {
+
 	var device = Device.getTemplate();
 	var d = new Date();
-	var simulation = loadSimulationFromJSON(simulationJSON);
-	simulationList[simulationJSON.simulation_name]=simulationJSON;
+	var map=body.config_map;
+	var simulation=Simulation.createNewSimulation(body.name);
+	var createdPartition,createdNetwork,createdDevice;
+
+	for(partition in map){
+
+		createdPartition=Partition.createNewPartition(partition,body.name);
+		simulation.addPartition(createdPartition);
+
+		for(network in map[partition]){
+
+			createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
+			createdPartition.addNetwork(createdNetwork);
+
+			for(device in map[partition][network]){
+
+					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),body.name);
+					createdNetwork.addDevice(createdDevice);
+
+			}
+		}
+	}
 
 	// Add database stuff
-
 
 
 	setTimeout(function() {
@@ -242,32 +262,33 @@ function createSimulation(simulationJSON) {
 		
 	}, 3000 );
 	
-	
+	return simulation;
 }	
 
 
-function createDevice(deviceJSON, simulationName) {
+function createDevice(body) {
 
-	var sim = '';
-	for(var i = 0; i < simulationList.length; i ++){
-		if(simulationList[i].simulationJSON.simulation_name == simulation){
-			sim=simulationList[i];
-		}
-	}
-
-	var device=Device.loadDeviceFromJSON(deviceJSON);
-	sim.addDevice(device);
+	var simulation=Util.getSimulationByName(body.simulation_name,simulationList);
+	var device= Device.createNewDevice(body.device_name,tokenManager.generateToken());
+	simulation.addDevice(device);
 
 	//Add database calls
-
+	return simulation;
 }
 
 
-function createNetwork(networkJSON, simulationName){
+function createNetwork(body){
 
-	var networkName = networkObject.networkName;
-	var partitionName=networkObject.partition_name;
-	admin.addNetwork(networkName, partitionName,  'Wifi', simulation);
+	var simulation=Util.getSimulationByName(body.simulation_name,simulationList);
+	var partition=Util.getPartitionByName(body.partition_name,simulation.partition_list);
+	var network= Network.createNewNetwork(body.network_name);
+
+	if(partition!=-1){
+		partition.addNetwork(network);
+	}
+	else{
+		simulation.addNetwork(network);
+	}
 
 
 };
