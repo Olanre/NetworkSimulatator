@@ -1,4 +1,11 @@
 /**
+ * syncs with the server every 2 seconds
+ */
+window.setInterval(function(){
+	SyncWithServer();
+	}, 2000);
+
+/**
  * sends the event queue to the server
  */
 function SyncWithServer(){
@@ -36,4 +43,29 @@ function sendEventsToServer(route, event_data, callback){
     }; 
     request.open('POST', route);
     request.send(event_data);
+}
+
+/**
+ * Callback function for receiving a new simulation object from the server
+ * Renders the simulation object
+ */
+function render(new_data){
+	var old_state = get_local_appstate();
+	if(new_data !== null && new_data.appstate !== null){
+		if( JSON.stringify(old_state) === JSON.stringify(new_data) ){
+			//overwrite the app state with the old state as they are the same
+			//actually, could we just leave everything as is?
+			overWriteAppState(old_state);
+		}else{
+			//otherwise if the old and new states are not the same
+			//update the old state with the new state
+			overWriteAppState(new_data);
+			//update all of the views.
+			//updateAllViews(400);
+		}
+		
+	}else{
+		//if recieved an empty response
+		alert('Something went wrong. Please try again');
+	}
 }

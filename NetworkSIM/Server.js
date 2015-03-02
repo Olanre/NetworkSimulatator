@@ -199,5 +199,11 @@ app.get('/js/ClientManager.js', function(request,response){
 app.get('/js/ServerSync.js', function(request,response){
 	response.sendFile("/public/ClientJS/ClientLogic/ServerSync.js",{"root": __dirname});
 });
+app.get('/js/EventQueue.js', function(request,response){
+	response.sendFile("/public/ClientJS/ClientLogic/EventQueue.js",{"root": __dirname});
+});
+app.get('/js/SessionStorageManager.js', function(request,response){
+	response.sendFile("/public/ClientJS/ClientLogic/SessionStorageManager.js",{"root": __dirname});
+});
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/

@@ -2,7 +2,7 @@
  * getfromStorage gets an item from the local storage on the device by id
  * @param id: the key of the element to retrieve from local storage
  */
-function getfromStorage(id){
+function getFromStorage(id){
 	return sessionStorage.getItem(id);
 }
 

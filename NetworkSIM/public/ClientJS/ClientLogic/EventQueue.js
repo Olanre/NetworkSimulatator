@@ -7,6 +7,13 @@ function newEventQueue(){
 }
 
 /**
+ * Gets the event queue out of local storage
+ */
+function get_local_events(){
+	return JSON.parse(getFromStorage('localevents'));
+}
+
+/**
  * Adds an event to the event queue
  */
 function addToEventQueue(route, event_data, time_stamp){
