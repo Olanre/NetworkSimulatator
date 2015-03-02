@@ -41,5 +41,5 @@ function addDevice2FreeList( device_name){
 	var timestamp = new Date();
 	//add to the event queue to sync with server
 	addToEventQueue(url, params, timestamp);
-	
 }
+

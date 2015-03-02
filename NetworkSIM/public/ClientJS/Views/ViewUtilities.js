@@ -108,3 +108,19 @@ function getContainer(){
 	var container = document.getElementById("content");
 	return container;
 }
+
+/** Function to get the great grand parent of the starting node
+ * @param, start_point, the starting point node
+ */
+function getGreatGrandParentElement(start_point){
+	return start_point.parentNode.parentNode.parentNode;
+	
+}
+
+/** function to get the grand parent of a starting node
+ * @param, start_point, the starting point node
+ */
+function getGrandParentElement(start_point){
+	return start_point.parentNode.parentNode;
+	
+}
