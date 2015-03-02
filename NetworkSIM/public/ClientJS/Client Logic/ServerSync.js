@@ -21,19 +21,17 @@ function sendEventsToServer(route, event_data, callback){
     var request = new XMLHttpRequest();
     if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 		request=new XMLHttpRequest();
-	}else{// code for IE6, IE5
+	}
+    else{// code for IE6, IE5
     	request=new ActiveXObject("Microsoft.XMLHTTP");
     }
-    request.onreadystatechange = function()
-    {
-        if (request.readyState == 4 && request.status == 200)
-        {
+    
+    request.onreadystatechange = function(){
+        if (request.readyState == 4 && request.status == 200){
+        	//resets the event queue to empty
         	resetEventQueue();
-        	var obj = JSON.parse(request.responseText);
-        	console.log(obj);
-            callback(obj); // Another callback here
-        }else{
-        	
+        	var parsedObject = JSON.parse(request.responseText);
+            callback(parsedObject);
         }
     }; 
     request.open('POST', route);

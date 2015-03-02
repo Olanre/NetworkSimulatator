@@ -2,7 +2,7 @@ function newEventQueue(){
 	var queue = {};
 	queue.token = '';
 	queue.eventQueue = [];
-	putinStorage( 'localevents', JSON.stringify(queue) );
+	putinStorage( 'localEvents', JSON.stringify(queue) );
 	return queue;
 }
 
@@ -15,7 +15,7 @@ function addToEventQueue(route, event_data, time_stamp){
 		var events = local_events.eventQueue;
 	}
 	else{
-		local_events= newEventQueue();
+		local_events = newEventQueue();
 	}
 	//creates the query to the server
 	var query = {'route': route, 'event_data' : event_data, 'time_stamp': time_stamp}
@@ -25,5 +25,19 @@ function addToEventQueue(route, event_data, time_stamp){
 	local_events.token = getToken();  
 	local_events.simulation = getSimulationName();
 	
-	putinStorage( 'localevents', JSON.stringify(local_events) );
+	putinStorage( 'localEvents', JSON.stringify(local_events) );
+}
+
+/**
+ * Clears the event queue
+ */
+function clearEventQueue(){
+	local_events = get_local_events();
+	if(local_events !== null){
+		local_events.eventQueue = [];
+		putinStorage( 'localEvents', JSON.stringify(local_events) );
+	}
+	else{
+		local_events = newEventQueue();
+	}
 }
