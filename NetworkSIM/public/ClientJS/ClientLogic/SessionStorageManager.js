@@ -25,8 +25,8 @@ function clearStorage(){
     sessionStorage.clear();
 }
 
-function get_local_application(){
-	return JSON.parse(getfromStorage('application'));
+function get_local_simulation(){
+	return JSON.parse(getfromStorage('simulation'));
 }
 
 function get_token(){
@@ -34,10 +34,10 @@ function get_token(){
 }
 
 /**
- * overwrites the previous application with the new application
+ * overwrites the previous simulation with the new simulation
  */
-function store_local_application(new_application){
-	putinStorage( 'application', JSON.stringify(new_application));
+function store_local_simulation(new_simulation){
+	putinStorage( 'simulation', JSON.stringify(new_simulation));
 }
 
 /**

@@ -19,7 +19,7 @@ function SyncWithServer(){
 	else{
 		var event_data = JSON.stringify(local_events);
 	}	
-	sendEventsToServer(route, event_data, getApplicationFromServer);
+	sendEventsToServer(route, event_data, getsimulationFromServer);
 }
 
 function sendEventsToServer(route, event_data, callback){
@@ -49,21 +49,21 @@ function sendEventsToServer(route, event_data, callback){
  * Callback function for receiving a new simulation object from the server
  * Renders the simulation object
  */
-function getApplicationFromServer(new_application){
+function getsimulationFromServer(new_simulation){
 	
 	//get the previous simulation object from storage
-	var old_application = get_local_application();
-	if(new_application !== null && new_application !== null){
-		if( JSON.stringify(old_application) === JSON.stringify(new_application) ){
+	var old_simulation = get_local_simulation();
+	if(new_simulation !== null && new_simulation !== null){
+		if( JSON.stringify(old_simulation) === JSON.stringify(new_simulation) ){
 		}
 		else{
-			store_local_application(new_application);
+			store_local_simulation(new_simulation);
 			//SHOULD UPDATE ALL OF THE VIEWS
 		}
 	}
 	else{
 		//if recieved an empty response
-		console.log('ERROR: Retrieved null application object from server');
+		console.log('ERROR: Retrieved null simulation object from server');
 	}
-	console.log(new_application);
+	console.log(new_simulation);
 }

@@ -24,7 +24,7 @@ function addToEventQueue(route, event_data, time_stamp){
 
 	local_events.eventQueue = events;
 	local_events.token = getToken();  
-	local_events.simulation = getSimulationName();
+	local_events.application = getApplicationName();
 	
 	putinStorage( 'localEvents', JSON.stringify(local_events) );
 }
