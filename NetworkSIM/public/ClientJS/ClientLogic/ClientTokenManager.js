@@ -21,20 +21,16 @@ function attachToken(new_token){
 }
 
 /**
- * authenticate verifies that a token code input by a user is valid
+ *Gets whether the user has been verified from the local storage
  */
-function authenticate(){
-	//gets the token from the html
-	var input = document.getElementsByName('tokenvalue')[0];
-	var token = input.value;
-	//sends the token to be verified
-	authToken(token);
+function getVerified(){
+	var local_device = get_local_device();
+	return local_device.verified;
 }
 
 /**
  * validate_user verifies whether the token input by the user is valid or not
- * @param data is the data received from the server
- * 
+ *
  * NOTE: if the token is invalid this should be displayed on the page rather than
  * in an alert
  */
@@ -50,4 +46,16 @@ function validate_user(data){
 	else{
 		alert('Token invalid \nPlease enter the correct token for this simulation')
 	}
+}
+
+/**
+ * ONLY FOR REGISTRATION PAGE
+ * authenticate gets the token from the token input field on the registration page
+ */
+function authenticate(){
+	//gets the token from the html
+	var input = document.getElementsByName('tokenvalue')[0];
+	var token = input.value;
+	//sends the token to be verified
+	authToken(token);
 }
