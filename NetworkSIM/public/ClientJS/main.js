@@ -756,7 +756,6 @@ function authenticate(){
 	var token = input.value;
 	//sends the token to be verified
 	authToken(token);
-	
 }
 
 /**
@@ -1110,7 +1109,6 @@ function generateActivity(url, body, timestamp){
 
 /**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
- * from stackoverflow
  * @param obj1
  * @param obj2
  * @returns obj1 based on obj1 and obj2

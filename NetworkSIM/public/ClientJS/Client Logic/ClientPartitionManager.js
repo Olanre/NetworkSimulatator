@@ -24,3 +24,21 @@ function dividePartition(network, partition){
 		console.log("Local simulation session not found")
 	}
 }
+
+function mergePartition(partition_a, partition_b){
+	var local_session = get_local_session();
+	delete local_session.config_map[partition_b];
+	local_session.config_map[partition_a] = merge_objects(local_session.config_map[partition_a],local_session.config_map[partition_b]);
+	console.log(local_session.config_map[partition_a]);
+	putinStorage( 'session', JSON.stringify(local_session) );
+	
+	var params = { 
+			'config_map' : local_session.config_map,
+			'partition_a': partition_a, 
+			'partition_b' : partition_b,
+			'simulation_name': local_session.simulation_name,
+			};
+	var url = '/merge/Partitions';
+	var timestamp = new Date();
+	addToEventQueue(url, params, timestamp);
+}

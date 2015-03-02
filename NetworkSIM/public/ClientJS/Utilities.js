@@ -58,6 +58,28 @@ function generateUniqueId(){
 	var hash = crypto.createHash('sha1').update(current_date + random).digest('hex');
 	return hash;
 }
+
+/**
+ * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+ */
+function merge_objects(obj1,obj2){
+    for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
+    return obj1;
+}
+
+/**
+ * removeItem removes an item from an array
+ */
+function removeItem(array, item){
+    for(var i in array){
+        if(array[i]==item){
+            array.splice(i,1);
+            break;
+            }
+    }
+    return array;
+}
+
 //delete me after test
 module.exports.generateUniqueId=generateUniqueId;
 module.exports.buildPartition=buildPartition;
