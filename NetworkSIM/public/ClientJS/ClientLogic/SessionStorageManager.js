@@ -24,3 +24,21 @@ function clearStorage(){
     localStorage.clear();
     sessionStorage.clear();
 }
+
+function get_local_simulation(){
+	return JSON.parse(getfromStorage('simulation'));
+}
+
+/**
+ * overwrites the previous simulation with the new simulation
+ */
+function store_local_simulation(new_simulation){
+	putinStorage( 'simulation', JSON.stringify(new_simulation));
+}
+
+/**
+ * Gets the event queue out of local storage
+ */
+function get_local_events(){
+	return JSON.parse(getFromStorage('localevents'));
+}
