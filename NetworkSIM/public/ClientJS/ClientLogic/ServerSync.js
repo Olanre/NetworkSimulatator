@@ -52,24 +52,12 @@ function sendEventsToServer(route, event_data, callback){
  * Callback function for receiving a new appState object (all information we need from the server)
  */
 function getInformationFromServer(appState){
-	store_local_simulation(appState.simulation);
-	store_local_device(appState.device);
-	store_local_simulation_names(appState.simulation_names);
-	
-	
-	//get the previous simulation object from storage
-	var old_simulation = get_local_simulation();
-	if(new_simulation !== null && new_simulation !== null){
-		if( JSON.stringify(old_simulation) === JSON.stringify(new_simulation) ){
-		}
-		else{
-			store_local_simulation(new_simulation);
-			//SHOULD UPDATE ALL OF THE VIEWS
-		}
+	if(appState !== null){
+		store_local_simulation(appState.simulation);
+		store_local_device(appState.device);
+		store_local_simulation_names(appState.simulation_names);
 	}
 	else{
-		//if recieved an empty response
-		console.log('ERROR: Retrieved null simulation object from server');
+		console.log('recieved null object from server');
 	}
-	console.log(new_simulation);
 }
