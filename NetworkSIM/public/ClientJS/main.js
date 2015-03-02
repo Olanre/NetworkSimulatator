@@ -2704,4 +2704,4 @@ function updateAppState(){
 	appstate.application = get_local_application();
 	putinStorage( 'appstate', JSON.stringify(appstate) );
 }
-*/ 
+

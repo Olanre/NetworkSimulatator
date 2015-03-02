@@ -58,6 +58,7 @@ function getSimulationFromServer(new_simulation){
 		}
 		else{
 			store_local_simulation(new_simulation);
+			//SHOULD UPDATE ALL OF THE VIEWS
 		}
 	}
 	else{
