@@ -12,7 +12,7 @@
 	</head>
 	
 
-<script type = 'create_network_template' id = "template1">
+<script id = "template1">
 <div class = 'createNetwork'>
 	<h1>Create a Network</h1>
 </div>
@@ -33,7 +33,7 @@
 
 </div>
 </script>
-<script type = 'partition-template' id = 'template2'>
+<script id = 'template2'>
 <table  border='1' >
 	<tr >  
 		<td> <input type = 'text' class = 'partition'  placeholder = 'Enter Partition Name' /> 
@@ -59,7 +59,7 @@
 <br>
 <br>
 </script>
-<script type = 'network-template' id = 'template3'>
+<script id = 'template3'>
 			<tr> 
 				<td > <input type = 'text' class = 'network' placeholder = 'Enter Network Name' /> 
 					<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
@@ -71,12 +71,12 @@
 				</td>
 			</tr>		
 </script>
-<script type = 'device-template' id = 'template4'>
+<script id = 'template4'>
 	<input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
 	<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')" > Delete</button>
 
 </script>
-<script type = 'AdminSideBar-template'  id ="template5"   >
+<script id ="template5"   >
 	<div class="col-sm-3 col-md-2 sidebar">					
 		<ul class="nav nav-sidebar">						
 			<li class="active">							
@@ -101,7 +101,7 @@
 	</div>				
 </script>
 
-<script type = 'ApplicationView' ID ='template6'>
+<script id ='template6'>
 		<nav class="navbar navbar-inverse navbar-fixed-top">	 			
 			<div class="container-fluid">	 				
 				<div class="navbar-header">	 					
@@ -141,19 +141,10 @@
 			</div>		
 		</nav>
 </script>
-<script type = 'ApplicationView-template' id = 'template7'>
+<script id = 'template7'>
 	<div class = "application">
 	
 		<table>
-			<tr>
-				<td> 
-					<div class = "images" onclick = 'updateLocalCount()'> 
-						<img id = 'app_img' src = "/img/img.png">
-					</div>
-
-				</td>
-				
-			</tr>
 			<tr>
 				<td> 
 					<div class = "filters">
@@ -183,7 +174,8 @@
 						<input placeholder = "Enter your response" type = "text" id = "chatline" size = "20" />
 					</td>
 					<td>
-						<div class="btn btn-primary" onclick="process('chatline', 'chatbox')"> Submit </div>
+						<div class="btn btn-primary" onclick="process('chatline', 'chatbox')"> Submit 
+						</div>
 					</td>
 					
 				</tr>
@@ -191,32 +183,34 @@
 		</div>
 	</div>
 </script>
-<script type= 'AttachToken-Template' id = 'template8'>
+<script id = 'template8'>
 	<div id = 'registersimulation'>
-	<h2> Register for Simulation</h2>
-</div>
-<div class = 'container'>
-<table>
-	<tr>
-		<td> 
-			<span class = 'text'> A token would have been sent to your email or phone </span>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type = 'text' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class = 'btn btn-primary' onclick = 'authenticate()'> Enter Session</div>
-		</td>
-	</tr>
-</table>
-</div>
+		<h2> Register for Simulation</h2>
+	</div>
+	<div class = 'container'>
+		<table>
+			<tr>
+				<td> 
+					<span class = 'text'> A token would have been sent to your email or phone 
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type = 'text' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class = 'btn btn-primary' onclick = 'authenticate()'> Enter Session
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
 </script>
 
-<script type = 'DeivceSideBar' id = 'template9'>
+<script id = 'template9'>
 	<div class="col-sm-3 col-md-2 sidebar">					
 		<ul class="nav nav-sidebar">						
 			<li>						
@@ -238,7 +232,7 @@
 	</div>		
 </script>
 
-<script type='createSimulation-template' id = 'template10'>
+<script id = 'template10'>
 <h2> 
 		Create a Simulation
 	</h2>
@@ -298,7 +292,7 @@
 	</div>
 </script>
 
-<script type='DeviceViewTemplate' id = 'template11'>
+<script id = 'template11'>
 
 	<div>
 		<h2> Hello  {{current_device_name}} in {{current_simulation}} </h2>
@@ -307,23 +301,11 @@
 	</div>
 	<div class = 'container'>
 		<div class = 'appinterface'> appView() </div>
-		<div class = 'counters'>
-			 <table border='1'>
-				
-				<tr> 
-					<td> <span class = 'text'> Local Counter </span> </td> 
-					<td id = 'local_count'> " {{localcount}}</td>
-				</tr>
-				<tr>
-					<td>  <span class = 'text'> Global Counter </span> </td>
-					<td id = 'global_count'> {{globalcount}} </td> 
-				</tr>
-			 </table>
 		</div>
 	</div>
 </script>
 
-<script type = "AccountTemplate" id = "template12" >
+<script id = "template12" >
 	<div>
 		<h2> Hello {{current_device_name}} in {{current_simulation}} </h2>
 	</div> 
@@ -356,7 +338,7 @@
 	</div>
 </script>
 
-<script type = "DeviceListTemplate" id = "template12">
+<script id = "template12">
 
 	<div class = 'container'>
 		<table>
@@ -373,15 +355,15 @@
 
 
 
-<script type = "StatesLiseTemplate" id = "template13">
+<script id = "template13">
 	<table>
 		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView(&quot;" + states[i].timestamp + "&quot;) '> " +
-				states[i].timestamp + " </td> <td> Revert </td> </tr>
+				states[i].timestamp + " </td> <td> Revert </td> </tr>"
 	</table>
 	}
 </script>
 
-<script type = "AdminDeviceListTemplate" id = "template14">
+<script id = "template14">
 	<div class = 'container'>
 		<table>
 			{{#devices}}
@@ -395,11 +377,11 @@
 		
 </script>
 
-<script type = "SimulationLogTemplate" id = "template15">
-	<div class = 'logs'> {{logs}} </div>"
+<script id = "template15">
+	<div class = 'logs'> {{logs}} </div>
 </script>
 
-<script type = "SimulationListTemplate" id = "template16" >
+<script id = "template16" >
 
 </script>
 

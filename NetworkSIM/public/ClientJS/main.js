@@ -1330,7 +1330,6 @@ function getContainer(){
 	var a = document.getElementById("content");
 	//console.log(a);
 	return a;
-	
 }
 
 /**
@@ -1554,7 +1553,6 @@ function appDefaultView(){
  */
 function appView(){
 	return document.getElementById('template7').innerHTML;
-	
 }
 
 
@@ -1872,7 +1870,7 @@ function SimulationListTemplate(simulations){
 	}	
 	str +=  " </table> 	</div>";
 	return str;
-}  /* ** MOVED TO HTMLTemplates.js MODULE UNDER HTML TEMPLATE FOLDER ** */
+}
 
 /** 
  * Function to render the new state based on new data provided by out server
