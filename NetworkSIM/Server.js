@@ -204,5 +204,8 @@ app.get('/js/EventQueue.js', function(request,response){
 app.get('/js/SessionStorageManager.js', function(request,response){
 	response.sendFile("/public/ClientJS/ClientLogic/SessionStorageManager.js",{"root": __dirname});
 });
+app.get('/js/ClientDeviceManager.js', function(request,response){
+	response.sendFile("/public/ClientJS/ClientLogic/ClientDeviceManager.js",{"root": __dirname});
+});
 
 //exports.globalCount = globalCount;  // use globalCount in other modules under routes/

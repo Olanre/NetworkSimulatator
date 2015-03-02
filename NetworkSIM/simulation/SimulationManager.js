@@ -141,11 +141,9 @@ exports.startTemplate = function(callback) {
 		}
 		var appstate = {};
 		appstate.device= Device.getTemplate();
-		console.log(Device.getTemplate());
 		appstate.current_simulation_session = Simulation.getTemplate();
 		appstate.states = stateTemplate.getStateTemplate();
 		appstate.application = App;
-		//console.log(appstate);
 		callback(appstate);
 	});
 	

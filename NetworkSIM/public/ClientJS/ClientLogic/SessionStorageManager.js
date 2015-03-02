@@ -1,5 +1,5 @@
 /**
- * getfromStorage gets an item from the local storage on the device by id
+ * getFromStorage gets an item from the local storage on the device by id
  * @param id: the key of the element to retrieve from local storage
  */
 function getFromStorage(id){
@@ -34,21 +34,21 @@ function clearStorage(){
  * get the device for this user from the local storage
  */
 function get_local_device(){
-	return JSON.parse(getfromStorage('device'));
+	return JSON.parse(getFromStorage('device'));
 }
 
 /** 
  * Gets the list of all the names of simulations from local storage
  */
 function get_local_simulation_names(){
-	return JSON.parse(getfromStorage('simulation_names'));
+	return JSON.parse(getFromStorage('simulation_names'));
 }
 
 /**
  * gets the event queue from session storage
  */
 function get_local_events(){
-	return JSON.parse(getfromStorage('localevents'));
+	return JSON.parse(getFromStorage('localevents'));
 }
 
 /**********************************************************
