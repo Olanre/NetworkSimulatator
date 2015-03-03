@@ -1,4 +1,15 @@
 /**
+ * Renders the start page
+ */
+window.onload = function(){
+	defaultsideBarView();
+	loadStyleSheet('../css/bootstrap.min.css');
+	loadStyleSheet('../css/dashboard.css');
+	
+	loadAppContent();	
+}
+
+/**
  * loadAppContent loads the content from a sync to the server
  */
 function loadAppContent(){
