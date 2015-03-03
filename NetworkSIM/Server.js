@@ -31,11 +31,7 @@ var port = 3332;  // must be on port 3332 on excalibur for the grader
 var server = app.listen(port, function () { 
 
 	var Application = {};
-	//var item =  { 'name' : body.name, 'num_networks': body.num_networks, 'num_devices': body.num_devices};
-	//var Sim = new SimulationTemplate.Simulation('Hallo');
-	//console.log(Sim);
-	//Sim.addDevice('Name');
-	//console.log(Sim);
+
 	
 Database.getApp(function(data){
 	if(data == null){
@@ -51,6 +47,10 @@ Database.getApp(function(data){
 	});
   var host = server.address().address;
   console.log('Server listening at http://%s:%s', host, port);
+
+  //Here is where we should insert code for loading Simulations from the database
+  //We must add them to SimulationManager.simulationList
+
 });
 
 
@@ -72,35 +72,27 @@ app.post("/getSync", function(req, res) {
 	req.on("end", function() {
 		var obj = JSON.parse(data);
 		var token = obj.token;
-		var eventqueue = obj.eventQueue;
-		var simulation = obj.simulation;
+		var events = obj.event_data;
+		var simulation= obj.simulation_name;
+		
 		SimulationManager.authToken(token, function(obj){
 			//for now allow empty tokens
 			if(obj.Response == 'Success'){
-				console.log("successful authenication" );
+				console.log("Successful authenication" );
+				SimulationManager.ClientRequest(token, events, simulation, function(){
+
+				res.send(SimulationManager.getAppStateForDevice(token,simulation));
+			}
+			else{
+				console.log("Failed authenication" );
 				SimulationManager.ClientRequest(token, eventqueue, simulation, function(){
-					SimulationManager.getNewState(token, function(data){
-						if(data == null){
-							SimulationManager.startTemplate(function(data){
-								console.log("Send blank state");
-								res.send(data);
-							});
-						}else{
-							console.log("Send newstate");
-							res.send(data);
-						}
-					});
+					var state={};
+					state.simulation=undefined;
+					state.device=undefined;
+					state.simulation_names=SimulationManager.getSimulationNames();
 					
-				});
-			}else{
-				console.log("failed authenication" );
-				SimulationManager.ClientRequest(token, eventqueue, simulation, function(){
-					console.log("Done");
-					SimulationManager.startTemplate(function(data){
-						//console.log(data);
-						console.log("Send blank state");
-						res.send(data);
-					});
+					res.send(state);
+					
 				});
 			}
 			

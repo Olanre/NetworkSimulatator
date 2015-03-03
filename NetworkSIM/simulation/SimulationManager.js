@@ -153,49 +153,35 @@ exports.startTemplate = function(callback) {
 };
 
 
-exports.getNewState = function(token, callback){
-	var Device ;
-	var Simulation;
-	var Application;
-	
-	//console.log(token);
-	 Database.getUserByToken(token, function(User){
-		 Device = User;
-		 //console.log(User);
-		 if(User !== null){
-			 var sim_name = Device.current_simulation;
-			 Database.getSimByName(sim_name, function(Sim){
-				 Simulation = Sim;
-				Database.getApp(function(App){
-					var appstate = {};
-					//App.simulation_list = JSON.parse(App.simulation_list);
-					for(var i = 0; i < App.simulation_list.length; i++){
-						App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
-					}
-					if(App !== null && Device !== null && Simulation !== null){
-						Application = App;
-						appstate.simulation_names = Application;
-						Simulation.config_map = JSON.stringify(Simulation.config_map);
-						Simulation.config_map = JSON.parse(Simulation.config_map);
-						//console.log(Simulation.config_map);
-						appstate.simulation = Simulation;
-						appstate.device = Device;
-						callback(appstate);
-					}else{
-						callback(null);
-					}
-					
-				});
-			 }); 
-		 }
-		 else{
-			 callback(null);		
-		 }
-	 });
+exports.getAppStateForDevice = function(token,simulation_name){
 
-	
+	var simulation,device,deviceList;
+
+	simulation=Util.getSimulationByName(simulation_name,simulationList);
+	deviceList=simulation.getDevices();
+
+	for(index in deviceList){
+		if(deviceList[index].token==token){
+			device=deviceList[index];
+			break;
+		}
+	}
+
+	var state;
+	state.simulation=simulation.simulationJSON;
+	state.device=device.deviceJSON;
+	state.simulation_names=module.exports.getSimulationNames();
+
+	return state;
 }
 
+module.exports.getSimulationNames=function(){
+	var names_list=[];
+	for(index in simulationList){
+		names_list.push(simulationList[index].simulation_name);
+	}
+	return names_list;
+}
 function authToken(token, callback){
 		
 	TokenManager.authenticateToken(token, function(obj){
@@ -488,3 +474,4 @@ exports.storeSimulationInDatabase=function(simulation){
 };
 //module.exports.getNewState = getNewState;
 module.exports.simulationList=simulationList;
+module.exports.createSimulation=createSimulation;

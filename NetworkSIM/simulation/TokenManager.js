@@ -1,31 +1,5 @@
-/*****
-The purpose of this class is to manage token data. When
-created, it creates its own token database.
-@author Emily, Noah
-******/
-
-
-/****
- * Creates a new TokenDatabase object too!
- ***/
 var crypto = require('crypto');
 var Database = require('../Database/mongooseConnect.js');
-/**
-function TokenManager(){
-	var TokenDatabase=require("./TokenDatabase.js");
-};
-*/
-/**
-Method to join a simulation. It will throw an error message string if the token is invalid.
-**
-function joinSimulation(token,browserIdentifier){
-	
-	var sim= TokenDatabase.findSimulation(token);
-	TokenDatabase.useToken(browserIdentifier,token);
-	return sim;
-
-};
-*/
 
 /**
  * Authenticates a token, returns a boolean value based on whether or not the device is valid.
