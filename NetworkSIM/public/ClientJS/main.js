@@ -47,42 +47,4 @@ window.onload = function(){
 	//}, 2000);
 
 
-/**
- * function overwrites the "appstate" array above with new data.
- * The "new_state" object will be an "appstate" as outlined in the JSON API Calls document"
- */
-function overWriteAppState(new_state){
-	//replaces the current appstate with new_state
-	var appstate = new_state;  
-	//updates the user with the user of the new_state.
-	var local_device = appstate.device;
-	//local session is the current session for this device, stored in local storage
-	var local_session = appstate.current_simulation_session;
-	//the states of the simulation object
-	var states = appstate.states;
-	
-	
-	//if the current session has a configuration map
-	//WHEN WOULD THIS NOT HAPPEN? I guess on initialization?
-	if( local_session.config_map !== null ){
-		//converts the local_session 
-		//CHANGE THIS VARIABLE NAME TO SOMETHING NOT STRING
-		var String = local_session.config_map.toString();
-		//what are we doing here? If this is a check for something, isn't there a stronger way
-		//to do this? Is this checking if it is a JSON object?
-		if(String.substr(0,1) == '{'){
-			//decodes the local session if it is a JSON object.
-			local_session.config_map = JSON.parse(local_session.config_map);
-		}
-		
-	}
-	//sets the current application on this device to the new state.
-	local_application = appstate.application;
-	//places all of the changes into the local storage of the device
-	putinStorage( 'appstate', JSON.stringify(appstate) );
-	putinStorage('states', JSON.stringify(states) );
-	putinStorage( 'session', JSON.stringify(local_session) );
-	putinStorage( 'device', JSON.stringify(local_device) );
-	putinStorage( 'application', JSON.stringify(local_application) );
-}
 
