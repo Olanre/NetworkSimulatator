@@ -11,8 +11,19 @@ function viewDeviceTemplate(){
 			"<div class = 'container'>" +
 				"<div class = 'appinterface'>" + appView() + "</div>" +
 			"<div class = 'counters'> <table border='1'>" +
+			
+			" <tr> " +
+				"<td> <span class = 'text'> Local Counter </span> </td> " +
+				"<td id = 'local_count'> " + local_device.localcount + "</td>" +
+			" </tr> " +
+			" <tr> " +
+				"<td>  <span class = 'text'> Global Counter </span> </td> " +
+				" <td id = 'global_count'>  " + local_session.globalcount + "</td> " +
+			"</tr> " +
+		" </table> " +
 	"</div> " +
 "</div>";
+	return str;
 	return str;
 	
 }
