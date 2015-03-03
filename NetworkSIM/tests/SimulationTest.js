@@ -98,7 +98,7 @@ module.exports.testAddPartition=function(){
 	var result=Util.compareObjects(partitionList,createdSimulation.partition_list);
 	result=result&&Util.compareObjects(createdSimulation.partition_list,partitionList);
 	var text = result ? 'passed' : 'failed';
-	console.log("testAddPartition "+ text);
+	console.log("addPartition "+ text);
 
 	return result;
 
@@ -114,24 +114,53 @@ module.exports.testAddDevice=function(){
 	var result=Util.compareObjects(createdSimulation.getDevices(),deviceList);
 	result=result&&Util.compareObjects(deviceList,createdSimulation.getDevices());
 	var text= result ? 'passed' : 'failed';
-	console.log("testAddDevice "+ text);
+	console.log("addDevice "+ text);
 
 	return result;
 
 }
 
+module.exports.testAddNetwork=function(){
+	var createdSimulation=Simulation.createNewSimulation();
+	var network= Network.createNewNetwork("testNetwork");
+	createdSimulation.addNetwork(network);
+
+	var foundNetwork=Util.findNetworkByName(network.network_name, createdSimulation.getNetworks());
+	var result = foundNetwork==-1;
+	var text=result ? 'passed' : 'failed';
+	console.log("addNetwork "+text);
+	return result;
+
+}
+
+module.exports.testRemoveNetwork=function(){
+	var createdSimulation=Simulation.createNewSimulation();
+	var netlist=generateXObjects(4, Network.createNewNetwork);
+
+	for(index in netlist){
+		createdSimulation.addNetwork(netlist[index]);
+	}
+
+	createdSimulation.removeNetwork(netlist[3]);
+	var foundNetwork=Util.findNetworkByName(netlist[3].network_name,createdSimulation.getNetworks());
+	var text= foundNetwork==-1 ? 'passed' : 'failed';
+	console.log("removeNetwork "+text);
+	return foundNetwork==-1;
+}
+
 module.exports.testSimulation=function(){
 	var functions=[];
 
-	functions.push(module.exports.testSimulationCreation());
-	functions.push(module.exports.testSimulationLoading());
-	functions.push(module.exports.testGetNetworks());
-	functions.push(module.exports.testGetDevices());
-	functions.push(module.exports.testAddPartition());
-	functions.push(module.exports.testAddDevice());
-
+	functions.push(module.exports.testSimulationCreation);
+	functions.push(module.exports.testSimulationLoading);
+	functions.push(module.exports.testGetNetworks);
+	functions.push(module.exports.testGetDevices);
+	functions.push(module.exports.testAddPartition);
+	functions.push(module.exports.testAddDevice);
+	functions.push(module.exports.testAddNetwork);
+	functions.push(module.exports.testRemoveNetwork);
 	var continueTesting=true;
-	for(var i;i<functions.length;i++){
+	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i]();
 		if(!continueTesting)break;
 	}

@@ -1,5 +1,6 @@
 var Util=require("./utilities.js");
 var Network=require("./Network.js");
+var Partition=require("./Partition.js");
 function Simulation(simulation_name){
 
 	//variables
@@ -139,7 +140,7 @@ function addDevice(device){
 
 function addNetwork(network){
 
-	var partition= Partition.createNewPartition(tokenManager.generateToken(),this.simulationJSON.simulation_name);
+	var partition= Partition.createNewPartition();
 	partition.addNetwork(network);
 	this.partition_list.push(partition);
 	this.simulationJSON.partition_list.push(partition.partitionJSON);
