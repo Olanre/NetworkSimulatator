@@ -21,6 +21,23 @@ function attachToken(new_token){
 }
 
 /**
+ * authToken sends a token to the server to be authenticated
+ * @token: a token code given by the user
+ */
+function authToken(token){
+	//sets the body of the message to the server to be the token
+	var body = {'token': token};
+	params = JSON.stringify(body);
+	//sets the method by which the server handles the call. 
+	var url = "/authenticate/authToken";
+	//adds the event to the event queue
+	updateLocalEventsToken(token);
+	//sends the token to be validated by the server
+	send2Server(url, params, validate_user);
+	
+}
+
+/**
  *Gets whether the user has been verified from the local storage
  */
 function getVerified(){

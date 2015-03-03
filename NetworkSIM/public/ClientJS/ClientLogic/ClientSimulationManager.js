@@ -37,6 +37,40 @@ function deleteSimulation(simulation_name){
 	}
 }
 
+/**
+ * Getter Methods
+ * -----------------
+ */
+
+/**
+ * Function to get a new simulation from the server
+ * 
+ */
+function getSimulation(simulation_name){
+	var param = {
+			'simulation_name': simulation_name,
+			};
+	params = JSON.stringify(param);
+	var url = '/get/Simulation';
+	//sends the request to be validated by the server
+	send2Server(url, params, render);
+}
+
+/**
+ * Function to get the states associates from a simulation 
+ * @param simulation_name
+ */
+function getSimulationState(simulation_name){
+	var param = {
+			'simulation_name': simulation_name,
+			};
+	params = JSON.stringify(param);
+	var url = '/get/States';
+	//sends the request to be validated by the server
+	send2Server(url, params, render);
+}
+
+
 var incr = 0;
 /** Generates the config map from UI elements
  * 

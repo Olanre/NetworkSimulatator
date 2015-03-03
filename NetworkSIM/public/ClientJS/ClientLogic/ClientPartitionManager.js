@@ -7,7 +7,6 @@ function dividePartition(network, partition){
 	var local_session = get_local_session();
 	if(local_session !== null){
 		var params = { 
-				'config_map' : local_session.config_map,
 				'network': network_name, 
 				'partition_name': network_name , 
 				'simulation_name': local_session.simulation_name,
@@ -23,7 +22,6 @@ function dividePartition(network, partition){
 function mergePartition(partition_a, partition_b){
 	var local_session = get_local_session();
 	var params = { 
-			'config_map' : local_session.config_map,
 			'partition_a': partition_a, 
 			'partition_b' : partition_b,
 			'simulation_name': local_session.simulation_name,

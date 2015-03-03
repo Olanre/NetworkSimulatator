@@ -70,8 +70,6 @@ function addDevice2Network( device_name, network_name){
 	//gets the information of this user
 	var local_device = get_local_device();
 	if(local_session !== null || local_device !== null){
-		//gets the configuration of the current simulation
-		var map = local_session.config_map;
 		//gets the partition of the network 
 		var partition_name = getPartition(network_name);
 		//send the information to the eventQueue for syncing with the server
