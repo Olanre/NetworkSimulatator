@@ -208,4 +208,3 @@ app.get('/js/ClientDeviceManager.js', function(request,response){
 	response.sendFile("/public/ClientJS/ClientLogic/ClientDeviceManager.js",{"root": __dirname});
 });
 
-//exports.globalCount = globalCount;  // use globalCount in other modules under routes/
