@@ -6,6 +6,7 @@
  ****/
 
 var express = require('express');
+var path = require('path');
 var logger = require('express-logger');
 var eventHandler = require("./EventHandler.js");
 var SimulationManager = require('./simulation/SimulationManager');
@@ -139,6 +140,17 @@ app.get('/index', function(request,response){
 	
 }); 
 
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use("/css",  express.static(__dirname + '/public/stylesheets'));
+app.use("/logic", express.static(__dirname + '/public/ClientJS/ClientLogic'));
+app.use("/template", express.static(__dirname + '/public/ClientJS/HTML_Templates'));
+app.use("/view", express.static(__dirname + '/public/ClientJS/Views'));
+app.use("/gui", express.static(__dirname + '/public/ClientJS/GUI'));
+app.use("/js",  express.static(__dirname + '/public/CLientJS'));
+app.use("/img",  express.static(__dirname + '/public/img'));
+/**
 app.get('/css/dashboard.css', function(request,response){
 	response.sendFile("/public/stylesheets/dashboard.css", {"root": __dirname});
 	
@@ -207,4 +219,5 @@ app.get('/js/SessionStorageManager.js', function(request,response){
 app.get('/js/ClientDeviceManager.js', function(request,response){
 	response.sendFile("/public/ClientJS/ClientLogic/ClientDeviceManager.js",{"root": __dirname});
 });
+*/
 

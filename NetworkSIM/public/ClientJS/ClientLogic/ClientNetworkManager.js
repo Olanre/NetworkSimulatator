@@ -55,7 +55,7 @@ function addDevice( device_name, network_name){
 	//gets the information of this user
 	var local_device = get_local_device();
 	last_network = getNetwork(device_name);
-	removeDevicefromNetwork( device_name, last_name);
+	removeDevicefromNetwork( device_name, last_network);
 	addDevice2Network( device_name, network_name);
 	//gets the default page for the user.
 	appDefaultView();

@@ -36,6 +36,7 @@ function contains(obj, list) {
     }
     return false;
 }
+
 function buildPartition(listOfNetworks){
 	var partition={};
 	var index=0;

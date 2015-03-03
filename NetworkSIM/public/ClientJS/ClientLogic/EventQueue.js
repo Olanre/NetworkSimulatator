@@ -1,3 +1,9 @@
+
+/**
+ * Initializes the local_events, which will hold all of the events
+ * which occur on this device. This list will be sent to the server
+ * to be handled and recorded. This is stored in the JSON format.
+ */ 
 function newEventQueue(){
 	var queue = {};
 	queue.token = '';
@@ -8,7 +14,10 @@ function newEventQueue(){
 
 
 /**
- * Adds an event to the event queue
+ * addToEventQueue adds an event to the event queue of this device to be sent to the server.
+ * @route: is how the server should handle this event in the form of a URL
+ * @event_data: is the data which accompanies this event
+ * @timeStamp: is the time at which this event occurred
  */
 function addToEventQueue(route, event_data, time_stamp){
 	var local_events = get_local_events();
