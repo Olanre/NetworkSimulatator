@@ -44,6 +44,13 @@ function get_local_simulation_names(){
 	return JSON.parse(getFromStorage('simulation_names'));
 }
 
+/** 
+ * Gets the list of all the names of simulations from local storage
+ */
+function get_local_session(){
+	return JSON.parse(getFromStorage('simulation'));
+}
+
 /**
  * gets the event queue from session storage
  */

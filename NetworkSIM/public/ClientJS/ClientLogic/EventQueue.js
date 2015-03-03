@@ -2,7 +2,7 @@ function newEventQueue(){
 	var queue = {};
 	queue.token = '';
 	queue.eventQueue = [];
-	putinStorage( 'localEvents', JSON.stringify(queue) );
+	store_local_events(local_events);
 	return queue;
 }
 
@@ -24,9 +24,9 @@ function addToEventQueue(route, event_data, time_stamp){
 
 	local_events.eventQueue = events;
 	local_events.token = getToken();  
-	local_events.application = getApplicationName();
+	local_events.simulation = getSimulationName();
 	
-	putinStorage( 'localEvents', JSON.stringify(local_events) );
+	store_local_events(local_events);
 }
 
 /**
@@ -36,7 +36,7 @@ function clearEventQueue(){
 	local_events = get_local_events();
 	if(local_events !== null){
 		local_events.eventQueue = [];
-		putinStorage( 'localEvents', JSON.stringify(local_events) );
+		store_local_events(local_events);
 	}
 	else{
 		local_events = newEventQueue();

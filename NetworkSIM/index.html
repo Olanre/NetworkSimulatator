@@ -7,12 +7,13 @@
 	<meta content="" name="CS4770 Team 2 Project">	
 	<link href="../ajax/favicon.ico" rel="icon">
 	<title>CS4770 Team 2 Project</title>
+
 	
 	<script src='../js/ServerSync.js' type='text/javascript'></script>
 	<script src='../js/EventQueue.js' type='text/javascript'></script>
 	<script src='../js/SessionStorageManager.js' type='text/javascript'></script>
 	<script src='../js/ClientDeviceManager.js' type='text/javascript'></script>
-</head>
+	</head>
 	
 
 <script type = 'create_network_template' id = "template1">
@@ -307,7 +308,109 @@
 	</div>
 </script>
 
-<script> 
+
+<script type='DeviceViewTemplate' id = 'template11'>
+
+	<div>
+		<h2> Hello  {{current_device_name}} in {{current_simulation}} </h2>
+		<h3> You are now in {{current_network}}
+		<br> There are {{simulation_population}} other devices  in this simulation</h2>
+	</div>
+	<div class = 'container'>
+		<div class = 'appinterface'> appView() </div>
+		<div class = 'counters'>
+			 <table border='1'>
+				
+				<tr> 
+					<td> <span class = 'text'> Local Counter </span> </td> 
+					<td id = 'local_count'> " {{localcount}}</td>
+				</tr>
+				<tr>
+					<td>  <span class = 'text'> Global Counter </span> </td>
+					<td id = 'global_count'> {{globalcount}} </td> 
+				</tr>
+			 </table>
+		</div>
+	</div>
+</script>
+
+<script type = "AccountTemplate" id = "template12" >
+	<div>
+		<h2> Hello {{current_device_name}} in {{current_simulation}} </h2>
+	</div> 
+	<div class = 'container'>
+		<div class = 'appinterface'> You Email: {{email}} </div>
+		<div class = 'counters'> 
+			<table>
+				<tr> 
+					<td> 
+					 	<div> RegistedOn: {{registeredOn}} </div>
+					</td>
+				</tr>
+				<tr> 
+					<td>
+						<div> Token: {{local_device.token}}  </div>
+					</td> 
+				</tr>
+				<tr> 
+					<td>
+						<div> Current Partition: {{current_partition}}  </div>
+					</td> 
+				</tr>
+				<tr> 
+					<td>
+						<div> Current Network: {{local_device.current_network}}  </div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</script>
+
+<script type = "DeviceListTemplate" id = "template12">
+
+	<div class = 'container'>
+		<table>
+			{{#devices}}
+			
+				<tr  id = '{{device}}'> 
+					<td> {{device}}  </td> 
+				</tr>
+			{{/devices}}
+		</table>
+	</div><br>
+		
+</script>
+
+
+
+<script type = "StatesLiseTemplate" id = "template13">
+	<table>
+		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView(&quot;" + states[i].timestamp + "&quot;) '> " +
+				states[i].timestamp + " </td> <td> Revert </td> </tr>
+	</table>
+	}
+</script>
+
+<script type = "AdminDeviceListTemplate" id = "template14">
+	<div class = 'container'>
+		<table>
+			{{#devices}}
+			
+				<tr  id = '{{device}}'> 
+					<td>   {{device}} <div onclick = 'deleteDevice(&quot;{{device}}&quot;)' > Delete Device </div>   </td> 
+				</tr>
+			{{/devices}}
+		</table>
+	</div><br>
+		
+</script>
+
+<script type = "SimulationLogTemplate" id = "template15">
+	<div class = 'logs'> {{logs}} </div>"
+</script>
+
+<script type = "SimulationListTemplate" id = "template16" >
 
 </script>
 <body>

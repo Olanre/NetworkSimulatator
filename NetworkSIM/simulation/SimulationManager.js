@@ -140,11 +140,11 @@ exports.startTemplate = function(callback) {
 			App.simulation_list[i] = JSON.parse(App.simulation_list[i]);
 		}
 		var appstate = {};
-		appstate.device= Device.getTemplate();
-		appstate.current_simulation_session = Simulation.getTemplate();
-		appstate.states = stateTemplate.getStateTemplate();
-		appstate.application = App;
-		callback(appstate);
+		//appstate.device= Device.getTemplate();
+		//appstate.current_simulation_session = Simulation.getTemplate();
+		//appstate.states = stateTemplate.getStateTemplate();
+		//appstate.application = App;
+		//callback(appstate);
 	});
 	
 };
