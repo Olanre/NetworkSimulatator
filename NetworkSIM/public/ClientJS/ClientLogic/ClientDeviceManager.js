@@ -18,7 +18,6 @@ function createDevice(device_name){
 	var timestamp = new Date();
 	addToEventQueue(url, params, timestamp);
 	addDeviceToFreeList( device_name );
-	
 }
 
 /**
