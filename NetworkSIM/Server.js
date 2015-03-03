@@ -140,84 +140,15 @@ app.get('/index', function(request,response){
 	
 }); 
 
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
+//use the app to serve middleware static pages rather than doing each as a get request
 app.use("/css",  express.static(__dirname + '/public/stylesheets'));
 app.use("/logic", express.static(__dirname + '/public/ClientJS/ClientLogic'));
 app.use("/template", express.static(__dirname + '/public/ClientJS/HTML_Templates'));
 app.use("/view", express.static(__dirname + '/public/ClientJS/Views'));
 app.use("/gui", express.static(__dirname + '/public/ClientJS/GUI'));
-app.use("/js",  express.static(__dirname + '/public/CLientJS'));
+app.use("/js",  express.static(__dirname + '/public/ClientJS'));
 app.use("/img",  express.static(__dirname + '/public/img'));
-/**
-app.get('/css/dashboard.css', function(request,response){
-	response.sendFile("/public/stylesheets/dashboard.css", {"root": __dirname});
-	
-}); 
-app.get('/css/bootstrap.min.css', function(request,response){
-	response.sendFile("/public/stylesheets/bootstrap.min.css", {"root": __dirname});
-	
-});
-app.get('/css/main.css', function(request,response){
-	response.sendFile("/public/stylesheets/main.css", {"root": __dirname});
-	
-});
-app.get('/GUIDesign.js', function(request, response){
-	response.sendFile("/views/GUIDesign.js", {"root": __dirname});
-});
 
-app.get('/css/topologyView.css',function(request,response){
-	response.sendFile("/public/stylesheets/topologyView.css",{"root":__dirname});
-});
-
-app.get('/css/EventLogView.css', function(request,response){
-	response.sendFile("/public/stylesheets/EventLogView.css",{"root":__dirname});
-});
-
-app.get('/img/img.png', function(request,response){
-	response.sendFile("/public/img/img.png", {"root": __dirname});
-	
-});
-
-app.get('/img/search.png', function(request,response){
-	response.sendFile("/public/img/search.png", {"root": __dirname});
-	
-});
-app.get('/js/main.js', function(request,response){
-	response.sendFile("/public/ClientJS/main.js", {"root": __dirname});
-	
-});
-app.get('/js/interact-1.2.2.js', function(request,response){
-	response.sendFile("/public/ClientJS/interact-1.2.2.js", {"root": __dirname});
-	
-});
-app.get('/js/network-topology.js', function(request,response){
-	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
-	
-});
-app.get('/js/simulation-classes.js', function(request,response){
-	response.sendFile("/public/ClientJS/toplogyManipulationGUI.js", {"root": __dirname});
-});
-app.get('/js/EventLogView.js', function(request,response){
-	response.sendFile("/public/ClientJS/EventLogView.js",{"root": __dirname});
-});
-
-//Noah's junk, maybe will throw out
-app.get('/js/ClientManager.js', function(request,response){
-	response.sendFile("/public/ClientJS/ClientLogic/ClientManager.js",{"root": __dirname});
-});
-app.get('/js/ServerSync.js', function(request,response){
-	response.sendFile("/public/ClientJS/ClientLogic/ServerSync.js",{"root": __dirname});
-});
-app.get('/js/EventQueue.js', function(request,response){
-	response.sendFile("/public/ClientJS/ClientLogic/EventQueue.js",{"root": __dirname});
-});
-app.get('/js/SessionStorageManager.js', function(request,response){
-	response.sendFile("/public/ClientJS/ClientLogic/SessionStorageManager.js",{"root": __dirname});
-});
-app.get('/js/ClientDeviceManager.js', function(request,response){
-	response.sendFile("/public/ClientJS/ClientLogic/ClientDeviceManager.js",{"root": __dirname});
-});
-*/
 

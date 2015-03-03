@@ -126,8 +126,12 @@ function getSimulationName(){
 function getVerified(){
 	var local_device = get_local_device();
 	
+	if(local_device.hasOwnProperty('verified')){
+		return local_device.verified;
+	}else{
+		return false;
+	}
 	
-	return local_device.verified;
 }
 
 /**

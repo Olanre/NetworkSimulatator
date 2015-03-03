@@ -36,15 +36,15 @@ window.onload = function(){
 	loadAppContent();	
 
 }
-.
+
 /**
  * set a request to refresh our application with the server every 3 seconds
  * Will be changed later to using websockets with socket.io
  */ 
-window.setInterval(function(){
+//window.setInterval(function(){
 	  /// call our sync function here
-		Sync2Server();
-	}, 2000);
+		//Sync2Server();
+	//}, 2000);
 
 
 /**
@@ -84,50 +84,5 @@ function overWriteAppState(new_state){
 	putinStorage( 'session', JSON.stringify(local_session) );
 	putinStorage( 'device', JSON.stringify(local_device) );
 	putinStorage( 'application', JSON.stringify(local_application) );
-}
-
-/**
- * addToEventQueue adds an event to the event queue of this device to be sent to the server.
- * @method: is how the server should handle this event in the form of a URL
- * @params: is the data which accompanies this event
- * @timeStamp: is the time at which this event occurred
- */
-function addToEventQueue(url, params, timeStamp){
-	
-	//gets the list of the events which have occurred on this device since it last contacted the server.
-	var local_events = get_local_events();
-	if(local_events !== null){
-		//now add it to the simulation logging or device logging
-		generateActivity(url, params, timeStamp);
-		
-		//gets the eventQueue from the local storage.
-		var events = local_events.eventQueue;
-		//creates the query to the server, this constitutes an event in the event queue
-		var query = {'URL': url, 'Body' : params, 'timestamp': timeStamp}
-		//adds the event to the event queue
-		events.push(query);
-		//updates the localEvents to the new list of local events.
-		local_events.eventQueue = events;
-		local_events.token = getToken();  
-		local_events.simulation = getSimulationName();
-		
-		putinStorage( 'localevents', JSON.stringify(local_events) );
-	}
-	else{
-		console.log("Local events not found")
-	}
-	
-}
-
-/**
- * newEventQueue creates an empty event queue.
- */
-function newEventQueue(){
-	var queue = {};
-	queue.token = '';
-	queue.eventQueue = [];
-	putinStorage( 'localevents', JSON.stringify(queue) );
-	return queue;
-
 }
 

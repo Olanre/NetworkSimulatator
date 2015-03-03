@@ -1,4 +1,14 @@
 /**
+ * loadAppContent loads the content from a sync to the server
+ */
+function loadAppContent(){
+	syncWithServer();
+	updateAllViews(400);
+	
+}
+
+
+/**
  * updates all of the views 
  */
 function updateAllViews( timeout){
@@ -72,8 +82,8 @@ function simulationListView(){
 	clearFooter();
 	clearSection();
 	//gets the local application and the local session
-	var local_application = get_local_application();
-	var local_simulation_list = get_local_session();
+	var local_application = get_local_simulation_names();
+	//var local_simulation_list = get_local_session();
 	
 	//gets the list of simulations
 	var simulations = local_application.simulation_list;
@@ -136,8 +146,7 @@ function networkTopologyView(){
 	clearFooter();
 	clearSection();
 
-	var local_application = get_local_application();
-	var local_simulation_list = get_local_session();
+	var local_application = get_local_simulation_names();
 	defaultheaderView();
 	
 
@@ -146,7 +155,7 @@ function networkTopologyView(){
 	var content = getContainer();
 	defaultsideBarView();
 
-	loadJSFile('../js/network-topology.js');
+	loadJSFile('../gui/toplogyManipulationGUI.js');
 	loadStyleSheet('../css/topologyView.css');
 	var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
@@ -173,8 +182,7 @@ function eventLogsView(){
 	clearFooter();
 	clearSection();
 	
-	var local_application = get_local_application();
-	var local_simulation_list = get_local_session();
+	var local_application = get_local_simulation_names();
 	defaultheaderView();
 	
 	var simulations = local_application.simulation_list;
@@ -184,9 +192,9 @@ function eventLogsView(){
 	
 	loadStyleSheet('../css/topologyView.css');
 	loadStyleSheet('../css/EventLogView.css');
-	loadJSFile('../js/EventLogView.js');
-	loadJSFile('../js/interact-1.2.2.js');
-	loadJSFile('../js/network-topology.js');
+	loadJSFile('../view/EventLogView.js');
+	loadJSFile('../gui/interact-1.2.2.js');
+	loadJSFile('../gui/toplogyManipulationGUI.js');
 	
 	var html =
 	"<div id='title-bar'>"+
@@ -253,5 +261,15 @@ function DeviceListView(){
 	html += "</table>" +
 	"</div><br>";
 	getSection().innerHTML = html;
+}
+
+/**
+ * changes the page view to the logs of this user.
+ */
+function LogsView(){
+	var logs = getLogs();
+	var html = SimulationLogsTemplate(logs);
+	var footer = getFooter();
+	footer.innerHTML = html;
 }
 

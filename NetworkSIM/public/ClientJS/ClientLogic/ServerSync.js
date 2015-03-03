@@ -38,7 +38,7 @@ function sendEventsToServer(route, event_data, callback){
     request.onreadystatechange = function(){
         if (request.readyState == 4 && request.status == 200){
         	//resets the event queue to empty
-        	resetEventQueue();
+        	clearEventQueue();
         	var parsedObject = JSON.parse(request.responseText);
         	//calls the callback function on the object returned from the server
             callback(parsedObject);

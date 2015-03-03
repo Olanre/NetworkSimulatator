@@ -143,10 +143,10 @@ exports.startTemplate = function(callback) {
 		
 		appstate.device= {};
 		appstate.simulation = {};
-		appstate.application = App;
+		appstate.simulation_names = App;
 		//appstate.current_simulation_session = Simulation.getTemplate();
 		//appstate.states = stateTemplate.getStateTemplate();
-		//
+		
 		callback(appstate);
 	});
 	
@@ -174,11 +174,11 @@ exports.getNewState = function(token, callback){
 					}
 					if(App !== null && Device !== null && Simulation !== null){
 						Application = App;
-						appstate.application = Application;
+						appstate.simulation_names = Application;
 						Simulation.config_map = JSON.stringify(Simulation.config_map);
 						Simulation.config_map = JSON.parse(Simulation.config_map);
 						//console.log(Simulation.config_map);
-						appstate.current_simulation_session = Simulation;
+						appstate.simulation = Simulation;
 						appstate.device = Device;
 						callback(appstate);
 					}else{

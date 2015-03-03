@@ -111,5 +111,5 @@ function insertAfter(newNode, referenceNode) {
 }
 
 //delete me after test
-module.exports.generateUniqueId=generateUniqueId;
-module.exports.buildPartition=buildPartition;
+//module.exports.generateUniqueId=generateUniqueId;
+//module.exports.buildPartition=buildPartition;
