@@ -8,7 +8,6 @@ function createDevice(device_name){
 	
 	var local_session = get_local_session();
 	var params = { 
-			'config_map' : local_session.config_map,
 			'network_name' : network,
 			'partition_name' : partition,
 			'device_name': device_name, 
@@ -34,7 +33,6 @@ function addDeviceToFreeList( device_name){
 	var params = { 
 			'simulation_name': local_session.simulation_name,
 			'device_name' :  device_name,
-			'config_map' : local_session.config_map,
 			};
 	var url = '/add/Device/FreeList';
 	var timestamp = new Date();
