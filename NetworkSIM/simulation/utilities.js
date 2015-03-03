@@ -1,4 +1,4 @@
-exports.size=function size(obj) {
+exports.size=function(obj) {
 	    var size = 0, key;
 	    for (key in obj) {
 	        if (obj.hasOwnProperty(key)) size++;
@@ -7,7 +7,7 @@ exports.size=function size(obj) {
 };
 
 
-exports.merge_objects = function merge_objects(obj1,obj2){
+exports.merge_objects = function(obj1,obj2){
 	    for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
 	    return obj1;
 };
@@ -15,7 +15,9 @@ exports.compareObjects=function(obj1,obj2){
 	for(key in obj1){
 		if(obj2.hasOwnProperty(key)){
 			if(obj1[key]!=obj2[key]){
-				if(Array.isArray(obj1[key]));
+				if(Array.isArray(obj1[key])){
+					exports.compareObjects(obj1[key],obj2[key]);
+				}
 				else return false;
 			}
 		}

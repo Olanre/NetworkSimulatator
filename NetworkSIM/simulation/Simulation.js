@@ -1,5 +1,5 @@
 var Util=require("./utilities.js");
-
+var Network=require("./Network.js");
 function Simulation(simulation_name){
 
 	//variables
@@ -8,10 +8,11 @@ function Simulation(simulation_name){
 	this.networkIterator = {};
 	this.app = '';
 	this.rdt = {};
+	this.simulation_name=simulation_name;
 
 	this.simulationJSON = {};
 	this.simulationJSON.simulation_name = simulation_name;
-	this.simulationJSON.simulation_name = this.simulation_name;
+	this.simulationJSON.partition_list=[];
 	
 	//admin.js stuff
 	this.importRDT=importRDT;
@@ -40,7 +41,7 @@ function createNewSimulation(simulation_name){
 function loadSimulationFromJSON(simulationJSON){
 
 	var createdSimulation= new Simulation('');
-	attachJSON(simulationJSON);
+	createdSimulation.attachJSON(simulationJSON);
 	
 	for(partitionName in simulationJSON.partition_list){
 		var createdPartition=Partition.createNewPartition(partitionName,this.simulationJSON.simulation_name);
@@ -51,6 +52,7 @@ function loadSimulationFromJSON(simulationJSON){
 }
 
 function attachJSON(simulationJSON){
+		this.simulation_name=simulationJSON.simulation_name;
 		this.simulationJSON=simulationJSON;
 };
 
@@ -78,7 +80,7 @@ function getNetworks(){
 		
 		return merged;
 }
-
+//Olanre
 function add2FreeList(device){
 		this.freeList.device_list.push(device);
 		device.current_network = 'freelist';
@@ -92,7 +94,7 @@ function add2FreeList(device){
 		device.partition={};
 	
 }
-
+//OLANRE
 function removeDeviceFromFreeList(device){
 		
 		var deviceIndex = this.freeList.device_list.indexOf(device);
@@ -109,8 +111,8 @@ function removeDeviceFromFreeList(device){
 
 function getDevices(){
 		var merged = [];
-		for(var i = 0; i < this.partitionJSON.partition_list.legnth; i++){
-			var Networks = this.partitionJSON.partition_list[i].networkList;
+		for(var i = 0; i < this.simulationJSON.partition_list.legnth; i++){
+			var Networks = this.simulationJSON.partition_list[i].networkList;
 			for( var j = 0 ; j < Networks.length; j++){
 				var Devices = Networks[i].networkJSON.device_list;
 				for( var k = 0; k < Devices.length; k++){
@@ -119,7 +121,7 @@ function getDevices(){
 			}
 							
 		}
-		
+		return merged;
 		
 }
 

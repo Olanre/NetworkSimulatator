@@ -19,8 +19,9 @@ var networkJSON={
 module.exports.testNetworkCreation=function(){
 	var createdNetwork=Network.createNewNetwork();
 	var result=Util.compareObjects(createdNetwork.networkJSON,JSONNetworkTemplate);
-	var text=result? 'passed': 'failed';
+	var text=result ? 'passed': 'failed';
 	console.log("createNewNetwork " +text);
+	return result;
 }
 
 module.exports.testNetworkLoading=function(){
@@ -28,6 +29,7 @@ module.exports.testNetworkLoading=function(){
 	var result=Util.compareObjects(loadedNetwork.networkJSON,networkJSON);
 	var text=result?'passed':'failed';
 	console.log("loadNetworkFromJSON "+text);
+	return result;
 }
 
 module.exports.testNetworkJoining=function(){
@@ -65,6 +67,8 @@ module.exports.testNetworkJoining=function(){
 	result=testIfDeviceJoined(device,network);
 	text=result ? 'passed':'failed';
 	console.log("joinNetwork "+text);
+
+	return result&&inList&&inJSONlist;
 }
 
 function testIfDeviceJoined(device,network){
@@ -109,6 +113,8 @@ module.exports.testNetworkLeaving=function(){
 	text=leaveNetwork ? 'passed' : 'failed';
 	console.log('leaveNetwork '+ text);
 
+	return inNetwork&&leaveNetwork;
+
 }
 
 module.exports.testNetworkConnection=function(){
@@ -130,8 +136,9 @@ module.exports.testNetworkConnection=function(){
 		if(partition.network_list[netkey]==net2) foundnet2=true;
 	}
 
-	var text= foundnet1&&foundnet2&&samePartitionObject&&sameJSON? 'passed' : 'failed';
+	var text= foundnet1&&foundnet2&&samePartitionObject&&sameJSON ? 'passed' : 'failed';
 	console.log("connectNetwork "+text);
+	return foundnet1&&foundnet2&&samePartitionObject&&sameJSON;
 }
 
 module.exports.testNetworkDisconnection=function(){
@@ -160,12 +167,25 @@ module.exports.testNetworkDisconnection=function(){
 	
 	var text= network3connected ? 'failed' : 'passed';
 	console.log("disconnectNetwork "+text);
+
+	return !network3connected;
 }
 
+module.exports.testNetwork=function(){
+	var functions=[];
+	functions.push(module.exports.testNetworkCreation());
+	functions.push(module.exports.testNetworkLoading());
+	functions.push(module.exports.testNetworkJoining());
+	functions.push(module.exports.testNetworkLeaving());
+	functions.push(module.exports.testNetworkConnection());
+	functions.push(module.exports.testNetworkDisconnection());
 
-module.exports.testNetworkCreation();
-module.exports.testNetworkLoading();
-module.exports.testNetworkJoining();
-module.exports.testNetworkLeaving();
-module.exports.testNetworkConnection();
-module.exports.testNetworkDisconnection();
+	var continueTesting=true;
+	for(var i;i<functions.length;i++){
+		continueTesting=continueTesting&&functions[i]();
+		if(!continueTesting)break;
+	}
+	return continueTesting;
+}
+
+module.exports.testNetwork();

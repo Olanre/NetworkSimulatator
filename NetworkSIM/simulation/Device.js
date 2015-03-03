@@ -1,4 +1,5 @@
 var Util=require("./utilities.js");
+var Network=require("./Network.js");
 
 function Device(deviceName,token, simulation_name , registeredOn, partition_name, current_network){
 	
@@ -6,7 +7,7 @@ function Device(deviceName,token, simulation_name , registeredOn, partition_name
 	this.device_name=deviceName;
 	
 	//Our Variables//
-	this.networkObject={};
+	this.networkObject=Network.createNewNetwork();
 	this.networks_created = [];
 	this.rdt = {};
 

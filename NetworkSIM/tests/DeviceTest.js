@@ -1,5 +1,5 @@
 var Device=require("../simulation/Device.js");
-var Util=require("../simulation/Utilities.js");
+var Util=require("../simulation/utilities.js");
 var JSONDeviceTemplate={
 	current_device_name:undefined,
 	token:undefined,
@@ -36,5 +36,18 @@ module.exports.testDeviceLoading=function(){
 }
 
 
-module.exports.testDeviceCreation();
-module.exports.testDeviceLoading();
+module.exports.testDevice=function(){
+	var functions=[];
+	functions.push(module.exports.testDeviceCreation());
+	functions.push(module.exports.testDeviceLoading());
+
+	var continueTesting=true;
+	for(var i;i<functions.length;i++){
+		continueTesting=continueTesting&&functions[i]();
+		if(!continueTesting)break;
+	}
+	return continueTesting;
+}
+
+module.exports.testDevice();
+
