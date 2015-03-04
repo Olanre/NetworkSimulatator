@@ -60,7 +60,7 @@ function getDevices(){
  * getDevices get all the devices within a particular network
  * @param network_name: the name of the network to get all the devices from within
  */
-function getDevices(network_name){
+function getDeviceNames(network_name){
 	//gets the current simulation as the user sees it
 	var local_session = get_local_session();
 	//gets the configuration of this simulation
@@ -87,7 +87,7 @@ function getLogs(){
  * getNetwork gets the name of the network which a device is a member of 
  * @param device_name
  */
-function getNetwork(device_name){
+function getNetworkName(device_name){
 	var local_session = get_local_session();
 	var map = local_session.config_map;
 	//gets the list of networks
@@ -139,7 +139,7 @@ function getVerified(){
  * getPartition gets the partition containing a certain network.
  * @param network_name
  */
-function getPartition(network_name){
+function getPartitionName(network_name){
 	var local_session = get_local_session();
 	var map = local_session.config_map;
 	//holds the name of the partition that this network is in
@@ -154,7 +154,7 @@ function getPartition(network_name){
 	return Partition_name;
 }
 
-function getPartitionfromDevice( device_name){
+function getPartitionNamefromDevice( device_name){
 	network_name =  getNetwork(device_name);
 	return getPartition(network_name);
 }
