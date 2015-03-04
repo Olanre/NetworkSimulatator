@@ -20,7 +20,6 @@ function createDevice(device_name){
 }
 
 
-
 /**
  * adds a device to the list of 
  */
