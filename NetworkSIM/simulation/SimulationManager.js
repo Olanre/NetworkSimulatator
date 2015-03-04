@@ -168,6 +168,7 @@ function createSimulation(body) {
 					createdDevice.deviceJSON.current_network = network;
 					createdDevice.deviceJSON.current_partition = partition;
 					createdNetwork.addDevice(createdDevice);
+					Database.savePartition(Partition);
 
 			}
 		}
@@ -207,7 +208,7 @@ function createSimulation(body) {
 	return simulation;
 }	
 
-
+//TODO
 function createDevice(body) {
 
 	var simulation=Util.getSimulationByName(body.simulation_name,simulationList);
@@ -218,7 +219,7 @@ function createDevice(body) {
 	return simulation;
 }
 
-
+//TODO
 function createNetwork(body){
 
 	var simulation=Util.getSimulationByName(body.simulation_name,simulationList);
@@ -242,6 +243,7 @@ function addPartition(partitionObject, simulation){
 }
 
 
+//TODO
 function deleteDevice(deviceObject, simulation){
 	var simulationName=deviceObject.simulation_name;
 	var deviceName=deviceObject.device_name;
@@ -250,18 +252,19 @@ function deleteDevice(deviceObject, simulation){
 	//Database.deleteDevice(simulationName,deviceName);
 }
 
+//TODO
 function deleteNetwork(networkObject, simulation){
 	var networkName=networkObject.network_name;
 	var simulationName=networkObject.simulation_name;
 	//Database.deleteNetwork(simulationName,networkName);
 }
 
+//TODO
 function removeToken(tokenObject){
 	//Database.removeToken(tokenObject);
 }
 
-
-
+//TODO
 function deletePartitionMap(partitionMapObject, simulation){
 	var token = partitionMapObject.token;
 	var simname=partitionMapObject.simulation_name;
@@ -269,15 +272,18 @@ function deletePartitionMap(partitionMapObject, simulation){
 	//Database.deletePartitionMap(simname,partitionName,token);
 }
 
+//TODO
 function deleteSimulation(simulationObject, simulation){
 	var name=simulationObject.simulation_name;
 	//Database.deleteSimulation(name);
 }
 
+//TODO
 function deleteToken(token, simulation){
 	//function delete user by token
 }
 
+//TODO
 function updateAllCounts(userObject){
 	var token=userObject.token;
 	var localCount=userObject.localCount;
@@ -308,62 +314,27 @@ function updateLocalCount(token, body) {
 		});
 	});
 }
-function updateNetworkName(networkObject, simulation){
-	var newName=networkObject.new_name;
-	var oldName=networkObject.old_name;
-	//Database.updateNetworkName(oldName,newName);
-}
 
-function updateDeviceName(deviceObject, simulation){
-	var newName=deviceObject.new_name;
-	var oldName=deviceObject.old_name;
-	//Database.updateDeviceName(oldName,newName);
-}
 
+
+//TODO
 function updateSimulationName(simulationObject, simulation){
 	var newName=simulationObject.new_name;
 	var oldName=simulationObject.old_name;
 	//Database.updateSimulationName(oldName,newName);
 }
 
-function updateTokenMethod(simulationObject, simulation){
-	var simulationName=simulationObject.simulation_name;
-	var newMethod=simulationObject.new_method;
-	//Database.updateTokenMethod(simulationName,newMethod);
-}
 
-function updateDeviceNumber(deviceObject, simulation){
-	var number=deviceObject.device_number;
-	var simulation=deviceObject.simulation_name;
-	//Database.updateDeviceNumber(simulation,number);
-}
 
-function updateNetworkNumber(networkObject, simulation){
-	var number=networkObject.network_number;
-	var simulation=networkObject.simulation_name;
-	//Database.updateNetworkNumber(simulation,number);
-}
-
+//TODO
 function updatePartitionMap(partitionObject, simulation){
 	var simulationName=partitionObject.simulation_name;
 	var config_map=partitionObject.config_map;
 	var partition_name=partitionObject.partition_name;
 	//Database.updatePartitionMap(simulationName,partition_name,config_map);
 }
-//I don't think we need this yet?
-function createDevice(body, simulation) {
 
-	var device_name = body.device_name;
-	var network_name = body.network_name;
-	var partition_name = body.partition_name;
-	var simulation_name = body.simuation_name;
-	var token = body.token;
-	var Network = new topography.Network('hello');
-	admin.addDevice = function(device_name){
-	    //Device.
-	  };
-	
-}
+
 
 
 function AddDevice2Network( body, simulation){

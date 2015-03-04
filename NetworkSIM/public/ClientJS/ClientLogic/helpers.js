@@ -2,9 +2,9 @@
  * Helper file for getting elements from Partition_list
  */
 /**
- * getPartitions returns the list of partitions for this current simulation
+ * getPartitionNames returns the list of partitions for this current simulation
  */
-function getPartitions(){
+function getPartitionNames(){
 	//gets the current simulation on the user side
 	var local_simulation = get_local_simulation();
 	//gets the configuration of this simulation
@@ -18,10 +18,11 @@ function getPartitions(){
 	return list;
 }
 
+
 /**
- * getNetworks retrieves a list of networks in the simulation
+ * getNetworkNames retrieves a list of networks in the simulation
  */
-function getNetworks(){
+function getNetworkNames(){
 	//gets the local simulation//
 	var local_simulation = get_local_simulation();
 	//gets the configuration map of the current simulation on the users side
@@ -30,47 +31,87 @@ function getNetworks(){
 	var list = []; 
 	//populates list
 	for(var i = 0; i < partition_list.length; i++){
-		var networks = partition_list[i][1];
-		for (var j = 0; j < partition_list[i]['network_list']; j++){
-			list.push(network);
+		var networks = partition_list[i]['network_list'];
+		for (var j = 0; j < networks.length; j++){
+			list.push(networks[j]['network_name']);
 		}
 	}
 	return list;
 }
 
 /**
- * getDevices returns all of the devices in the current state of the simulation on this users side
+ * getNetworkNames retrieves a list of networks in the simulation
  */
-function getDevices(){
+function getNetworkObjs(){
+	//gets the local simulation//
+	var local_simulation = get_local_simulation();
+	//gets the configuration map of the current simulation on the users side
+	var map = local_simulation.partition_list;
+	// a list of all of the networks in the simulation
+	var list = []; 
+	//populates list
+	for(var i = 0; i < partition_list.length; i++){
+		var networks = partition_list[i]['network_list'];
+		for (var j = 0; j < networks.length; j++){
+			list.push(networks[j]);
+		}
+	}
+	return list;
+}
+
+/**
+ * getDeviceNames returns all of the devices in the current state of the simulation on this users side
+ */
+function getDeviceNames(){
 	//gets the current simulation on the users side
 	var local_simulation = get_local_simulation();
 	//gets the list of networks
-	var networklist = getNetworks();
+	var networklist = getNetworkObjs();
+	var freeList = local_simulation.freelist;
 	//list will hold all of the devices in the simulation
 	var list = [];
 	for( var i = 0; i < networklist.length; i++){
-		var devicelist = getDevices(networklist[i]);
-		list.push.apply(list, devicelist);
+		var devicelist = networklist[i]['device_list'];
+		for(var j = 0; j < devicelist.length; j++){
+			list.push(devicelist[j]['current_device_name']);
+		}
+		
+	}
+	for(var j = 0; j < freelist.length; j++){
+		list.push(freelist[j]['current_device_name']);
 	}
 	
 	return list;
 }
 
+
 /**
- * getDevices get all the devices within a particular network
+ * getDeviceNames get all the device names within a particular network
  * @param network_name: the name of the network to get all the devices from within
  */
-function getDeviceNames(network_name){
+function getDeviceNames(network){
 	//gets the current simulation as the user sees it
 	var local_simulation = get_local_simulation();
 	//gets the configuration of this simulation
-	var map = local_simulation.config_map;
-	//gets the partition that the user is located in 
-	partition = getPartition(network_name)
-	//list to hold all of the devices within this particular network
-	var list = [];
-	for(var key in map[partition][network_name]){
-		list.push(key);
+	var devicelist = network['device_list'];
+	for(var j = 0; j < devicelist.length; j++){
+		list.push(devicelist[j]['current_device_name']);
+	}
+	return list;
+}
+
+/**
+ * getDevicesObjs get all the device objects within a particular network
+ * @param network_name: the name of the network to get all the devices from within
+ */
+function getDeviceObjs(network){
+	//gets the current simulation as the user sees it
+	var local_simulation = get_local_simulation();
+	var local_simulation = get_local_simulation();
+	//gets the configuration of this simulation
+	var devicelist = network['device_list'];
+	for(var j = 0; j < devicelist.length; j++){
+		list.push(devicelist[j]);
 	}
 	return list;
 }
@@ -84,24 +125,53 @@ function getLogs(){
 }
 
 /**
- * getNetwork gets the name of the network which a device is a member of 
+ * getNetworkName gets the name of the network which a device is a member of 
  * @param device_name
  */
 function getNetworkName(device_name){
+	var local_simulation = get_local_simulation();
+	var map = local_simulation.partition_list;
+	//gets the list of networks
+	var list = getNetworkObjs();
+	//holds the name of the network that this device is present in
+	//we should handle the case when the device cannot be found in any of these networks
+	var Network_name = '';
+	for(var i = 0; i < list.length; i++){
+		var devicelist = list[i]['device_list'];
+		for(var j = 0; j < devicelist.length; j++){
+			if(devicelist[j]['current_device_name'] !== device_name){
+				
+				Network_name = list[i]['network_name'];
+			}
+		}
+		
+	}
+
+	//returns the name of the network that this device is in
+	return Network_name;
+}
+
+/**
+ * getNetworkObj gets the name of the network which a device is a member of 
+ * @param device_name
+ */
+function getNetworkObj(device_name){
 	var local_simulation = get_local_simulation();
 	var map = local_simulation.config_map;
 	//gets the list of networks
 	var list = getNetworks();
 	//holds the name of the network that this device is present in
 	//we should handle the case when the device cannot be found in any of these networks
-	var Network_name = '';
-	for( var key in map ){
-		for( var network in map[key]){
-			if(map[key][network][device_name] !== null){
-			
-				Network_name = network;
+	var Network_obj = null;
+	for(var i = 0; i < list.length; i++){
+		var devicelist = list[i]['device_list'];
+		for(var j = 0; j < devicelist.length; j++){
+			if(devicelist[j]['current_device_name'] !== device_name){
+				
+				Network_obj = list[i];
 			}
 		}
+		
 	}
 	//returns the name of the network that this device is in
 	return Network_name;
