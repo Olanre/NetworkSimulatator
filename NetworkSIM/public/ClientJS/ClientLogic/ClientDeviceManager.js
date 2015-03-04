@@ -15,14 +15,13 @@ function createDevice(device_name){
 }
 
 /**
- * adds a device to the list of 
+ * adds a device to the free list of this simulation 
  */
-function addThisDeviceToFreeList(){
+function addDeviceToFreeList(device_token){
 	var local_simulation = get_local_simulation();
-	var local_device = get_local_device();
 	var params = { 
 			'simulation_name': local_simulation.simulation_name,
-			'device_token' :  local_device.token,
+			'device_token' :  device_token,
 			};
 	var url = '/add/Device/FreeList';
 	var timestamp = new Date();
