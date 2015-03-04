@@ -15,32 +15,31 @@ function CreateSimulation(){
 	
 }
 
-/** Function to delete the actual simulation
- * the simulation will be removed from the application and possible from the current session if needed
- * @param: simulation_name, the name of the simulation to be deleted
- */
-function deleteSimulation(simulation_name){
-	//gets the simulation from storage
-	var local_session = get_local_session();
-	if(local_session !== null){
-		var params = { 
-				'partition_list' : local_session.partition_list,
-				'simulation_name': local_session.simulation_name,
-				};
-		
-		var url = '/delete/Simulation';
-		var timestamp = new Date();
-		//add to the event queue to sync with server
-		addToEventQueue(url, params, timestamp);
-	}else{
-		console.log("local_session does not exist");
-	}
-}
-
 /**
- * Getter Methods
- * -----------------
+ * Wraps values and generates the config map and other data required for creating a simulation
+ * @returns create_simulation, the new simulation object created
  */
+function wrapCreateSimulation() {
+	var simulation_name = document.getElementById('simulation_name').value;
+	var num_devices = document.getElementById('num_devices').value;
+	var num_networks = document.getElementById('num_networks').value;
+	var tokenMethod = document.getElementById('tokenmethod').value;
+	var config_div = document.getElementById('config-map');
+	var string = generateConfigMap(1, 'config-map');
+	var create_simulation = {};
+	create_simulation.num_devices = parseInt(num_devices);
+	create_simulation.num_networks = parseInt(num_networks);
+	create_simulation.simulation_population = 0;
+	create_simulation.simulation_name = simulation_name;
+	create_simulation.globalcount = 0;
+	create_simulation.tokenMethod = tokenMethod;
+	create_simulation.config_map = JSON.parse(string);
+	create_simulation.config_map['freelist'] = {};
+	create_simulation.activity_logs = '';
+	
+	console.log(create_simulation);
+	return create_simulation;
+}
 
 /**
  * Function to get a new simulation from the server
@@ -127,31 +126,4 @@ function generateConfigMap(level, start_element){
 			break;
 	}
 	
-}
-
-
-/**
- * Wraps values and generates the config map and other data required for creating a simulation
- * @returns create_simulation, the new simulation object created
- */
-function wrapCreateSimulation() {
-	var simulation_name = document.getElementById('simulation_name').value;
-	var num_devices = document.getElementById('num_devices').value;
-	var num_networks = document.getElementById('num_networks').value;
-	var tokenMethod = document.getElementById('tokenmethod').value;
-	var config_div = document.getElementById('config-map');
-	var string = generateConfigMap(1, 'config-map');
-	var create_simulation = {};
-	create_simulation.num_devices = parseInt(num_devices);
-	create_simulation.num_networks = parseInt(num_networks);
-	create_simulation.simulation_population = 0;
-	create_simulation.simulation_name = simulation_name;
-	create_simulation.globalcount = 0;
-	create_simulation.tokenMethod = tokenMethod;
-	create_simulation.config_map = JSON.parse(string);
-	create_simulation.config_map['freelist'] = {};
-	create_simulation.activity_logs = '';
-	
-	console.log(create_simulation);
-	return create_simulation;
 }

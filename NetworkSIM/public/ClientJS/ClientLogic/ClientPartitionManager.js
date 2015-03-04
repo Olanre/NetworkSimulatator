@@ -7,7 +7,7 @@ function dividePartition(network, partition){
 	var local_session = get_local_session();
 	if(local_session !== null){
 		var params = { 
-				'network': network_name, 
+				'network_name': network_name, 
 				'partition_name': network_name , 
 				'simulation_name': local_session.simulation_name,
 				};
@@ -29,26 +29,4 @@ function mergePartition(partition_a, partition_b){
 	var url = '/merge/Partitions';
 	var timestamp = new Date();
 	addToEventQueue(url, params, timestamp);
-}
-
-/**
- * removeDevicefromFreeList: remove a device from the freelist
- * @param device_name: the name of the device to removed from the free list
- */
-function removeDevicefromFreeList( device_name, simulation_name){
-	//gets the current state of the simulation
-	var local_session = get_local_session();
-	if(local_session !== null){		
-		var params = { 
-				'partition_list' : local_session.partition_list,
-				'simulation_name': local_session.simulation_name,
-				'device_name' :  device_name
-				};
-		var url = '/remove/Device/FreeList';
-		var timestamp = new Date();
-		addToEventQueue(url, params, timestamp);
-	}else{
-		console.log("local simulation session not found!");
-	}
-	
 }
