@@ -1,9 +1,9 @@
 function createNetwork(network_name){
 	//generates a uniqueID
-	var network_name = generateUniqueID('partition_name');
-	var partition_name = generateUniqueID('partition')
+	var network_name = generateUniqueID('network');
+	//the name of the partition to be created
+	var partition_name = generateUniqueID('partition');
 	var local_simulation = get_local_simulation();
-	//SHOULD CREATE A PARTITION FIRST
 	var params = { 
 			'network_name': network_name, 
 			'partition_name': partition_name , 

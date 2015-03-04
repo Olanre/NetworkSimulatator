@@ -112,7 +112,8 @@ function insertAfter(newNode, referenceNode) {
 
 //hopefully this will be fine, there is a very low chance of two of the same strings.
 //should also check through all created devices as well.
-function generateUniqueID() {
+function generateUniqueID(type) {
+	//should use type to handle checking if a type with that name exists.
     charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var randomString = '';
     for (var i = 0; i < 16; i++) {
