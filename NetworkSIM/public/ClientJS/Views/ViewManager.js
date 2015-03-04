@@ -284,3 +284,31 @@ function LogsView(){
 	footer.innerHTML = html;
 }
 
+/** Function to get all the partition input fields in the document
+ * referencing the fields by class name and returning the DOM list
+ * @return partiton_elements, the DOM list of input fields.
+ */
+function getAllPartitionsInputField(){
+	var config_map = document.getElementById('config-map');
+	var partition_elements = config_map.getElementsByClassName('partition');
+	return partition_elements;
+}
+
+/** Function to get all the network input fields in the document
+ * referencing the fields by class name and returning the DOM list
+ * @return network_elements, the DOM list of input fields.
+ */
+function getAllNetworksInputField(partition){
+	var network_elements = partition.getElementsByClassName('network');
+	return network_elements;
+}
+
+/** Function to get all the device input fields in the document
+ * referencing the fields by class name and returning the DOM list
+ * @return device_elements, the DOM list of input fields.
+ */
+function getAllDevicesInputField(network){
+	var device_elements = network.getElementsByClassName('device');
+	return device_elements;
+}
+

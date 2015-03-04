@@ -2,11 +2,11 @@
  * Creates a new device in this simulation. This is not what is called when a simulation is created,
  * that is coming different.
  */
-function createDevice(device_name){
+function createDevice(){
 	var local_simulation = get_local_simulation();
 	if(local_simuation!==null){
 		var params = { 
-				'device_name': device_name, 
+				'device_name': 'no name set', 
 				'simulation_name': local_simulation.simulation_name,
 				};
 		var url = '/create/Device';
@@ -17,47 +17,6 @@ function createDevice(device_name){
 	else{
 		console.log("createDevice was passed null parameters");
 	}
-}
-
-/**
- * adds a device to the free list of this simulation 
- */
-function addDeviceToFreeList(device_token){
-	var local_simulation = get_local_simulation();
-	if(local_simulation!==null&& device_token!==null&&local_simulation!==null){
-		var params = { 
-				'simulation_name': local_simulation.simulation_name,
-				'device_token' :  device_token,
-				};
-		var url = '/add/Device/FreeList';
-		var timestamp = new Date();
-		//add to the event queue to sync with server
-		addToEventQueue(url, params, timestamp);
-	}
-	else{
-		console.log("null parameters in addDeviceToFreeList, nothing was done.");
-	}
-}
-
-/**
- * removes a device from the free list 
- */
-function removeDevicefromFreeList( device_token, simulation_name){
-	//gets the current state of the simulation
-	var local_simulation = get_local_simulation();
-	if(local_simulation !== null&& device_token!==token&& local_simulation!==null){
-		var params = { 
-				'simulation_name': local_simulation.simulation_name,
-				'device_token' :  device_token
-				};
-		var url = '/remove/Device/FreeList';
-		var timestamp = new Date();
-		addToEventQueue(url, params, timestamp);
-	}
-	else{
-		console.log("local simulation session not found!");
-	}
-	
 }
 
 /** 
@@ -104,7 +63,7 @@ function removeDeviceFromNetwork(device_token, network_name){
 	var local_simulation = get_local_simulation();
 	if(device_token!==null && network_name!==null&& local_simulation!==null){
 		var params = { 
-				'network_name': network, 
+				'network_name': network_name, 
 				'simulation_name': local_simulation.simulation_name,
 				'device_name' :  device_name
 				};
