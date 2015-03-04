@@ -55,7 +55,7 @@ var testConfigMap3={
 
 
 /****
- * The main functions used in our GUI
+ * Generates topology given a simulation object
  ***/
 function generateTopology(configMap, areaWidth){
 	//clear the svgCanvas

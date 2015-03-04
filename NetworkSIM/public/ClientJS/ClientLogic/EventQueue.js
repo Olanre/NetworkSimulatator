@@ -21,19 +21,14 @@ function newEventQueue(){
  */
 function addToEventQueue(route, event_data, time_stamp){
 	var local_events = get_local_events();
-	if(local_events !== null){
-		var events = local_events.eventQueue;
-	}
-	else{
+	if(local_events== null){
 		local_events = newEventQueue();
 	}
 	//creates the query to the server
 	var query = {'route': route, 'event_data' : event_data, 'time_stamp': time_stamp}
-	events.push(query);
-
-	local_events.eventQueue = events;
+	local_events.eventQueue.push(query);
 	local_events.token = getToken();  
-	local_events.simulation = getSimulationName();
+	local_events.simulationName = getSimulationName();
 	
 	store_local_events(local_events);
 }
