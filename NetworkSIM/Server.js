@@ -81,7 +81,7 @@ app.post("/getSync", function(req, res) {
 				console.log("Successful authenication" );
 				SimulationManager.ClientRequest(token, events, simulation, function(){
 
-				res.send(SimulationManager.getAppStateForDevice(token,simulation));
+				res.send(SimulationManager.getAppStateForDevice(token,simulation)); });
 			}
 			else{
 				console.log("Failed authenication" );
