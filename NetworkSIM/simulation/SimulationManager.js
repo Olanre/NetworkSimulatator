@@ -59,57 +59,16 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 				removeDevicefromFreeList(eventQueue[i].Body, simulation);
 				break;
 				
-			case '/delete/Device':
-				deleteDevice(eventQueue[i].Body, simulation);
-				break;
-				
 			case '/delete/Network' :
 				deleteNetwork(eventQueue[i].Body, simulation);
-				break;
-				
-			case '/delete/Token' :
-				deleteToken(token, simulation);
 				break;
 				
 			case '/delete/Partition':
 				deletePartition(eventQueue[i].Body, simulation);
 				break;
-			
-			case '/delete/Simulation' :
-				deleteSimulation(eventQueue[i].Body);
-				break;
-			
-			case '/update/LocalCount':
-				console.log('In LocalCount');
-				updateLocalCount(token, eventQueue[i].Body);
-				break;	
-			
+				
 			case '/update/NetworkName':
 				updateNetworkName(eventQueue[i].Body, simulation);
-				break;
-			
-			case '/update/DeviceName':
-				updateDeviceName(eventQueue[i].Body, simulation);
-				break;
-			
-			case '/update/SimulationName':
-				updateSimulationName(eventQueue[i].Body, simulation);
-				break;
-			
-			case '/update/TokenMethod':
-				updateTokenMethod(eventQueue[i].Body, simulation);
-				break;
-				
-			case '/update/DeviceNumber':
-				updateDeviceNumber(eventQueue[i].Body, simulation);
-				break;
-			
-			case '/update/NetworkNumber':
-				updateNetworkNumber(eventQueue[i].Body, simulation);
-				break;
-				
-			case '/update/ConfigMap':
-				updateConfigMap(eventQueue[i].Body, simulation);
 				break;
 			
 			case 'dividePartition':
