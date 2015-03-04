@@ -66,10 +66,6 @@ exports.ClientRequest = function(token, eventQueue, simulation, callback) {
 			case '/delete/Partition':
 				deletePartition(eventQueue[i].Body, simulation);
 				break;
-				
-			case '/update/NetworkName':
-				updateNetworkName(eventQueue[i].Body, simulation);
-				break;
 			
 			case 'dividePartition':
 				dividePartition(eventQueue[i].Body, simulation);

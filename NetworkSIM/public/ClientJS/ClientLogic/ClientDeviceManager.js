@@ -5,7 +5,7 @@
  * @param device_name, the name of the device to be added
  */
 function createDevice(device_name){
-	
+	//UHHH NEED TO GET THESE VARIABLES SHOULD THIS EVEN BE WHAT WE SEND?
 	var local_session = get_local_session();
 	var params = { 
 			'network_name' : network,
@@ -64,9 +64,6 @@ function removeDevicefromFreeList( device_name, simulation_name){
 /** remove a device from its current network and adds 
  * the same device in the new specified network
  * used only at the local device level
- * @param device_name: the name of the device to add to the network
- * @param network_name: the name of the network to be added to
- * 
  */
 function addDevice( device_name, network_name){
 	//gets the information of this user
@@ -79,7 +76,7 @@ function addDevice( device_name, network_name){
 }
 
 /**
- * 
+ * adds a device to a network
  */
 function addDeviceToNetwork( device_name, network_name){
 	//gets the current state of the simulation
@@ -107,11 +104,9 @@ function addDeviceToNetwork( device_name, network_name){
 }
 
 /**
- * removeDevicefromNetwork removes a device from a network in the session.
- * @param device_name
- * @param network
+ * removes a device from a certain network.
  */
-function removeDevicefromNetwork( device_name, network){
+function removeDevicefromNetwork(device_name, network){
 	//gets the user from storage
 	var local_device = get_local_device;
 	//gets the simulation from storage
