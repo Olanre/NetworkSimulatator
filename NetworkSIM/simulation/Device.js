@@ -1,7 +1,7 @@
 var Util=require("./utilities.js");
 var Network=require("./Network.js");
 
-function Device(deviceName,token, simulation_name , registeredOn, partition_name, current_network){
+function Device(deviceName,token, simulation_name , email){
 	
 	//Required variables//
 	this.device_name=deviceName;
@@ -16,10 +16,10 @@ function Device(deviceName,token, simulation_name , registeredOn, partition_name
 	this.deviceJSON.current_device_name=deviceName;
 	this.deviceJSON.token=token;
 	this.deviceJSON.email = deviceName;
-	this.deviceJSON.registeredOn = registeredOn;
+	this.deviceJSON.registeredOn = '';
 	this.deviceJSON.current_simulation = simulation_name;
-	this.deviceJSON.current_partition = partition_name;
-	this.deviceJSON.current_network = current_network;
+	this.deviceJSON.current_partition = '';
+	this.deviceJSON.current_network = '';
 	
 	//Required Functions//
 	this.joinNetwork=joinNetwork;
@@ -33,8 +33,8 @@ function Device(deviceName,token, simulation_name , registeredOn, partition_name
 }
 
 
-function createNewDevice(deviceName,token, simulation_name,email, registeredOn, partition_name, current_network){
-	var createdDevice=new Device(deviceName,token, simulation_name ,email, registeredOn, partition_name, current_network);
+function createNewDevice(deviceName,token, simulation_name, email){
+	var createdDevice=new Device(deviceName,token, simulation_name ,email);
 	//wrapper class will be responsible for this
 	//Database.addUser(createdDevice.deviceJSON);
 	return createdDevice;

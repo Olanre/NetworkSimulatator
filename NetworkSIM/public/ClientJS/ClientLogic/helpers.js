@@ -8,11 +8,11 @@ function getPartitions(){
 	//gets the current simulation on the user side
 	var local_session = get_local_session();
 	//gets the configuration of this simulation
-	var map = local_session.config_map;
+	var map = local_session.partition_list;
 	//holds a list of the partitions
 	var list = [];
 	for(var i = 0; i < partition_list.length; i++){
-		list.push(partition_list[i][0]);
+		list.push(partition_list[i]['partition_list']);
 	}
 	//returns a list of partitions
 	return list;
@@ -25,12 +25,13 @@ function getNetworks(){
 	//gets the local simulation//
 	var local_session = get_local_session();
 	//gets the configuration map of the current simulation on the users side
-	var map = local_session.config_map;
+	var map = local_session.partition_list;
 	// a list of all of the networks in the simulation
 	var list = []; 
 	//populates list
-	for (var partition in map){
-		for (var network in map[partition]){
+	for(var i = 0; i < partition_list.length; i++){
+		var networks = partition_list[i][1];
+		for (var j = 0; j < partition_list[i][1]; j++){
 			list.push(network);
 		}
 	}
