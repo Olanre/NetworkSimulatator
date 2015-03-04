@@ -8,11 +8,11 @@ function getPartitions(){
 	//gets the current simulation on the user side
 	var local_session = get_local_session();
 	//gets the configuration of this simulation
-	var map = local_session.config_map;
+	var map = local_session.partition_list;
 	//holds a list of the partitions
 	var list = [];
 	for(var i = 0; i < partition_list.length; i++){
-		list.push(partition_list[i][0]);
+		list.push(partition_list[i]['partition_name']);
 	}
 	//returns a list of partitions
 	return list;
@@ -25,12 +25,13 @@ function getNetworks(){
 	//gets the local simulation//
 	var local_session = get_local_session();
 	//gets the configuration map of the current simulation on the users side
-	var map = local_session.config_map;
+	var map = local_session.partition_list;
 	// a list of all of the networks in the simulation
 	var list = []; 
 	//populates list
-	for (var partition in map){
-		for (var network in map[partition]){
+	for(var i = 0; i < partition_list.length; i++){
+		var networks = partition_list[i][1];
+		for (var j = 0; j < partition_list[i]['network_list']; j++){
 			list.push(network);
 		}
 	}
@@ -59,7 +60,7 @@ function getDevices(){
  * getDevices get all the devices within a particular network
  * @param network_name: the name of the network to get all the devices from within
  */
-function getDevices(network_name){
+function getDeviceNames(network_name){
 	//gets the current simulation as the user sees it
 	var local_session = get_local_session();
 	//gets the configuration of this simulation
@@ -86,7 +87,7 @@ function getLogs(){
  * getNetwork gets the name of the network which a device is a member of 
  * @param device_name
  */
-function getNetwork(device_name){
+function getNetworkName(device_name){
 	var local_session = get_local_session();
 	var map = local_session.config_map;
 	//gets the list of networks
@@ -138,7 +139,7 @@ function getVerified(){
  * getPartition gets the partition containing a certain network.
  * @param network_name
  */
-function getPartition(network_name){
+function getPartitionName(network_name){
 	var local_session = get_local_session();
 	var map = local_session.config_map;
 	//holds the name of the partition that this network is in
@@ -153,7 +154,7 @@ function getPartition(network_name){
 	return Partition_name;
 }
 
-function getPartitionfromDevice( device_name){
+function getPartitionNamefromDevice( device_name){
 	network_name =  getNetwork(device_name);
 	return getPartition(network_name);
 }

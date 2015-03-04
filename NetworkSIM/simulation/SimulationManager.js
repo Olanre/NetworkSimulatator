@@ -147,7 +147,6 @@ function authToken(token, callback){
 
 function createSimulation(body) {
 
-	var device = Device.getTemplate();
 	var d = new Date();
 	var map=body.config_map;
 	var simulation=Simulation.createNewSimulation(body.name);
@@ -165,7 +164,9 @@ function createSimulation(body) {
 
 			for(device in map[partition][network]){
 
-					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),body.name);
+					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),body.name, device);
+					createdDevice.deviceJSON.current_network = network;
+					createdDevice.deviceJSON.current_partition = partition;
 					createdNetwork.addDevice(createdDevice);
 
 			}
