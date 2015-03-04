@@ -4,14 +4,19 @@
  */
 function createDevice(device_name){
 	var local_simulation = get_local_simulation();
-	var params = { 
-			'device_name': device_name, 
-			'simulation_name': local_simulation.simulation_name,
-			};
-	var url = '/create/Device';
-	var timestamp = new Date();
-	addToEventQueue(url, params, timestamp);
-	addDeviceToFreeList( device_name );
+	if(local_simuation!==null){
+		var params = { 
+				'device_name': device_name, 
+				'simulation_name': local_simulation.simulation_name,
+				};
+		var url = '/create/Device';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timestamp);
+		addDeviceToFreeList( device_name );
+	}
+	else{
+		console.log("createDevice was passed null parameters");
+	}
 }
 
 /**
@@ -19,66 +24,66 @@ function createDevice(device_name){
  */
 function addDeviceToFreeList(device_token){
 	var local_simulation = get_local_simulation();
-	var params = { 
-			'simulation_name': local_simulation.simulation_name,
-			'device_token' :  device_token,
-			};
-	var url = '/add/Device/FreeList';
-	var timestamp = new Date();
-	//add to the event queue to sync with server
-	addToEventQueue(url, params, timestamp);
+	if(local_simulation!==null&& device_token!==null&&local_simulation!==null){
+		var params = { 
+				'simulation_name': local_simulation.simulation_name,
+				'device_token' :  device_token,
+				};
+		var url = '/add/Device/FreeList';
+		var timestamp = new Date();
+		//add to the event queue to sync with server
+		addToEventQueue(url, params, timestamp);
+	}
+	else{
+		console.log("null parameters in addDeviceToFreeList, nothing was done.");
+	}
 }
 
 /**
- * removeDevicefromFreeList: remove a device from the freelist
- * @param device_name: the name of the device to removed from the free list
+ * removes a device from the free list 
  */
-function removeDevicefromFreeList( token, simulation_name){
+function removeDevicefromFreeList( device_token, simulation_name){
 	//gets the current state of the simulation
 	var local_simulation = get_local_simulation();
-	if(local_simulation !== null){
+	if(local_simulation !== null&& device_token!==token&& local_simulation!==null){
 		var params = { 
 				'simulation_name': local_simulation.simulation_name,
-				'device_name' :  device_name
+				'device_token' :  device_token
 				};
 		var url = '/remove/Device/FreeList';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
-	}else{
+	}
+	else{
 		console.log("local simulation session not found!");
 	}
 	
 }
 
-/** remove a device from its current network and adds 
- * the same device in the new specified network
- * used only at the local device level
+/** 
+ * moves a device to a network by removing it from the previous network it was in and adding it to the new network.
  */
-function addDevice( token, network_name){
-	//gets the information of this user
-	var local_device = get_local_device();
-	last_network = getNetwork(device_name);
-	removeDevicefromNetwork( device_name, last_network);
-	addDeviceToNetwork( device_name, network_name);
-	//gets the default page for the user.
-	appDefaultView();
+function moveDeviceToNetwork( device_token, network_name){
+	if (device_token!==null &&network_name!==null){
+		last_network = getNetwork(device_token);
+		removeDevicefromNetwork( device_token, last_network);
+		addDeviceToNetwork(device_token, network_name);
+		//gets the default page for the user.
+		appDefaultView();
+	}
+	else{
+		console.log("moveDeviceToNetwork recieved null parameters");
+	}
 }
 
 /**
  * adds a device to a network
  */
-function addDeviceToNetwork( token, network_name){
-	//gets the current state of the simulation
+function addDeviceToNetwork( device_token, network_name){
 	var local_simulation = get_local_simulation();
-	//gets the information of this user
-	var local_device = get_local_device();
-	if(local_simulation !== null || local_device !== null){
-		//gets the partition of the network 
-		var partition_name = getPartition(network_name);
-		//send the information to the eventQueue for syncing with the server
+	if(device_token!==null && network_name!==null&&local_simulation!==null){
 		var params = { 
 				'network_name': network_name, 
-				'partition_name': partition_name , 
 				'simulation_name': local_simulation.simulation_name,
 				'device_name' :  device_name
 				};
@@ -86,39 +91,29 @@ function addDeviceToNetwork( token, network_name){
 		var timestamp = new Date();
 		//add to the event queue to sync with server
 		addToEventQueue(url, params, timestamp);
-		
-	}else{
-		console.log("Local device or local session does not exist");
+	}
+	else{
+		console.log("addDeviceToNetwork recieved null parameters");
 	}
 }
 
 /**
  * removes a device from a certain network.
  */
-function removeDevicefromNetwork(token, network){
-	//gets the user from storage
-	var local_device = get_local_device;
-	//gets the simulation from storage
+function removeDeviceFromNetwork(device_token, network_name){
 	var local_simulation = get_local_simulation();
-	if(local_device !== null && local_simulation !== null){
-		//gets the partition which the user is part of
-		partition = getPartitionfromDevice( device_name);
-		if(partition !== null){
-			
-			var params = { 
-					'network_name': network, 
-					'partition_name': partition , 
-					'simulation_name': local_simulation.simulation_name,
-					'device_name' :  device_name
-					};
-			var url = '/remove/Device/Network';
-			var timestamp = new Date();
-			addToEventQueue(url, params, timestamp);
-		}else{
-			console.log("partition not found!")
-		}
-	}else{
-		console.log("Local device or local session not found!")
+	if(device_token!==null && network_name!==null&& local_simulation!==null){
+		var params = { 
+				'network_name': network, 
+				'simulation_name': local_simulation.simulation_name,
+				'device_name' :  device_name
+				};
+		var url = '/remove/Device/Network';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timestamp);
+	}
+	else{
+		console.log("removeDeviceFromNetwork was passed null parameters")
 	}
 }
 

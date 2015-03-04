@@ -1,14 +1,14 @@
 function createNetwork(network_name){
 	//gets the user information from storage
 	var local_device = get_local_device();
-	var local_session = get_local_simulation();
+	var local_simulation = get_local_simulation();
 	var local_application = get_local_application();
 	var partition = network_name;
 	
 	var params = { 
 			'network_name': network_name, 
 			'partition_name': partition , 
-			'simulation_name': local_session.simulation_name,
+			'simulation_name': local_simulation.simulation_name,
 			};
 	var url = '/create/Network';
 	var timestamp = new Date();
@@ -26,7 +26,7 @@ function createNetwork(network_name){
  */
 function deleteNetwork(network_name){
 	var local_device = get_local_device();
-	var local_session = get_local_simulation();
+	var local_simulation = get_local_simulation();
 	//network should only be stored in one object not two
 	//should check if the network was created by the user
 	var Partition_name = getPartition(network_name);
@@ -34,7 +34,7 @@ function deleteNetwork(network_name){
 	var params = { 
 			'network_name': network_name, 
 			'partition_name' : Partition_name,
-			'simulation_name': local_session.simulation_name,
+			'simulation_name': local_simulation.simulation_name,
 			};
 	var url = '/delete/Network';
 	var timestamp = new Date();
