@@ -1,6 +1,6 @@
 function viewDeviceTemplate(){
 	var local_device = get_local_device();
-	var local_session = get_local_session();
+	var local_session = get_local_simulation();
 	var app_name = local_device.current_simulation;
 	
 	var str = "<div>" +

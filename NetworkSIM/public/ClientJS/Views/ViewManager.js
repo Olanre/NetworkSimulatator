@@ -94,7 +94,7 @@ function simulationListView(){
 	clearSection();
 	//gets the local application and the local session
 	var local_application = get_local_simulation_names();
-	//var local_simulation_list = get_local_session();
+	//var local_simulation_list = get_local_simulation();
 	
 	//gets the list of simulations
 	var simulations = local_application.simulation_list;

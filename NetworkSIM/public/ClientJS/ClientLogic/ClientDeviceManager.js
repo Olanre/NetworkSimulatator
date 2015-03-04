@@ -1,17 +1,12 @@
-/** Function to create a new device in the simulation
- * The new device with the specified is added t the free list 
- * the number of devices in the simulation and eventqueue is then updated 
- * 
- * @param device_name, the name of the device to be added
+/** 
+ * Creates a new device in this simulation. This is not what is called when a simulation is created,
+ * that is coming different.
  */
 function createDevice(device_name){
-	//UHHH NEED TO GET THESE VARIABLES SHOULD THIS EVEN BE WHAT WE SEND?
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	var params = { 
-			'network_name' : network,
-			'partition_name' : partition,
 			'device_name': device_name, 
-			'simulation_name': local_session.simulation_name,
+			'simulation_name': local_simulation.simulation_name,
 			};
 	var url = '/create/Device';
 	var timestamp = new Date();
@@ -19,19 +14,15 @@ function createDevice(device_name){
 	addDeviceToFreeList( device_name );
 }
 
-
 /**
  * adds a device to the list of 
  */
-function addDeviceToFreeList(token){
-	
-	//gets the current state of the simulation
-	var local_session = get_local_session();
-	//gets the information of local device
+function addThisDeviceToFreeList(){
+	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
 	var params = { 
-			'simulation_name': local_session.simulation_name,
-			'device_name' :  device_name,
+			'simulation_name': local_simulation.simulation_name,
+			'device_token' :  local_device.token,
 			};
 	var url = '/add/Device/FreeList';
 	var timestamp = new Date();
@@ -45,10 +36,10 @@ function addDeviceToFreeList(token){
  */
 function removeDevicefromFreeList( token, simulation_name){
 	//gets the current state of the simulation
-	var local_session = get_local_session();
-	if(local_session !== null){
+	var local_simulation = get_local_simulation();
+	if(local_simulation !== null){
 		var params = { 
-				'simulation_name': local_session.simulation_name,
+				'simulation_name': local_simulation.simulation_name,
 				'device_name' :  device_name
 				};
 		var url = '/remove/Device/FreeList';
@@ -79,17 +70,17 @@ function addDevice( token, network_name){
  */
 function addDeviceToNetwork( token, network_name){
 	//gets the current state of the simulation
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	//gets the information of this user
 	var local_device = get_local_device();
-	if(local_session !== null || local_device !== null){
+	if(local_simulation !== null || local_device !== null){
 		//gets the partition of the network 
 		var partition_name = getPartition(network_name);
 		//send the information to the eventQueue for syncing with the server
 		var params = { 
 				'network_name': network_name, 
 				'partition_name': partition_name , 
-				'simulation_name': local_session.simulation_name,
+				'simulation_name': local_simulation.simulation_name,
 				'device_name' :  device_name
 				};
 		var url = '/add/Device/Network';
@@ -109,8 +100,8 @@ function removeDevicefromNetwork(token, network){
 	//gets the user from storage
 	var local_device = get_local_device;
 	//gets the simulation from storage
-	var local_session = get_local_session();
-	if(local_device !== null && local_session !== null){
+	var local_simulation = get_local_simulation();
+	if(local_device !== null && local_simulation !== null){
 		//gets the partition which the user is part of
 		partition = getPartitionfromDevice( device_name);
 		if(partition !== null){
@@ -118,7 +109,7 @@ function removeDevicefromNetwork(token, network){
 			var params = { 
 					'network_name': network, 
 					'partition_name': partition , 
-					'simulation_name': local_session.simulation_name,
+					'simulation_name': local_simulation.simulation_name,
 					'device_name' :  device_name
 					};
 			var url = '/remove/Device/Network';

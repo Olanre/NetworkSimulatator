@@ -314,7 +314,7 @@ interact('.network')
 						newpartitionlist=breadthFirstSearch(dragged);
 						var newpartition=buildPartition(newpartitionlist);
 						//depends on bad.js :)
-						var localsession=get_local_session();
+						var localsession=get_local_simulation();
 						var partitionname=getPartition(dragged.name);
 						localsession.config_map[partitionname]=oldpartition;
 						//depends on utilities.js

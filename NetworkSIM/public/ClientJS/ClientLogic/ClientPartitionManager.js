@@ -4,7 +4,7 @@
  * @param: partition, the old partition the network was in to be added
  */
 function dividePartition(network, partition){
-	var local_session = get_local_session();
+	var local_session = get_local_simulation();
 	if(local_session !== null){
 		var params = { 
 				'network_name': network_name, 
@@ -20,7 +20,7 @@ function dividePartition(network, partition){
 }
 
 function mergePartition(partition_a, partition_b){
-	var local_session = get_local_session();
+	var local_session = get_local_simulation();
 	var params = { 
 			'partition_a': partition_a, 
 			'partition_b' : partition_b,

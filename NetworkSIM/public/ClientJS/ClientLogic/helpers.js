@@ -6,9 +6,9 @@
  */
 function getPartitions(){
 	//gets the current simulation on the user side
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	//gets the configuration of this simulation
-	var map = local_session.partition_list;
+	var map = local_simulation.partition_list;
 	//holds a list of the partitions
 	var list = [];
 	for(var i = 0; i < partition_list.length; i++){
@@ -23,9 +23,9 @@ function getPartitions(){
  */
 function getNetworks(){
 	//gets the local simulation//
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	//gets the configuration map of the current simulation on the users side
-	var map = local_session.partition_list;
+	var map = local_simulation.partition_list;
 	// a list of all of the networks in the simulation
 	var list = []; 
 	//populates list
@@ -43,7 +43,7 @@ function getNetworks(){
  */
 function getDevices(){
 	//gets the current simulation on the users side
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	//gets the list of networks
 	var networklist = getNetworks();
 	//list will hold all of the devices in the simulation
@@ -62,9 +62,9 @@ function getDevices(){
  */
 function getDeviceNames(network_name){
 	//gets the current simulation as the user sees it
-	var local_session = get_local_session();
+	var local_simulation = get_local_simulation();
 	//gets the configuration of this simulation
-	var map = local_session.config_map;
+	var map = local_simulation.config_map;
 	//gets the partition that the user is located in 
 	partition = getPartition(network_name)
 	//list to hold all of the devices within this particular network
@@ -79,8 +79,8 @@ function getDeviceNames(network_name){
  * getLogs returns the activity logs for the current simulation on this device
  */
 function getLogs(){
-	var local_session = get_local_session();
-	return local_session.activity_logs;
+	var local_simulation = get_local_simulation();
+	return local_simulation.activity_logs;
 }
 
 /**
@@ -88,8 +88,8 @@ function getLogs(){
  * @param device_name
  */
 function getNetworkName(device_name){
-	var local_session = get_local_session();
-	var map = local_session.config_map;
+	var local_simulation = get_local_simulation();
+	var map = local_simulation.config_map;
 	//gets the list of networks
 	var list = getNetworks();
 	//holds the name of the network that this device is present in
@@ -116,8 +116,8 @@ function getToken(){
 }
 
 function getSimulationName(){
-	var local_session = get_local_session();
-	return local_session.simulation_name;
+	var local_simulation = get_local_simulation();
+	return local_simulation.simulation_name;
 }
 
 /**
@@ -140,8 +140,8 @@ function getVerified(){
  * @param network_name
  */
 function getPartitionName(network_name){
-	var local_session = get_local_session();
-	var map = local_session.config_map;
+	var local_simulation = get_local_simulation();
+	var map = local_simulation.config_map;
 	//holds the name of the partition that this network is in
 	var Partition_name = '';
 	for( var key in map ){
