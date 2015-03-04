@@ -24,7 +24,7 @@ function createDevice(device_name){
 /**
  * adds a device to the list of 
  */
-function addDeviceToFreeList(device_name){
+function addDeviceToFreeList(token){
 	
 	//gets the current state of the simulation
 	var local_session = get_local_session();
@@ -44,7 +44,7 @@ function addDeviceToFreeList(device_name){
  * removeDevicefromFreeList: remove a device from the freelist
  * @param device_name: the name of the device to removed from the free list
  */
-function removeDevicefromFreeList( device_name, simulation_name){
+function removeDevicefromFreeList( token, simulation_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
 	if(local_session !== null){
@@ -65,7 +65,7 @@ function removeDevicefromFreeList( device_name, simulation_name){
  * the same device in the new specified network
  * used only at the local device level
  */
-function addDevice( device_name, network_name){
+function addDevice( token, network_name){
 	//gets the information of this user
 	var local_device = get_local_device();
 	last_network = getNetwork(device_name);
@@ -78,7 +78,7 @@ function addDevice( device_name, network_name){
 /**
  * adds a device to a network
  */
-function addDeviceToNetwork( device_name, network_name){
+function addDeviceToNetwork( token, network_name){
 	//gets the current state of the simulation
 	var local_session = get_local_session();
 	//gets the information of this user
@@ -106,7 +106,7 @@ function addDeviceToNetwork( device_name, network_name){
 /**
  * removes a device from a certain network.
  */
-function removeDevicefromNetwork(device_name, network){
+function removeDevicefromNetwork(token, network){
 	//gets the user from storage
 	var local_device = get_local_device;
 	//gets the simulation from storage

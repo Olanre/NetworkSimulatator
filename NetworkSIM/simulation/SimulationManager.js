@@ -23,7 +23,6 @@ var simulationList = [];
 
 
 exports.ClientRequest = function(token, eventQueue, simulation, callback) {
-	
 	for(var i = 0; i < eventQueue.length; i++) {
 		
 		switch(eventQueue[i].route) {

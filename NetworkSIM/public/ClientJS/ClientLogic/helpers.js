@@ -11,8 +11,8 @@ function getPartitions(){
 	var map = local_session.config_map;
 	//holds a list of the partitions
 	var list = [];
-	for(var partition in map){
-		list.push(partition);
+	for(var i = 0; i < partition_list.length; i++){
+		list.push(partition_list[i][0]);
 	}
 	//returns a list of partitions
 	return list;

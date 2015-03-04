@@ -13,6 +13,7 @@ function syncWithServer(){
 	var event_data = '';
 	
 	local_events = get_local_events();
+	//console.log(local_events);
 	if(local_events == null){
 		event_data = JSON.stringify(newEventQueue());	
 	}

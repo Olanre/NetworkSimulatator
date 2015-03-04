@@ -8,6 +8,7 @@ function newEventQueue(){
 	var queue = {};
 	queue.token = '';
 	queue.eventQueue = [];
+	queue.simulation_name = '';
 	store_local_events(local_events);
 	return queue;
 }
