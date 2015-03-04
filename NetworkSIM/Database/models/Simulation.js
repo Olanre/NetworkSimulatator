@@ -10,6 +10,7 @@ var simulationSchema = mongoose.Schema({
 	   num_networks: Number,
 	   simulation_population: Number,
 	   simulation_name: String,
+	   //config map isn't used anymore
 	   config_map: String,
 	   tokenMethod : String,
 	   //token_list : [tokens],
