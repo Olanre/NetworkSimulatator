@@ -12,7 +12,7 @@ function getPartitions(){
 	//holds a list of the partitions
 	var list = [];
 	for(var i = 0; i < partition_list.length; i++){
-		list.push(partition_list[i]['partition_list']);
+		list.push(partition_list[i]['partition_name']);
 	}
 	//returns a list of partitions
 	return list;
@@ -31,7 +31,7 @@ function getNetworks(){
 	//populates list
 	for(var i = 0; i < partition_list.length; i++){
 		var networks = partition_list[i][1];
-		for (var j = 0; j < partition_list[i][1]; j++){
+		for (var j = 0; j < partition_list[i]['network_list']; j++){
 			list.push(network);
 		}
 	}
