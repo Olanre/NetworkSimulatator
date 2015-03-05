@@ -270,5 +270,6 @@ function parseSimulationLogs(states, timeStamp){
 	return "failed";
 }
 
-populatePage(testState)
+//FOR TESTING
+window.onload=function(){populatePage(testState)};
 // a test states object

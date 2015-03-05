@@ -6,17 +6,14 @@
   <title></title>
     <link rel="stylesheet" href="../public/stylesheets/topologyView.css" media="screen" type="text/css" />
     <script src="../public/ClientJS/Utilities.js"></script>
+    <script src='../public/ClientJS/GUI/GUIShapes.js'></script>
 </head>
-
-<"C:/Users/Noah/git/sim-2"body>
-	<script src='../public/ClientJS/interact-1.2.2.js'></script>
 	<div id="bigDiv">
 	<svg>
 	</svg>
-	
-	<script src='../public/ClientJS/interact-1.2.2.js'></script>
-
-	<script src='../public/ClientJS/toplogyManipulationGUI.js'></script>
+	<!-- Note: These javascript files must be added AFTER the svg canvas for this to work!!! -->
+	<script src='../public/ClientJS/GUI/interact-1.2.2.js'></script>
+	<script src='../public/ClientJS/GUI/toplogyManipulationGUI.js'></script>
 	<br>
 	<button class="buttton" type="button" onclick = createDeviceGraphic()>New Device</button>
 	<button class="buttton"  type="button" onclick = createNetworkGraphic()>New Network</button>
