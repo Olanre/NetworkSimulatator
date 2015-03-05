@@ -57,3 +57,12 @@ exports.findPartitionByName=function(partitionName,partitionList){
 	}
 	return -1;
 };
+
+exports.findByUniqueID=function(uniqueID,list){
+
+	for(index in list){
+		if(list[index].uniqueID==uniqueID) return list[index];
+	}
+	
+	return -1;
+}

@@ -29,6 +29,7 @@ function Simulation(simulation_name){
 	this.addDevice=addDevice;
 	this.addNetwork=addNetwork;
 	this.removeNetwork=removeNetwork;
+	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
 }
 
@@ -81,34 +82,6 @@ function getNetworks(){
 		
 		return merged;
 }
-//Olanre
-function add2FreeList(device){
-		this.freeList.device_list.push(device);
-		device.current_network = 'freelist';
-		device.current_partition = 'freelist';
-		var size = util.size(this.simulationJSON.partition_list['freelist']);
-		this.simulationJSON.partition_list['freelist'][device.device_name] = size + 1;	
-		var free_num = util.size(Sim.partition_list['freelist']) + 1;
-		this.simulationJSON.partition_list['freelist'][device.deviceJSON.current_device_name] = free_num;
-		device.networkObject = this.freelist;
-		device.deviceJSON.current_network='freelist';
-		device.partition={};
-	
-}
-//OLANRE
-function removeDeviceFromFreeList(device){
-		
-		var deviceIndex = this.freeList.device_list.indexOf(device);
-		if( deviceIndex != -1){
-			delete this.freeList.device_list[deviceIndex];
-		}
-		
-		var list = this.simulationJSON.partition_list['freelist'];
-		if( list.hasOwnProperty(device.deviceJSON.current_device_name) ){
-			delete this.simulationJSON.partition_list['freelist'][device.deviceJSON.current_device_name];
-		}		
-		
-}
 
 function getDevices(){
 		var merged = [];
@@ -135,7 +108,6 @@ function addPartition(partition){
 
 function addDevice(device){
 	device.deviceJSON.simulation_name = this.simulationJSON.simulation_name;
-	this.freeList.addDevice(device);
 }
 
 function addNetwork(network){
@@ -162,6 +134,21 @@ function removeNetwork(networkName){
 		}
 		
 }
+
+function mergePartitions(partitionA,partitionB){
+	for(index in this.partition_list){
+
+		if(this.partition_list[index].partition_name==partitionB.partition_name){
+
+			this.partition_list.splice(index,1);
+			this.simulationJSON.partition_list.splice(index,1);
+
+			partitionA.mergePartition(partitionB);
+
+		}
+	}
+}
+
 
 module.exports.createNewSimulation=createNewSimulation;
 module.exports.loadSimulationFromJSON=loadSimulationFromJSON;

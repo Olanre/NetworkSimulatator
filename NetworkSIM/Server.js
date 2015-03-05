@@ -73,26 +73,27 @@ app.post("/getSync", function(req, res) {
 		var json = JSON.parse(data);
 		var token = json.token;
 		var events = json.eventQueue ;
-		var simulation= json.simulation_name;
+		var simulation= json.simulationName;
 		//console.log(obj);
 		SimulationManager.authToken(token, function(obj){
 			//for now allow empty tokens
 			if(obj.Response == 'Success'){
 				console.log("Successful authenication" );
-					SimulationManager.ClientRequest(token, events, simulation, function(){
+					SimulationManager.ClientRequest(token, events, function(){
 
 					res.send(SimulationManager.getAppStateForDevice(token,simulation));
 				});
 				
-			}else{
+			}
+			else{
 				console.log("Failed authenication" );
 				console.log(json);
-				SimulationManager.ClientRequest(token, events, simulation, function(){
+				SimulationManager.ClientRequest(token, events, function(){
+
 					var state={};
 					state.simulation=undefined;
 					state.device=undefined;
 					state.simulation_names=SimulationManager.getSimulationNames();
-					
 					res.send(state);
 					
 				});
