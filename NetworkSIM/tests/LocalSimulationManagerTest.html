@@ -18,7 +18,23 @@
 			console.log(i+"th object has id="+list[i]._id);
 		}
 		console.log('getAllDeviceTokens(): should be: d0n0p0, d1n0p0, d0n1p0, d1n1p0, d0n0p1, d1n0p1, d0n1p1, d1n1p1 actual='+getAllDeviceTokens());
-		
+		console.log('getNetworkObjectById(): should be: n1p0 actual: '+getNetworkObjectById('n1p0')._id);
+		console.log('getPartitionObjectById(): should be: p1 actual: '+getPartitionObjectById('p1')._id);
+		console.log('getDeviceObjectByToken(): should be: d1n0p1 actual: '+getDeviceObjectByToken('d1n0p1').token);
+		console.log('getDeviceTokensOfNetworkId(): should be: d0n1p1, d1n1p1 actual: '+getDeviceTokensOfNetworkId('n1p1'));
+		console.log("testing getDeviceObectsOfNetworkId()");
+		var device_objects=getDeviceObectsOfNetworkId('n0p1');
+		for (var i=0;i<device_objects.length;i++){
+			console.log('should be: d'+i+'n0p1 actual: '+device_objects[i].token);
+		}
+		console.log('getSimulationActivityLogs(): should be: had fun actual: '+getSimulationActivityLogs());
+		console.log('getNetworkIdOfDevice(): should be n1p0 actual: '+getNetworkIdOfDevice('d1n1p0'));
+		console.log('getNetworkObjectOfDevice(): should be n0p0 actual: '+getNetworkObjectOfDevice('d0n0p0')._id);
+		console.log('getPartitionIdOfNetwork(): should be p1 actual: '+getPartitionIdOfNetwork('n1p1'));
+		console.log('getPartitionObjectOfNetwork(): should be p0 actual: '+getPartitionObjectOfNetwork('n1p0')._id);
+		console.log('getPartitionIdOfDevice(): should be p1 actual: '+getPartitionIdOfDevice('d1n0p1'));
+		console.log('getLocalSimulationId(): should be s0 actual: '+getLocalSimulationId())
+
 	</script>
 </head>
 <body>

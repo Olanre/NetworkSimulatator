@@ -1,5 +1,6 @@
 /**
  * Helper file for getting elements from simulation object which is stored in local storage and retrieved from the client
+ * ALL OF THESE METHODS HAVE BEEN TESTED AND WORK CORRECTLY.
  */
 /**
  * gets the list of partition id's for this current simulation
@@ -124,7 +125,7 @@ function getAllDeviceObjects(){
  function getNetworkObjectById(network_id){
  	var network_object=null;
  	//i'm not checking for null here, is that right?
- 	var network_list=getNetworkObjects();
+ 	var network_list=getAllNetworkObjects();
  	for (var i=0; i<network_list.length;i++){
  		if (network_list[i]._id ==network_id){
  			network_object=network_list[i];
@@ -234,13 +235,13 @@ function getNetworkIdOfDevice(device_token){
 function getNetworkObjectOfDevice(device_token){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null&&device_token!==null){
-		var list = getNetworks();
+		var network_list = getAllNetworkObjects();
 		var network_obj = null;
-		for(var i = 0; i < list.length; i++){
-			var devicelist = list[i].device_list;
-			for(var j = 0; j < devicelist.length; j++){
-				if(devicelist[j].token == device_token){
-					network_obj = list[i];
+		for(var i = 0; i < network_list.length; i++){
+			var device_list = network_list[i].device_list;
+			for(var j = 0; j < device_list.length; j++){
+				if(device_list[j].token == device_token){
+					network_obj = network_list[i];
 				}
 			}
 		}
@@ -260,7 +261,7 @@ function getPartitionIdOfNetwork(network_id){
 		var partition_list = local_simulation.partition_list;
 		var partition_id = '';
 		for(var i = 0; i < partition_list.length; i++){
-			var networks = partion_list[i].network_list;
+			var networks = partition_list[i].network_list;
 			for(var j = 0; j < networks.length; j++){
 				if(networks[j]._id == network_id){
 					partition_id = partition_list[i]._id;
@@ -284,7 +285,7 @@ function getPartitionObjectOfNetwork(network_id){
 		var partition_list = local_simulation.partition_list;
 		var partition_obj = '';
 		for(var i = 0; i < partition_list.length; i++){
-			var networks = partion_list[i].network_list;
+			var networks = partition_list[i].network_list;
 			for(var j = 0; j < networks.length; j++){
 				if(networks[j]._id == network_id){
 					
@@ -305,7 +306,7 @@ function getPartitionObjectOfNetwork(network_id){
 function getPartitionIdOfDevice( device_id){
 	if(device_id!==null){
 		var Partition_id = '';
-		var network_id =  getNetworkIdOfDevice(device_name);
+		var network_id =  getNetworkIdOfDevice(device_id);
 		if(network_id !== ''){
 			Partition_id =  getPartitionIdOfNetwork(network_id);
 		}
