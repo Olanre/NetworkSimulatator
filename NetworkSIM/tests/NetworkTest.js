@@ -1,6 +1,6 @@
-var Device=require("../simulation/Device.js");
-var Network=require("../simulation/Network.js");
-var Util=require("../simulation/utilities.js");
+var Device=require("../Model/Device.js");
+var Network=require("../Model/Network.js");
+var Util=require("../Utilities/utilities.js");
 
 var JSONNetworkTemplate={
 	network_name:undefined,
@@ -93,7 +93,7 @@ module.exports.testNetworkLeaving=function(){
 		network.addDevice(device);
 		network.removeDevice(device);
 		leaveNetwork=leaveNetwork&&!testIfDeviceJoined(device,network);
-		inNetwork=inNetwork||!(Util.findDeviceByName(device.device_name,network.device_list));
+		inNetwork=inNetwork||!(Util.findByUniqueID(device._id,network.device_list));
 	}
 
 	var jsondevlist=network.networkJSON.device_list;

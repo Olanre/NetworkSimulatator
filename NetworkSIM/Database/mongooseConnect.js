@@ -32,12 +32,11 @@ var userSchema = mongoose.Schema({
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,
-   //unique_id : {type : String, required: true , index : {unique : true}},
+    unique_id : {type : String, required: true , index : {unique : true}},
 	});
 
 //STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
-
 
 //DEVICE
 var deviceSchema = mongoose.Schema({
@@ -55,7 +54,6 @@ var networkSchema = mongoose.Schema({
  network_type : String,
  partition : String,
  device_list : [User],
-//unique_id : {type : String, required: true , index : {unique : true}},
 
 });
 
@@ -72,7 +70,6 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String,
 	   config_map: String,
 	   tokenMethod : String,
-	   //unique_id : {type : String, required: true , index : {unique : true}},
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
@@ -107,7 +104,6 @@ var partitionSchema = mongoose.Schema({
 	
 	partition_name: String,
 	network_list: [Network],
-   //unique_id : {type : String, required: true , index : {unique : true}},
 
 });
 
@@ -352,3 +348,9 @@ module.exports.savePartition = savePartition;
 module.exports.modifyPartitionByName = modifyPartitionByName;
 module.exports.getPartitionByName = getPartitionByName;
 module.exports.getNetworkByName = getNetworkByName;
+
+
+module.exports.User=User;
+module.exports.Network=Network;
+module.exports.Partition=Partition;
+module.exports.Simulation=Sim;

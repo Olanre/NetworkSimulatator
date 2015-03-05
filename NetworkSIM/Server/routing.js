@@ -33,8 +33,8 @@ function sync(request, response){
 				handleEventQueue(token, events, function(){
 
 					var state={};
-					state.simulation=undefined;
-					state.device=undefined;
+					state.simulation="undefined";
+					state.device="undefined";
 					state.simulation_names=SimulationManager.getSimulationNames();
 					response.send(state);
 					

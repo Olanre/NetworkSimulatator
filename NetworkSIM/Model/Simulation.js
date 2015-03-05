@@ -1,6 +1,8 @@
 var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
+var Database=require("../Database/mongooseConnect.js");
+
 
 function Simulation(simulation_name){
 
@@ -10,11 +12,12 @@ function Simulation(simulation_name){
 	this.networkIterator = {};
 	this.app = '';
 	this.rdt = {};
-	this.simulation_name=simulation_name;
-
+	
 	this.simulationJSON = {};
 	this.simulationJSON.simulation_name = simulation_name;
 	this.simulationJSON.partition_list=[];
+	this._id=(new Database.Simulation())._id;
+	this.simulationJSON._id=this._id;
 	
 	//admin.js stuff
 	this.importRDT=importRDT;
@@ -23,8 +26,6 @@ function Simulation(simulation_name){
 
 	//functions
 	this.getNetworks=getNetworks;
-	this.add2FreeList=add2FreeList;
-	this.removeDeviceFromFreeList=removeDeviceFromFreeList;
 	this.getDevices=getDevices;
 	this.addPartition=addPartition;
 	this.addDevice=addDevice;
@@ -86,7 +87,7 @@ function getNetworks(){
 
 function getDevices(){
 		var merged = [];
-		for(var i = 0; i < this.simulationJSON.partition_list.legnth; i++){
+		for(var i = 0; i < this.simulationJSON.partition_list.length; i++){
 			var Networks = this.simulationJSON.partition_list[i].networkList;
 			for( var j = 0 ; j < Networks.length; j++){
 				var Devices = Networks[i].networkJSON.device_list;

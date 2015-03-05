@@ -1,13 +1,17 @@
 var Util=require("../Utilities/utilities.js");
-
+var Database=require("../Database/mongooseConnect.js");
 function Partition(partitionName, simulationName){
 	
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.network_list=[];
-	this.partitionJSON={};
+
+	this.partitionJSON = {};
 	this.partitionJSON.partition_name=partitionName;
+
+	this._id = (new Database.Partition())._id;
 	this.partitionJSON.network_list=[];
+	this.partitionJSON._id=this._id;
 
 	this.addNetwork=addNetwork;
 	this.removeNetwork=removeNetwork;
@@ -38,6 +42,7 @@ function loadPartitionFromJSON(partitionJSON){
 function attachJSON(partitionJSON){
 		this.partitionJSON=partitionJSON;
 		this.partition_name=partitionJSON.partition_name;
+		this._id=partitionJSON._id;
 }
 
 function addNetwork(network){

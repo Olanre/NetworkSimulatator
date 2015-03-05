@@ -17,12 +17,12 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 //TODO We need to fill this in on load!
 var simulationList = [];
 
-exports.getAppStateForDevice = function(token,simulation_name){
+exports.getAppStateForDevice = function(token,simulation_id){
 
 	var simulation,device,deviceList;
 
-	simulation=Util.getSimulationByName(simulation_name,simulationList);
-	deviceList=simulation.gets();
+	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	deviceList=simulation.getDevices();
 
 	for(index in deviceList){
 		if(deviceList[index].token==token){
@@ -34,12 +34,12 @@ exports.getAppStateForDevice = function(token,simulation_name){
 	var state;
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
-	state.simulation_names=module.exports.getNames();
+	state.simulation_names=module.exports.getSimulationNames();
 
 	return state;
 }
 
-module.exports.getNames=function(){
+module.exports.getSimulationNames=function(){
 	var names_list=[];
 	for(index in simulationList){
 		names_list.push(simulationList[index].simulation_name);
@@ -90,7 +90,7 @@ function createSimulation(event_data) {
 
 function createDevice(event_data) {
 
-	var simulation=Util.getSimulationByName(event_data.simulation_name,simulationList);
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
 	var device= Device.createNewDevice(event_data.device_name,tokenManager.generateToken());
 	simulation.addDevice(device);
 
@@ -100,8 +100,8 @@ function createDevice(event_data) {
 
 function createNetwork(event_data){
 
-	var simulation=Util.getSimulationByName(event_data.simulation_name,simulationList);
-	var partition=Util.getPartitionByUniqueID(event_data.partition_name,simulation.partition_list);
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	var partition=Util.findByUniqueID(event_data.partition_id,simulation.partition_list);
 	var network= Network.createNewNetwork(event_data.network_name);
 
 	if(partition!=-1&&event_data.partition_name!=''){
@@ -117,12 +117,6 @@ function createNetwork(event_data){
 
 //TODO - Will we even need to remove a device? Leaving this until later.
 function removeDevice(event_data){
-	//var simulation_name=event_data.simulation_name;
-	//var device_name=event_data.device_name;
-
-	//var simulationObject=Util.getByUniqueID(simulation_name,simulationList);
-	//var deviceObject=Util.getByUniqueID(device_name,simulationObject.gets());
-
 
 }
 
@@ -130,14 +124,15 @@ function removeDevice(event_data){
 function removeNetwork(event_data){
 }
 
-function addDeviceToNetwork(event_data){
-	var network_name=event_data.network_name;
-	var device_name=event_data.device_name;
-	var simulation_name=event_data.simulation_name;
 
-	var simulation=Util.getSimulationByName(simulation_name,simulationList);
-	var network=Util.getNetworkByName(network_name,simulation.getNetworks());
-	var device=Util.getDeviceByName(device_name,simulation.getDevices());
+function addDeviceToNetwork(event_data){
+	var network_id=event_data.network_id;
+	var device_Id=event_data.device_id;
+	var simulation_id=event_data.simulation_id;
+
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	var network=Util.findByUniqueID(network_id,simulation.getNetworks());
+	var device=Util.findByUniqueID(device_id,simulation.getDevices());
 
 	network.addDevice(device);
 
@@ -146,11 +141,11 @@ function addDeviceToNetwork(event_data){
 function mergePartitions(event_data){
 	var partition_a = event_data.partition_a;
 	var partition_b = event_data.partition_b;
-	var simulation_name = event_data.simulation_name;
+	var simulation_id = event_data.simulation_id;
 
-	var simulationObject=Util.getSimulationByName(simulation_name,simulationList);
-	var partitionA=Util.getPartitionByName(partition_a, simulationObject.partition_list);
-	var partitioB=Util.getPartitionByName(partition_b, simulationObject.partition_list);
+	var simulationObject=Util.findByUniqueID(simulation_id,simulationList);
+	var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
+	var partitioB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
 	simulationObject.mergePartitions(partitionA,partitionB);
 
 	//Add database calls
@@ -164,11 +159,11 @@ function dividePartitions(event_data){
 
 
 function addDeviceToFreeList(event_data){
-	var simulation_name=event_data.simulation_name;
-	var device_name=event_data.device_name;
+	var simulation_id=event_data.simulation_id;
+	var device_id=event_data.device_id;
 
-	var simulationObject=Util.getSimulationByName(simulation_name,simulationList);
-	var deviceObject=Util.getDeviceByName(device_name,simulationObject.getDevices());
+	var simulationObject=Util.findByUniqueID(simulation_id,simulationList);
+	var deviceObject=Util.findByUniqueID(device_id,simulationObject.getDevices());
 	var networkObject=deviceObject.networkObject;
 	networkObject.removeDevice(deviceObject);
 }

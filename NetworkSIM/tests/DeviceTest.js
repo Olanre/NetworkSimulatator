@@ -1,5 +1,5 @@
-var Device=require("../simulation/Device.js");
-var Util=require("../simulation/utilities.js");
+var Device=require("../Model/Device.js");
+var Util=require("../Utilities/utilities.js");
 var JSONDeviceTemplate={
 	current_device_name:undefined,
 	token:undefined,
@@ -21,30 +21,35 @@ var deviceJSON={
 }
 
 
-module.exports.testDeviceCreation=function(){
+testDeviceCreation=function(){
 	var createdDevice=Device.createNewDevice();
 	var result=Util.compareObjects(createdDevice.deviceJSON,JSONDeviceTemplate);
+	if(!result) console.log(createdDevice.deviceJSON);
 	var text=result? 'passed': 'failed';
 	console.log("createNewDevice " +text);
+	return result;
 }
 
-module.exports.testDeviceLoading=function(){
+testDeviceLoading=function(){
 	var loadedDevice=Device.loadDeviceFromJSON(deviceJSON);
 	var result=Util.compareObjects(loadedDevice.deviceJSON,deviceJSON);
 	var text=result?'passed':'failed';
 	console.log("loadDeviceFromJSON "+text);
+	return result;
 }
 
 
 module.exports.testDevice=function(){
 	var functions=[];
-	functions.push(module.exports.testDeviceCreation());
-	functions.push(module.exports.testDeviceLoading());
+	functions.push(testDeviceCreation);
+	functions.push(testDeviceLoading);
 
 	var continueTesting=true;
-	for(var i;i<functions.length;i++){
+	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i]();
-		if(!continueTesting)break;
+		if(!continueTesting){
+			break;
+		}
 	}
 	return continueTesting;
 }

@@ -1,8 +1,8 @@
-var Util=require("../simulation/utilities.js");
-var Device=require("../simulation/Device.js");
-var Network=require("../simulation/Network.js");
-var Partition=require("../simulation/Partition.js");
-var Simulation=require("../simulation/Simulation.js");
+var Util=require("../Utilities/utilities.js");
+var Device=require("../Model/Device.js");
+var Network=require("../Model/Network.js");
+var Partition=require("../Model/Partition.js");
+var Simulation=require("../Model/Simulation.js");
 
 var JSONSimulationTemplate={
 		partion_list : undefined,
@@ -125,7 +125,7 @@ module.exports.testAddNetwork=function(){
 	var network= Network.createNewNetwork("testNetwork");
 	createdSimulation.addNetwork(network);
 
-	var foundNetwork=Util.findNetworkByName(network.network_name, createdSimulation.getNetworks());
+	var foundNetwork=Util.findByUniqueID(network._id, createdSimulation.getNetworks());
 	var result = foundNetwork==-1;
 	var text=result ? 'passed' : 'failed';
 	console.log("addNetwork "+text);
@@ -142,7 +142,7 @@ module.exports.testRemoveNetwork=function(){
 	}
 
 	createdSimulation.removeNetwork(netlist[3]);
-	var foundNetwork=Util.findNetworkByName(netlist[3].network_name,createdSimulation.getNetworks());
+	var foundNetwork=Util.findByUniqueID(netlist[3]._id,createdSimulation.getNetworks());
 	var text= foundNetwork==-1 ? 'passed' : 'failed';
 	console.log("removeNetwork "+text);
 	return foundNetwork==-1;
