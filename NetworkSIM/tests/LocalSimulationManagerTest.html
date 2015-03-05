@@ -1,11 +1,14 @@
 <html>
 <head>
 	<script src='../public/ClientJS/ClientLogic/LocalSimulationManager.js' type='text/javascript'></script>
+	<script src='TestObjects/LocalSimulationManagerTest.js' type='text/javascript'></script>
 	<script>
 		function get_local_simulation(){
 			return '';
 		}
-		getAllNetworkIds();
+		var sim=generateSimulationObject(2);
+		printCreatedSimulation(sim);
+
 	</script>
 </head>
 <body>

@@ -3,7 +3,7 @@
  *and devices to create
  */
 
-function genereateSimulationObject(index){
+function generateSimulationObject(index){
 	var simulation={};
 	simulation._id='s'+index;
 	simulation.num_devices=0;
@@ -19,6 +19,7 @@ function genereateSimulationObject(index){
 		simulation.num_devices+=index;
 		simulation.num_networks+=index;
 	}
+	return simulation
 }
 
 function generatePartitionObject(index, simulation_id){
@@ -29,6 +30,7 @@ function generatePartitionObject(index, simulation_id){
 		network=generateNetworkObject(index, partition._id, simulation_id);
 		partition.network_list.push(network);
 	}
+	return partition;
 }
 
 function generateNetworkOBject(index, partition_id,simulation_id){
@@ -42,6 +44,7 @@ function generateNetworkOBject(index, partition_id,simulation_id){
 		device=generateDeviceObject(index, simulation_id, partition_id, network._id);
 		network.device_list.push(device);
 	}
+	return network;
 }
 
 function generateDeviceObject(index, simulation_id, partition_id, network_name){
@@ -59,4 +62,21 @@ function generateDeviceObject(index, simulation_id, partition_id, network_name){
 	device.current_device_name="jeff"+index;
 	device.activity="hung out "+index+" times";
 	return device;
+}
+
+function printCreatedSimulation(simulation){
+	console.log('simulationId='+simulation._id);
+	console.log('simulation Name='+simulation.simulation_name);
+	for (var i=0;i<simulation.partition_list.length;i++){
+		console.log("partition id="+simulation.partition_list[i]._id);
+		network_list=simulation.partition_list[i].network_list;
+		for (var j=0; j<network_list.length; j++){
+			console.log("network id="+network_list[i]._id);
+			device_list=network_list[i].device_list;
+			for (var k=0;k<device_list.length;j++){
+				console.log("device id="+device_list[k]._id);
+				console.log("device name="+device_list[k].current_device_name);
+			}
+		}
+	}
 }
