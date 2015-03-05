@@ -16,7 +16,7 @@ function getAllPartitionIds(){
 		return list;
 	}
 	else{
-		console.log("getPartitionIds was passsed null parameters");
+		console.log("Error:getPartitionIds was passsed null parameters");
 	}
 }
 
@@ -38,7 +38,7 @@ function getAllNetworkIds(){
 		return list;
 	}
 	else{
-		console.log("getAllNetworkIds recieved null local_simulation");
+		console.log("Error:getAllNetworkIds recieved null local_simulation");
 	}
 }
 
@@ -59,7 +59,7 @@ function getAllNetworkObjects(){
 		return list;
 	}
 	else{
-		console.log("getAllNetworkObjects recieved null simulation object");
+		console.log("Error:getAllNetworkObjects recieved null simulation object");
 	}
 }
 
@@ -80,7 +80,7 @@ function getAllDeviceTokens(){
 		return list;
 	}
 	else{
-		console.log("getAllDeviceIds recieved null simulation object");
+		console.log("Error:getAllDeviceIds recieved null simulation object");
 	}
 }
 
@@ -88,7 +88,7 @@ function getAllDeviceTokens(){
 /**
  * gets all the device tokens within a particular network object
  */
-function getDeviceTokensInNetwork(network){
+function getDeviceTokensOfNetwork(network){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null){
 		var devicelist = network.device_list;
@@ -98,14 +98,14 @@ function getDeviceTokensInNetwork(network){
 		return list;
 	}
 	else{
-		console.log("getDeviceIdsInNetwork was passed a null simulation object");
+		console.log("Error:getDeviceIdsInNetwork was passed a null simulation object");
 	}
 }
 
 /**
  * gets all of the device objects within a particular network
  */
-function getDeviceObectsInNetwork(network){
+function getDeviceObectsOfNetwork(network){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
 		var devicelist = network['device_list'];
@@ -115,7 +115,7 @@ function getDeviceObectsInNetwork(network){
 		return list;
 	}
 	else{
-		console.log("getDeviceObjectsInNetwork was passed a null simulation");
+		console.log("Error:getDeviceObjectsInNetwork was passed a null simulation");
 	}
 }
 
@@ -128,7 +128,7 @@ function getSimulationActivityLogs(){
 		return local_simulation.activity_logs;
 	}
 	else{
-		console.log("getSimulationActivityLogs was passed a null simulation object");
+		console.log("Error:getSimulationActivityLogs was passed a null simulation object");
 	}
 }
 
@@ -152,7 +152,7 @@ function getNetworkIdOfDevice(device_token){
 		return network_id;
 	}
 	else{
-		console.log("getNetworkIdOfDevice recieved null parameters");
+		console.log("Error:getNetworkIdOfDevice recieved null parameters");
 	}
 }
 
@@ -175,66 +175,85 @@ function getNetworkObjectOfDevice(device_token){
 		return network_obj;
 	}
 	else{
-		console.log("getNetworkObjectOfDevice was passed null parameters")
+		console.log("Error:Error:getNetworkObjectOfDevice was passed null parameters");
 	}
-}
-/**
- * Gets the 
- */
-function getSimulationId(){
-	var local_simulation = get_local_simulation();
-	return local_simulation.simulation_name;
 }
 
 /**
- * getPartitionName gets the partition name containing a certain network.
- * @param network_name
+ * gets the unique id of the partition which a network is in.
  */
-function getPartitionName(network_name){
+function getPartitionIdOfNetwork(network_id){
 	var local_simulation = get_local_simulation();
-	var partition_list = local_simulation.partition_list;
-	//holds the name of the partition that this network is in
-	var Partition_name = '';
-	for(var i = 0; i < partition_list.length; i++){
-		var networks = partion_list[i]['network_list'];
-		for(var j = 0; j < networks.length; j++){
-			if(networks[j]['network_name'] !== network_name){
-				
-				Partition_name = partition_list[i]['partition_name'];
+	if (local_simulation!==null){
+		var partition_list = local_simulation.partition_list;
+		var partition_id = '';
+		for(var i = 0; i < partition_list.length; i++){
+			var networks = partion_list[i].network_list;
+			for(var j = 0; j < networks.length; j++){
+				if(networks[j]._id == network_id){
+					partition_id = partition_list[i]._id;
+				}
+			}	
+		}
+		//returning a null or empty partition_id means that the network is not in a partition
+		return partition_id;
+	}
+	else{
+		console.log("Error:getPartitionName was passed null parameters");
+	}
+}
+
+/**
+ * gets the partition object that a network is in
+ */
+function getPartitionObjectOfNetwork(network_id){
+	var local_simulation = get_local_simulation();
+	if (local_simulation!==null){
+		var partition_list = local_simulation.partition_list;
+		var partition_obj = '';
+		for(var i = 0; i < partition_list.length; i++){
+			var networks = partion_list[i].network_list;
+			for(var j = 0; j < networks.length; j++){
+				if(networks[j]._id == network_id){
+					
+					partition_obj = partition_list[i];
+				}
 			}
 		}
-		
+		return partition_obj;
 	}
-	return Partition_name;
+	else{
+		console.log("Error:getPartitionObjectOfNetwork was passed null parameters");
+	}
 }
 
 /**
- * getPartitionObj gets the partition object containing a certain network.
- * @param network_name
+ * gets the partition that a particular device is in
  */
-function getPartitionObj(network_name){
-	var local_simulation = get_local_simulation();
-	var partition_list = local_simulation.partition_list;
-	//holds the name of the partition that this network is in
-	var Partition_obj = '';
-	for(var i = 0; i < partition_list.length; i++){
-		var networks = partion_list[i]['network_list'];
-		for(var j = 0; j < networks.length; j++){
-			if(networks[j]['network_name'] !== network_name){
-				
-				Partition_obj = partition_list[i];
-			}
+function getPartitionIdOfDevice( device_id){
+	if(device_id!==null){
+		var Partition_id = '';
+		network_id =  getNetworkIdOfDevice(device_name);
+		if(network_id !== ''){
+			Partition_id =  getPartitionIdOfNetwork(network_id);
 		}
-		
+		//if empty string is returned, means the device is not in a network.
+		return Partition_id;
 	}
-	return Partition_obj;
+	else{
+		console.log("Error:getPartitionIdFromDevice was passed null parameters");
+	}
 }
 
-function getPartitionNamefromDevice( device_name){
-	var Partition_name = '';
-	network_name =  getNetworkName(device_name);
-	if(network_name !== ''){
-		Partition_name =  getPartitionName(network_name);
+/**
+ * Gets the unique Id of this simulation
+ */
+function getLocalSimulationId(){
+	var local_simulation = get_local_simulation();
+	if (local_simulation!==null){
+		return local_simulation._id;
 	}
-	return Partition_name;
+	else{
+		console.log("Error:getLocalSimulationId passed null simulation object")
+	}
 }
