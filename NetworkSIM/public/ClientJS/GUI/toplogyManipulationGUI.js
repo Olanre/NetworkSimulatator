@@ -12,10 +12,11 @@ var origin = {x: 0, y: 0};
 var mouse = {x: 0, y: 0};
 
 /****
- * Generates topology given a partition_list
+ * Generates topology given a simulation object
  ***/
-function generateTopology(partition_list, areaWidth){
-	
+function generateTopology(configMap, areaWidth){
+	//clear the svgCanvas
+	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
 	var root,connected,connectedDevice;
