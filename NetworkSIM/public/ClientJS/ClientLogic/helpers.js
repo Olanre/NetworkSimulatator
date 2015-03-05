@@ -248,6 +248,10 @@ function getPartitionObj(network_name){
 }
 
 function getPartitionNamefromDevice( device_name){
-	network_name =  getNetwork(device_name);
-	return getPartition(network_name);
+	var Partition_name = '';
+	network_name =  getNetworkName(device_name);
+	if(network_name !== ''){
+		Partition_name =  getPartitionName(network_name);
+	}
+	return Partition_name;
 }
