@@ -109,16 +109,3 @@ function removeElement(element){
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
-
-//hopefully this will be fine, there is a very low chance of two of the same strings.
-//should also check through all created devices as well.
-function generateUniqueID(type) {
-	//should use type to handle checking if a type with that name exists.
-    charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var randomString = '';
-    for (var i = 0; i < 16; i++) {
-    	var randomPoz = Math.floor(Math.random() * charSet.length);
-    	randomString += charSet.substring(randomPoz,randomPoz+1);
-    }
-    return randomString;
-}

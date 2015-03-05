@@ -1,13 +1,13 @@
 /**
  * Segment a partition into one made of two partitions
  */
-function dividePartition(network_name, partition_name){
+function dividePartition(split_networks_list, partition_id){
 	var local_simulation = get_local_simulation();
-	if(local_simulation !== null && network_name!==null && partition_name!==null){
+	if(local_simulation !== null && split_networks_list!==null && partition_id!==null){
 		var params = { 
-				'network_name': network_name, 
-				'partition_name': network_name , 
-				'simulation_name': local_simulation.simulation_name,
+				'split_networks_list': split_networks_list, 
+				'partition_id': partition_id, 
+				'simulation_name': local_simulation._id,
 				};
 		var url = '/divide/Partition';
 		var timestamp = new Date();
@@ -19,13 +19,13 @@ function dividePartition(network_name, partition_name){
 /**
  * Merges two partitions into a single partition
  */
-function mergePartition(partition_a_name, partition_b_name){
+function mergePartition(partition_a_id, partition_b_id){
 	var local_simulation = get_local_simulation();
-	if(local_simulation!==null && partition_a_name!==null && partition_b_name!==null){
+	if(local_simulation!==null && partition_a_id!==null && partition_b_id!==null){
 		var params = { 
-				'partition_a': partition_a, 
-				'partition_b' : partition_b,
-				'simulation_name': local_simulation.simulation_name,
+				'partition_a_id': partition_id, 
+				'partition_b_id' : partition_id,
+				'simulation_id': local_simulation._id,
 				};
 		var url = '/merge/Partitions';
 		var timestamp = new Date();

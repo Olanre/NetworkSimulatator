@@ -3,9 +3,7 @@
  * local_device is the device for this user which is stored in local storage
  */
 function attachToken(new_token){
-	//gets the user information out of local storage
 	var local_device = get_local_device();
-	
 	if(local_device !== null){
 		local_device.token = new_token;
 		putinStorage( 'device', JSON.stringify(local_device) );
@@ -29,8 +27,7 @@ function authToken(token){
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
 	//sends the token to be validated by the server
-	send2Server(url, params, validate_user);
-	
+	sendEventsToServer(url, params, validate_user);
 }
 
 /**
@@ -53,8 +50,7 @@ function validate_user(data){
 	if(object.Response == 'Success'){
 		alert('You have been authenicated. \nPlease wait to be redirected');
 		//sync with the server and redirect to the simulation
-		Sync2Server();
-			
+		syncWithServer();	
 	}
 	else{
 		alert('Token invalid \nPlease enter the correct token for this simulation')
