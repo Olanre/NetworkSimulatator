@@ -4,7 +4,7 @@
  */
 function createDevice(device_name){
 	var local_simulation = get_local_simulation();
-	if(local_simuation!==null&&device_name!==null){
+	if(local_simuation!==null){
 		var params = { 
 				'device_name': device_name, 
 				'simulation_id': local_simulation._id,
