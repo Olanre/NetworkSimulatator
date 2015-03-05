@@ -6,61 +6,16 @@ The purpose of this class is to manage creating and modifying simulations.
 var TokenManager = require("./TokenManager.js");
 var TokenPropagator = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
-var Device = require("./Device.js");
-var Partition = require("./Partition.js");
-var Network = require("./Network.js");
-var Simulation = require("./Simulation.js");
-var admin = require("./admin.js");
+var Device = require("../Model/Device.js");
+var Partition = require("../Model/Partition.js");
+var Network = require("../Model/Network.js");
+var Simulation = require("../Model/Simulation.js");
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 //TODO We need to fill this in on load!
 var simulationList = [];
-
-
-exports.ClientRequest = function(token, eventQueue, callback) {
-	for(var i = 0; i < eventQueue.length; i++) {
-		
-		switch(eventQueue[i].route) {
-
-			//Completed
-			case '/create/Simulation': 
-				createSimulation(eventQueue[i].event_data);
-				break;
-			//Completed
-			case '/create/Network' :
-				createNetwork( eventQueue[i].event_data);
-				break;		
-
-			case '/create/Device' :
-					createDevice(eventQueue[i].event_data);
-				break;
-
-			case '/move/Device/Network':
-					addDeviceToNetwork(eventQueue[i].event_data);
-				break;
-
-			case '/merge/Partitions' :
-				mergePartitions(eventQueue[i].event_data);
-				break;
-			
-			case '/divide/Partition':
-				dividePartition(eventQueue[i].event_data);
-				break;
-
-			default:
-				break;
-				
-		}	
-	}
-	
-	
-	if (typeof(callback) == "function") {
-		callback();
-	}
-};
-
 
 exports.getAppStateForDevice = function(token,simulation_name){
 

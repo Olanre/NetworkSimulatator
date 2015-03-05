@@ -1,4 +1,4 @@
-var Util=require("./utilities.js");
+var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 
 function Device(deviceName,token, simulation_name , email){

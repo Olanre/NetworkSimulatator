@@ -1,4 +1,4 @@
-var Util=require("./utilities.js");
+var Util=require("../Utilities/utilities.js");
 
 function Partition(partitionName, simulationName){
 	

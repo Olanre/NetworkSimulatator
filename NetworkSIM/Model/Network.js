@@ -1,4 +1,4 @@
-var Util=require("./utilities.js");
+var Util=require("../Utilities/utilities.js");
 var Partition= require('./Partition.js');
 function Network(networkName, networkKind, partitionName){
 	//Required Variables//
