@@ -3,8 +3,13 @@
  **************************************************/
 
 function getLocalDeviceToken(){
-	var local_device = get_local_device();
-	return local_device.token;
+	if(local_device!==null){
+		var local_device = get_local_device();
+		return local_device.token;
+	}
+	else{
+		console.log("Error: getLocalDeviceToken passed a null local_device");
+	}
 }
 
 /**
@@ -12,10 +17,14 @@ function getLocalDeviceToken(){
  */
 function getVerified(){
 	var local_device = get_local_device();
-	
-	if(local_device.hasOwnProperty('verified')){
-		return local_device.verified;
-	}else{
-		return false;
+	if(local_device!==null){
+		if(local_device.hasOwnProperty('verified')){
+			return local_device.verified;
+		}else{
+			return false;
+		}
+	}
+	else{
+		console.log("Error: getVerified passed a null local_device");
 	}
 }
