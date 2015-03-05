@@ -4,7 +4,7 @@ The purpose of this class is to manage creating and modifying simulations.
 ******/
 
 var TokenManager = require("./TokenManager.js");
-var TokenPropagator = require("./TokenPropagatorEmail.js");
+var TokenMailer = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
@@ -17,12 +17,12 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 //TODO We need to fill this in on load!
 var simulationList = [];
 
-exports.getAppStateForDevice = function(token,simulation_name){
+exports.getAppStateForDevice = function(token,simulation_id){
 
 	var simulation,device,deviceList;
 
-	simulation=Util.getSimulationByName(simulation_name,simulationList);
-	deviceList=simulation.gets();
+	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	deviceList=simulation.getDevices();
 
 	for(index in deviceList){
 		if(deviceList[index].token==token){
@@ -34,7 +34,7 @@ exports.getAppStateForDevice = function(token,simulation_name){
 	var state;
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
-	state.simulation_names=module.exports.getNames();
+	state.simulation_names=module.exports.getSimulationNames();
 
 	return state;
 }
@@ -78,7 +78,7 @@ function createSimulation(event_data) {
 	var createdPartition,createdNetwork,createdDevice;
 	for(partition in map){
 
-		createdPartition=Partition.createNewPartition(partition,event_data.name);
+		createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
 		simulation.addPartition(createdPartition);
 		
 		for(network in map[partition]){
@@ -88,9 +88,10 @@ function createSimulation(event_data) {
 
 			for(device in map[partition][network]){
 
-					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.name, device);
+					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.device_name, device);
 					simulation.addDevice(createdDevice);
 					createdNetwork.addDevice(createdDevice);
+					TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
 			}
 		}
 	}
@@ -103,7 +104,7 @@ function createSimulation(event_data) {
 
 function createDevice(event_data) {
 
-	var simulation=Util.getSimulationByName(event_data.simulation_name,simulationList);
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
 	var device= Device.createNewDevice(event_data.device_name,tokenManager.generateToken());
 	simulation.addDevice(device);
 
@@ -113,11 +114,11 @@ function createDevice(event_data) {
 
 function createNetwork(event_data){
 
-	var simulation=Util.getSimulationByName(event_data.simulation_name,simulationList);
-	var partition=Util.getPartitionByUniqueID(event_data.partition_name,simulation.partition_list);
-	var network= Network.createNewNetwork(event_data.network_name);
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	var partition=Util.getPartitionByUniqueID(event_data.partition_id,simulation.partition_list);
+	var network= Network.createNewNetwork(event_data.network_id);
 
-	if(partition!=-1&&event_data.partition_name!=''){
+	if(partition!=-1){
 		partition.addNetwork(network);
 	}
 
@@ -144,13 +145,13 @@ function removeNetwork(event_data){
 }
 
 function addDeviceToNetwork(event_data){
-	var network_name=event_data.network_name;
-	var device_name=event_data.device_name;
-	var simulation_name=event_data.simulation_name;
+	var network_id=event_data.network_id;
+	var device_id=event_data.device_id;
+	var simulation_id=event_data.simulation_id;
 
-	var simulation=Util.getSimulationByName(simulation_name,simulationList);
-	var network=Util.getNetworkByName(network_name,simulation.getNetworks());
-	var device=Util.getDeviceByName(device_name,simulation.getDevices());
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	var network=Util.findByUniqueID(network_id,simulation.getNetworks());
+	var device=Util.findByUniqueID(device_id,simulation.getDevices());
 
 	network.addDevice(device);
 
@@ -159,11 +160,11 @@ function addDeviceToNetwork(event_data){
 function mergePartitions(event_data){
 	var partition_a = event_data.partition_a;
 	var partition_b = event_data.partition_b;
-	var simulation_name = event_data.simulation_name;
+	var simulation_id = event_data.simulation_id;
 
-	var simulationObject=Util.getSimulationByName(simulation_name,simulationList);
-	var partitionA=Util.getPartitionByName(partition_a, simulationObject.partition_list);
-	var partitioB=Util.getPartitionByName(partition_b, simulationObject.partition_list);
+	var simulationObject=Util.findByUniqueID(simulation_id,simulationList);
+	var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
+	var partitioB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
 	simulationObject.mergePartitions(partitionA,partitionB);
 
 	//Add database calls
@@ -173,23 +174,6 @@ function mergePartitions(event_data){
 function dividePartitions(event_data){
 	
 }
-
-
-
-function addDeviceToFreeList(event_data){
-	var simulation_name=event_data.simulation_name;
-	var device_name=event_data.device_name;
-
-	var simulationObject=Util.getSimulationByName(simulation_name,simulationList);
-	var deviceObject=Util.getDeviceByName(device_name,simulationObject.getDevices());
-	var networkObject=deviceObject.networkObject;
-	networkObject.removeDevice(deviceObject);
-}
-//TODO
-function removeDevicefromFreeList(event_data, simulation){
-	
-}
-
 
 module.exports.authToken = authToken;
 module.exports.simulationList=simulationList;
