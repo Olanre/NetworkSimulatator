@@ -1,9 +1,9 @@
 /**
  * Segment a partition into one made of two partitions
  */
-function dividePartition(network, partition){
+function dividePartition(network_name, partition_name){
 	var local_simulation = get_local_simulation();
-	if(local_simulation !== null){
+	if(local_simulation !== null&&network_name!==null&&partition_name!==null{
 		var params = { 
 				'network_name': network_name, 
 				'partition_name': network_name , 
@@ -13,18 +13,22 @@ function dividePartition(network, partition){
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
 	}else{
-		console.log("Local simulation session not found")
+		console.log("dividePartition was passed null parameters")
 	}
 }
-
-function mergePartition(partition_a, partition_b){
+/**
+ * Merges two partitions into a single partition
+ */
+function mergePartition(partition_a_name, partition_b_name){
 	var local_simulation = get_local_simulation();
-	var params = { 
-			'partition_a': partition_a, 
-			'partition_b' : partition_b,
-			'simulation_name': local_simulation.simulation_name,
-			};
-	var url = '/merge/Partitions';
-	var timestamp = new Date();
-	addToEventQueue(url, params, timestamp);
+	if(local_simulation!==null && partition_a_name!==null && partition_b_name!==null){
+		var params = { 
+				'partition_a': partition_a, 
+				'partition_b' : partition_b,
+				'simulation_name': local_simulation.simulation_name,
+				};
+		var url = '/merge/Partitions';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timestamp);
+	}
 }

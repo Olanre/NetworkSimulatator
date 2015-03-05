@@ -1,4 +1,4 @@
-function createNetwork(network_name){
+function createNetwork(){
 	//generates a uniqueID
 	var network_name = generateUniqueID('network');
 	//the name of the partition to be created

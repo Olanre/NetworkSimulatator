@@ -43,7 +43,6 @@ function wrapCreateSimulation() {
 
 /**
  * Function to get a new simulation from the server
- * 
  */
 function getSimulation(simulation_name){
 	var param = {
@@ -57,7 +56,6 @@ function getSimulation(simulation_name){
 
 /**
  * Function to get the states associates from a simulation 
- * @param simulation_name
  */
 function getSimulationState(simulation_name){
 	var param = {
