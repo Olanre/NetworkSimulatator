@@ -27,7 +27,7 @@ function moveDeviceToNetwork( device_token, network_id){
 	if (device_token!==null &&network_id!==null && local_simulation!==null){
 		var params = {
 				'network_id':network_id,
-				'simulation_id':simulation_id,
+				'simulation_id':simulation._id,
 				'device_token':device_token
 			};
 		var url='/move/Device/Network';
