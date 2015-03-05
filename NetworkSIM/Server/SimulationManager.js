@@ -42,10 +42,11 @@ exports.getAppStateForDevice = function(token,simulation_name){
 module.exports.getSimulationNames=function(){
 	var names_list=[];
 	var new_entry = {};
-	for(index in simulationList){
-		new_entry = {'num_devices': simulationList[index].num_devices, 'num_networks': simulationList[index].num_networks, 'simulation_name': simulationList[index].simulation_name};
+	for(var index = 0; index < simulationList.length; index++){
+		new_entry = {'num_devices': simulationList[index].simulationJSON.num_devices, 'num_networks': simulationList[index].simulationJSON.num_networks, 'simulation_name': simulationList[index].simulationJSON.simulation_name};
 		names_list.push(new_entry);
 	}
+	
 	return names_list;
 	
 }
@@ -71,10 +72,10 @@ function createSimulation(event_data) {
 
 	var date = new Date();
 	var map=event_data.config_map;
-	var simulation=Simulation.createNewSimulation(event_data.name);
+	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
+	simulation.simulationJSON.num_devices = event_data.num_devices;
+	simulation.simulationJSON.num_networks = event_data.num_networks;
 	var createdPartition,createdNetwork,createdDevice;
-	console.log(event_data);
-	simulationList.push(simulation);
 	for(partition in map){
 
 		createdPartition=Partition.createNewPartition(partition,event_data.name);
@@ -95,7 +96,7 @@ function createSimulation(event_data) {
 	}
 
 	// Add database stuff
-	
+	simulationList.push(simulation);
 	return simulation;
 }	
 

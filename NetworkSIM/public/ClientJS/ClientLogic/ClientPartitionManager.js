@@ -3,7 +3,7 @@
  */
 function dividePartition(network_name, partition_name){
 	var local_simulation = get_local_simulation();
-	if(local_simulation !== null&&network_name!==null&&partition_name!==null{
+	if(local_simulation !== null && network_name!==null && partition_name!==null){
 		var params = { 
 				'network_name': network_name, 
 				'partition_name': network_name , 

@@ -15,6 +15,8 @@ function Simulation(simulation_name){
 	
 	this.simulationJSON = {};
 	this.simulationJSON.simulation_name = simulation_name;
+	this.simulationJSON.num_devices = 0;
+	this.simulationJSON.num_networks = 0;
 	this.simulationJSON.partition_list=[];
 	this._id=(new Database.Simulation())._id;
 	this.simulationJSON._id=this._id;
