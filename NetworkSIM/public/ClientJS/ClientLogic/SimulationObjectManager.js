@@ -1,21 +1,25 @@
 /**
- * Helper file for getting elements from Partition_list
+ * Helper file for getting elements from simulation object which is stored in local storage and retrieved from the client
  */
 /**
- * getPartitionNames returns the list of partitions for this current simulation
+ * gets the list of partition id's for this current simulation
  */
-function getPartitionNames(){
-	//gets the current simulation on the user side
+function getPartitionIds(){
 	var local_simulation = get_local_simulation();
-	//gets the configuration of this simulation
-	var partition_list = local_simulation.partition_list;
-	//holds a list of the partitions
-	var list = [];
-	for(var i = 0; i < partition_list.length; i++){
-		list.push(partition_list[i]['partition_name']);
+	if (local_simulation!==null){
+		//gets the list of all of the partitions in this simulation
+		var partition_list = local_simulation.partition_list;
+		var list = [];
+		for(var i = 0; i < partition_list.length; i++){
+			//hopefullyusing this instead of partition_list[i]['_id'] works
+			list.push(partition_list[i]._id);
+		}
+		//returns a list of partitions
+		return list;
 	}
-	//returns a list of partitions
-	return list;
+	else{
+		console.log("getPartitionIds was passsed null parameters");
+	}
 }
 
 
