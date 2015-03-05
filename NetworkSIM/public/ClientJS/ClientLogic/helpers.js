@@ -8,7 +8,7 @@ function getPartitionNames(){
 	//gets the current simulation on the user side
 	var local_simulation = get_local_simulation();
 	//gets the configuration of this simulation
-	var map = local_simulation.partition_list;
+	var partition_list = local_simulation.partition_list;
 	//holds a list of the partitions
 	var list = [];
 	for(var i = 0; i < partition_list.length; i++){
@@ -26,7 +26,7 @@ function getNetworkNames(){
 	//gets the local simulation//
 	var local_simulation = get_local_simulation();
 	//gets the configuration map of the current simulation on the users side
-	var map = local_simulation.partition_list;
+	var partition_list = local_simulation.partition_list;
 	// a list of all of the networks in the simulation
 	var list = []; 
 	//populates list
@@ -46,7 +46,7 @@ function getNetworkObjs(){
 	//gets the local simulation//
 	var local_simulation = get_local_simulation();
 	//gets the configuration map of the current simulation on the users side
-	var map = local_simulation.partition_list;
+	var partition_list = local_simulation.partition_list;
 	// a list of all of the networks in the simulation
 	var list = []; 
 	//populates list
@@ -130,7 +130,6 @@ function getLogs(){
  */
 function getNetworkName(device_name){
 	var local_simulation = get_local_simulation();
-	var map = local_simulation.partition_list;
 	//gets the list of networks
 	var list = getNetworkObjs();
 	//holds the name of the network that this device is present in
@@ -157,7 +156,6 @@ function getNetworkName(device_name){
  */
 function getNetworkObj(device_name){
 	var local_simulation = get_local_simulation();
-	var map = local_simulation.config_map;
 	//gets the list of networks
 	var list = getNetworks();
 	//holds the name of the network that this device is present in
@@ -206,22 +204,47 @@ function getVerified(){
 }
 
 /**
- * getPartition gets the partition containing a certain network.
+ * getPartitionName gets the partition name containing a certain network.
  * @param network_name
  */
 function getPartitionName(network_name){
 	var local_simulation = get_local_simulation();
-	var map = local_simulation.config_map;
+	var partition_list = local_simulation.partition_list;
 	//holds the name of the partition that this network is in
 	var Partition_name = '';
-	for( var key in map ){
-		for( var network in map[key]){
-			if (network == network_name){
-				var Partition_name = key;
+	for(var i = 0; i < partition_list.length; i++){
+		var networks = partion_list[i]['network_list'];
+		for(var j = 0; j < networks.length; j++){
+			if(networks[j]['network_name'] !== network_name){
+				
+				Partition_name = partition_list[i]['partition_name'];
 			}
 		}
+		
 	}
 	return Partition_name;
+}
+
+/**
+ * getPartitionObj gets the partition object containing a certain network.
+ * @param network_name
+ */
+function getPartitionObj(network_name){
+	var local_simulation = get_local_simulation();
+	var partition_list = local_simulation.partition_list;
+	//holds the name of the partition that this network is in
+	var Partition_obj = '';
+	for(var i = 0; i < partition_list.length; i++){
+		var networks = partion_list[i]['network_list'];
+		for(var j = 0; j < networks.length; j++){
+			if(networks[j]['network_name'] !== network_name){
+				
+				Partition_obj = partition_list[i];
+			}
+		}
+		
+	}
+	return Partition_obj;
 }
 
 function getPartitionNamefromDevice( device_name){

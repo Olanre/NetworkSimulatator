@@ -74,8 +74,7 @@ function createSimulation(event_data) {
 	var simulation=Simulation.createNewSimulation(event_data.name);
 	var createdPartition,createdNetwork,createdDevice;
 	console.log(event_data);
-	var new_entry = {'num_devices': event_data.num_devices, 'num_networks': event_data.num_networks, 'name': event_data.simulation_name};
-	simulationList.push(new_entry);
+	simulationList.push(simulation);
 	for(partition in map){
 
 		createdPartition=Partition.createNewPartition(partition,event_data.name);
