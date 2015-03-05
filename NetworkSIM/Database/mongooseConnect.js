@@ -32,6 +32,7 @@ var userSchema = mongoose.Schema({
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,
+   //unique_id : {type : String, required: true , index : {unique : true}},
 	});
 
 //STOP DELETTINGINGGEN SHIT                     
@@ -54,6 +55,7 @@ var networkSchema = mongoose.Schema({
  network_type : String,
  partition : String,
  device_list : [User],
+//unique_id : {type : String, required: true , index : {unique : true}},
 
 });
 
@@ -70,6 +72,7 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String,
 	   config_map: String,
 	   tokenMethod : String,
+	   //unique_id : {type : String, required: true , index : {unique : true}},
 	   //token_list : [tokens],
 	   activity_logs : String,
 	   
@@ -104,6 +107,7 @@ var partitionSchema = mongoose.Schema({
 	
 	partition_name: String,
 	network_list: [Network],
+   //unique_id : {type : String, required: true , index : {unique : true}},
 
 });
 
