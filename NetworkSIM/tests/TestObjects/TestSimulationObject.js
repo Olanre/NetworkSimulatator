@@ -5,7 +5,7 @@
 
 function generateSimulationObject(index){
 	var simulation={};
-	simulation._id='s'+index;
+	simulation._id='s'+0;
 	simulation.num_devices=0;
 	simulation.num_networks=0;
 	simulation.simulation_population=69;
@@ -14,7 +14,7 @@ function generateSimulationObject(index){
 	simulation.activity_logs='had fun';
 	simulation.partition_list=[];
 	for (var i=0;i<index;i++){
-		partition=generatePartitionObject(index,simulation._id);
+		partition=generatePartitionObject(index,simulation._id,i);
 		simulation.partition_list.push(partition);
 		simulation.num_devices+=index;
 		simulation.num_networks+=index;
@@ -22,36 +22,35 @@ function generateSimulationObject(index){
 	return simulation
 }
 
-function generatePartitionObject(index, simulation_id){
+function generatePartitionObject(index, simulation_id,j){
 	var partition={};
-	partition._id='p'+index;
+	partition._id='p'+j;
 	partition.network_list=[];
 	for (var i=0;i<index;i++){
-		network=generateNetworkObject(index, partition._id, simulation_id);
+		network=generateNetworkObject(index, partition._id, simulation_id,i);
 		partition.network_list.push(network);
 	}
 	return partition;
 }
 
-function generateNetworkOBject(index, partition_id,simulation_id){
+function generateNetworkObject(index, partition_id,simulation_id,j){
 	var network={};
-	network._id='n'+index+partition_id;
+	network._id='n'+j+partition_id;
 	network.network_type='fiech';
-	network.network_name='jeffs '+index+'th network';
+	network.network_name='jeffs '+j+'th network';
 	network.partition=partition_id;
-	network.device_list={};
+	network.device_list=[];
 	for (var i =0; i<index;i++){
-		device=generateDeviceObject(index, simulation_id, partition_id, network._id);
+		device=generateDeviceObject(index, simulation_id, partition_id, network._id,i);
 		network.device_list.push(device);
 	}
 	return network;
 }
 
-function generateDeviceObject(index, simulation_id, partition_id, network_name){
+function generateDeviceObject(index, simulation_id, partition_id, network_id,i){
 	var device={};
-	device._id ='d'+index+network_id+partition_id;
-	device.token=index;
-	device.email="jeff"+index+"@mun.ca";
+	device.token='d'+i+network_id;;
+	device.email="jeff"+i+"@mun.ca";
 	device.verified = true;
 	device.registeredOn= "night"+index
 	device.admin=false;
@@ -59,8 +58,8 @@ function generateDeviceObject(index, simulation_id, partition_id, network_name){
 	device.current_simulation=simulation_id;
 	device.current_network=network_id;
 	device.current_partition=partition_id;
-	device.current_device_name="jeff"+index;
-	device.activity="hung out "+index+" times";
+	device.current_device_name="jeff"+i;
+	device.activity="hung out "+i+" times";
 	return device;
 }
 
@@ -71,10 +70,10 @@ function printCreatedSimulation(simulation){
 		console.log("partition id="+simulation.partition_list[i]._id);
 		network_list=simulation.partition_list[i].network_list;
 		for (var j=0; j<network_list.length; j++){
-			console.log("network id="+network_list[i]._id);
-			device_list=network_list[i].device_list;
-			for (var k=0;k<device_list.length;j++){
-				console.log("device id="+device_list[k]._id);
+			console.log("network id="+network_list[j]._id);
+			device_list=network_list[j].device_list;
+			for (var k=0;k<device_list.length;k++){
+				console.log("device id="+device_list[k].token);
 				console.log("device name="+device_list[k].current_device_name);
 			}
 		}

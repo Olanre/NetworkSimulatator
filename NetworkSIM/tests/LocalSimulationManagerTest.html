@@ -1,14 +1,24 @@
 <html>
 <head>
 	<script src='../public/ClientJS/ClientLogic/LocalSimulationManager.js' type='text/javascript'></script>
-	<script src='TestObjects/LocalSimulationManagerTest.js' type='text/javascript'></script>
+	<script src='TestObjects/TestSimulationObject.js' type='text/javascript'></script>
 	<script>
-		function get_local_simulation(){
-			return '';
-		}
 		var sim=generateSimulationObject(2);
 		printCreatedSimulation(sim);
 
+		function get_local_simulation(){
+			return sim;
+		}
+		console.log('getAllPartitionIds(): should be: p0,p1 actual='+getAllPartitionIds());
+		console.log('getAllNetworkIds(): should be: n0p0, n1p0, n0p1, n1p1 actual='+getAllNetworkIds());
+		//testing getting the network objects
+		var list= getAllNetworkObjects();
+		console.log("now testing getAllNetworkObjects()");
+		for (var i =0; i<list.length;i++){
+			console.log(i+"th object has id="+list[i]._id);
+		}
+		console.log('getAllDeviceTokens(): should be: d0n0p0, d1n0p0, d0n1p0, d1n1p0, d0n0p1, d1n0p1, d0n1p1, d1n1p1 actual='+getAllDeviceTokens());
+		
 	</script>
 </head>
 <body>
