@@ -18,7 +18,7 @@ function sync(request, response){
 		SimulationManager.authToken(token, function(obj){
 			//for now allow empty tokens
 			if(obj.responseponse == 'Success'){
-				console.log("Successful authenication" );
+				//console.log("Successful authenication" );
 					handleEventQueue(token, events, function(){
 
 					response.send(SimulationManager.getAppStateForDevice(token,simulation));
@@ -27,14 +27,14 @@ function sync(request, response){
 			}
 
 			else{
-				console.log("Failed authenication" );
-				console.log(json);
+				//console.log("Failed authenication" );
+				//console.log(json);
 
 				handleEventQueue(token, events, function(){
 
 					var state={};
-					state.simulation="undefined";
-					state.device="undefined";
+					state.simulation= {};
+					state.device= {};
 					state.simulation_names=SimulationManager.getSimulationNames();
 					response.send(state);
 					
