@@ -3,10 +3,9 @@ var Schema = mongoose.Schema;
 
 //Working commands
 // --> addUser addSim addApp , getSim(name), getUserByToken(token), getApp(name)
-
-
-
 //connect to db
+
+
 var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:53139/sc-2');
 
 //attach lister to connected even
@@ -71,10 +70,8 @@ var simulationSchema = mongoose.Schema({
 	   config_map: String,
 	   tokenMethod : String,
 	   //token_list : [tokens],
-	   activity_logs : String,
-	   
+	   activity_logs : String,	   
 });
-
 
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
@@ -180,7 +177,7 @@ function findAllSimulations(callback)
 	Sim.find({}, function(err, sims) {
 		if(err) callback("No simulations or err ln, 180");
 		callback(sims);
-	});
+	}
 });
 	
                         //USER FUNCTIONS**************!
