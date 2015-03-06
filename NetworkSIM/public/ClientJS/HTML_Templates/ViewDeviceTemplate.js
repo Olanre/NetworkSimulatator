@@ -24,6 +24,5 @@ function viewDeviceTemplate(){
 	"</div> " +
 "</div>";
 	return str;
-	return str;
 	
 }

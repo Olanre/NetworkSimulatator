@@ -7,6 +7,10 @@
  * @param logs: The list of logs for this simulation.
  */
 function SimulationLogsTemplate(logs){
-	var str = "<div class = 'logs'> " + logs + "</div>";
-		return str;
+	var template = document.getElementById('template17').innerHTML;
+	 textile = Hogan.compile(template);
+	 context = {'logs' : logs};
+	 console.log(context);
+	 tpl = textile.render(context);
+	 return tpl;
 }

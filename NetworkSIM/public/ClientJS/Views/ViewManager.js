@@ -41,7 +41,8 @@ function updateAllViews( timeout){
  * Shows the user's account information
  */
 function AccountView(){
-	var html = AccountTemplate();
+	var local_device = get_local_device();
+	var html = AccountTemplate(local_device);
 	var content = getContainer();
 	content.innerHTML = html;
 }
@@ -248,8 +249,9 @@ function RegisterView(){
  * Displays the list of all networks not sure if necessary
  */
 function NetworksListView(){
-	var lists = getNetworkObjs();
-	console.log(lists);
+	var local_device = get_local_device();
+	var lists = getAllNetworkObjects();
+	console.log(lists, local_device);
 	var html = NetworksListTemplate(lists);
 	getSection().innerHTML = html;
 }
@@ -262,9 +264,7 @@ function DeviceListView(){
 	
 	var html = "<div class = 'container'> " +
 	"<table>";
-	for(var i = 0; i < netlist.length; i ++ ){
-		html += DevicesListTemplate(devices);
-	}
+	html += DevicesListTemplate(devices);
 	html += "</table>" +
 	"</div><br>";
 	getSection().innerHTML = html;

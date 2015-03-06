@@ -8,13 +8,12 @@
  */
 function AdminDevicesListTemplate(devices){
 	//console.log(devices);
-		str = "";
-		for(var i = 0; i< devices.length; i++){
-			str += "<tr  id = '" + devices[i] + "'> <td> " + devices[i] + "   </td>" +
-					"<td> <div onclick = 'deleteDevice(&quot;" + devices[i] + "&quot;s)' > Delete Device </div> </td> </tr>";
-		}
-		
-		return str;
+		var template = document.getElementById('template16').innerHTML;
+		 textile = Hogan.compile(template);
+		 context = { 'devices' : devices};
+		 console.log(context);
+		 tpl = textile.render(context);
+		 return tpl;
 }
 
 /** 
@@ -25,10 +24,10 @@ function AdminDevicesListTemplate(devices){
  */
 function DevicesListTemplate(devices){
 	//console.log(devices);
-		str = "";
-		for(var i = 0; i< devices.length; i++){
-			str += "<tr  id = '" + devices[i] + "'> <td> " + devices[i] + "  </td> </tr>";
-		}
-		
-		return str;
+	var template = document.getElementById('template14').innerHTML;
+	 textile = Hogan.compile(template);
+	 context = { 'devices' : devices};
+	 console.log(context);
+	 tpl = textile.render(context);
+	 return tpl;
 }

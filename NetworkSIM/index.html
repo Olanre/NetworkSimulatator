@@ -384,7 +384,7 @@
 				</tr>
 				<tr> 
 					<td>
-						<div> Token: {{local_device.token}}  </div>
+						<div> Token: {{token}}  </div>
 					</td> 
 				</tr>
 				<tr> 
@@ -394,7 +394,7 @@
 				</tr>
 				<tr> 
 					<td>
-						<div> Current Network: {{local_device.current_network}}  </div>
+						<div> Current Network: {{current_network}}  </div>
 					</td>
 				</tr>
 			</table>
@@ -402,14 +402,29 @@
 	</div>
 </script>
 
-<script type = "DeviceListTemplate" id = "template12">
+<script type = "NetworkListTemplate" id = "template13">
+
+	<div class = 'container'>
+		<table>
+			{{#networks}}
+			
+				<tr  id = '{{id}}'> 
+					<td> {{network_name}}  </td> 
+				</tr>
+			{{/networks}}
+		</table>
+	</div><br>
+		
+</script>
+
+<script type = "DeviceListTemplate" id = "template14">
 
 	<div class = 'container'>
 		<table>
 			{{#devices}}
 			
-				<tr  id = '{{device}}'> 
-					<td> {{device}}  </td> 
+				<tr  id = '{{id}}'> 
+					<td> {{current_device_name}}  </td> 
 				</tr>
 			{{/devices}}
 		</table>
@@ -418,8 +433,7 @@
 </script>
 
 
-
-<script type = "StatesLiseTemplate" id = "template13">
+<script type = "StatesListTemplate" id = "template15">
 	<table>
 		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView(&quot;" + states[i].timestamp + "&quot;) '> " +
 				states[i].timestamp + " </td> <td> Revert </td> </tr>
@@ -427,7 +441,7 @@
 	}
 </script>
 
-<script type = "AdminDeviceListTemplate" id = "template14">
+<script type = "AdminDeviceListTemplate" id = "template16">
 	<div class = 'container'>
 		<table>
 			{{#devices}}
@@ -441,11 +455,11 @@
 		
 </script>
 
-<script type = "SimulationLogTemplate" id = "template15">
+<script type = "SimulationLogTemplate" id = "template17">
 	<div class = 'logs'> {{logs}} </div>"
 </script>
 
-<script type = "SimulationListTemplate" id = "template16" >
+<script type = "SimulationListTemplate" id = "template18" >
 
 </script>
 <body>

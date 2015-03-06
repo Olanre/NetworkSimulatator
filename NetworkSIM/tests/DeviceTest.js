@@ -1,5 +1,12 @@
 var Device=require("../Model/Device.js");
 var Util=require("../Utilities/utilities.js");
+var DB = require("../Database/mongooseConnect.js");
+
+var Car = new DB.User();
+Car['token'] = 'Hellojhrwubgnbvni';
+Car.networks_created.push("Hello Me");
+console.log(Car);
+
 var JSONDeviceTemplate={
 	current_device_name:undefined,
 	token:undefined,

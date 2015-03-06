@@ -1,6 +1,5 @@
-function NetworksListTemplate(networks){
-	var local_device = get_local_device();
-	var sim = local_device.current_simulation;
+function NetworksListTemplate(networks, local_device){
+	
 	var networks_created = local_device.networks_created;
 	var str = "<table>";
 
