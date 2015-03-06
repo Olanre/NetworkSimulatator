@@ -7,8 +7,9 @@ var Database=require("../Database/mongooseConnect.js");
 function Simulation(simulation_name){
 
 	//variables
-	this.freeList = new Network.createNewNetwork('freelist','');
+	
 	this.partition_list = [];
+	this.device_list=[];
 	this.networkIterator = {};
 	this.app = '';
 	this.rdt = {};
@@ -76,10 +77,12 @@ function removeApp(app){
 
 function getNetworks(){
 		var merged = [];
-		for(var i = 0; i < this.partition_list.legnth; i++){
-			var Networks = this.partition_list[i].networkList;
+		for(var i = 0; i < this.partition_list.length; i++){
+
+			var Networks = this.partition_list[i].network_list;
+
 			for( var j = 0 ; j < Networks.length; j++){
-				merged = merged.concat.apply(merged, Networks[i]);
+				merged.push(Networks[j]);
 			}
 							
 		}
@@ -88,18 +91,7 @@ function getNetworks(){
 }
 
 function getDevices(){
-		var merged = [];
-		for(var i = 0; i < this.simulationJSON.partition_list.length; i++){
-			var Networks = this.simulationJSON.partition_list[i].networkList;
-			for( var j = 0 ; j < Networks.length; j++){
-				var Devices = Networks[i].networkJSON.device_list;
-				for( var k = 0; k < Devices.length; k++){
-					merged = merged.concat.apply(merged, Devices[i]);
-				}
-			}
-							
-		}
-		return merged;
+		return this.device_list;
 		
 }
 
@@ -112,6 +104,7 @@ function addPartition(partition){
 
 function addDevice(device){
 	device.deviceJSON.simulation_name = this.simulationJSON.simulation_name;
+	this.device_list.push(device);
 }
 
 function addNetwork(network){

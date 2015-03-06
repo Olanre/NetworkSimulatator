@@ -10,7 +10,6 @@ var JSONSimulationTemplate={
 		num_networks: undefined,
 		simulation_population: undefined,
 		simulation_name: undefined,
-		config_map: undefined,
 		tokenMethod : undefined,
 		activity_logs : undefined,
 };
@@ -21,7 +20,6 @@ var simulationJSON={
 		num_networks: 1,
 		simulation_population: undefined,
 		simulation_name: "Test Sim",
-		config_map: undefined,
 		tokenMethod : 'email',
 		activity_logs : undefined,
 }
