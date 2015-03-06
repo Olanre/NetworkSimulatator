@@ -339,8 +339,8 @@ module.exports.getSimByName = getSimByName;
 module.exports.getApp = getApp;
 module.exports.addApp = addApp;
 module.exports.modifyApp = modifyApp;
-
-//New Since Refactor
+ 
+ //New Since Refactor
 module.exports.modifySimByName = modifySimByName;
 module.exports.saveNetwork = saveNetwork;
 module.exports.modifyNetworkByName = modifyNetworkByName;
