@@ -177,9 +177,9 @@ function findAllSimulations(callback)
 	Sim.find({}, function(err, sims) {
 		if(err) callback("No simulations or err ln, 180");
 		callback(sims);
-	}
-});
-	
+	});
+}
+	//fixed
                         //USER FUNCTIONS**************!
 function addUser(aUser)
 { 
