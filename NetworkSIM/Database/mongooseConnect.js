@@ -13,7 +13,6 @@ mongoose.connection.once('connected', function(){
    console.log("Connected to database")
   });
 Schema = db.Schema;
- 
 
                                     //****Schemas
 
@@ -34,7 +33,7 @@ var userSchema = mongoose.Schema({
 	activity : String,
 });
 
-
+AllFieldsRequiredByDefautlt(userSchema);
 //STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
 
@@ -52,11 +51,10 @@ var networkSchema = mongoose.Schema({
 	
  network_name : String,
  network_type : String,
- partition : String,
  device_list : [User],
 
 });
-
+AllFieldsRequiredByDefautlt(networkSchema);
 //NETWORK COMPLETE
 var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
@@ -70,6 +68,8 @@ var simulationSchema = mongoose.Schema({
 	   partition_list: [Partition],
 	   activity_logs : String,	   
 });
+
+AllFieldsRequiredByDefautlt(simulationSchema);
 
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
@@ -98,6 +98,10 @@ var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
 var partitionSchema = mongoose.Schema({
 	network_list: [Network],
 });
+
+
+AllFieldsRequiredByDefautlt(partitionSchema);
+
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
 //SIMULATION
@@ -144,6 +148,11 @@ var event_queue_wrapperSchema = mongoose.Schema({
 });
 
 var event_queue_wrapper = mongoose.model('event_queue_wrapper', event_queue_wrapperSchema, 'newEvent_queue_wrapper');
+
+
+AllFieldsRequiredByDefautlt(networkSchema);
+AllFieldsRequiredByDefautlt(applicationSchema);
+
 
 
 
@@ -344,6 +353,23 @@ function modifyPartitionByName(aString, aPartition)
 	   //callback();
    });
 }
+
+//Global function
+
+function AllFieldsRequiredByDefautlt(schema) {
+    for (var i in schema.paths) {
+        var attribute = schema.paths[i]
+        if (attribute.isRequired == undefined) {
+            attribute.required(true);
+        }
+    }
+}
+
+
+
+
+
+
 
 //*Exports, finished calls
 module.exports.addUser = addUser;
