@@ -1,5 +1,7 @@
-/**********TEST THESE***************
-*/
+/*
+ * Utilities for handling the GUI
+ * THESE HAVE BEEN TESTED AND WORKS CORRECTLY
+ */
 
 /**
  * gets all partitions with 2 or more networks in them
@@ -26,11 +28,11 @@ function getAllNonsingularPartitions(partition_list){
 function isRealPartition(partition){
 	if(partition!==null){
 		//if has more than one network, must be a real partition
-		if (partition.network_list.size>1){
+		if (partition.network_list.length>1){
 			return true;
 		}
 		//in the case that this partition has 0 objects, this is an error
-		else if(partition.network_list.size!==1){
+		else if(partition.network_list.length!==1){
 			console.log('Error: partition with id='+partition._id+' has no networks');
 			return false;
 		}
