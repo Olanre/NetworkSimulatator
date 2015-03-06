@@ -76,24 +76,35 @@ function createSimulation(event_data) {
 	simulation.simulationJSON.num_devices = event_data.num_devices;
 	simulation.simulationJSON.num_networks = event_data.num_networks;
 	var createdPartition,createdNetwork,createdDevice;
+
 	for(partition in map){
 
-		createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
-		simulation.addPartition(createdPartition);
-		
-		for(network in map[partition]){
-
-			createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
-			createdPartition.addNetwork(createdNetwork);
-
-			for(device in map[partition][network]){
-
-					createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.device_name, device);
-					simulation.addDevice(createdDevice);
-					createdNetwork.addDevice(createdDevice);
-					TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
+		if(partition=='freelist'){
+			for(device in map[partition]){
+				createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
+				simulation.addDevice(createdDevice);
+				TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
+				
 			}
 		}
+
+		else{
+			createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
+			simulation.addPartition(createdPartition);
+			for(network in map[partition]){
+				createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
+				createdPartition.addNetwork(createdNetwork);
+
+				for(device in map[partition][network]){
+
+						createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
+						simulation.addDevice(createdDevice);
+						createdNetwork.addDevice(createdDevice);
+						TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
+				}
+			}
+		}
+
 	}
 
 	// Add database stuff

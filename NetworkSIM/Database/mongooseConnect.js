@@ -3,10 +3,9 @@ var Schema = mongoose.Schema;
 
 //Working commands
 // --> addUser addSim addApp , getSim(name), getUserByToken(token), getApp(name)
-
-
-
 //connect to db
+
+
 var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:53139/sc-2');
 
 //attach lister to connected even
@@ -17,7 +16,9 @@ Schema = db.Schema;
  
 
                                     //****Schemas
-//USER SCHEMA
+
+
+										//USER SCHEMA
 //USER 
 var userSchema = mongoose.Schema({
 	token:String,
@@ -27,13 +28,12 @@ var userSchema = mongoose.Schema({
 	current_network: String,
 	registeredOn: String,
 	admin: Boolean,
-	networks_created: [],
-	application_id:String,
+	networks_created: [String],
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,
-    unique_id : {type : String, required: true , index : {unique : true}},
-	});
+});
+
 
 //STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
@@ -62,19 +62,14 @@ var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	  // partion_list : [Partition],
-	   //free_list : Network,
 	   num_devices: Number,
 	   num_networks: Number,
 	   simulation_population: Number,
-	   simulation_name: String,
-	   config_map: String,
+	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
-	   //token_list : [tokens],
-	   activity_logs : String,
-	   
+	   partition_list: [Partition],
+	   activity_logs : String,	   
 });
-
 
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
@@ -101,10 +96,7 @@ var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
 
 //Partition Schema
 var partitionSchema = mongoose.Schema({
-	
-	partition_name: String,
 	network_list: [Network],
-
 });
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
@@ -137,6 +129,24 @@ var applicationSchema = mongoose.Schema({
 	});
 //NEEEEEEEEEEEEED
 var App = mongoose.model('App', applicationSchema, 'newAppFormat');
+
+
+
+
+
+								//event_queue_wrapper
+
+//mention to me if this needs testing, not sure if we are using it
+var event_queue_wrapperSchema = mongoose.Schema({
+	eventQueue: [String],
+	token: String,
+	simulationName: String,
+});
+
+var event_queue_wrapper = mongoose.model('event_queue_wrapper', event_queue_wrapperSchema, 'newEvent_queue_wrapper');
+
+
+
 
 
                                      //****FUNCTION
@@ -181,8 +191,8 @@ function findAllSimulations(callback)
 		if(err) callback("No simulations or err ln, 180");
 		callback(sims);
 	});
-});
-	
+}
+	//fixed
                         //USER FUNCTIONS**************!
 function addUser(aUser)
 { 
@@ -359,3 +369,4 @@ module.exports.User=User;
 module.exports.Network=Network;
 module.exports.Partition=Partition;
 module.exports.Simulation=Sim;
+//module.exports.event_queue_wrapper = event_queue_wrapper;
