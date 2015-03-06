@@ -157,13 +157,11 @@ function getSimByName(aString, callback)
    
    callback(obj);
    //console.log("found Simulation");
-   //console.log(LenneteSim);
-   
-});		
-	
+   //console.log(LenneteSim);   
+  });			
 }
 
-//Find simulation by name
+//Modify simulation by name
 function modifySimByName(aString, aSim)
 {
  Sim.findOne( {simulation_name: aString}, function(err,obj)
@@ -174,10 +172,17 @@ function modifySimByName(aString, aSim)
    LenneteSim = aSim;
 	LenneteSim.save();
 	//callback();
-});		
-	
+  });		
 }
 
+function findAllSimulations(callback)
+{
+	Sim.find({}, function(err, sims) {
+		if(err) callback("No simulations or err ln, 180");
+		callback(sims);
+	});
+});
+	
                         //USER FUNCTIONS**************!
 function addUser(aUser)
 { 
