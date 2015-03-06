@@ -49,3 +49,4 @@ function testCreateSimulation(){
 		console.log(devices[index].device_name);
 	}
 }
+

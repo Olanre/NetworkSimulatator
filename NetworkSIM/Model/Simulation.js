@@ -116,19 +116,12 @@ function addNetwork(network){
 
 }
 
-function removeNetwork(networkName){
-		var networkList=this.getNetworks();
-
-		for(index in networkList){
-			if(networkList[index].network_name==networkName){
-				for(devIndex in networkList[index].device_list){
-					networkList[index].removeDevice(networkList[index].device_list[devIndex]);
-				}
-				networkList[index].partitionObject.removeNetwork(networkList[index]);
-				networkList.splice(index,1);
-			}
-			break;
-		}
+function removeNetwork(network){
+	var devices=network.device_list;
+	for(device in devices){
+		network.removeDevice(devices[device]);
+	}
+	network.partitionObject.removeNetwork(network);
 		
 }
 
