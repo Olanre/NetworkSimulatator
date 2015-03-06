@@ -248,7 +248,7 @@ function RegisterView(){
  * Displays the list of all networks not sure if necessary
  */
 function NetworksListView(){
-	var lists = getNetworks();
+	var lists = getNetworkObjs();
 	console.log(lists);
 	var html = NetworksListTemplate(lists);
 	getSection().innerHTML = html;
@@ -258,13 +258,11 @@ function NetworksListView(){
  * Displays the list of all devices
  */
 function DeviceListView(){
-	var netlist = getNetworks();
+	var devices = getAllDeviceObjects();
 	
 	var html = "<div class = 'container'> " +
 	"<table>";
 	for(var i = 0; i < netlist.length; i ++ ){
-		var devices = getDevices(netlist[i]);
-		
 		html += DevicesListTemplate(devices);
 	}
 	html += "</table>" +
