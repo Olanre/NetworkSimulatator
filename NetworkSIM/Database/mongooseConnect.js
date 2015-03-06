@@ -26,13 +26,12 @@ var userSchema = mongoose.Schema({
 	current_network: String,
 	registeredOn: String,
 	admin: Boolean,
-	networks_created: [],
-	application_id:String,
+	networks_created: [String],
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,
-    unique_id : {type : String, required: true , index : {unique : true}},
-	});
+});
+
 
 //STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
@@ -61,15 +60,12 @@ var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
 //SIMULATION
 var simulationSchema = mongoose.Schema({
-	  // partion_list : [Partition],
-	   //free_list : Network,
 	   num_devices: Number,
 	   num_networks: Number,
 	   simulation_population: Number,
-	   simulation_name: String,
-	   config_map: String,
+	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
-	   //token_list : [tokens],
+	   partition_list: [Partition],
 	   activity_logs : String,	   
 });
 
@@ -98,10 +94,7 @@ var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
 
 //Partition Schema
 var partitionSchema = mongoose.Schema({
-	
-	partition_name: String,
 	network_list: [Network],
-
 });
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
@@ -134,6 +127,24 @@ var applicationSchema = mongoose.Schema({
 	});
 //NEEEEEEEEEEEEED
 var App = mongoose.model('App', applicationSchema, 'newAppFormat');
+
+
+
+
+
+								//event_queue_wrapper
+
+//mention to me if this needs testing, not sure if we are using it
+var event_queue_wrapperSchema = mongoose.Schema({
+	eventQueue: [String],
+	token: String,
+	simulationName: String,
+});
+
+var event_queue_wrapper = mongoose.model('event_queue_wrapper', event_queue_wrapperSchema, 'newEvent_queue_wrapper');
+
+
+
 
 
                                      //****FUNCTION
