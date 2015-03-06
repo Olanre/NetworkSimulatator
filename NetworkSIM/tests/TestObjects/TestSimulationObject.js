@@ -3,7 +3,7 @@
  *and devices to create
  */
 
-function generateSimulationObject(index){
+function generateSimulationObject(index,haveNulls){
 	var simulation={};
 	simulation._id='s'+0;
 	simulation.num_devices=0;
@@ -19,7 +19,34 @@ function generateSimulationObject(index){
 		simulation.num_devices+=index;
 		simulation.num_networks+=index;
 	}
+	if (haveNulls==true){
+		for (var i=0;i<2;i++){
+			var nullpart=generateNullPartition(simulation._id, i);
+			simulation.partition_list.push(nullpart);
+		}
+	}
 	return simulation
+}
+
+function generateNullPartition(simulation_id, j){
+	var partition={}
+	partition._id='np'+j;
+	partition.network_list=[];
+	var null_network=generateNullNetwork(partition._id, simulation_id,0); 
+	partition.network_list.push(null_network);
+	return partition;
+}
+
+function generateNullNetwork(partition_id,simulation_id,j){
+	var network={};
+	network._id='n'+j+partition_id;
+	network.network_type='';
+	network.network_name='';
+	network.partition=partition_id;
+	network.device_list=[];
+	var dev = generateDeviceObject(0,simulation_id,partition_id, network._id,0);
+	network.device_list.push(dev);
+	return network;
 }
 
 function generatePartitionObject(index, simulation_id,j){
@@ -27,7 +54,7 @@ function generatePartitionObject(index, simulation_id,j){
 	partition._id='p'+j;
 	partition.network_list=[];
 	for (var i=0;i<index;i++){
-		network=generateNetworkObject(index, partition._id, simulation_id,i);
+		var network=generateNetworkObject(index, partition._id, simulation_id,i);
 		partition.network_list.push(network);
 	}
 	return partition;

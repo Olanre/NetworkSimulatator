@@ -2,9 +2,34 @@
 <html>
 <head>
 	<script src='../public/ClientJS/GUI/GUIUtilities.js' type='text/javascript'></script>
+	<script src='../public/ClientJS/ClientLogic/LocalSimulationManager.js' type='text/javascript'></script>
 	<script src='TestObjects/TestSimulationObject.js' type='text/javascript'></script>
 	<script>
-		
+		var sim=generateSimulationObject(2,true);
+		printCreatedSimulation(sim);
+
+		function get_local_simulation(){
+			return sim;
+		}
+		console.log('Testing getAllNonsingularPartitions(sim.partition_list):');
+		var list=getAllNonsingularPartitions(sim.partition_list);
+		for (var i =0;i<list.length;i++){
+			console.log('should be: p'+i+' actual: '+list[i]._id);
+		}
+		var testPartition1=getPartitionObjectById('p1');
+		var testPartition2=getPartitionObjectById('np0');
+		console.log('testPartition1: '+testPartition1.network_list.length);
+		console.log('testPartition2: '+testPartition2.network_list.length);
+		console.log('isRealPartition(): should be true actual: '+isRealPartition(testPartition1));
+		console.log('isRealPartition(): should be false actual: '+isRealPartition(testPartition2));
+		var freeDevices=getAllFreeDevices(sim.partition_list);
+		for (var i =0;i<freeDevices.length;i++){
+			console.log('getAllFreeDevices should be: n0d0np'+i+' actual: '+freeDevices[i].token);
+		}
+		var realPartitions=getRealPartitions(sim.partition_list);
+		for (var i=0; i<realPartitions.length;i++){
+			console.log('getRealPartitions(): should be p'+i+' actual: '+realPartitions[i]._id);
+		}
 	</script>
 </head>
 <body>
