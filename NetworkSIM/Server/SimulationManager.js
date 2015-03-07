@@ -67,11 +67,12 @@ function authToken(token, simulation_id, callback){
 	var res = {};
 	res.Response = "Fail";
 	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	console.log(simulation);
 	if(simulation !== -1){
 		deviceList=simulation.getDevices();
-	
+		console.log(deviceList);
 		for(index in deviceList){
-			if(deviceList[index].token==token){
+			if(deviceList[index].token == token){
 				res.Response = "Success";
 				break;
 			}
