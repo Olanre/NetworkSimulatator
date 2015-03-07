@@ -15,6 +15,10 @@ function circle(centerX, centerY, radius, svgCanvas, elementClass){
 	this.r=radius;
 	this.stroke=1;
 	this.name="";
+	//this contains the object (network or device) that the graphic represents.
+	this.represents={};
+
+
 	//whether the name of the device is visible
 	this.nameVisible=false;
 	

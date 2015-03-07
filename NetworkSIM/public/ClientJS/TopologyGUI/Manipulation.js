@@ -2,7 +2,11 @@
 
 var interactable=true;
 var uniqueDataIndex=0;
+
+var displayed_partition_list={};
+
 var svgCanvas = document.querySelector('svg'),
+
 
 //svg is required for the graphics
     svgNS = 'http://www.w3.org/2000/svg',
@@ -50,6 +54,8 @@ document.body.onmouseout = mouseOver;
  * Generates topology given a partition_list object
  ***/
 function generateTopology(partition_list, areaWidth){
+
+	displayed_partition_list=partition_list;
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
@@ -58,16 +64,11 @@ function generateTopology(partition_list, areaWidth){
 	var realPartitions=getRealPartitions(partition_list);
 	var free_list=getAllFreeDevices(partition_list);
 
-		console.log(realPartitions);
-		console.log(free_list);
-
 	numPartitions=realPartitions.length;
-
 	positioningRadius=areaWidth/(numPartitions+1);
 	rootXY=positioningRadius;
 	
 	for(partition in realPartitions){
-		
 		
 		var network_list=partition_list[partition].network_list;
 		var angle=Math.PI/network_list.length;
@@ -77,12 +78,14 @@ function generateTopology(partition_list, areaWidth){
 			if(networkIndex==0){
 				root=createNetworkGraphicAt(rootXY,rootXY);
 				root.name=network_list[network].network_name;
+				root.represents=network_list[network];
 				connectDevicesToNetwork(network_list[network].device_list,root);
 			}
 			
 			else{
 				connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
 				connected.name=network_list[network].network_name;
+				connected.represents=network_list[network];
 				createPartitionGraphic(root,connected);
 				connectDevicesToNetwork(network_list[network].device_list,connected);
 			}
@@ -177,6 +180,15 @@ interact('.network')
 			  var device=getRelatedShapeFromEvent(event);
 			  var deviceIndex=event.relatedTarget.getAttribute('data-index');
 			  delete network.children[deviceIndex];
+
+
+			  //tracking for partition list
+			  for(index in network.represents.device_list){
+			  	if(network.represents.device_list[index]===device.represents){
+			  		console.log("removed a device");
+			  		network.represents.device_list.splice(index,1);
+			  	}
+			  }
 			  
 		},
 
@@ -194,6 +206,10 @@ interact('.network')
 				
 				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
 				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+
+				//tracking the partition list
+				dropzone.represents.device_list.push(dragged.represents);
+				console.log("added a device");
 				//THIS IS STUFF TO INTERACT WITH MAINJS
 				//addDevice(deviceName, newNetworkName);
 				//this does not handle moving in and out of the free-list

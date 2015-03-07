@@ -165,7 +165,7 @@ function networkTopologyView(){
 	var content = getContainer();
 	defaultsideBarView();
 
-	loadJSFile('../gui/toplogyManipulationGUI.js');
+	loadJSFile('../TopologyGUI/Manipulation.js');
 	loadStyleSheet('../css/topologyView.css');
 	var html="<div id='bigDiv'>" +
 			"<svg></svg>" +

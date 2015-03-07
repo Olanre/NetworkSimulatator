@@ -109,3 +109,50 @@ function removeElement(element){
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
+
+function deepCopy(item){
+	var copy;
+	if(Array.isArray(item)){
+	 copy=[];
+	}
+	else {
+		if (item instanceof Object) copy={};
+		else return item;
+	}
+
+	for (attribute in item){
+		copy[attribute]=deepCopy(item[attribute]);
+	}
+
+	return copy;
+}
+
+function compareObjects(obj1,obj2){
+
+	for(key in obj1){
+
+		if(obj2.hasOwnProperty(key)){
+
+			if(obj1[key]!=obj2[key]){
+				if(Array.isArray(obj1[key])){
+
+					compareObjects(obj1[key],obj2[key]);
+				}
+				else{
+					if(obj1[key] instanceof Object){
+						compareObjects(obj1[key],obj2[key]);
+					}
+					else return false;	
+				}
+
+			}
+		}
+
+		else{
+			return false;
+		}
+		
+	}
+	return true;
+
+}

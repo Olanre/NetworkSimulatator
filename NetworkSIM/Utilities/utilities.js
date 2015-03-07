@@ -38,7 +38,7 @@ exports.findSimulationByName=function(simulationName,simulationList){
 
 exports.findDeviceByName=function(deviceName,deviceList){
 	for(index in deviceList){
-		if (deviceList[index].device_name==deviceName) return deviceList[index];
+		if (deviceList[index].current_device_name==deviceName) return deviceList[index];
 
 	}
 	return -1;

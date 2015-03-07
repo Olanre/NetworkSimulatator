@@ -7,6 +7,7 @@ function connectDevicesToNetwork(deviceList,networkObject){
 		connectedDevice=createObjectWithin(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
 		attachChild(networkObject,connectedDevice);
 		connectedDevice.name=deviceList[device].current_device_name;
+		connectedDevice.represents=deviceList[device];
 		connectedDevice.draw();
 		i++;
 	}

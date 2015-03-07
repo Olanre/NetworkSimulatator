@@ -6,13 +6,13 @@
   <title></title>
     <link rel="stylesheet" href="../tests/topologyView.css" media="screen" type="text/css" />
     <script src="../public/ClientJS/Utilities.js"></script>
+    <script src="../public/ClientJS/ClientLogic/SessionStorageManager.js"></script>
     <script src="../public/ClientJS/PartitionListUtilities.js"></script>
     <script src='../public/ClientJS/TopologyGUI/Shapes.js'></script>
     <script src='../public/ClientJS/TopologyGUI/Drawing.js'></script>
     <script src="../tests/TestObjects/TestSimulationObject.js"></script>
     <script> 
     	var firsttest=generateSimulationObject(3,false);
-    	console.log(firsttest);
     	var secondtest=generateSimulationObject(4,true);
     	var thirdtest=generateSimulationObject(5,true);
     </script>
@@ -23,6 +23,7 @@
 	<!-- Note: These javascript files must be added AFTER the svg canvas for this to work!!! -->
 	<script src='../public/ClientJS/TopologyGUI/interact-1.2.2.js'></script>
 	<script src='../public/ClientJS/TopologyGUI/Manipulation.js'></script>
+	<script src='../public/ClientJS/Views/TopologyMapView.js'></script>
 	<br>
 	<button class="buttton" type="button" onclick = createDeviceGraphic()>New Device</button>
 	<button class="buttton"  type="button" onclick = createNetworkGraphic()>New Network</button>
