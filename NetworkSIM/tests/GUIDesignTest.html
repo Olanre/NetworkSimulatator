@@ -4,22 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
-    <link rel="stylesheet" href="../public/stylesheets/topologyView.css" media="screen" type="text/css" />
+    <link rel="stylesheet" href="../tests/topologyView.css" media="screen" type="text/css" />
     <script src="../public/ClientJS/Utilities.js"></script>
-    <script src='../public/ClientJS/GUI/GUIShapes.js'></script>
+    <script src="../public/ClientJS/PartitionListUtilities.js"></script>
+    <script src='../public/ClientJS/TopologyGUI/Shapes.js'></script>
+    <script src='../public/ClientJS/TopologyGUI/Drawing.js'></script>
+    <script src="../tests/TestObjects/TestSimulationObject.js"></script>
+    <script> 
+    	var firsttest=generateSimulationObject(3,false);
+    	console.log(firsttest);
+    	var secondtest=generateSimulationObject(4,true);
+    	var thirdtest=generateSimulationObject(5,true);
+    </script>
 </head>
 	<div id="bigDiv">
 	<svg>
 	</svg>
 	<!-- Note: These javascript files must be added AFTER the svg canvas for this to work!!! -->
-	<script src='../public/ClientJS/GUI/interact-1.2.2.js'></script>
-	<script src='../public/ClientJS/GUI/toplogyManipulationGUI.js'></script>
+	<script src='../public/ClientJS/TopologyGUI/interact-1.2.2.js'></script>
+	<script src='../public/ClientJS/TopologyGUI/Manipulation.js'></script>
 	<br>
 	<button class="buttton" type="button" onclick = createDeviceGraphic()>New Device</button>
 	<button class="buttton"  type="button" onclick = createNetworkGraphic()>New Network</button>
-	<button class="buttton"  type="button" onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>
-	<button class="buttton" type="button" onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>
-	<button class="buttton" type="button" onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>
+	<button class="buttton"  type="button" onclick = generateTopology(firsttest.partition_list,1000)>Load Configuration 1</button>
+	<button class="buttton" type="button" onclick = generateTopology(secondtest.partition_list,1000)>Load Configuration 2</button>
+	<button class="buttton" type="button" onclick = generateTopology(thirdtest.partition_list,1000)>Load Configuration 3</button>
 	<button class="buttton" type="button" onclick = clearCanvas()>Clear Canvas</button>
 	</div>
 </body>

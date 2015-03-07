@@ -1,5 +1,5 @@
 /*
- *Generates a simulation object for testing. Index is the number of networks
+ *Generates a simulation object for testing. Index is the maximum number of networks
  *and devices to create
  */
 
@@ -53,7 +53,10 @@ function generatePartitionObject(index, simulation_id,j){
 	var partition={};
 	partition._id='p'+j;
 	partition.network_list=[];
-	for (var i=0;i<index;i++){
+	
+	var networksToCreate=Math.floor((Math.random() * index) + 1);
+
+	for (var i=0;i<networksToCreate;i++){
 		var network=generateNetworkObject(index, partition._id, simulation_id,i);
 		partition.network_list.push(network);
 	}
@@ -67,7 +70,8 @@ function generateNetworkObject(index, partition_id,simulation_id,j){
 	network.network_name='jeffs '+j+'th network';
 	network.partition=partition_id;
 	network.device_list=[];
-	for (var i =0; i<index;i++){
+	var devicesToCreate=Math.floor((Math.random() * index) + 1);
+	for (var i =0; i<devicesToCreate;i++){
 		device=generateDeviceObject(index, simulation_id, partition_id, network._id,i);
 		network.device_list.push(device);
 	}
