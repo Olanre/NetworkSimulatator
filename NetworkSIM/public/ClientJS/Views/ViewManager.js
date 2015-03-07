@@ -239,10 +239,12 @@ function eventLogsView(){
 /**
  * Display's the token registration page
  */
-function RegisterView(){
+function RegisterView(id){
 	var html = document.getElementById('template8').innerHTML;
+	
 	var content = getContainer();
 	content.innerHTML = html;
+	document.getElementById('simulation_id_div').value = id;
 }
 
 /**

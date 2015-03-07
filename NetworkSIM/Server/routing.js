@@ -13,11 +13,11 @@ function sync(request, response){
 		var json = JSON.parse(data);
 		var token = json.token;
 		var events = json.eventQueue ;
-		var simulation= json.simulationName;
+		var simulation= json.simulationId;
 		//console.log(obj);
-		SimulationManager.authToken(token, function(obj){
+		SimulationManager.authToken(token, simulation, function(obj){
 			//for now allow empty tokens
-			if(obj.responseponse == 'Success'){
+			if(obj.Response == 'Success'){
 				//console.log("Successful authenication" );
 					handleEventQueue(token, events, function(){
 
@@ -27,9 +27,6 @@ function sync(request, response){
 			}
 
 			else{
-				//console.log("Failed authenication" );
-				//console.log(json);
-
 				handleEventQueue(token, events, function(){
 
 					var state={};
@@ -41,6 +38,27 @@ function sync(request, response){
 				});
 			}
 			
+		});
+	});
+}
+
+function authToken(request, response){
+	var data = '';
+	
+	//waits until all of the data from the client has been received
+	request.on("data", function(chunk){
+		data += chunk.toString();
+	});
+	
+	//once we have the entire data from the client
+	request.on("end", function() {
+		var json = JSON.parse(data);
+		var token = json.token;
+		var simulation_id = json.simulation_id;
+		SimulationManager.authToken(token, simulation_id, function(obj){
+		//for now allow empty tokens
+			console.log(obj);
+			response.send(obj);
 		});
 	});
 }
@@ -88,3 +106,4 @@ function handleEventQueue(token, eventQueue, callback) {
 };
 
 module.exports.sync=sync;
+module.exports.authToken = authToken;

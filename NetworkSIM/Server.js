@@ -24,11 +24,14 @@ var server = app.listen(port, function () {
 	
 Database.getApp(function(data){
 	if(data == null){
-		Application.simulation_list = [];
-		Application.total_devices = 0;
-		Application.total_networks = 0;
-		Application.super_admin = {};
-		Database.addApp(Application);
+		//Application.simulation_list = [];
+		//Application.total_devices = 0;
+		//Application.total_networks = 0;
+		//Application.super_admin = {};
+		//Database.addApp(Application);
+		
+		//no longer needed
+		//should instead get all simulation objects from the database and load them into the server
 	}
 	else{
 		console.log('App already exists');
@@ -47,6 +50,8 @@ Database.getApp(function(data){
 app.use(logger({path: "./logfile.txt"}));
 
 app.post("/getSync", Router.sync);
+
+app.post("/authenticate/authToken", Router.authToken );
 
 app.get('/', function(request,response){
 	response.sendFile("/index.html", {"root": __dirname});	
