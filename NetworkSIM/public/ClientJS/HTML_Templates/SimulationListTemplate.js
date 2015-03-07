@@ -12,7 +12,7 @@ function SimulationListTemplate(simulations){
 			 if(local_device.current_simulation == simulations[i].simulation_name ){
 				 str += "<td> <div class = 'aButton' onclick = 'h()'> View </div> </td> </tr>";
 			 }else{
-				 str += "<td> <divclass = 'aButton' onclick = 'RegisterView()' > Register  </div> </td> </tr>";
+				 str += "<td> <div class = 'aButton' onclick = 'RegisterView(&quot;" + simulations[i].simulation_id + "&quot;)' > Register  </div> </td> </tr>";
 			 }
 		}	
 	}

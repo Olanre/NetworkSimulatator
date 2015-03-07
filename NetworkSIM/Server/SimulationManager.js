@@ -4,6 +4,7 @@ The purpose of this class is to manage creating and modifying simulations.
 ******/
 
 var TokenManager = require("./TokenManager.js");
+var Util = require("../Utilities/utilities.js");
 var TokenMailer = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
 var Device = require("../Model/Device.js");
@@ -43,7 +44,10 @@ module.exports.getSimulationNames=function(){
 	var names_list=[];
 	var new_entry = {};
 	for(var index = 0; index < simulationList.length; index++){
-		new_entry = {'num_devices': simulationList[index].simulationJSON.num_devices, 'num_networks': simulationList[index].simulationJSON.num_networks, 'simulation_name': simulationList[index].simulationJSON.simulation_name};
+		new_entry['num_devices'] = simulationList[index].simulationJSON.num_devices;
+		new_entry['num_networks'] = simulationList[index].simulationJSON.num_networks;
+		new_entry['simulation_name'] = simulationList[index].simulationJSON.simulation_name;
+		new_entry['simulation_id'] = simulationList[index].simulationJSON._id;
 		names_list.push(new_entry);
 	}
 	
@@ -59,12 +63,27 @@ module.exports.setSimulationNames=function(new_list){
 	
 }
 
-function authToken(token, callback){
-		
-	TokenManager.authenticateToken(token, function(obj){
+function authToken(token, simulation_id, callback){
+	var res = {};
+	res.Response = "Fail";
+	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	if(simulation !== -1){
+		deviceList=simulation.getDevices();
+	
+		for(index in deviceList){
+			if(deviceList[index].token==token){
+				res.Response = "Success";
+				break;
+			}
+		}
+	}
+	
+	callback(res);
+	//bypassing database for now.
+	//TokenManager.authenticateToken(token, function(obj){
 		//console.log(obj);
-		callback(obj);
-	});
+		//callback(obj);
+	//});
 		
 }
 
@@ -96,8 +115,9 @@ function createSimulation(event_data) {
 				createdPartition.addNetwork(createdNetwork);
 
 				for(device in map[partition][network]){
-
-						createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
+						var token = TokenManager.generateToken();
+						console.log(token);
+						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name, device);
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
@@ -141,6 +161,7 @@ function createNetwork(event_data){
 };
 
 //TODO - Will we even need to remove a device? Leaving this until later.
+// Olanre - yes it is one of fiech's required methods in the shell files he gave us.
 function removeDevice(event_data){
 	//var simulation_name=event_data.simulation_name;
 	//var device_name=event_data.device_name;

@@ -327,6 +327,7 @@ function getLocalSimulationId(){
 		return local_simulation._id;
 	}
 	else{
-		console.log("Error:getLocalSimulationId passed null simulation object")
+		console.log("Error:getLocalSimulationId passed null simulation object");
+		return '';
 	}
 }

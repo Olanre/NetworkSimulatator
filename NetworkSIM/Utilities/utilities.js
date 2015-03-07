@@ -62,7 +62,7 @@ exports.findByUniqueID=function(uniqueID,list){
 
 	for(index in list){
 
-		if(list[index]._id.valueOf()===uniqueID.valueOf()){
+		if(list[index]._id.valueOf()===uniqueID){
 			return list[index];
 		} 
 	}
