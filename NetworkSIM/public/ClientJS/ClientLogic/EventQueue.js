@@ -8,7 +8,7 @@ function newEventQueue(){
 	var queue = {};
 	queue.token = '';
 	queue.eventQueue = [];
-	queue.simulation_name = '';
+	queue.simulation_id = '';
 	store_local_events(local_events);
 	return queue;
 }
@@ -28,11 +28,31 @@ function addToEventQueue(route, event_data, time_stamp){
 	//creates the query to the server
 	var query = {'route': route, 'event_data' : event_data, 'time_stamp': time_stamp}
 	local_events.eventQueue.push(query);
-	local_events.token = getToken();  
-	local_events.simulationName = getSimulationName();
+	local_events.token = getLocalDeviceToken();  
+	local_events.simulationId = getLocalSimulationId();
 	
 	store_local_events(local_events);
+	syncWithServer();
 }
+
+function updateLocalEventsToken(token){
+	//gets the events
+	var local_events = get_local_events();
+	//sets the token to the token of the user
+	local_events.token = token;
+	//returns the new object to the local storage.
+	store_local_events(local_events);
+}
+
+function updateLocalEventsSimulationId(id){
+	//gets the events
+	var local_events = get_local_events();
+	//sets the token to the token of the user
+	local_events.simulation_id = id;
+	//returns the new object to the local storage.
+	store_local_events(local_events);
+}
+
 
 /**
  * Clears the event queue

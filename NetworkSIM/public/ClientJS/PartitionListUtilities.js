@@ -1,7 +1,7 @@
-/*
- * Utilities for handling the GUI
- * THESE HAVE BEEN TESTED AND WORKS CORRECTLY
- */
+/***
+ * Utilities for dealing with partition_list.
+ * Tested by Noah
+ ****/
 
 /**
  * gets all partitions with 2 or more networks in them

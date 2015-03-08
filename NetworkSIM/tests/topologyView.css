@@ -1,0 +1,72 @@
+svg {
+	background: #F0F1F2;
+  	width: 1000px;
+  	height: 1000px;
+  	border-style: solid;
+  	border-width: 0px;
+	position: relative;
+	left: -20px;
+	border-radius: 25px;
+	
+}
+#bigDiv{
+	width:1000px;
+}
+.viable-partition{
+	fill:red;
+	stroke: blue;
+	stroke-dasharray: 20,5;
+	stroke-width:5;
+}
+
+.name-text{
+	
+}
+
+.held-object{
+	
+}
+.network-connection{
+	fill: #71EEB8;
+	stroke-width:5;
+	stroke:#71EEB8;
+}
+
+.device {
+	fill: #ff9999;
+}
+
+.network{
+	fill: #71EEB8;
+}
+
+.drop-locations{
+	stroke: #29CE87;
+	stroke-dasharray: 10,5;
+	stroke-width:4;
+}
+
+.drop-target{
+	fill: #9FF7D1;
+}
+.connected-device{
+	fill: #29CE87;
+}
+
+body { 
+	margin: 0; 
+}
+.buttton {
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 16px;
+  background: #ff9999;
+  padding: 4px 4px 4px 4px;
+  border: 0px solid black;
+}
+
+.buttton:hover {
+  background: #D86161;
+  text-decoration: none;
+}

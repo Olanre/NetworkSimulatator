@@ -2,7 +2,11 @@
 
 var interactable=true;
 var uniqueDataIndex=0;
+
+var displayed_partition_list={};
+
 var svgCanvas = document.querySelector('svg'),
+
 
 //svg is required for the graphics
     svgNS = 'http://www.w3.org/2000/svg',
@@ -11,133 +15,103 @@ var svgCanvas = document.querySelector('svg'),
 var origin = {x: 0, y: 0};
 var mouse = {x: 0, y: 0};
 
+document.addEventListener('mousemove', function(e){ 
+    mouse.x = e.clientX || e.pageX; 
+    mouse.y = e.clientY || e.pageY;
+}, false);
 /****
- * Generates topology given a simulation object
+ * Mouseover function for the GUI
+ ****/
+function mouseOver(e){
+	e = e || event;
+	if (event.type == 'mouseover'){
+		var fromElem = e.fromElement || e.relatedTarget;
+		var toElem = e.srcElement || e.target;
+	}
+	else if (e.type == 'mouseout'){
+		fromElem = e.srcElement || e.target;
+		toElem = e.toElement || e.relatedTarget;
+	}
+	function toString(el) { 
+		return el ? (el.id || el.nodeName) : 'null' ;
+	}
+	if(toString(toElem) == "circle"){
+		circleElem=shapes[toElem.getAttribute('data-index')];
+		circleElem.nameVisible=true;
+		circleElem.draw();
+	}
+	if(toString(fromElem) == "circle"){
+		circleElem=shapes[fromElem.getAttribute('data-index')];
+		circleElem.nameVisible=false;
+		circleElem.draw();
+	}
+}
+//adds the listener to the document
+document.body.onmouseover =mouseOver;
+document.body.onmouseout = mouseOver;
+
+/****
+ * Generates topology given a partition_list object
  ***/
-function generateTopology(configMap, areaWidth){
-	//clear the svgCanvas
+function generateTopology(partition_list, areaWidth){
+
+	displayed_partition_list=partition_list;
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
 	var root,connected,connectedDevice;
 	
-	numPartitions=Object.keys(configMap).length;
-	positioningRadius=areaWidth/(numPartitions);
+	var realPartitions=getRealPartitions(partition_list);
+	var free_list=getAllFreeDevices(partition_list);
+
+	numPartitions=realPartitions.length;
+	positioningRadius=areaWidth/(numPartitions+1);
 	rootXY=positioningRadius;
 	
-	for(partition in configMap){
+	for(partition in realPartitions){
 		
-		if(partition!='freelist'){
-			var angle=Math.PI/Object.keys(configMap[partition]).length;
+		var network_list=partition_list[partition].network_list;
+		var angle=Math.PI/network_list.length;
+
+		for(network in network_list){
 			
-			for(network in configMap[partition]){
-				
-				if(networkIndex==0){
-					root=createNetworkGraphicAt(rootXY,rootXY);
-					root.name=network;
-					connectDevicesToNetwork(configMap[partition][network],root);
-				}
-				
-				else{
-					connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
-					connected.name=network;
-					createPartitionGraphic(root,connected);
-					connectDevicesToNetwork(configMap[partition][network],connected);
-				}
-				networkIndex++;
+			if(networkIndex==0){
+				root=createNetworkGraphicAt(rootXY,rootXY);
+				root.name=network_list[network].network_name;
+				root.represents=network_list[network];
+				connectDevicesToNetwork(network_list[network].device_list,root);
 			}
 			
-			rootXY+=positioningRadius;
-			networkIndex=0;
-		}
-		
-		else{
-			var distance=areaWidth/(1+Object.keys(configMap[partition]).length);
-			var freeDevice;
-			deviceIndex=0;
-			for(device in configMap[partition]){
-				freeDevice=createDeviceGraphicAt(distance*(deviceIndex+1),20);
-				freeDevice.name=device;
-				freeDevice.draw();
-				deviceIndex++;
+			else{
+				connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
+				connected.name=network_list[network].network_name;
+				connected.represents=network_list[network];
+				createPartitionGraphic(root,connected);
+				connectDevicesToNetwork(network_list[network].device_list,connected);
 			}
+			networkIndex++;
 		}
 		
+		rootXY+=positioningRadius;
+		networkIndex=0;
+		
+	}
+	var distance=areaWidth/(1+free_list.length);
+	var freeDevice;
+	for(var i=0;i<free_list.length;i++){
+		freeDevice=createDeviceGraphicAt(distance*(i+1),20);
+		freeDevice.name=free_list[i].current_device_name;
+		freeDevice.draw();
 	}
 		
 }
-function connectDevicesToNetwork(deviceList,networkObject){
-	var numDevices=Object.keys(deviceList).length;
-	var angle=2*Math.PI/numDevices;
-	var connectedDevice;
-	var i=0;
-	for(device in deviceList){
-		connectedDevice=createObjectWithin(40,angle*i,networkObject.x,networkObject.y,createDeviceGraphicAt);
-		attachChild(networkObject,connectedDevice);
-		connectedDevice.name=device;
-		connectedDevice.draw();
-		i++;
-	}
-}
-function createNetworkGraphic(){
-	return createNetworkGraphicAt(100,500);
-}
 
-function createDeviceGraphic(){
-	return createDeviceGraphicAt(50,50);
-}
-
-function createNetworkGraphicAt(xPosition, yPosition){
-	var  network=new circle(xPosition, yPosition, 60, svgCanvas, 'network');
-	shapes[uniqueDataIndex]=(network);
-	uniqueDataIndex++;
-	return network;
-}
-
-function createDeviceGraphicAt(xPosition, yPosition){
-	var device=new circle(xPosition, yPosition, 10, svgCanvas, 'device');
-	shapes[uniqueDataIndex]=(device);
-	uniqueDataIndex++;
-	return device;
-}
-
-function createPartitionGraphic(sourceNetwork, destinationNetwork){
-	var connection=new line(sourceNetwork.x,sourceNetwork.y,destinationNetwork.x, destinationNetwork.y,svgCanvas,'network-connection');
-	shapes[uniqueDataIndex]=(connection);
-	sourceNetwork.connections[uniqueDataIndex]=destinationNetwork;
-	destinationNetwork.connections[uniqueDataIndex]=sourceNetwork;
-	uniqueDataIndex++;
-}
-function removePartition(sourceNetwork,destinationNetwork){
-	var index=sourceNetwork.connections.indexOf(destinationNetwork);
-	delete destinationNetwork.connections[index];
-	delete sourceNetwork.connections[index];
-	var oldLine=shapes[index];
-	svgCanvas.removeChild(oldLine.element);
-	delete shapes[index];
-}
-function attachChild(parentShape, childShape){
-	var index=shapes.indexOf(childShape);
-	parentShape.children[index]=childShape;
-	childShape.element.classList.add('connected-device');
-	index=shapes.indexOf(parent);
-}
-
-function createObjectWithin(radius,angle,centerX,centerY,createFunction){
-	var xpos=radius*Math.sin(angle);
-	var ypos=radius*Math.cos(angle);
-	var graphic=createFunction(centerX+xpos,centerY+ypos);
-	return graphic;
-}
 /****
- * --------------
- * Object Interactions
+ * -------------------
+ * Object Interactions (using interact.js)
  * --------------------
  ****/
 
-/****
- * Interaction with the "device" class
- ****/
 interact('.device')
 
 	.draggable({
@@ -172,9 +146,6 @@ interact('.device')
 		},
 	});
 
-/****
- * Interaction with the "network" class
- ****/
 interact('.network')
 	
 	.dropzone({
@@ -209,6 +180,15 @@ interact('.network')
 			  var device=getRelatedShapeFromEvent(event);
 			  var deviceIndex=event.relatedTarget.getAttribute('data-index');
 			  delete network.children[deviceIndex];
+
+
+			  //tracking for partition list
+			  for(index in network.represents.device_list){
+			  	if(network.represents.device_list[index]===device.represents){
+			  		console.log("removed a device");
+			  		network.represents.device_list.splice(index,1);
+			  	}
+			  }
 			  
 		},
 
@@ -226,6 +206,10 @@ interact('.network')
 				
 				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
 				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+
+				//tracking the partition list
+				dropzone.represents.device_list.push(dragged.represents);
+				console.log("added a device");
 				//THIS IS STUFF TO INTERACT WITH MAINJS
 				//addDevice(deviceName, newNetworkName);
 				//this does not handle moving in and out of the free-list
@@ -329,22 +313,11 @@ interact('.network')
 
 /****
  * --------
- * Utilities and Button Handlers
- * -----------------
+ * Checks and updaters
+ * ---------
  ****/
 
-//clears the svg canvas
-function clearCanvas(){
-	while (svgCanvas.lastChild) {
-		svgCanvas.removeChild(svgCanvas.lastChild);
-	}
-	shapes=[];
-}
 
-//here bool is a true/false boolean
-function setInteractable(bool){
-	interactable=bool;
-}
 
 function snapToLocation(shape,coordinates){
 	
@@ -364,37 +337,11 @@ function snapToLocation(shape,coordinates){
 	shape.draw();
 	
 }
-
-/****
- * handles getting what the mouse has moved over 
- ****/
-function mouseOver(e){
-	e = e || event;
-	if (event.type == 'mouseover'){
-		var fromElem = e.fromElement || e.relatedTarget;
-		var toElem = e.srcElement || e.target;
-	}
-	else if (e.type == 'mouseout'){
-		fromElem = e.srcElement || e.target;
-		toElem = e.toElement || e.relatedTarget;
-	}
-	function toString(el) { 
-		return el ? (el.id || el.nodeName) : 'null' ;
-	}
-	if(toString(toElem) == "circle"){
-		circleElem=shapes[toElem.getAttribute('data-index')];
-		circleElem.nameVisible=true;
-		circleElem.draw();
-	}
-	if(toString(fromElem) == "circle"){
-		circleElem=shapes[fromElem.getAttribute('data-index')];
-		circleElem.nameVisible=false;
-		circleElem.draw();
-	}
+//here bool is a true/false boolean
+function setInteractable(bool){
+	interactable=bool;
 }
-//adds the listener to the document
-document.body.onmouseover =mouseOver;
-document.body.onmouseout = mouseOver;
+
 
 function updatePartitionLines(networkShape){
 	for(index in networkShape.connections){
@@ -437,11 +384,6 @@ function getRelatedShapeFromEvent(event){
 	return shapes[index];
 }
 
-document.addEventListener('mousemove', function(e){ 
-    mouse.x = e.clientX || e.pageX; 
-    mouse.y = e.clientY || e.pageY;
-}, false);
-
 /****
  * orderCanvas orders all the shapes on the canvas so that devices
  * appear in front of networks, and so that connection lines appear behind the networks
@@ -473,7 +415,3 @@ function orderCanvas(){
 	}
 	
 }
-
-
-//generateTopology(testConfigMap,800);
-//generateTopology(testConfigMap1,800);

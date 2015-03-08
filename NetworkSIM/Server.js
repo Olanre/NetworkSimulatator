@@ -17,36 +17,18 @@ var globalCount = 0;
 var port = 3332;  // must be on port 3332 on excalibur for the grader
 
 
-var server = app.listen(port, function () { 
+var server = require("http").Server(app);
+var io = require("socket.io").listen(server);
 
-	var Application = {};
+Router.injectIO(io);
+io.on("connection", Router.handleClient);
 
-	
-Database.getApp(function(data){
-	if(data == null){
-		Application.simulation_list = [];
-		Application.total_devices = 0;
-		Application.total_networks = 0;
-		Application.super_admin = {};
-		Database.addApp(Application);
-	}
-	else{
-		console.log('App already exists');
-		}
+server.listen(port, function(){
+	  console.log('listening on *: ' + port);
 	});
-  var host = server.address().address;
-  console.log('Server listening at http://%s:%s', host, port);
-
-  //Here is where we should insert code for loading Simulations from the database
-  //We must add them to SimulationManager.simulationList
-
-});
-
 
 
 app.use(logger({path: "./logfile.txt"}));
-
-app.post("/getSync", Router.sync);
 
 app.get('/', function(request,response){
 	response.sendFile("/index.html", {"root": __dirname});	
@@ -69,4 +51,5 @@ app.use("/gui", express.static(__dirname + '/public/ClientJS/GUI'));
 app.use("/js",  express.static(__dirname + '/public/ClientJS'));
 app.use("/img",  express.static(__dirname + '/public/img'));
 
+exports.io=io;
 

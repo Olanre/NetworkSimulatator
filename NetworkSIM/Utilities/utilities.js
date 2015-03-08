@@ -38,7 +38,7 @@ exports.findSimulationByName=function(simulationName,simulationList){
 
 exports.findDeviceByName=function(deviceName,deviceList){
 	for(index in deviceList){
-		if (deviceList[index].device_name==deviceName) return deviceList[index];
+		if (deviceList[index].current_device_name==deviceName) return deviceList[index];
 
 	}
 	return -1;
@@ -61,8 +61,8 @@ exports.findPartitionByName=function(partitionName,partitionList){
 exports.findByUniqueID=function(uniqueID,list){
 
 	for(index in list){
-
-		if(list[index]._id.valueOf()===uniqueID.valueOf()){
+		if(list[index]._id==uniqueID){
+			console.log("Found it");
 			return list[index];
 		} 
 	}

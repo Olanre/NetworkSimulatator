@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<script src='../public/ClientJS/GUI/GUIUtilities.js' type='text/javascript'></script>
+	<script src='../public/ClientJS/PartitionListUtilities.js' type='text/javascript'></script>
 	<script src='../public/ClientJS/ClientLogic/LocalSimulationManager.js' type='text/javascript'></script>
 	<script src='TestObjects/TestSimulationObject.js' type='text/javascript'></script>
+	<script src='../public/ClientJS/Utilities.js' type='text/javascript'></script>
 	<script>
 		var sim=generateSimulationObject(2,true);
 		printCreatedSimulation(sim);
@@ -30,6 +31,23 @@
 		for (var i=0; i<realPartitions.length;i++){
 			console.log('getRealPartitions(): should be p'+i+' actual: '+realPartitions[i]._id);
 		}
+
+		var stupidObject={
+			name: 'test',
+			vv:2,
+			a_list:[2,3,4
+			],
+			another_list:[
+				{name:'a'},{name:'b'},{name:'c'}
+			]
+		}
+		var newObject=deepCopy(stupidObject);
+		stupidObject.vv=4;
+		newObject.another_list[0].name="changed";
+		stupidObject.a_list[1]='59';
+
+		var linked=stupidObject.vv===newObject.vv||stupidObject.another_list[0]===newObject.another_list[0]||stupidObject.a_list[1]===newObject.a_list[1];
+		console.log("The cloned objects are linked :"+linked);
 	</script>
 </head>
 <body>

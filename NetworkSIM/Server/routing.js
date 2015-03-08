@@ -1,49 +1,82 @@
 var SimulationManager = require("./SimulationManager.js");
+var io = {};
 
-function sync(request, response){
-	var data = '';
-	
-	//waits until all of the data from the client has been received
-	request.on("data", function(chunk){
-		data += chunk.toString();
-	});
-	
-	//once we have the entire data from the client
-	request.on("end", function() {
-		var json = JSON.parse(data);
-		var token = json.token;
-		var events = json.eventQueue ;
-		var simulation= json.simulationName;
-		//console.log(obj);
-		SimulationManager.authToken(token, function(obj){
-			//for now allow empty tokens
-			if(obj.responseponse == 'Success'){
-				//console.log("Successful authenication" );
-					handleEventQueue(token, events, function(){
+var clients = [];
+var client_map = {};
 
-					response.send(SimulationManager.getAppStateForDevice(token,simulation));
-				});
-				
-			}
-
-			else{
-				//console.log("Failed authenication" );
-				//console.log(json);
-
-				handleEventQueue(token, events, function(){
-
-					var state={};
-					state.simulation= {};
-					state.device= {};
-					state.simulation_names=SimulationManager.getSimulationNames();
-					response.send(state);
-					
-				});
-			}
-			
-		});
-	});
+function injectIO(object){
+	io = object;
 }
+
+function generateUID() {
+    return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
+}
+
+
+function handleClient (socket) {
+	//console.log(socket);
+	var tweet = {user: "nodesource", text: "Hello, world!"};
+	var id = generateUID();
+    // to make things interesting, have it send every second
+	console.info('New client connected (id=' + socket.id + ').');
+	client_map[id] = socket.id;
+	io.to(socket.id).emit('session_start', id);
+
+    socket.on("disconnect", function () {
+    	 var index = clients.indexOf(socket);
+         if (index !== -1) {
+             clients.splice(index, 1);
+             console.info('Client gone (id=' + socket.id + ').');
+         }
+    });
+    
+    socket.on("/getSync", function(data){    		
+    		var json = JSON.parse(data);
+    		var token = json.token;
+    		var events = json.eventQueue ;
+    		var simulation= json.simulation_id;
+    		console.log(simulation);
+    		SimulationManager.authToken(token, simulation, function(obj){
+    			//for now allow empty tokens
+    			if(obj.Response == 'Success'){
+    				console.log("Successful authenication" );
+    					handleEventQueue(token, events, function(){
+    					console.log(simulation);
+    					var state = SimulationManager.getAppStateForDevice(token,simulation);
+    					io.to(socket.id).emit('syncState', state);
+    				});
+    				
+    			}else{
+    				handleEventQueue(token, events, function(){
+    					console.log("Failed authentication");
+    					
+    					var state= SimulationManager.getBlankAppState();
+    					
+    					io.to(socket.id).emit('syncState', state);
+    					
+    				});
+    			}
+    			
+    		});
+    });
+
+    socket.on("/authenticate/authToken", function (data){
+    	
+    	var json = JSON.parse(data);
+    	var token = json.token;
+    	var simulation_id = json.simulation_id;
+    	SimulationManager.authToken(token, simulation_id, function(obj){
+    	//for now allow empty tokens
+    		console.log(obj);
+    		io.to(socket.id).emit('validate_user', obj);
+    	});
+    } );
+    
+    
+};
+
+
+
 
 function handleEventQueue(token, eventQueue, callback) {
 	for(var i = 0; i < eventQueue.length; i++) {
@@ -87,4 +120,5 @@ function handleEventQueue(token, eventQueue, callback) {
 	}
 };
 
-module.exports.sync=sync;
+module.exports.injectIO = injectIO;
+module.exports.handleClient = handleClient;
