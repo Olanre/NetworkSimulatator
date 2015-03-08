@@ -50,3 +50,14 @@ function testCreateSimulation(){
 	}
 }
 
+function testAuthenticate(){
+	var simulation=SimMan.createSimulation(simJSON);
+	var token=simulation.partition_list[0].network_list[0].device_list[0].token;
+
+	SimMan.authToken(token,simulation._id,function(res){
+		console.log(res.Response);
+	});
+
+}
+
+testAuthenticate();

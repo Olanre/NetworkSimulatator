@@ -13,6 +13,8 @@ var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
 var express = require('express');
 var router = express.Router();
+var path = require('path');
+var fs=require('fs');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 //TODO We need to fill this in on load!
@@ -67,8 +69,7 @@ function authToken(token, simulation_id, callback){
 	var res = {};
 	res.Response = "Fail";
 	simulation=Util.findByUniqueID(simulation_id,simulationList);
-	console.log(simulation);
-	if(simulation !== -1){
+	if(simulation != -1){
 		deviceList=simulation.getDevices();
 		console.log(deviceList);
 		for(index in deviceList){
@@ -117,11 +118,17 @@ function createSimulation(event_data) {
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
-						console.log(token);
-						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name, device);
+						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name);
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
-						TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
+						TokenMailer.mailToken(device,token,event_data.simulation_name);
+						fs.writeFile(path.resolve(__dirname, 'tokens.txt'),token,function(err) {
+					    if(err) {
+					        console.log(err);
+					    } else {
+					        console.log("The file was saved!");
+					    }
+					});
 				}
 			}
 		}

@@ -61,8 +61,8 @@ exports.findPartitionByName=function(partitionName,partitionList){
 exports.findByUniqueID=function(uniqueID,list){
 
 	for(index in list){
-
-		if(list[index]._id.valueOf()===uniqueID){
+		if(list[index]._id==uniqueID){
+			console.log("Found it");
 			return list[index];
 		} 
 	}

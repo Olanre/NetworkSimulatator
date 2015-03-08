@@ -11,7 +11,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.networkObject=Network.createNewNetwork();
 	this.networks_created = [];
 	this.rdt = {};
-
+	this.token=token;
 	this.deviceJSON={};
 	this._id= (new Database.Network())._id;
 
