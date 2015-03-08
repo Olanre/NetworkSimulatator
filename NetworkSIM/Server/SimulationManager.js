@@ -89,6 +89,7 @@ function authToken(token, simulation_id, callback){
 				if(deviceList[index].token == token){
 					res.Response = "Success";
 					deviceList[index].deviceJSON.verified = true;
+					
 					break;
 				}
 			}
@@ -113,6 +114,7 @@ function createSimulation(event_data) {
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	simulation.simulationJSON.num_devices = event_data.num_devices;
 	simulation.simulationJSON.num_networks = event_data.num_networks;
+	
 	var createdPartition,createdNetwork,createdDevice;
 
 	for(partition in map){
@@ -135,8 +137,11 @@ function createSimulation(event_data) {
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
-						console.log(token);
 						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name);
+						createdDevice.deviceJSON.current_network = network;
+						createdDevice.deviceJSON.current_partition = partition;
+						createdDevice.deviceJSON.registeredOn = date.toString();
+						
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,token,event_data.simulation_name);

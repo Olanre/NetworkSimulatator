@@ -31,7 +31,7 @@ socket.on('syncState', function(appState){
 	//reset the current event queue after sending an item
 	clearEventQueue();
 	if(appState !== null){
-		console.log('recieved new object from the server' + appState);
+		console.log(appState);
 		store_local_simulation(appState.simulation);
 		store_local_device(appState.device);
 		store_local_simulation_names(appState.simulation_names);

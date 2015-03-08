@@ -39,6 +39,21 @@ app.get('/index', function(request,response){
 	
 }); 
 
+app.get('/gui/Drawing.js', function(request, response){
+	response.sendFile("/public/ClientJS/TopologyGUI/Drawing.js", {"root": __dirname});
+})
+
+app.get('/gui/Shapes.js', function(request, response){
+	response.sendFile("/public/ClientJS/TopologyGUI/Shapes.js", {"root": __dirname});
+})
+
+app.get('/gui/Manipulation.js', function(request, response){
+	response.sendFile("/public/ClientJS/TopologyGUI/Manipulation.js", {"root": __dirname});
+})
+
+app.get('/gui/interact-1.2.2.js', function(request, response){
+	response.sendFile("/public/ClientJS/TopologyGUI/interact-1.2.2.js", {"root": __dirname});
+})
 
 app.use(express.static(path.join(__dirname, 'public')));
 

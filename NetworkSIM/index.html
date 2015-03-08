@@ -32,8 +32,10 @@
 		
 		<!--  GUI -->
 		<!-- <script src = '../gui/interact-1.2.2.js' type='text/javascript'></script>-->
-		<!-- <script src = '../gui/toplogyManipulationGUI.js' type='text/javascript'></script>-->
-		
+		<!-- <script src = '../gui/Manipulation.js' type='text/javascript'></script>-->
+		<!-- <script src = '../gui/Shapes.js' type='text/javascript'></script>-->
+		<!-- <script src = '../gui/Drawing.js' type='text/javascript'></script>-->
+				
 		<!--  HTML Templates -->
 		<script src = '../template/AccountTemplate.js' type='text/javascript'></script>
 		<script src = '../template/DeviceListTemplate.js' type='text/javascript'></script>
@@ -41,6 +43,8 @@
 		<script src = '../template/NetworkTopologyTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewDeviceTemplate.js' type='text/javascript'></script>
+		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'> </script>
+		<script src = '../template/CounterAppTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewLogsTemplate.js' type='text/javascript'></script>
 		
 		<!--  Views -->
@@ -128,10 +132,10 @@
 				</a>						
 			</li>						
 			<li>						
-				<a href="#" onclick = "simulationListView()">Simulation</a>						
+				<a href="#" onclick = "simulationListView()">Simulations</a>						
 			</li>						
 			<li>						
-				<a href="#" onclick = "appDefaultView()">The Application</a>						
+				<a href="#" onclick = "appDefaultView()">Applications</a>						
 			</li>
 			<li>						
 				<a href="#" onclick = "networkTopologyView()">Temporary GUI View</a>						
@@ -237,34 +241,47 @@
 			</table>
 		</div>
 	</div>
+
+	<div class = 'counters'> 
+		<table border='1'>
+			<tr> 
+				<td> <span class = 'text'> Local Counter </span> </td>
+				<td id = 'local_count'>{{localcount}}</td>
+			</tr> 
+			<tr>
+				<td>  <span class = 'text'> Global Counter </span> </td>
+				 <td id = 'global_count'>{{globalcount}}</td> 
+			</tr> 
+		</table>
+	</div>
 </script>
+
 <script type= 'AttachToken-Template' id = 'template8'>
 	<div id = 'registersimulation'>
-	<h2> Register for Simulation</h2>
-</div>
-<div class = 'container'>
-<table>
-	<tr>
-		<td> 
-			<span class = 'text'> A token would have been sent to your email or phone </span>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type = 'text' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type = 'hidden' style = 'display:none' id = 'simulation_id_div'/>
-			<div class = 'btn btn-primary' onclick = 'authenticate()'> Enter Session</div>
-		</td>
-	</tr>
-</table>
-
-</div>
-	
+		<h2> Register for Simulation</h2>
+	</div>
+	<div class = 'container'>
+		<table>
+			<tr>
+				<td> 
+					<span class = 'text'> A token would have been sent to your email or phone </span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type = 'text' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type = 'hidden' style = 'display:none' id = 'simulation_id_div' value = '{{id}}' />
+					<div class = 'btn btn-primary' onclick = 'authenticate()'> Enter Session</div>
+				</td>
+			</tr>
+		</table>
+	</div>
 </script>
+
 <script type = 'DeivceSideBar' id = 'template9'>
 
 <div class="col-sm-3 col-md-2 sidebar">					
@@ -351,25 +368,10 @@
 <script type='DeviceViewTemplate' id = 'template11'>
 
 	<div>
-		<h2> Hello  {{current_device_name}} in {{current_simulation}} </h2>
-		<h3> You are now in {{current_network}}
-		<br> There are {{simulation_population}} other devices  in this simulation</h2>
-	</div>
-	<div class = 'container'>
-		<div class = 'appinterface'> appView() </div>
-		<div class = 'counters'>
-			 <table border='1'>
-				
-				<tr> 
-					<td> <span class = 'text'> Local Counter </span> </td> 
-					<td id = 'local_count'> " {{localcount}}</td>
-				</tr>
-				<tr>
-					<td>  <span class = 'text'> Global Counter </span> </td>
-					<td id = 'global_count'> {{globalcount}} </td> 
-				</tr>
-			 </table>
-		</div>
+		<h3> Hello {{current_device_name}} in {{current_simulation}} </h3>
+		<h3> You are now in {{current_network}} </h3>
+		<br>
+		<h3> There are {{simulation_population}} other active devices in this simulation</h2>
 	</div>
 </script>
 
@@ -463,9 +465,6 @@
 	<div class = 'logs'> {{logs}} </div>"
 </script>
 
-<script type = "SimulationListTemplate" id = "template18" >
-
-</script>
 <body>
 		<!-- onload optional -->		
 		<div id = 'app'>			

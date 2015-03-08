@@ -18,10 +18,10 @@ function Device(deviceName,token, simulation_name , email){
 	this.deviceJSON.current_device_name=deviceName;
 	this.deviceJSON.token=token;
 	this.deviceJSON.email = deviceName;
-	this.deviceJSON.registeredOn = undefined;
+	this.deviceJSON.registeredOn = '';
 	this.deviceJSON.current_simulation = simulation_name;
-	this.deviceJSON.current_partition = undefined;
-	this.deviceJSON.current_network = undefined;
+	this.deviceJSON.current_partition = '';
+	this.deviceJSON.current_network = '';
 	this.deviceJSON._id=this._id;
 	//Required Functions//
 	this.joinNetwork=joinNetwork;
