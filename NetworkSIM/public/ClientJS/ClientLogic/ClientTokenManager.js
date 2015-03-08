@@ -27,7 +27,7 @@ function authToken(token, id){
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
 	//sends the token to be validated by the server
-	sendEventsToServer(url, params, validate_user);
+	socket.emit('/authenticate/authToken', params);
 }
 
 /**
@@ -44,7 +44,7 @@ function getVerified(){
  * NOTE: if the token is invalid this should be displayed on the page rather than
  * in an alert
  */
-function validate_user(data){
+socket.on('validate_user', function(data){
 	object = data;
 	//if the authentication was a success
 	if(object.Response == 'Success'){
@@ -55,7 +55,7 @@ function validate_user(data){
 	else{
 		alert('Token invalid \nPlease enter the correct token for this simulation')
 	}
-}
+});
 
 /**
  * ONLY FOR REGISTRATION PAGE

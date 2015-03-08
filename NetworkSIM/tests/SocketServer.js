@@ -25,12 +25,8 @@ var server = require("http").Server(app);
 var io = require("socket.io")(server);
 var clients = [];
 var client_map = {};
-var connection_map = {};
 var Files = {};
 
-function generateUID() {
-    return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
-}
 
 var handleClient = function (socket) {
 	var tweet = {user: "nodesource", text: "Hello, world!"};
@@ -71,9 +67,7 @@ function sync(data){
 				response.send(SimulationManager.getAppStateForDevice(token,simulation));
 			});
 			
-		}
-
-		else{
+		}else{
 			handleEventQueue(token, events, function(){
 
 				var state={};

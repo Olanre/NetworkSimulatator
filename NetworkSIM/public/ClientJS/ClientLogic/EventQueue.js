@@ -32,6 +32,7 @@ function addToEventQueue(route, event_data, time_stamp){
 	local_events.simulationId = getLocalSimulationId();
 	
 	store_local_events(local_events);
+	syncWithServer();
 }
 
 function updateLocalEventsToken(token){
