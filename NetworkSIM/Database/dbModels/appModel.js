@@ -1,18 +1,42 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var appSchema = mongoose.Schema({
+var applicationSchema = mongoose.Schema({
 
-	token:String,
-	email:String,
-	verified: Boolean,
-	currentPartition: String,
-	currentnetwork: String,
-	registeredOn: String,
-	is_admin: Boolean,
-	networks_created: [networSchema],
-	application_id:String,
-	localcount: Number,
-	globalcount: Number,
-	current_device_name: String,
+	simulation_list : [String],
+	super_admin: String,
+	total_devices : Number,
+	total_networks : Number,
+	
 	});
+
+applicationSchema.statics.addApp = function (anApp)
+{
+   var LenneteApp = new App(anApp);
+   LenneteApp.save();
+   //console.log("saved application " + anApp);
+}
+
+applicationSchema.statics.getApp = function (callback)
+{
+   App.findOne( function(err, obj)
+   {
+	   callback(obj);
+   });
+}
+
+
+
+applicationSchema.statics.modifyApp = function (NewApp)
+{
+   App.findOne( function(err, obj)
+   {
+     obj = NewApp;
+     obj.save();
+     
+     //callback(LenneteApp);
+   });
+}
+
+
+module.exports = mongoose.model('App', aaplicationSchema, Apps);
