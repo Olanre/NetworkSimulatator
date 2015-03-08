@@ -44,6 +44,15 @@ function updateLocalEventsToken(token){
 	store_local_events(local_events);
 }
 
+function updateLocalEventsSimulationId(id){
+	//gets the events
+	var local_events = get_local_events();
+	//sets the token to the token of the user
+	local_events.simulation_id = id;
+	//returns the new object to the local storage.
+	store_local_events(local_events);
+}
+
 
 /**
  * Clears the event queue

@@ -26,6 +26,7 @@ function authToken(token, id){
 	var url = "/authenticate/authToken";
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
+	updateLocalEventsSimulationId(id);
 	//sends the token to be validated by the server
 	socket.emit('/authenticate/authToken', params);
 }
@@ -38,24 +39,7 @@ function getVerified(){
 	return local_device.verified;
 }
 
-/**
- * validate_user verifies whether the token input by the user is valid or not
- *
- * NOTE: if the token is invalid this should be displayed on the page rather than
- * in an alert
- */
-socket.on('validate_user', function(data){
-	object = data;
-	//if the authentication was a success
-	if(object.Response == 'Success'){
-		alert('You have been authenicated. \nPlease wait to be redirected');
-		//sync with the server and redirect to the simulation
-		syncWithServer();	
-	}
-	else{
-		alert('Token invalid \nPlease enter the correct token for this simulation')
-	}
-});
+
 
 /**
  * ONLY FOR REGISTRATION PAGE

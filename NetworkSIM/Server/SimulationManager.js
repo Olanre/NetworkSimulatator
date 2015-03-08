@@ -25,20 +25,30 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	var simulation,device,deviceList;
 
 	simulation=Util.findByUniqueID(simulation_id,simulationList);
-	deviceList=simulation.getDevices();
-
-	for(index in deviceList){
-		if(deviceList[index].token==token){
-			device=deviceList[index];
-			break;
+	if(simulation != -1){
+		deviceList=simulation.getDevices();
+	
+		for(index in deviceList){
+			if(deviceList[index].token==token){
+				device=deviceList[index];
+				break;
+			}
 		}
 	}
 
-	var state;
+	var state = {};
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
 	state.simulation_names=module.exports.getSimulationNames();
 
+	return state;
+}
+
+module.exports.getBlankAppState = function(){
+	var state={};
+	state.simulation= {};
+	state.device= {};
+	state.simulation_names= module.exports.getSimulationNames ();
 	return state;
 }
 
@@ -67,15 +77,20 @@ module.exports.setSimulationNames=function(new_list){
 
 function authToken(token, simulation_id, callback){
 	var res = {};
+	//var state = getBlankAppState();
 	res.Response = "Fail";
-	simulation=Util.findByUniqueID(simulation_id,simulationList);
-	if(simulation != -1){
-		deviceList=simulation.getDevices();
-		console.log(deviceList);
-		for(index in deviceList){
-			if(deviceList[index].token == token){
-				res.Response = "Success";
-				break;
+	for(i in simulationList){
+		//simulation=Util.findByUniqueID(simulation_id,simulationList);
+		simulation = simulationList[i];
+		if(simulation != -1){
+			deviceList=simulation.getDevices();
+			//console.log(deviceList);
+			for(index in deviceList){
+				if(deviceList[index].token == token){
+					res.Response = "Success";
+					deviceList[index].deviceJSON.verified = true;
+					break;
+				}
 			}
 		}
 	}
@@ -88,6 +103,8 @@ function authToken(token, simulation_id, callback){
 	//});
 		
 }
+
+
 
 function createSimulation(event_data) {
 
@@ -118,6 +135,7 @@ function createSimulation(event_data) {
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
+						console.log(token);
 						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name);
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);

@@ -34,25 +34,24 @@ function handleClient (socket) {
     		var json = JSON.parse(data);
     		var token = json.token;
     		var events = json.eventQueue ;
-    		var simulation= json.simulationId;
-    		//console.log(obj);
+    		var simulation= json.simulation_id;
+    		console.log(simulation);
     		SimulationManager.authToken(token, simulation, function(obj){
     			//for now allow empty tokens
     			if(obj.Response == 'Success'){
-    				//console.log("Successful authenication" );
+    				console.log("Successful authenication" );
     					handleEventQueue(token, events, function(){
-
+    					console.log(simulation);
     					var state = SimulationManager.getAppStateForDevice(token,simulation);
     					io.to(socket.id).emit('syncState', state);
     				});
     				
     			}else{
     				handleEventQueue(token, events, function(){
-
-    					var state={};
-    					state.simulation= {};
-    					state.device= {};
-    					state.simulation_names=SimulationManager.getSimulationNames();
+    					console.log("Failed authentication");
+    					
+    					var state= SimulationManager.getBlankAppState();
+    					
     					io.to(socket.id).emit('syncState', state);
     					
     				});
