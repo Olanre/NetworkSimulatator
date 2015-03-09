@@ -135,7 +135,7 @@
 				<a href="#" onclick = "simulationListView()">Simulations</a>						
 			</li>						
 			<li>						
-				<a href="#" onclick = "appDefaultView()">Applications</a>						
+				<a href="#" onclick = "ApplicationsView()">Applications</a>						
 			</li>
 			<li>						
 				<a href="#" onclick = "networkTopologyView()">Temporary GUI View</a>						
@@ -453,7 +453,7 @@
 			{{#devices}}
 			
 				<tr  id = '{{device}}'> 
-					<td>   {{device}} <div onclick = 'deleteDevice(&quot;{{device}}&quot;)' > Delete Device </div>   </td> 
+					<td>   {{device}} <div class = 'btn btn-primary' onclick = 'deleteDevice(&quot;{{device}}&quot;)' > Delete Device </div>   </td> 
 				</tr>
 			{{/devices}}
 		</table>
@@ -463,6 +463,29 @@
 
 <script type = "SimulationLogTemplate" id = "template17">
 	<div class = 'logs'> {{logs}} </div>"
+</script>
+<!--  look at templates in the Iteration3 folder -->
+<script type = 'SimulationManager' id = 'template18'>
+
+<div class="col-sm-3 col-md-2 sidebar">					
+					<ul class="nav nav-sidebar">						
+						<li>						
+						<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						
+						</li>						
+						<li>						
+						<a href="#" onclick = "eventLogsView()()">Simulation History</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "ApplicationsView()">Applications</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "RDTView()">RDTs</a>						
+						</li>					
+						<li>						
+						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
+						</li>	
+					</ul>					
+				</div>		
 </script>
 
 <body>

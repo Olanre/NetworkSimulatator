@@ -11,14 +11,14 @@ function NetworksListTemplate(networks, local_device){
 		//else{
 			str += "<tr  id = '" + networks[i]['network_name'] + "'>" +
 				" <td> " + networks[i]['network_name'] + 
-				" <div onclick = 'moveDeviceToNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;) '> " +
+				" <div class = 'btn btn-primary' onclick = 'moveDeviceToNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;) '> " +
 							"Join Network </div> </td> </tr>";
 		//}
 		if(networks_created !== undefined && networks_created !== null && networks_created.length > 0){
 			for(var j = 0; j < networks_created.length; j++){
 				
 				if( networks[i]['network_name'] == networks_created[j] ){
-					str +=  "<td> <div onclick = 'deleteNetwork( &quot;" + networks[i] + "&quot;)'> " +
+					str +=  "<td> <div class = 'btn btn-primary' onclick = 'deleteNetwork( &quot;" + networks[i] + "&quot;)'> " +
 					"Join Network </div> </td> </tr>";
 				}
 			}
