@@ -13,7 +13,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.rdt = {};
 	this.token=token;
 	this.deviceJSON={};
-	this._id= (new Database.Network())._id;
+	this._id= token;
 
 	this.deviceJSON.current_device_name=deviceName;
 	this.deviceJSON.token=token;

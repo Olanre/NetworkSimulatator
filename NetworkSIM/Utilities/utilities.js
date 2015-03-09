@@ -36,21 +36,21 @@ exports.findSimulationByName=function(simulationName,simulationList){
 	return -1;
 };
 
-exports.findDeviceByUniqueID=function(deviceId,deviceList){
+exports.getDeviceByUniqueID=function(deviceId,deviceList){
 	for(index in deviceList){
 		if (deviceList[index]._id==deviceId) return deviceList[index];
 
 	}
 	return -1;
 };
-exports.findNetworkByUniqueID=function(networkId,networkList){
+exports.getNetworkByUniqueID=function(networkId,networkList){
 	for(index in networkList){
 		if (networkList[index]._id ==networkId) return networkList[index];
 
 	}
 	return -1;
 };
-exports.findPartitionByUniqueID=function(partitionId,partitionList){
+exports.getPartitionByUniqueID=function(partitionId,partitionList){
 	for(index in partitionList){
 		if (partitionList[index]._id==partitionId) return partitionList[index];
 

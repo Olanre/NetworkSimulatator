@@ -149,7 +149,7 @@ function createSimulation(event_data) {
 					    if(err) {
 					        console.log(err);
 					    } else {
-					        console.log("The file was saved!");
+					       // console.log("The file was saved!");
 					    }
 					});
 				}
@@ -207,14 +207,19 @@ function removeNetwork(event_data){
 
 function addDeviceToNetwork(event_data){
 	var network_id=event_data.network_id;
-	var device_id=event_data.device_id;
+	var device_id=event_data.device_token;
 	var simulation_id=event_data.simulation_id;
 
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	var network=Util.findByUniqueID(network_id,simulation.getNetworks());
 	var device=Util.findByUniqueID(device_id,simulation.getDevices());
-
-	network.addDevice(device);
+	if(device != -1){
+		//don't add a device to a network they already belong to
+		console.log(device.deviceJSON);
+		if( device.deviceJON.current_network !== network["network_name"]){
+			network.addDevice(device);
+		}
+	}
 
 }
 
