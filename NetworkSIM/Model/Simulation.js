@@ -18,6 +18,9 @@ function Simulation(simulation_name){
 	this.simulationJSON.simulation_name = simulation_name;
 	this.simulationJSON.num_devices = 0;
 	this.simulationJSON.num_networks = 0;
+	this.simulationJSON.simulation_population = 0;
+	this.simulationJSON.activiy_logs = '';
+	
 	this.simulationJSON.partition_list=[];
 	this._id=(new Database.Simulation())._id;
 	this.simulationJSON._id=this._id;
@@ -105,6 +108,7 @@ function addPartition(partition){
 function addDevice(device){
 	device.deviceJSON.simulation_name = this.simulationJSON.simulation_name;
 	this.device_list.push(device);
+	this.simulationJSON.num_devices++;
 }
 
 function addNetwork(network){
@@ -113,6 +117,7 @@ function addNetwork(network){
 	partition.addNetwork(network);
 	this.partition_list.push(partition);
 	this.simulationJSON.partition_list.push(partition.partitionJSON);
+	this.simulationJSON.num_networks++;
 
 }
 
@@ -122,6 +127,7 @@ function removeNetwork(network){
 		network.removeDevice(devices[device]);
 	}
 	network.partitionObject.removeNetwork(network);
+	this.simulationJSON.num_networks--;
 		
 }
 

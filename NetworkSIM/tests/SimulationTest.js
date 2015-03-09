@@ -56,7 +56,7 @@ module.exports.testGetNetworks=function(){
 	for(index in networkList){
 		createdSimulation.partition_list.push(networkList[index].partitionObject);
 	}
-	
+
 	var result= Util.compareObjects(networkList,createdSimulation.getNetworks());
 	result=result&& Util.compareObjects(createdSimulation.getNetworks(), networkList);
 	var text = result ? 'passed' : 'failed';
@@ -131,6 +131,9 @@ module.exports.testAddNetwork=function(){
 	var result = foundNetwork!=-1;
 	var text=result ? 'passed' : 'failed';
 	console.log("addNetwork "+text);
+
+	console.log(createdSimulation.simulationJSON.partition_list[0].network_list[0]);
+
 	return result;
 
 }

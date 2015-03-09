@@ -47,11 +47,12 @@ function AccountView(){
 	content.innerHTML = html;
 }
 
-/**
- *Gets the view of an application where you canincrement a counter
- */
-function appView(){
-	return document.getElementById('template7').innerHTML;
+function deviceHeaderView(){
+	var local_device = get_local_device();
+	var local_session = get_local_simulation();
+	var html = viewDeviceTemplate(local_device, local_session);
+	var content = getContainer();
+	content.innerHTML = html;
 }
 
 
@@ -59,13 +60,14 @@ function appView(){
  * Displays the user's information
  */
 function appDefaultView(){
+	var local_device = get_local_device();
 	//sets the top bar to be the default look
 	defaultheaderView();
 	if(getVerified() == false){
 		alert('You do not have permission to access this. Please get a token first.');
 	}else{
 		//sets the page to view to 'user information' page
-		var app = viewDeviceTemplate();
+		var app = CounterAppTemplate(local_device);
 		var content = getContainer();
 		content.innerHTML = app;
 		//sets the sidebar to the sidebar for when inside a simulation
@@ -156,17 +158,17 @@ function networkTopologyView(){
 	clearFooter();
 	clearSection();
 
-	var local_application = get_local_simulation_names();
+	var simulations = get_local_simulation_names();
 	defaultheaderView();
-	
-
-	var simulations = local_application.simulation_list;
 	var html =  SimulationListTemplate(simulations);
 	var content = getContainer();
 	defaultsideBarView();
-
-	loadJSFile('../TopologyGUI/Manipulation.js');
 	loadStyleSheet('../css/topologyView.css');
+	loadJSFile('../gui/interact-1.2.2.js');
+	loadJSFile('/gui/Manipulation.js');
+	loadJSFile('/gui/Shapes.js');
+	loadJSFile('/gui/Drawing.js');
+	
 	var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
 			"<script src='../public/ClientJS/interact-1.2.2.js'></script>" +
@@ -192,10 +194,9 @@ function eventLogsView(){
 	clearFooter();
 	clearSection();
 	
-	var local_application = get_local_simulation_names();
+	var simulations  = get_local_simulation_names();
 	defaultheaderView();
-	
-	var simulations = local_application.simulation_list;
+
 	var html =  SimulationListTemplate(simulations);
 	var content = getContainer();
 	defaultsideBarView();
@@ -204,7 +205,9 @@ function eventLogsView(){
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../view/EventLogView.js');
 	loadJSFile('../gui/interact-1.2.2.js');
-	loadJSFile('../gui/toplogyManipulationGUI.js');
+	loadJSFile('../gui/Manipulation.js');
+	loadJSFile('../gui/Shapes.js');
+	loadJSFile('../gui/Drawing.js');
 	
 	var html =
 	"<div id='title-bar'>"+
@@ -240,9 +243,10 @@ function eventLogsView(){
  * Display's the token registration page
  */
 function RegisterView(id){
-	var html = document.getElementById('template8').innerHTML;
-	
+	var obj = { 'id' : id};
+	var html = SimulationRegistrationTemplate(obj);
 	var content = getContainer();
+	
 	content.innerHTML = html;
 	document.getElementById('simulation_id_div').value = id;
 }
@@ -253,8 +257,8 @@ function RegisterView(id){
 function NetworksListView(){
 	var local_device = get_local_device();
 	var lists = getAllNetworkObjects();
-	console.log(lists, local_device);
-	var html = NetworksListTemplate(lists);
+	var html = NetworksListTemplate(lists, local_device);
+	
 	getSection().innerHTML = html;
 }
 
@@ -263,7 +267,6 @@ function NetworksListView(){
  */
 function DeviceListView(){
 	var devices = getAllDeviceObjects();
-	
 	var html = "<div class = 'container'> " +
 	"<table>";
 	html += DevicesListTemplate(devices);
@@ -276,7 +279,7 @@ function DeviceListView(){
  * changes the page view to the logs of this user.
  */
 function LogsView(){
-	var logs = getLogs();
+	var logs = getLocalSimulationLogs();
 	var html = SimulationLogsTemplate(logs);
 	var footer = getFooter();
 	footer.innerHTML = html;

@@ -23,11 +23,11 @@ function createDevice(device_name){
  * moves a device to a network
  */
 function moveDeviceToNetwork( device_token, network_id){
-	var local_simulation = get_local_simulation
+	var local_simulation = get_local_simulation();
 	if (device_token!==null &&network_id!==null && local_simulation!==null){
 		var params = {
 				'network_id':network_id,
-				'simulation_id':simulation._id,
+				'simulation_id':local_simulation._id,
 				'device_token':device_token
 			};
 		var url='/move/Device/Network';
