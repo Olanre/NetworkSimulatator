@@ -5,29 +5,32 @@ var Util=require("../Utilities/utilities.js");
 var JSONNetworkTemplate={
 	network_name:undefined,
 	network_type:undefined,
-	partition_name:undefined,
+	partition_name:'',
 	device_list:undefined
 };
 
 var networkJSON={
 		network_name:"networkA",
 		network_type:"Wi-FI",
-		partition_name:undefined,
+		partition_name:' ',
 		device_list:undefined
 }
 
 module.exports.testNetworkCreation=function(){
 	var createdNetwork=Network.createNewNetwork();
 	var result=Util.compareObjects(createdNetwork.networkJSON,JSONNetworkTemplate);
+	if(!result) console.log(createdNetwork.networkJSON);
 	var text=result ? 'passed': 'failed';
 	console.log("createNewNetwork " +text);
+
 	return result;
 }
 
 module.exports.testNetworkLoading=function(){
 	var loadedNetwork=Network.loadNetworkFromJSON(networkJSON);
 	var result=Util.compareObjects(loadedNetwork.networkJSON,networkJSON);
-	var text=result?'passed':'failed';
+	if(!result) console.log(loadedNetwork.networkJSON);
+	var text=result ? 'passed':'failed';
 	console.log("loadNetworkFromJSON "+text);
 	return result;
 }
@@ -36,7 +39,6 @@ module.exports.testNetworkJoining=function(){
 
 	var network=Network.createNewNetwork("testNetwork");
 	var device=Device.createNewDevice("testDevice");
-
 	network.addDevice(device);
 	
 	var inList=false;
@@ -61,10 +63,12 @@ module.exports.testNetworkJoining=function(){
 	
 
 	var result=inList&&inJSONlist;
+	if(!result) console.log(network.networkJSON);
 	var text=result ? 'passed': 'failed';
 	console.log("addDevice "+text);
 
 	result=testIfDeviceJoined(device,network);
+	if(!result) console.log(device.deviceJSON);
 	text=result ? 'passed':'failed';
 	console.log("joinNetwork "+text);
 
@@ -76,7 +80,7 @@ function testIfDeviceJoined(device,network){
 	var inJSON = device.deviceJSON.current_network==network.network_name;
 	var partition = device.deviceJSON.current_partition==network.networkJSON.partition_name;
 	var partition2 = network.partitionObject.partition_name==network.networkJSON.partition_name;
-
+	
 	var result=connected&&inJSON&&partition&&partition2;
 	return result;
 	
@@ -173,15 +177,15 @@ module.exports.testNetworkDisconnection=function(){
 
 module.exports.testNetwork=function(){
 	var functions=[];
-	functions.push(module.exports.testNetworkCreation());
-	functions.push(module.exports.testNetworkLoading());
-	functions.push(module.exports.testNetworkJoining());
-	functions.push(module.exports.testNetworkLeaving());
-	functions.push(module.exports.testNetworkConnection());
-	functions.push(module.exports.testNetworkDisconnection());
-
+	functions.push(module.exports.testNetworkCreation);
+	functions.push(module.exports.testNetworkLoading);
+	functions.push(module.exports.testNetworkJoining);
+	functions.push(module.exports.testNetworkLeaving);
+	functions.push(module.exports.testNetworkConnection);
+	functions.push(module.exports.testNetworkDisconnection);
 	var continueTesting=true;
-	for(var i;i<functions.length;i++){
+
+	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i]();
 		if(!continueTesting)break;
 	}

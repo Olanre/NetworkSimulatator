@@ -1,26 +1,18 @@
 var Util=require("../Utilities/utilities.js");
 var Partition= require('./Partition.js');
 var Database= require("../Database/mongooseConnect.js");
-function Network(networkName, networkKind, partitionName){
+function Network(networkName, networkKind){
 	//Required Variables//
 	this.networkName = networkName; // String
 	this.networkKind = networkKind; // Constant: WiFi, GSM
 	this.deviceIterator ={};// Returns an iterator that provides Device objects
 		  
 	//Our Variables//
-	this.partitionObject=Partition.createNewPartition();
-	this.partitionObject.addNetwork(this);
+	this.partitionObject=Partition.createNewPartition('');
 	this.device_list=[];
 
 	this.networkJSON={};
 	this._id=(new Database.Network())._id;
-
-
-	this.networkJSON.network_name=networkName;
-	this.networkJSON.network_type=networkKind;
-	this.networkJSON.partition_name = partitionName;
-	this.networkJSON.device_list=[];
-	this.networkJSON._id=this._id;
 	//this.deviceIterator=new DeviceIterator(device_list);
 
 	//Required Functions//
@@ -31,10 +23,19 @@ function Network(networkName, networkKind, partitionName){
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
+
+
+	this.networkJSON.network_name=networkName;
+	this.networkJSON.network_type=networkKind;
+	this.networkJSON.partition_name = '';
+	this.networkJSON.device_list=[];
+	this.networkJSON._id=this._id;
+
+	this.partitionObject.addNetwork(this);
 }
 
-function createNewNetwork(networkName,networkKind, partitionName){
-	var createdNetwork=new Network(networkName,networkKind, partitionName);
+function createNewNetwork(networkName,networkKind){
+	var createdNetwork=new Network(networkName,networkKind);
 	return createdNetwork;
 }
 

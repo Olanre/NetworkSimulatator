@@ -24,6 +24,7 @@ exports.compareObjects=function(obj1,obj2){
 	}
 	return true;
 };
+
 exports.replaceAll=function(find, replace, str) {
 	  return str.replace(new RegExp(find, 'g'), replace);
 };
@@ -35,34 +36,26 @@ exports.findSimulationByName=function(simulationName,simulationList){
 	}
 	return -1;
 };
+exports.findNetworkByName=function(name,list){
+	for(index in list){
+		if (list[index].networkName==name){
+			return list[index];}
+		}
 
-exports.getDeviceByUniqueID=function(deviceId,deviceList){
-	for(index in deviceList){
-		if (deviceList[index]._id==deviceId) return deviceList[index];
+	return -1;
+};
+
+exports.findDeviceByName=function(name,list){
+	for(index in list){
+		if (list[index].deviceJSON.current_device_name==name) return list[index];
 
 	}
 	return -1;
 };
-exports.getNetworkByUniqueID=function(networkId,networkList){
-	for(index in networkList){
-		if (networkList[index]._id ==networkId) return networkList[index];
-
-	}
-	return -1;
-};
-exports.getPartitionByUniqueID=function(partitionId,partitionList){
-	for(index in partitionList){
-		if (partitionList[index]._id==partitionId) return partitionList[index];
-
-	}
-	return -1;
-};
-
 exports.findByUniqueID=function(uniqueID,list){
 
 	for(index in list){
 		if(list[index]._id==uniqueID){
-			console.log("Found it");
 			return list[index];
 		} 
 	}
