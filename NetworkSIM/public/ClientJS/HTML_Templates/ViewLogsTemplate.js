@@ -10,7 +10,6 @@ function SimulationLogsTemplate(logs){
 	var template = document.getElementById('template17').innerHTML;
 	 textile = Hogan.compile(template);
 	 context = {'logs' : logs};
-	 console.log(context);
 	 tpl = textile.render(context);
 	 return tpl;
 }

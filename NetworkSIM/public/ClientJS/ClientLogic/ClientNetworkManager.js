@@ -15,4 +15,15 @@ function createNetwork(network_name){
 	}
 }
 
+function Device_makeNetwork(element){
+	var input = document.getElementById(element);
+	if(input !== null ){
+		var name = input.value;
+		if(name !== ''){
+			createNetwork(name);
+		}
+	}
+	
+}
+
 

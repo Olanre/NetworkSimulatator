@@ -17,6 +17,7 @@ function Device(deviceName,token, simulation_name , email){
 
 	this.deviceJSON.current_device_name=deviceName;
 	this.deviceJSON.token=token;
+	this.deviceJSON.networks_created = [];
 	this.deviceJSON.email = deviceName;
 	this.deviceJSON.registeredOn = '';
 	this.deviceJSON.current_simulation = simulation_name;

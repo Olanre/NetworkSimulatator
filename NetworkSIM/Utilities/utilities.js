@@ -36,23 +36,23 @@ exports.findSimulationByName=function(simulationName,simulationList){
 	return -1;
 };
 
-exports.findDeviceByName=function(deviceName,deviceList){
+exports.findDeviceByUniqueID=function(deviceId,deviceList){
 	for(index in deviceList){
-		if (deviceList[index].current_device_name==deviceName) return deviceList[index];
+		if (deviceList[index]._id==deviceId) return deviceList[index];
 
 	}
 	return -1;
 };
-exports.findNetworkByName=function(networkName,networkList){
+exports.findNetworkByUniqueID=function(networkId,networkList){
 	for(index in networkList){
-		if (networkList[index].network_name==networkName) return networkList[index];
+		if (networkList[index]._id ==networkId) return networkList[index];
 
 	}
 	return -1;
 };
-exports.findPartitionByName=function(partitionName,partitionList){
+exports.findPartitionByUniqueID=function(partitionId,partitionList){
 	for(index in partitionList){
-		if (partitionList[index].partition_name==partitionName) return partitionList[index];
+		if (partitionList[index]._id==partitionId) return partitionList[index];
 
 	}
 	return -1;

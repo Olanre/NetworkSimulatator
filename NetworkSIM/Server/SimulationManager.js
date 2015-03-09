@@ -182,9 +182,7 @@ function createNetwork(event_data){
 
 	if(partition!=-1){
 		partition.addNetwork(network);
-	}
-
-	else{
+	}else{
 		simulation.addNetwork(network);
 	}
 
@@ -241,3 +239,9 @@ function dividePartitions(event_data){
 module.exports.authToken = authToken;
 module.exports.simulationList=simulationList;
 module.exports.createSimulation=createSimulation;
+module.exports.addDeviceToNetwork = addDeviceToNetwork;
+module.exports.createDevice = createDevice;
+module.exports.createNetwork = createNetwork;
+module.exports.removeNetwork = removeNetwork;
+module.exports.mergePartitions = mergePartitions;
+module.exports.dividePartitions = dividePartitions;

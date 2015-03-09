@@ -6,7 +6,6 @@ function SimulationRegistrationTemplate(id){
 
 	 textile = Hogan.compile(template);
 	 context = id;
-	 console.log(context);
 	 tpl = textile.render(context);
 	 return tpl;
 }

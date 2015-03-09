@@ -6,7 +6,6 @@ function AccountTemplate(device){
 	var template = document.getElementById('template12').innerHTML;
 	 textile = Hogan.compile(template);
 	 context = device;
-	 console.log(context);
 	 tpl = textile.render(context);
 	 return tpl;
 }

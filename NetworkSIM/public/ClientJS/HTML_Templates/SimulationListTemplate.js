@@ -1,5 +1,4 @@
 function SimulationListTemplate(simulations){
-	console.log(simulations);
 	var local_device = get_local_device();
 	var str = "<div class = 'simulations_management'> ";
 	str += " <table id = 'simslist'> ";
