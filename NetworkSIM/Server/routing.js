@@ -89,23 +89,23 @@ function handleEventQueue(token, eventQueue, callback) {
 				break;
 
 			case '/create/Network' :
-				SimulationManager.createNetwork( eventQueue[i].event_data, , eventQueue[i].time_stamp);
+				SimulationManager.createNetwork( eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;		
 
 			case '/create/Device' :
-					SimulationManager.createDevice(eventQueue[i].event_data, , eventQueue[i].time_stamp);
+					SimulationManager.createDevice(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
 
 			case '/move/Device/Network':
-					SimulationManager.addDeviceToNetwork(eventQueue[i].event_data, , eventQueue[i].time_stamp);
+					SimulationManager.addDeviceToNetwork(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
 
 			case '/merge/Partitions' :
-				SimulationManager.mergePartitions(eventQueue[i].event_data, , eventQueue[i].time_stamp);
+				SimulationManager.mergePartitions(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
 			
 			case '/divide/Partition':
-				SimulationManager.dividePartition(eventQueue[i].event_data, , eventQueue[i].time_stamp);
+				SimulationManager.dividePartition(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
 
 			default:
