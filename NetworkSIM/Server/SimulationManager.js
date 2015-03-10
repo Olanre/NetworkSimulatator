@@ -11,11 +11,8 @@ var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
 var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
-var express = require('express');
-var router = express.Router();
 var path = require('path');
 var fs=require('fs');
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 //TODO We need to fill this in on load!
 var simulationList = [];

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>File(s) size</title>
+		<script src="./FileUpload.js"></script>
+		
+	</head>
+
+	<body onload="handleFiles();">
+		<p><input id="uploadRDT" type="file" name="myFiles" onchange="handleFiles();" multiple> selected files: <span id="rdtfileNum">0</span>; total size: <span id="rdtfileSize">0</span></p>
+
+		<p><input id="uploadApp" type="file" name="myFiles" onchange="handleFiles();" multiple> selected files: <span id="appfileNum">0</span>; total size: <span id="appfileSize">0</span></p>
+
+		<p><button name="Send file" onclick="readFiles()"></p>
+	</body>
+</html>
