@@ -1,6 +1,5 @@
 var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
-var Database=require("../Database/mongooseConnect.js");
 
 function Device(deviceName,token, simulation_name , email){
 	
@@ -12,7 +11,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.networks_created = [];
 	this.rdt = {};
 	this.token=token;
-	this.deviceJSON={};
+	this.deviceJSON = {};
 	this._id= token;
 
 	
@@ -26,13 +25,20 @@ function Device(deviceName,token, simulation_name , email){
 	this.attachJSON=attachJSON;
 	this.updateDeviceLog = updateDeviceLog;
 
+	//Constructor contents
 
+	//Editing the JSON which represents the device. This will have to change when the database finally works.
+	this.activity='';
 	this.deviceJSON.current_device_name=deviceName;
-	this.deviceJSON.token=token;
-	this.deviceJSON.networks_created = [];
-	this.deviceJSON.email = deviceName;
-	this.deviceJSON.registeredOn = '';
 	this.deviceJSON.current_simulation = simulation_name;
+	this.deviceJSON.networks_created = [];	
+	this.deviceJSON.admin=false;
+	this.deviceJSON.registeredOn = '';
+	this.deviceJSON.current_network='',
+	this.deviceJSON.current_partition='',
+	this.deviceJSON.verified=false;
+	this.deviceJSON.email = deviceName;
+	this.deviceJSON.token=token;
 	this.deviceJSON._id=this._id;
 
 	this.networkObject.addDevice(this);

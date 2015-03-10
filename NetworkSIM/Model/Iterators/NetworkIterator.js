@@ -35,3 +35,5 @@ function NetworkIterator(networkList){
 		}
 	};
 }
+
+module.exports.NetworkIterator=NetworkIterator;

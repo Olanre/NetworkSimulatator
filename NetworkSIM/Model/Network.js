@@ -1,19 +1,20 @@
 var Util=require("../Utilities/utilities.js");
 var Partition= require('./Partition.js');
 var Database= require("../Database/mongooseConnect.js");
+var DeviceIterator=require('./Iterators/DeviceIterator.js');
+
 function Network(networkName, networkKind){
+
 	//Required Variables//
 	this.networkName = networkName; // String
 	this.networkKind = networkKind; // Constant: WiFi, GSM
 	this.deviceIterator ={};// Returns an iterator that provides Device objects
 		  
 	//Our Variables//
-	this.partitionObject=Partition.createNewPartition('');
+	this.partitionObject=Partition.createNewPartition('','');
 	this.device_list=[];
-
 	this.networkJSON={};
 	this._id=(new Database.Network())._id;
-	//this.deviceIterator=new DeviceIterator(device_list);
 
 	//Required Functions//
 	this.addDevice=addDevice;
@@ -22,16 +23,19 @@ function Network(networkName, networkKind){
 	this.disconnectNetwork=disconnectNetwork;
 	
 	//Our Functions//
-	this.attachJSON=attachJSON;
+	this.attachJSON = attachJSON;
 
+	//Constructor contents
 
-	this.networkJSON.network_name=networkName;
-	this.networkJSON.network_type=networkKind;
-	this.networkJSON.partition_name = '';
+	//Editing the JSON which represents the network. This will have to change when the database finally works.
 	this.networkJSON.device_list=[];
+	this.networkJSON.network_type=networkKind;
+	this.networkJSON.network_name=networkName;
+	this.networkJSON.partition_name = '';
 	this.networkJSON._id=this._id;
 
 	this.partitionObject.addNetwork(this);
+	this.deviceIterator = new DeviceIterator(this.device_list);
 }
 
 function createNewNetwork(networkName,networkKind){
@@ -73,7 +77,7 @@ function removeDevice(device){
 		//delete from the JSON device list
 		for (var i =0; i< this.networkJSON.device_list.length;i++){
 			if (this.networkJSON.device_list[i].token == device.token){
-				this.networkJSON.device_list.splice(i,1);//this should remove the element at index i
+				this.networkJSON.device_list.splice(i,1);
 				break;
 			}
 		}
