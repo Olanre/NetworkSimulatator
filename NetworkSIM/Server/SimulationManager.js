@@ -11,6 +11,8 @@ var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
 var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
+var Simulation_history = require("../Model/Simulation_history.js");
+var History_state = require("../Model/History_state.js");
 var path = require('path');
 var fs=require('fs');
 
@@ -91,9 +93,12 @@ function authToken(token, simulation_id, callback){
 		if(simulation != -1){
 			deviceList=simulation.getDevices();
 			//console.log(deviceList);
-			for(index in deviceList){
+			for(var index = 0; index < deviceList.length; index++){
 				if(deviceList[index].token == token){
 					res.Response = "Success";
+					var timestamp = new Date();
+					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+					simulation.updateSimulationLog(new_activity);
 					deviceList[index].deviceJSON.verified = true;
 					
 					break;

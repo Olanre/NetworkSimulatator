@@ -40,6 +40,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.deviceJSON.email = deviceName;
 	this.deviceJSON.token=token;
 	this.deviceJSON._id=this._id;
+	this.deviceJSON.activity = '';
 
 	this.networkObject.addDevice(this);
 }
