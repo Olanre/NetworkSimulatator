@@ -7,26 +7,26 @@
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("../Utilities/utilities.js");
 
-function SimulationHistory(id){
+function Simulation_History(id){
 	
-	this.simulation_id = id;
+	this._id = id;
 	
-	this.statesJSON = {};
-	this.statesJSON.simulation_id = id
-	this.statesJSON.state = [];
+	this.simulation_historyJSON = {};
+	this.simulation_historyJSON.simulation_id = id
+	this.simulation_historyJSON.state = [];
 	
 	//functions
 	this.addState = addState;
 
 }
 
-function createNewStatesObject(simulation_id){
-	var New_StatesObj = new SimulationHistory(simulation_id);
+function createNewSimulationHistory(simulation_id){
+	var New_StatesObj = new Simulation_History(simulation_id);
 	return New_StatesObj;
 }
 
 function addState( new_state){
-	this.statesJSON.state.push(new_state);
+	this.simulation_historyJSON.state.push(new_state);
 }
 
 module.exports.createNewSimulationHistory = createNewSimulationHistory;

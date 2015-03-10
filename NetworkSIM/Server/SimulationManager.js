@@ -11,13 +11,14 @@ var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
 var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
-var Simulation_history = require("../Model/Simulation_history.js");
-var History_state = require("../Model/History_state.js");
+var Simulation_History = require("../Model/Simulation_history.js");
+var History_State = require("../Model/History_state.js");
 var path = require('path');
 var fs=require('fs');
 
 //TODO We need to fill this in on load!
 var simulationList = [];
+var simulationHistoryList = [];
 
 exports.getAppStateForDevice = function(token,simulation_id){
 
@@ -87,26 +88,32 @@ function authToken(token, simulation_id, callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
-	for(i in simulationList){
-		//simulation=Util.findByUniqueID(simulation_id,simulationList);
-		simulation = simulationList[i];
-		if(simulation != -1){
-			deviceList=simulation.getDevices();
-			//console.log(deviceList);
-			for(var index = 0; index < deviceList.length; index++){
-				if(deviceList[index].token == token){
-					res.Response = "Success";
-					var timestamp = new Date();
-					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
-					simulation.updateSimulationLog(new_activity);
-					deviceList[index].deviceJSON.verified = true;
-					
-					break;
+	simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	if(simulation_history != -1){
+		for(i in simulationList){
+			//simulation=Util.findByUniqueID(simulation_id,simulationList);
+			simulation = simulationList[i];
+			if(simulation != -1){
+				deviceList=simulation.getDevices();
+				//console.log(deviceList);
+				for(var index = 0; index < deviceList.length; index++){
+					if(deviceList[index].token == token){
+						
+						res.Response = "Success";
+						var timestamp = new Date();
+						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+						simulation.updateSimulationLog(new_activity);
+						deviceList[index].deviceJSON.verified = true;
+						
+						var history_state = History_State.createNewHistory_State(simulation, timestamp);
+						simulation_history.addState(history_state);
+						
+						break;
+					}
 				}
 			}
 		}
 	}
-	
 	callback(res);
 	//bypassing database for now.
 	//TokenManager.authenticateToken(token, function(obj){
@@ -123,6 +130,8 @@ function createSimulation(event_data, time_stamp) {
 	var date = new Date();
 	var map=event_data.config_map;
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
+	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
+	
 	var new_activity = "Simulation created " +  event_data.simulation_name + " at " + time_stamp + "\n";
 	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
@@ -172,8 +181,10 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-
+	var history_state = History_State.createNewHistory_State(simulation, time_stamp);
+	simulation_history.addState(history_state);
 	// Add database stuff
+	simulationHistoryList.push(simulation_history);
 	simulationList.push(simulation);
 	return simulation;
 }	

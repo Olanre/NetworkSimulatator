@@ -9,20 +9,20 @@ function History_State(simulation, timestamp, devices){
 	this.simulation = simulation;
 	
 	this.stateJSON = {};
-	this.stateJSON.simulation = simulation;
+	this.stateJSON.simulation = simulation.simulationJSON;
 	this.stateJSON.timestamp = timestamp;
 	
 	//functions
-	this.setSimulation = setSimulation;
+	this.getSimulation = getSimulation;
 }
 
-function createNewHistory_State(simulation, timestamp, devices){
-	var New_State = new State(simulation, timestamp, devices);
+function createNewHistory_State(simulation, timestamp){
+	var New_State = new History_State(simulation, timestamp);
 	return New_State;
 }
 
-function setSimulation( new_simulation){
-	this.simulation = new_simulation;
+function getSimulation(){
+	return this.simulation;
 }
 
-module.exports.createNewHistory_State = createNewHistory_State();
+module.exports.createNewHistory_State = createNewHistory_State;
