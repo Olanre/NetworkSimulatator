@@ -12,8 +12,19 @@ function getWelcomePage(){
 	//now populate the list of simulations already available
 	var simulations = get_local_simulation_list();
 	//string of all the simulations to be displayed in the 'join-simulation-list'
+	var options=generateSimulationOptions(simulations);
+}
+
+function generateSimulationOptions(simulation_description_list){
 	var simulation_options='';
-	for (var i=0;i<simulations.length;i++){
-		var option= simulations[i].
+	for (var i=0;i<simulation_description_list.length;i++){
+		console.log(i);
+		simulation_options+=generateSimulationOption(simulation_description_list[i]);
 	}
+	return simulation_options;
+}
+
+function generateSimulationOption(simulation_description){
+	var option= "<option value='"+simulation_description.simulation_id+">"+simulation_name+"</option>";
+	return option;
 }
