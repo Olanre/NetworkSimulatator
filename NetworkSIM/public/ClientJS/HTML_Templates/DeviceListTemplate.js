@@ -11,7 +11,6 @@ function AdminDevicesListTemplate(devices){
 		var template = document.getElementById('template16').innerHTML;
 		 textile = Hogan.compile(template);
 		 context = { 'devices' : devices};
-		 console.log(context);
 		 tpl = textile.render(context);
 		 return tpl;
 }
@@ -27,7 +26,6 @@ function DevicesListTemplate(devices){
 	var template = document.getElementById('template14').innerHTML;
 	 textile = Hogan.compile(template);
 	 context = { 'devices' : devices};
-	 console.log(context);
 	 tpl = textile.render(context);
 	 return tpl;
 }

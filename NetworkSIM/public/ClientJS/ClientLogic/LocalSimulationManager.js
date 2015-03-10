@@ -331,3 +331,14 @@ function getLocalSimulationId(){
 		return '';
 	}
 }
+
+function getLocalSimulationLogs(){
+	var local_simulation = get_local_simulation();
+	if (local_simulation!==null){
+		return local_simulation.activity_logs;
+	}
+	else{
+		console.log("Error:getLocalSimulationLogs passed null simulation object");
+		return '';
+	}
+}

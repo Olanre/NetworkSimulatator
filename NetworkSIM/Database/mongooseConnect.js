@@ -33,7 +33,7 @@ var userSchema = mongoose.Schema({
 	activity : String,
 });
 
-AllFieldsRequiredByDefautlt(userSchema);
+
 //STOP DELETTINGINGGEN SHIT                     
 var User = mongoose.model('User', userSchema, 'newUserFormat');
 
@@ -54,7 +54,7 @@ var networkSchema = mongoose.Schema({
  device_list : [User],
 
 });
-AllFieldsRequiredByDefautlt(networkSchema);
+
 //NETWORK COMPLETE
 var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
 
@@ -69,7 +69,6 @@ var simulationSchema = mongoose.Schema({
 	   activity_logs : String,	   
 });
 
-AllFieldsRequiredByDefautlt(simulationSchema);
 
 //SIMULATION COMPLETE
 var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
@@ -98,10 +97,6 @@ var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
 var partitionSchema = mongoose.Schema({
 	network_list: [Network],
 });
-
-
-AllFieldsRequiredByDefautlt(partitionSchema);
-
 
 var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
 //SIMULATION
@@ -148,15 +143,6 @@ var event_queue_wrapperSchema = mongoose.Schema({
 });
 
 var event_queue_wrapper = mongoose.model('event_queue_wrapper', event_queue_wrapperSchema, 'newEvent_queue_wrapper');
-
-
-AllFieldsRequiredByDefautlt(networkSchema);
-AllFieldsRequiredByDefautlt(applicationSchema);
-
-
-
-
-
 
                                      //****FUNCTION
 									 //SIM FUNCTIONS*****************!
@@ -395,4 +381,5 @@ module.exports.User=User;
 module.exports.Network=Network;
 module.exports.Partition=Partition;
 module.exports.Simulation=Sim;
+module.exports.StateObject = StateObject;
 //module.exports.event_queue_wrapper = event_queue_wrapper;

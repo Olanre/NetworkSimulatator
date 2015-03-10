@@ -8,21 +8,14 @@ function Device(deviceName,token, simulation_name , email){
 	this.device_name=deviceName;
 	
 	//Our Variables//
-	this.networkObject=Network.createNewNetwork();
+	this.networkObject=Network.createNewNetwork('','');
 	this.networks_created = [];
 	this.rdt = {};
 	this.token=token;
 	this.deviceJSON={};
-	this._id= (new Database.Network())._id;
+	this._id= token;
 
-	this.deviceJSON.current_device_name=deviceName;
-	this.deviceJSON.token=token;
-	this.deviceJSON.email = deviceName;
-	this.deviceJSON.registeredOn = undefined;
-	this.deviceJSON.current_simulation = simulation_name;
-	this.deviceJSON.current_partition = undefined;
-	this.deviceJSON.current_network = undefined;
-	this.deviceJSON._id=this._id;
+	
 	//Required Functions//
 	this.joinNetwork=joinNetwork;
 	this.leaveNetwork=leaveNetwork;
@@ -31,6 +24,18 @@ function Device(deviceName,token, simulation_name , email){
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
+	this.updateDeviceLog = updateDeviceLog;
+
+
+	this.deviceJSON.current_device_name=deviceName;
+	this.deviceJSON.token=token;
+	this.deviceJSON.networks_created = [];
+	this.deviceJSON.email = deviceName;
+	this.deviceJSON.registeredOn = '';
+	this.deviceJSON.current_simulation = simulation_name;
+	this.deviceJSON._id=this._id;
+
+	this.networkObject.addDevice(this);
 }
 
 
@@ -55,7 +60,6 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
-	  var oldNetwork= this.deviceJSON.current_network;
 	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
@@ -83,6 +87,11 @@ function accessRDT(){
     // Access the previously registered replicated data type in the device
 	return this.rdt;
 };
+
+function updateDeviceLog(new_activity){
+	this.deviceJSON.activity += new_activity;
+}
+
 
 module.exports.createNewDevice = createNewDevice;
 module.exports.loadDeviceFromJSON=loadDeviceFromJSON;
