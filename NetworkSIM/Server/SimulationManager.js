@@ -119,10 +119,11 @@ function createSimulation(event_data, time_stamp) {
 	var map=event_data.config_map;
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	var new_activity = "Simulation created " +  event_data.simulation_name + " at " + time_stamp + "\n";
+	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
 	simulation.simulationJSON.num_devices = event_data.num_devices;
 	simulation.simulationJSON.num_networks = event_data.num_networks;
-	//update simulation activity log
+	
 	
 	var createdPartition,createdNetwork,createdDevice;
 
