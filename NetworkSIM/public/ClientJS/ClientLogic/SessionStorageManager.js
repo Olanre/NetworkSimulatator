@@ -40,8 +40,8 @@ function get_local_device(){
 /** 
  * Gets the list of all the names of simulations from local storage
  */
-function get_local_simulation_names(){
-	return JSON.parse(getFromStorage('simulation_names'));
+function get_local_simulation_list(){
+	return JSON.parse(getFromStorage('simulation_list'));
 }
 
 /** 
@@ -70,8 +70,8 @@ function store_local_device(new_device){
 	putinStorage( 'device', JSON.stringify(new_device));
 }
 
-function store_local_simulation_names(new_simulation_names){
-	putinStorage( 'simulation_names', JSON.stringify(new_simulation_names));
+function store_local_simulation_list(new_simulation_names){
+	putinStorage( 'simulation_list', JSON.stringify(new_simulation_names));
 }
 
 function store_local_events(new_events){

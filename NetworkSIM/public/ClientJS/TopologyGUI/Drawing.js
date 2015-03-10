@@ -63,8 +63,11 @@ function createObjectWithin(radius,angle,centerX,centerY,createFunction){
 	return graphic;
 }
 function clearCanvas(){
-	while (svgCanvas.lastChild) {
-		svgCanvas.removeChild(svgCanvas.lastChild);
+	var svgCanvas = document.querySelector('svg');
+	if(svgCanvas !== undefined){
+		while (svgCanvas.lastChild) {
+			svgCanvas.removeChild(svgCanvas.lastChild);
+		}
 	}
 	shapes=[];
 }

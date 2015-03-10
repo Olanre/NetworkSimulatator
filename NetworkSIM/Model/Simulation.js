@@ -39,6 +39,7 @@ function Simulation(simulation_name){
 	this.removeNetwork=removeNetwork;
 	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
+	this.updateSimulationLogs = updateSimlationLogs;
 }
 
 function createNewSimulation(simulation_name){
@@ -144,6 +145,11 @@ function mergePartitions(partitionA,partitionB){
 		}
 	}
 }
+
+function updateSimulationLog(new_activity){
+	this.simulationJSON.activity_logs += new_activity;
+}
+
 
 
 module.exports.createNewSimulation=createNewSimulation;

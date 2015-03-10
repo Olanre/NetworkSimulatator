@@ -24,6 +24,7 @@ function Device(deviceName,token, simulation_name , email){
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
+	this.updateDeviceLog = updateDeviceLog;
 
 
 	this.deviceJSON.current_device_name=deviceName;
@@ -86,6 +87,11 @@ function accessRDT(){
     // Access the previously registered replicated data type in the device
 	return this.rdt;
 };
+
+function updateDeviceLog(new_activity){
+	this.deviceJSON.activity += new_activity;
+}
+
 
 module.exports.createNewDevice = createNewDevice;
 module.exports.loadDeviceFromJSON=loadDeviceFromJSON;
