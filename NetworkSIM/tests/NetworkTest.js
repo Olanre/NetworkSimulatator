@@ -78,10 +78,11 @@ module.exports.testNetworkJoining=function(){
 function testIfDeviceJoined(device,network){
 	var connected = device.networkObject==network;
 	var inJSON = device.deviceJSON.current_network==network.network_name;
-	var partition = device.deviceJSON.current_partition==network.networkJSON.partition_name;
-	var partition2 = network.partitionObject.partition_name==network.networkJSON.partition_name;
-	
-	var result=connected&&inJSON&&partition&&partition2;
+	//var partition = device.deviceJSON.current_partition==network.networkJSON.partition_name;
+	//var partition2 = network.partitionObject.partition_name==network.networkJSON.partition_name;
+
+
+	var result=connected&&inJSON;
 	return result;
 	
 }

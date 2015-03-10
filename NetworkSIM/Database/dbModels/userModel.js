@@ -17,7 +17,7 @@ var userSchema = mongoose.Schema({
 	
 });
 
-
+var User= mongoose.model('User', userSchema, 'Users');
 //Static Methods
 
 userSchema.statics.addUser = function (aUser)
@@ -27,7 +27,7 @@ userSchema.statics.addUser = function (aUser)
   console.log("saved user " + aUser);
 }
 
-userSchema.statics.modifyUser = function modifyUser(aToken, aUser)
+userSchema.statics.modifyUser = function (aToken, aUser)
 {
 	  User.findOne({token: aToken}, function(err, obj)
 	  {
@@ -40,4 +40,4 @@ userSchema.statics.modifyUser = function modifyUser(aToken, aUser)
 }
 
 //Export User
-module.exports = mongoose.model('User', UserSchema, Users);
+module.exports = User;
