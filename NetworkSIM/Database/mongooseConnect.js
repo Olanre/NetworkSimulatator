@@ -381,4 +381,5 @@ module.exports.User=User;
 module.exports.Network=Network;
 module.exports.Partition=Partition;
 module.exports.Simulation=Sim;
+module.exports.StateObject = StateObject;
 //module.exports.event_queue_wrapper = event_queue_wrapper;

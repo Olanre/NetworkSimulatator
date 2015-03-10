@@ -218,7 +218,7 @@ function removeDevice(event_data, time_stamp){
 	
 	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
 	//var device=Util.getByUniqueID(device_name,simulationObject.gets());
-	//var new_activity = "Device " +  event_data.device_name +  " was deleted " + time_stamp + "\n";
+	//var new_activity = "Device " +  device.device_name +  " was deleted " + time_stamp + "\n";
 	//simulation.updateSimulationLog(new_activity);
 
 
@@ -231,22 +231,28 @@ function removeNetwork(event_data, time_stamp){
 	
 	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
 	//var network=Util.getByUniqueID(network_id,simulationObject.gets());
+	//var new_activity = "Network " +  network.network_name +  " was deleted " + time_stamp + "\n";
+	//simulation.updateSimulationLog(new_activity);
 }
 
-function addDeviceToNetwork(event_data){
+function addDeviceToNetwork(event_data, time_stamp){
 	var network_id=event_data.network_id;
 	var device_id=event_data.device_token;
 	var simulation_id=event_data.simulation_id;
 
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
-	var network=Util.findByUniqueID(network_id,simulation.getNetworks());
-	var device=Util.findByUniqueID(device_id,simulation.getDevices());
-	if(device != -1){
-		//don't add a device to a network they already belong to
-		//console.log(device.deviceJSON);
-		if(device.networkObject!=network){
-			console.log('adding');
-			network.addDevice(device);
+	if(simulation != -1){
+		var network=Util.findByUniqueID(network_id,simulation.getNetworks());
+		var device=Util.findByUniqueID(device_id,simulation.getDevices());
+		if(device != -1){
+			//don't add a device to a network they already belong to
+			//console.log(device.deviceJSON);
+			if(device.networkObject!=network){
+				console.log('adding');
+				network.addDevice(device);
+				var new_activity = "Device " +  device.device_name +  " added to network " + network.network_name + " at " + time_stamp + "\n";
+				simulation.updateSimulationLog(new_activity, simulation);
+			}
 		}
 	}
 
@@ -259,9 +265,13 @@ function mergePartitions(event_data, time_stamp){
 	var simulation_id = event_data.simulation_id;
 
 	var simulationObject=Util.findByUniqueID(simulation_id,simulationList);
-	var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
-	var partitioB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
-	simulationObject.mergePartitions(partitionA,partitionB);
+	if(simulationObject != -1){
+		var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
+		var partitionB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
+		var new_activity = "Two Partitions, " +  partitionA.partition_name +  " and "  + partitionB.partition_name + " were merged on " + timestamp + "\n";
+		simulation.updateSimulationLog(new_activity);
+		simulationObject.mergePartitions(partitionA,partitionB);
+	}
 
 	//Add database calls
 }
