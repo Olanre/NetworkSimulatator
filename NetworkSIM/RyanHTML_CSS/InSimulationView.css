@@ -1,0 +1,57 @@
+body {
+
+	margin: 0px;
+	padding: 0px;
+}
+
+#div1 {
+
+	position: relative;
+	width: 15%;
+    height: 100%;
+    background-color: #99CCFF;
+    text-align: left;
+    padding-top: 5px;
+}
+
+#div2 {
+
+	background-color: white;
+	width: 84%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 16%;
+}
+
+button {
+
+	position: absolute;
+	display: block;
+	max-width: 95%;
+	background-color: Transparent;
+	border: none;
+    padding-bottom: 5px;
+	color: green;
+	font-family: "Sans-serif";
+	font-size: 25px;	
+}
+
+button#b1 {
+
+	left: 0px;
+	top: 130px;
+	margin: 0 auto;
+}
+
+button#b2 {
+
+	left: 0px;
+	top: 160px;
+	margin: 15 auto;
+}
+
+button:hover {
+
+	text-decoration:underline;
+}
