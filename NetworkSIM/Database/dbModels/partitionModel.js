@@ -11,7 +11,7 @@ var Network = require("./networkModel").Network;
 var partitionSchema = mongoose.Schema({
 	 //type string
 	 id : String,
-	 partition_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'Network'}],
+	 network_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'Network'}],
 	 
 	});
 

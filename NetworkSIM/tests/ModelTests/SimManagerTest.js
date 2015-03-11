@@ -1,6 +1,6 @@
-var SimMan=require("../Server/SimulationManager.js");
-var Util=require("../Utilities/utilities.js");
-var Device=require('../Model/Device.js');
+var SimMan=require("../../Server/SimulationManager.js");
+var Util=require("../../Utilities/utilities.js");
+var Device=require('../../Model/Device.js');
 var simJSON={
 		num_devices: 12,
 		num_networks: 3,

@@ -8,7 +8,7 @@ function SimulationDataListTemplate(simulations){
 				  "<td> <div class = 'num-devices'> Number of Devices: " + simulations[i].num_devices+ " </div> </td> " +
 				  "<td> <div class = 'num-networks'> Number of Networks: " + simulations[i].num_networks+ " </div> </td> ";
 			 		
-			 if(local_device.verified == true && local_device.simulation_id === simulations[i].simulation_id){
+			 if(local_device.verified == true && local_device.current_simulation === simulations[i].simulation_id){
 				 str += "<td> <div  class = 'btn btn-primary'  onclick = 'SimulationManagementView()'> View </div> </td>";
 			 }else{
 				 str += "<td> <div  class = 'btn btn-primary'  onclick = 'RegisterView(&quot;" + simulations[i].simulation_id + "&quot;)' > Register  </div> </td> ";

@@ -180,7 +180,7 @@ function createSimulation(event_data, time_stamp) {
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
-						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name);
+						createdDevice=Device.createNewDevice(device, token , simulation._id);
 						createdDevice.deviceJSON.current_network = network;
 						createdDevice.deviceJSON.current_partition = partition;
 						createdDevice.deviceJSON.simulation_id = simulation._id;

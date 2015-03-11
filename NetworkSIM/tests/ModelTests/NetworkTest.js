@@ -1,12 +1,12 @@
-var Device=require("../Model/Device.js");
-var Network=require("../Model/Network.js");
-var Util=require("../Utilities/utilities.js");
+var Device=require("../../Model/Device.js");
+var Network=require("../../Model/Network.js");
+var Util=require("../../Utilities/utilities.js");
 
 var JSONNetworkTemplate={
-	network_name:undefined,
-	network_type:undefined,
+	network_name:'testNetwork',
+	network_type:'Wi-Fi',
 	partition_name:'',
-	device_list:undefined
+	device_list:[]
 };
 
 var networkJSON={
@@ -17,7 +17,8 @@ var networkJSON={
 }
 
 module.exports.testNetworkCreation=function(){
-	var createdNetwork=Network.createNewNetwork();
+	var createdNetwork=Network.createNewNetwork('testNetwork','Wi-Fi');
+	console.log(JSONNetworkTemplate);
 	var result=Util.compareObjects(createdNetwork.networkJSON,JSONNetworkTemplate);
 	if(!result) console.log(createdNetwork.networkJSON);
 	var text=result ? 'passed': 'failed';
@@ -54,7 +55,7 @@ module.exports.testNetworkJoining=function(){
 	var jsondevlist=network.networkJSON.device_list;
 	var inJSONlist=false;
 	for(var i=0;i<jsondevlist.length;i++){
-		if(jsondevlist[i]==device.deviceJSON){
+		if(jsondevlist[i]==device.deviceJSON._id){
 			inJSONlist=true;
 			break;
 		}
