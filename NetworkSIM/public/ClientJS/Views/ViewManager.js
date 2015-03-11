@@ -310,6 +310,20 @@ function LogsView(){
 	footer.innerHTML = html;
 }
 
+/**
+* Displays the upload page
+**/
+
+function uploadView(){
+	loadJSFile('../logic/FileUpload.js');
+	loadStyleSheet('../../stylesheets/FileUpload.css');
+
+	var simulation={};
+	var html=uploadFileTemplate(simulation);
+	var content=getContainer();
+	content.innerHTML=html;
+}
+
 /** Function to get all the partition input fields in the document
  * referencing the fields by class name and returning the DOM list
  * @return partiton_elements, the DOM list of input fields.
