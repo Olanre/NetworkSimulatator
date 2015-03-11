@@ -7,6 +7,7 @@ var TokenManager = require("./TokenManager.js");
 var Util = require("../Utilities/utilities.js");
 var TokenMailer = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
+var Models = require('../Database/dbModels/models.js');
 var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
 var Network = require("../Model/Network.js");
@@ -19,6 +20,7 @@ var fs=require('fs');
 //TODO We need to fill this in on load!
 var simulationList = [];
 var simulationHistoryList = [];
+Models.initialize();
 
 exports.getAppStateForDevice = function(token,simulation_id){
 

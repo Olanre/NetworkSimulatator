@@ -48,4 +48,4 @@ networkSchema.statics.modifyNetworkByName = function (aString, aNetwork)
 }
 
 //exporting is done this way, defines, declares Network as the name of this schema/function model. 
-module.exports = mongoose.model('Network', networkSchema, networks);
+module.exports = mongoose.model('Network', networkSchema, 'networks');

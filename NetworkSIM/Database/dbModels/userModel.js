@@ -38,4 +38,4 @@ userSchema.statics.modifyUser = function (aToken, aUser)
 	  });
 }
 
-module.exports = mongoose.model('User', userSchema, Users);
+module.exports = mongoose.model('User', userSchema, 'Users');

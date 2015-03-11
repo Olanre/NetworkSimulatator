@@ -55,4 +55,4 @@ simulationSchema.statics.findAllSimulations = function (callback)
 	});
 }
 
-module.exports = mongoose.model('Sim', simulationSchema, Simulations);
+module.exports = mongoose.model('Sim', simulationSchema, 'Simulations');

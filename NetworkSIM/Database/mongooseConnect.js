@@ -16,63 +16,6 @@ Schema = db.Schema;
 
                                     //****Schemas
 
-
-										//USER SCHEMA
-//USER 
-var userSchema = mongoose.Schema({
-	token:String,
-	email:String,
-	verified: Boolean,
-	current_partition: String,
-	current_network: String,
-	registeredOn: String,
-	admin: Boolean,
-	networks_created: [String],
-	current_simulation: String,
-	current_device_name: String,
-	activity : String,
-});
-
-
-//STOP DELETTINGINGGEN SHIT                     
-var User = mongoose.model('User', userSchema, 'newUserFormat');
-
-//DEVICE
-var deviceSchema = mongoose.Schema({
-   device_name : String,
-   //deviceNumber : Number,
-});
-
-//DEVICE COMPLETE
-var Device= mongoose.model('Device', deviceSchema, 'newDeviceSchema');
-
-//NETWORK
-var networkSchema = mongoose.Schema({
-	
- network_name : String,
- network_type : String,
- device_list : [User],
-
-});
-
-//NETWORK COMPLETE
-var Network = mongoose.model('Network', networkSchema, 'newNetworkFormat');
-
-//SIMULATION
-var simulationSchema = mongoose.Schema({
-	   num_devices: Number,
-	   num_networks: Number,
-	   simulation_population: Number,
-	   simulation_name: String, //unique id of the simulation
-	   tokenMethod : String,
-	   partition_list: [Partition],
-	   activity_logs : String,	   
-});
-
-
-//SIMULATION COMPLETE
-var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
-
 //STATE - storing logs as a string
  var stateSchema = mongoose.Schema({
 	simulation_id : String,
@@ -91,47 +34,6 @@ var stateObject = mongoose.Schema({
 
 //state building block complete
 var StateObject = mongoose.model('StateObject', stateObject, 'newStateObject');
-
-//Partition Schema
-var partitionSchema = mongoose.Schema({
-	network_list: [Network],
-});
-
-var Partition = mongoose.model('Partition', partitionSchema, 'newPartitionFormat');
-//SIMULATION
-
-
-
-
-						 // objectname, schema, collectionname
-
-var simulation_listSchema = mongoose.Schema({
-
-     name : String,
-	 num_devices : Number,
-	 num_networks : Number,
-});	
-
-                                              
-//NEEED
-											   
-var Simulation_List = mongoose.model('Simulation_List', simulation_listSchema, 'newSim_ListFormat');
-
-var applicationSchema = mongoose.Schema({
-
-	simulation_list : [String],
-	super_admin: String,
-	total_devices : Number,
-	total_networks : Number,
-	
-	});
-//NEEEEEEEEEEEEED
-var App = mongoose.model('App', applicationSchema, 'newAppFormat');
-
-
-
-
-
 								//event_queue_wrapper
 
 //mention to me if this needs testing, not sure if we are using it
@@ -376,9 +278,5 @@ module.exports.getPartitionByName = getPartitionByName;
 module.exports.getNetworkByName = getNetworkByName;
 
 
-module.exports.User=User;
-module.exports.Network=Network;
-module.exports.Partition=Partition;
-module.exports.Simulation=Sim;
 module.exports.StateObject = StateObject;
 //module.exports.event_queue_wrapper = event_queue_wrapper;
