@@ -146,6 +146,13 @@ function simulationSideBarView(){
  ****/
 
 function networkTopologyView(){
+	//removes previously occuring stylesheets and javascript files if they occured before
+	removeFile('topologyView.css', 'css');
+	removeFile('interact-1.2.2.js', 'js');
+	removeFile('Manipulation.js', 'js');
+	removeFile('Shapes.js', 'js');
+	removeFile('Drawing.js', 'js');
+
 	defaultheaderView(); 
 	
 	clearNav();
@@ -155,7 +162,6 @@ function networkTopologyView(){
 	var content = getContainer();
 	//defaultsideBarView();
 	loadStyleSheet('../css/topologyView.css');
-	loadJSFile('../gui/interact-1.2.2.js');
 	loadJSFile('/gui/Manipulation.js');
 	loadJSFile('/gui/Shapes.js');
 	loadJSFile('/gui/Drawing.js');
@@ -179,58 +185,6 @@ function networkTopologyView(){
 	//generateTopology(simulation.partition_list, 800);
 }
 
-function generateTopology(partition_list, areaWidth){
-
-	displayed_partition_list=partition_list;
-	clearCanvas();
-	var positioningRadius,numPartitions,rootXY;
-	var networkIndex=0;
-	var root,connected,connectedDevice;
-	
-	var realPartitions=getRealPartitions(partition_list);
-	var free_list=getAllFreeDevices(partition_list);
-
-	numPartitions=realPartitions.length;
-	positioningRadius=areaWidth/(numPartitions+1);
-	rootXY=positioningRadius;
-	
-	for(partition in realPartitions){
-		
-		var network_list=partition_list[partition].network_list;
-		var angle=Math.PI/network_list.length;
-
-		for(network in network_list){
-			
-			if(networkIndex==0){
-				root=createNetworkGraphicAt(rootXY,rootXY);
-				root.name=network_list[network].network_name;
-				root.represents=network_list[network];
-				connectDevicesToNetwork(network_list[network].device_list,root);
-			}
-			
-			else{
-				connected=createObjectWithin(positioningRadius*3/4,networkIndex*angle,rootXY,rootXY,createNetworkGraphicAt);
-				connected.name=network_list[network].network_name;
-				connected.represents=network_list[network];
-				createPartitionGraphic(root,connected);
-				connectDevicesToNetwork(network_list[network].device_list,connected);
-			}
-			networkIndex++;
-		}
-		
-		rootXY+=positioningRadius;
-		networkIndex=0;
-		
-	}
-	var distance=areaWidth/(1+free_list.length);
-	var freeDevice;
-	for(var i=0;i<free_list.length;i++){
-		freeDevice=createDeviceGraphicAt(distance*(i+1),20);
-		freeDevice.name=free_list[i].current_device_name;
-		freeDevice.draw();
-	}
-		
-}
 
 /***
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
