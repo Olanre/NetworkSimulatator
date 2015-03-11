@@ -130,12 +130,7 @@
 			<li>						
 				<a href="#" onclick = "simulationListView()">Simulations</a>						
 			</li>						
-			<li>						
-				<a href="#" onclick = "appDefaultView()()">Applications</a>						
-			</li>	
-			<li>						
-				<a href="#" onclick = "RDTView()">RDTs</a>						
-			</li>				
+						
 									
 		</ul>					
 	</div>				
@@ -415,10 +410,12 @@
 </script>
 
 <script type = "SimulationLogTemplate" id = "template17">
-	"<div class = 'logs'> {{logs}} </div>"
+	<table>
+	 {{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
+ </table>
 </script>
 
-<div class="col-sm-3 col-md-2 sidebar">					
+<div class="col-sm-3 col-md-2 sidebar" id = "template18">					
 					<ul class="nav nav-sidebar">						
 						<li>						
 							<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						

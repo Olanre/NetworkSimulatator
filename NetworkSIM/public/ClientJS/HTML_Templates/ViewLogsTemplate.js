@@ -9,7 +9,10 @@
 function SimulationLogsTemplate(logs){
 	var template = document.getElementById('template17').innerHTML;
 	 textile = Hogan.compile(template);
-	 context = {'logs' : logs};
+	 var logs_array = logs.split("\n");
+	 context = {'logs' : logs_array};
+	 console.log(context);
 	 tpl = textile.render(context);
+	 console.log(tpl);
 	 return tpl;
 }

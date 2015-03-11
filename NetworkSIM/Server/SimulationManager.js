@@ -60,6 +60,14 @@ module.exports.getSimulationNames=function(){
 	return names_list;
 }
 
+module.exports.getSimulationHistory=function(event_data){
+	var history = {};
+	for(index in simulationList){
+		names_list.push(simulationList[index].simulationJSON.simulation_name);
+	}
+	return names_list;
+}
+
 module.exports.getSimulationList=function(){
 	var names_list=[];
 	var new_entry;
@@ -91,12 +99,14 @@ function authToken(token, simulation_id, callback){
 				if(deviceList[index].token == token){
 					
 					res.Response = "Success";
-					var timestamp = new Date();
-					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
-					simulation.updateSimulationLog(new_activity);
-					deviceList[index].deviceJSON.verified = true;
-					
-					saveSimulationState( simulation_id, timestamp, simulation);
+					if(deviceList[index].deviceJSON.verified !== true){
+						var timestamp = new Date();
+						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+						simulation.updateSimulationLog(new_activity);
+						deviceList[index].deviceJSON.verified = true;
+						
+						saveSimulationState( simulation_id, timestamp, simulation);
+					}
 					
 					break;
 				}
