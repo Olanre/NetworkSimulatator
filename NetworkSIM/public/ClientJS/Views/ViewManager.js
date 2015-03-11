@@ -5,17 +5,20 @@ window.onload = function(){
 	defaultsideBarView();
 	loadStyleSheet('../css/bootstrap.min.css');
 	loadStyleSheet('../css/dashboard.css');
-	loadAppContent();	
+	//loadStyleSheet('../css/defaultPages.css');
+	defaultheaderView();
+	updateAllViews();
+	syncWithServer();	
 }
 
 /**
  * loadAppContent loads the content from a sync to the server
- */
+ *
 function loadAppContent(){
 	syncWithServer();
 	updateAllViews(400);
 	
-}
+}*/
 
 
 /**
@@ -24,14 +27,6 @@ function loadAppContent(){
 function updateAllViews( timeout){
 	setTimeout(function() {
 		simulationListView();
-	}, timeout);
-	
-	setTimeout(function() {
-		AccountView();
-	}, timeout);
-	
-	setTimeout(function() {
-		appDefaultView();
 	}, timeout);	
 }
 
@@ -58,7 +53,7 @@ function deviceHeaderView(){
 /**
  * Displays the user's information
  */
-function appDefaultView(){
+/*function appDefaultView(){
 	var local_device = get_local_device();
 	//sets the top bar to be the default look
 	defaultheaderView();
@@ -72,7 +67,7 @@ function appDefaultView(){
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
 	}
-}
+}*/
 
 /**
  * sets the sidebar of the page to look as it should when the page is opened

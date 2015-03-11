@@ -6,7 +6,8 @@ function CreateSimulation(){
 	var url = "/create/Simulation";
 	var timestamp = new Date();
 	addToEventQueue(url, body, timestamp);
-	simulationListView();
+	setTimeout( function(){ simulationListView(); }
+	, 1000 );
 }
 
 /**
