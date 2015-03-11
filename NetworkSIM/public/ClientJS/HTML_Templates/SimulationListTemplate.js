@@ -9,7 +9,7 @@ function SimulationDataListTemplate(simulations){
 				  "<td> <div class = 'num-networks'> Number of Networks: " + simulations[i].num_networks+ " </div> </td> ";
 			 		
 			 if(local_device.verified == true && local_device.simulation_id === simulations[i].simulation_id){
-				 str += "<td> <div  class = 'btn btn-primary'  onclick = 'deviceHeaderView()'> View </div> </td>";
+				 str += "<td> <div  class = 'btn btn-primary'  onclick = 'appDefaultView()'> View </div> </td>";
 			 }else{
 				 str += "<td> <div  class = 'btn btn-primary'  onclick = 'RegisterView(&quot;" + simulations[i].simulation_id + "&quot;)' > Register  </div> </td> ";
 			 }
