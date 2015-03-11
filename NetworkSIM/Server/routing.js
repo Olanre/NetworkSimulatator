@@ -139,6 +139,7 @@ function handleEventQueue(token, eventQueue, callback) {
 				break;
             case '/upload':
                 FileManager.uploadAllFiles(eventQueue[i].event_data);
+                console.log("uploadin'")
                 break;
 
 			default:
