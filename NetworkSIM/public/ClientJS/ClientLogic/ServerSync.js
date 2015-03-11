@@ -32,6 +32,7 @@ socket.on('syncState', function(appState){
 	clearEventQueue();
 	if(appState !== null){
 		console.log(appState);
+		//store_local_history({});
 		store_local_simulation(appState.simulation);
 		store_local_device(appState.device);
 		store_local_simulation_list(appState.simulation_list);
