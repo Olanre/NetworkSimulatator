@@ -6,7 +6,9 @@ var stateList={};
 var simulationEvents=[];
 
 /**
+ * call this with a simulation_history object to generate the history.
  *Initiates initial loading of the page, parses the test state and puts up dates
+ *WARNING: should be called within window.onload to make sure everything exists
  */ 
 function populatePage(simulation_history){
 	if(simulation_history!==null){
@@ -62,6 +64,11 @@ function updateDeviceLogTitle(deviceName){
 	var deviceTitle=document.getElementById("deviceLog-title");
 	deviceTitle.innerHTML="Viewing event log for: "+deviceName;
 }
+
+function clearDeviceLogTitle(){
+	var deviceTitle=document.getElementById("deviceLog-title");
+	deviceTitle.innerHTML='Select a device in the GUI to view its logs';
+}
 /**
  * adds the dates of each simulation snapshot to the scroll menu
  * to view
@@ -95,11 +102,18 @@ function populateDeviceLogs(deviceEvents){
 		deviceLogs.innerHTML+="<option value="+deviceEvents[i]+">"+deviceEvents[i]+"</option>";
 	}
 }
+function clearDeviceLogs(){
+	var deviceLogs = document.getElementById("device-log");
+	deviceLogs.innerHTML="";
+}
 /**
  * function which is called when the user selects a date to view
  * that simulation state from
  */
 function selectSimulationDate(selected){
+	clearDeviceLogTitle();
+	clearDeviceLogs();
+
 	updatePageTitle(selected);
 	updateSimulationLogTitle(selected);
 	//get the logs from the states object for that simulation snapshot
@@ -139,8 +153,15 @@ function mouseClick(e){
  */
 function deriveDeviceEvents(circleElem){
 	if(circleElem.represents!==null){
+		console.log('circle elem:  '+circleElem);
+		console.log('represennts: '+circleElem.represents._id);
 		var represents=circleElem.represents;
 		var device_log=represents.activity;
+		var device_log=device_log.split('\n');
+		return device_log;
+	}
+	else{
+		console.log('deriveDeviceEvents recieved null parameters');
 	}
 }
 

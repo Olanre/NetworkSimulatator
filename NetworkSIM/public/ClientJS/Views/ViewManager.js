@@ -7,8 +7,8 @@ window.onload = function(){
 	loadStyleSheet('../css/dashboard.css');
 	//loadStyleSheet('../css/defaultPages.css');
 	defaultheaderView();
-	updateAllViews();
-	syncWithServer();	
+	syncWithServer();
+	updateAllViews();	
 }
 
 /**

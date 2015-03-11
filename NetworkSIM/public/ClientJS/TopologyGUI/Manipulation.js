@@ -100,6 +100,7 @@ function generateTopology(partition_list, areaWidth){
 	var freeDevice;
 	for(var i=0;i<free_list.length;i++){
 		freeDevice=createDeviceGraphicAt(distance*(i+1),20);
+		freeDevice.represents=free_list[i];
 		freeDevice.name=free_list[i].current_device_name;
 		freeDevice.draw();
 	}
