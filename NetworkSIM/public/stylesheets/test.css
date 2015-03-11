@@ -1,0 +1,48 @@
+body{
+	overflow:auto;
+	background-color:#4CD690;
+	font-family: 'Helvetica','Veranda';
+	border-radius:50px;
+}
+
+#app{
+	max-width:400;
+}
+
+.sidebar{
+	position: fixed;
+	top: 51px;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	display: block;
+	padding: 20px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: #f5f5f5;
+	border-right: 1px solid #eee;
+	max-width: 200px;
+	border-radius:25px;
+}
+
+.nav li{
+	text-align:left;
+	list-style-type: none;
+	min-width:100%;
+
+}
+
+a{
+	color:#000000;
+}
+a:hover{
+	background-color:#4CD690;
+}
+#content{
+	padding:10px;
+
+	position:relative;
+	left:250px;
+	border-radius:25px;
+	background-color:#f5f5f5;
+}
