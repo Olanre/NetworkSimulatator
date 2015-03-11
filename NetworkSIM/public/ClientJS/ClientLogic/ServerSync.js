@@ -44,6 +44,7 @@ socket.on('syncState', function(appState){
 socket.on('syncHistory',  function(appHistory){
 	if( isEmpty(appHistory) == true){
 		store_local_history(appHistory);
+		console.log(appHistory);
 	}else{
 		console.log('recieved empty object from server for simulation history');
 	}

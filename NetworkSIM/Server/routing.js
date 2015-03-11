@@ -18,7 +18,7 @@ function handleClient (socket) {
 	var tweet = {user: "nodesource", text: "Hello, world!"};
 	var id = generateUID();
     // to make things interesting, have it send every second
-	console.info('New client connected (id=' + socket.id + ').');
+	//console.info('New client connected (id=' + socket.id + ').');
 	
 	io.to(socket.id).emit('session_start', id);
 
@@ -26,7 +26,7 @@ function handleClient (socket) {
     	 var index = clients.indexOf(socket);
          if (index !== -1) {
              clients.splice(index, 1);
-             console.info('Client gone (id=' + socket.id + ').');
+             //console.info('Client gone (id=' + socket.id + ').');
          }
     });
     
@@ -35,7 +35,7 @@ function handleClient (socket) {
     		var token = json.token;
     		var events = json.eventQueue ;
     		var simulation= json.simulation_id;
-    		console.log(simulation);
+    		//console.log(simulation);
     		SimulationManager.authToken(token, simulation, function(obj){
     			//for now allow empty tokens
     			
@@ -45,9 +45,10 @@ function handleClient (socket) {
     				console.log("Successful authenication" );
     					handleEventQueue(token, events, function(){
 	    					//the painful part, we need to send it to all clients in the simulation
-	    					var list = getAllActiveDevices(simulation);
-	    					for(device in list){
-	    						var user_token = device.token;
+	    					var list = SimulationManager.getAllActiveDevices(simulation);
+	    					for(var index = 0; index < list.length; index++){
+	    						var user_token = list[index]['token'];
+	    						
 	    						var socket_id = client_map[user_token];
 	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
 	        					io.to(socket_id).emit('syncState', state);
@@ -89,6 +90,7 @@ function handleClient (socket) {
     	SimulationManager.authToken(token, simulation_id, function(obj){
     		if(obj.Response == 'Success'){
 		    	var history = SimulationManager.getSimulationHistory(simulation_id);
+		    	
 		    	io.to(socket.id).emit('syncHistory', history);
     		}else{
     			io.to(socket.id).emit('validate_user', obj);

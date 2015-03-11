@@ -54,13 +54,13 @@ exports.getAllActiveDevices = function(simulation_id){
 		for(index in deviceList){
 			if(deviceList[index].deviceJSON.verified == true){
 				device=deviceList[index].deviceJSON;
-				AppList.push(device);
+				List.push(device);
 			}
 		}
 	}
 	
 
-	return AppList;
+	return List;
 }
 
 module.exports.getBlankAppState = function(){
@@ -81,6 +81,8 @@ module.exports.getSimulationNames=function(){
 
 module.exports.getSimulationHistory=function(simulation_id){
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	console.log(simulationHistoryList);
+	console.log(simulation_id);
 	if (simulation_history == -1){
 		simulation_history = {};
 	}
@@ -184,7 +186,7 @@ function createSimulation(event_data, time_stamp) {
 						createdDevice.deviceJSON.current_partition = partition;
 						createdDevice.deviceJSON.simulation_id = simulation._id;
 						createdDevice.deviceJSON.registeredOn = date.toString();
-						console.log(createdDevice.deviceJSON);
+						
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,token,event_data.simulation_name);

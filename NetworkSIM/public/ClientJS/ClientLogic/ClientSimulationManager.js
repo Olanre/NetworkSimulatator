@@ -41,6 +41,7 @@ function wrapCreateSimulation() {
  */
 function getSimulation(simulation_id){
 	var param = {
+			'token' :  getLocalDeviceToken(),
 			'simulation_id': simulation_id,
 			};
 	params = JSON.stringify(param);
@@ -53,13 +54,18 @@ function getSimulation(simulation_id){
  * Function to get the states associates from a simulation 
  */
 function getSimulationHistory(simulation_id){
+	console.log(simulation_id);
 	var param = {
-			'simulation_id': simulation_name,
+			'token' :  getLocalDeviceToken(), 
+			'simulation_id': simulation_id,
 			};
 	params = JSON.stringify(param);
 	var url = '/get/History';
 	//sends the request to be validated by the server
 	socket.emit(url, params);
+	setTimeout( function(){ eventLogsView(); }
+	, 1000 );
+	
 }
 
 
