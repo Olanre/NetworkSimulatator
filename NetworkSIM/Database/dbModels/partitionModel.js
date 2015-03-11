@@ -6,6 +6,8 @@ var Schema = mongoose.Schema;
 var Network = require("./networkModel").Network;
 //defines the schema
 //console.log(Network);
+
+
 var partitionSchema = mongoose.Schema({
 	 //type string
 	 id : String,
@@ -14,6 +16,7 @@ var partitionSchema = mongoose.Schema({
 	});
 
 //Partition Methods
+
 
 partitionSchema.statics.savePartition = function (aPartition)
 {
@@ -43,9 +46,6 @@ partitionSchema.statics.modifyPartitionByName = function (aString, aPartition)
 	   //callback();
    });
 }
-
-
-
 
 //exporting is done this way, defines, declares Network as the name of this schema/function model. 
 module.exports = mongoose.model('Partition', partitionSchema, 'Partitions');

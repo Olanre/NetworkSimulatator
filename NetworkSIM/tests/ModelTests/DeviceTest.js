@@ -3,8 +3,11 @@ var Util=require("../../Utilities/utilities.js");
 var Network=require("../../Model/Network.js");
 
 
-
-
+var mongoose = require('mongoose');
+//get models
+var User = require("../../Database/dbModels/userModel.js");
+var Userm = mongoose.model("User");
+var Usermodel = mongoose.model
 //var DB = require("../Database/mongooseConnect.js");
 
 //var Car = new DB.User();
@@ -26,15 +29,16 @@ var JSONDeviceTemplate={
 		activity : "",
 };
 
-var deviceJSON={
+var deviceJSON=({
 		current_device_name:"testname",
-		token:"xyz1234",
-		email:undefined,
+		token:"7777777",
+		email:"",
+		dddd:"",
 		registeredOn:undefined,
 		current_simulation:"sim sim",
-		current_partition:undefined,
-		current_network:undefined,
-}
+		current_partition:"",
+		current_network:"",
+});
 
 
 testDeviceCreation=function(){
@@ -55,12 +59,32 @@ testDeviceLoading=function(){
 	return result;
 }
 
+testUser = function(){
+	var empty = new User();
+	console.log(empty);	
+	empty
+	var aUser = new User(deviceJSON);
+	//console.log(aUser);
+	aUser.save();
+	var another = new User(deviceJSON);
+	another.token = "1414";
+	//Userm.modifyUser(123123123, another);
+	
+	
+	
+}
+
+
+
+
+
+
 
 module.exports.testDevice=function(){
 	var functions=[];
-	functions.push(testDeviceCreation);
-	functions.push(testDeviceLoading);
-
+	//functions.push(testDeviceCreation);
+	//functions.push(testDeviceLoading);
+	functions.push(testUser);
 	var continueTesting=true;
 	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i]();
