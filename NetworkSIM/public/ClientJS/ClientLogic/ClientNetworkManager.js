@@ -21,6 +21,7 @@ function Device_makeNetwork(element){
 		var name = input.value;
 		if(name !== ''){
 			createNetwork(name);
+			appDefaultView();
 		}
 	}
 	

@@ -54,6 +54,9 @@ function deviceHeaderView(){
  * Displays the user's information
  */
 function appDefaultView(){
+	//clears everything on the page
+	clearFooter();
+	clearSection();
 	var local_device = get_local_device();
 	//sets the top bar to be the default look
 	defaultheaderView();
