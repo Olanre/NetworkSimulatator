@@ -1,9 +1,8 @@
-body{
-}
+
 #svgCanv{
 	background-color: #f5f4e1;
-	width: 700px;
-  	height: 700px;
+	width: 600px;
+  	height: 600px;
   	border-style: solid;
   	border-width: 0px;
 	position: relative;
@@ -15,7 +14,7 @@ body{
 #simulation-log{
 	background-color: #e3dde6;
 	height: 200px;
-	width: 350px;
+	width: 300px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
 	border-radius: 25px;
@@ -25,7 +24,7 @@ h1{
 }
 #title-bar{
 	background: #71adc1;
-	width:1050px;
+	width:900px;
 	color: white;
 	height: 55px;
 	border-radius: 12px;
@@ -34,16 +33,16 @@ h1{
 
 #device-log{
 	background-color: #f2f2f2;
-	height: 200px;
-	width: 680px;
+	height: 150px;
+	width: 580px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
 }
 
 #log-dates{
 	background-color: #f2f2f2;
-	height:700px;
-	width: 350px;
+	height:650px;
+	width: 250px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
 }

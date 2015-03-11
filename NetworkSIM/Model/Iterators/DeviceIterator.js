@@ -34,3 +34,4 @@ function DeviceIterator(deviceList){
 	    }
   };
 }
+module.exports=DeviceIterator;

@@ -1,7 +1,7 @@
 var Device=require("../Model/Device.js");
 var Util=require("../Utilities/utilities.js");
 var Network=require("../Model/Network.js");
-var DB = require("../Database/mongooseConnect.js");
+//var DB = require("../Database/mongooseConnect.js");
 
 //var Car = new DB.User();
 //Car['token'] = 'Hellojhrwubgnbvni';
@@ -9,14 +9,16 @@ var DB = require("../Database/mongooseConnect.js");
 //console.log(Car);
 
 var JSONDeviceTemplate={
-	current_device_name:undefined,
-	token:undefined,
+	current_device_name:'',
+	current_simulation:'',
 	networks_created:[],
-	email:undefined,
+	admin: false,
 	registeredOn:'',
-	current_simulation:undefined,
-	current_partition:'',
 	current_network:'',
+	current_partition:'',
+	verified: false,
+	email:'',
+	token:''
 };
 
 var deviceJSON={
@@ -31,7 +33,7 @@ var deviceJSON={
 
 
 testDeviceCreation=function(){
-	var createdDevice=Device.createNewDevice();
+	var createdDevice=Device.createNewDevice('','','','');
 	var result=Util.compareObjects(createdDevice.deviceJSON,JSONDeviceTemplate);
 	if(!result) console.log(createdDevice.deviceJSON);
 	var text=result? 'passed': 'failed';

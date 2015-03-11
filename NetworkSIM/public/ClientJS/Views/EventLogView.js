@@ -97,12 +97,12 @@ var testState={id : 'blahdu3',
 
 
 
-var configMapList={};
+var SimulationMap={};
 //should hold a states object I guess 
-var availableStatesObject;
+var current_simulation_history;
 var stateList={};
 var timeStampList=[];
-var simulationEvents=["Device1 moved to Network wyattsHouse", "Device2 stopped existing", "Device3 went to Emily's house"];
+var simulationEvents=[];
 
 
 /**
@@ -165,20 +165,18 @@ function populateDeviceLogs(deviceEvents){
 function selectSimulationDate(selected){
 	updatePageTitle(selected);
 	updateSimulationLogTitle(selected);
-	//gets the config map for that time stamp
-	configMap=configMapList[selected];
 	//get the logs from the states object for that simulation snapshot
-	simulationLogs=parseSimulationLogs(availableStatesObject,selected);
+	simulationLogs=parseSimulationLogs(current_simulation_history,selected);
 	populateSimulationLogs(simulationLogs);
 	setInteractable(false);
-	generateTopology(configMapList[selected],700);
+	generateTopology(SimulationMap[selected],700);
 }
 
 /**
  *Initiates initial loading of the page, parses the test state and puts up dates
  */ 
-function populatePage(state){
-	parseState(state);
+function populatePage(simulation_history){
+	parseSimulationHistory(simulation_history);
 	//adds the listener to the document
 	document.body.onclick = mouseClick;
 	populateDates(timeStampList);
@@ -196,6 +194,8 @@ function mouseClick(e){
 		return el ? (el.id || el.nodeName) : 'null' ;
 	}
 	if(toString(target) == "circle"){
+
+		//USE ID
 		circleElem=shapes[target.getAttribute('data-index')];
 		if (hasClass(circleElem.element, 'device')){
 			updateDeviceLogTitle(circleElem.name);
@@ -215,14 +215,14 @@ function deriveDeviceEvents(circleElem){
 	var logDates = document.getElementById("log-dates")
 	var timeStamp = logDates.options[logDates.selectedIndex].innerHTML;
 	//find the simulation index for this timestamp
-	for (var i=0;i<availableStatesObject.length;i++){
-		console.log(availableStatesObject[i].timestamp);
-		if (availableStatesObject[i].timestamp==timeStamp){
+	for (var i=0;i<current_simulation_history.length;i++){
+		console.log(current_simulation_history[i].timestamp);
+		if (current_simulation_history[i].timestamp==timeStamp){
 			//find the device this corresponds to
-			for (var j=0;j<availableStatesObject[i].devices.length;j++){
-				console.log(availableStatesObject[i].devices[j].device.current_device_name);
-				if(availableStatesObject[i].devices[j].device.current_device_name==deviceName){
-					deviceEvents=availableStatesObject[i].devices[j].device.activity;
+			for (var j=0;j<current_simulation_history[i].devices.length;j++){
+				console.log(current_simulation_history[i].devices[j].device.current_device_name);
+				if(current_simulation_history[i].devices[j].device.current_device_name==deviceName){
+					deviceEvents=current_simulation_history[i].devices[j].device.activity;
 				}
 			}
 		}
@@ -236,17 +236,16 @@ function deriveDeviceEvents(circleElem){
 /**
  *Parses a given state object into config maps and timestamps
  */
-function parseState(state){
-	var states=state.states;
-	availableStatesObject=states;
-	//iterate through all the states
+function parseSimulationHistory(simulation_history){
+	var states=simulation_history.state;
+	current_simulation_history=states;
+	//iterate through all of the states
 	for (var i=0; i<states.length; i++){
 		timestamp=states[i].timestamp;
 		//gets all the timestamps from all of these states
 		timeStampList.push(states[i].timestamp);
-		//gets all of the config maps for each state
-		console.log(states[i].simulation.config_map);
-		configMapList[timestamp]=states[i].simulation.config_map;
+		//arranges all simulations by timestamp in a key value pair
+		SimulationMap[timestamp]=states[i].simulation;
 	}
 }
 
@@ -270,6 +269,3 @@ function parseSimulationLogs(states, timeStamp){
 	return "failed";
 }
 
-//FOR TESTING
-window.onload=function(){populatePage(testState)};
-// a test states object

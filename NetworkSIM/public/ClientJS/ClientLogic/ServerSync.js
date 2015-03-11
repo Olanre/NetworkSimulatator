@@ -34,10 +34,19 @@ socket.on('syncState', function(appState){
 		console.log(appState);
 		store_local_simulation(appState.simulation);
 		store_local_device(appState.device);
-		store_local_simulation_names(appState.simulation_names);
+		store_local_simulation_list(appState.simulation_list);
 	}
 	else{
 		console.log('recieved null object from server');
+	}
+});
+
+socket.on('syncHistory',  function(appHistory){
+	if( isEmpty(appHistory) == true){
+		store_local_history(appHistory);
+		console.log(appHistory);
+	}else{
+		console.log('recieved empty object from server for simulation history');
 	}
 });
 

@@ -1,0 +1,144 @@
+#title{
+	margin-top:7%;
+	margin-bottom:7%;
+	font-size:50px;
+	color:white;
+	font-weight:600;
+	text-align:center;
+}
+
+body{
+	overflow:auto;
+	background-color:#4CD690;
+	font-family: 'Helvetica','Veranda';
+	border-radius:50px;
+}
+.table{
+	width:100%;
+	display:table;
+}
+.row{
+	display:table-row;
+}
+
+.cell{
+	display:table-cell;
+}
+
+.content{
+}
+
+#welcome-simulation-info{
+	text-align:center;
+}
+
+button{
+	font-size:30px;
+	padding: 4px 4px 4px 4px;
+	width: 350px;
+	height: 100px;
+	color:#4CD690;
+	border: none;
+    outline:none;
+}
+
+button:hover{
+	text-decoration: none;
+}
+
+#join-simulation-area{
+    margin: 0 auto;
+	margin-top:5%;
+	min-width: 475px;
+	min-height: 400px;
+}
+
+#join-simulation-list{
+	color:#106EA6;
+	margin:10px;
+	text-align:right;
+	padding:15px;
+	width: 450px;
+	height: 380px;
+	border:none;
+	outline: none;
+  border-radius:25px;
+}
+
+
+.fade-sideways-text{
+	animation: animationFrames linear 0.8s;
+	-webkit-animation: animationFrames linear 0.8s;
+	-moz-animation: animationFrames linear 0.8s;
+}
+
+
+
+/****
+ *handles the scroll bar for our webpages
+ ****/
+::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(76, 214, 144, .3); 
+}
+
+
+/**
+ *Handles keyframes animation
+ */
+@keyframes animationFrames{
+  0% {
+    opacity:0;
+    transform:  translate(0px,7px)  scaleX(2.50) ;
+  }
+  50% {
+    opacity:1;
+    transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+  100% {
+    opacity:1;
+    transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+}
+
+@-moz-keyframes animationFrames{
+  0% {
+    opacity:0;
+    -moz-transform:  translate(0px,7px)  scaleX(2.50) ;
+  }
+  50% {
+    opacity:1;
+    -moz-transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+  100% {
+    opacity:1;
+    -moz-transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+}
+
+@-webkit-keyframes animationFrames {
+  0% {
+    opacity:0;
+    -webkit-transform:  translate(0px,7px)  scaleX(2.50) ;
+  }
+  50% {
+    opacity:1;
+    -webkit-transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+  100% {
+    opacity:1;
+    -webkit-transform:  translate(0px,7px)  scaleX(1.00) ;
+  }
+}

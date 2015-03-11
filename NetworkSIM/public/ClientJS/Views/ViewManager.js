@@ -5,18 +5,20 @@ window.onload = function(){
 	defaultsideBarView();
 	loadStyleSheet('../css/bootstrap.min.css');
 	loadStyleSheet('../css/dashboard.css');
-	
-	loadAppContent();	
+	//loadStyleSheet('../css/defaultPages.css');
+	defaultheaderView();
+	updateAllViews();
+	syncWithServer();	
 }
 
 /**
  * loadAppContent loads the content from a sync to the server
- */
+ *
 function loadAppContent(){
 	syncWithServer();
 	updateAllViews(400);
 	
-}
+}*/
 
 
 /**
@@ -25,14 +27,6 @@ function loadAppContent(){
 function updateAllViews( timeout){
 	setTimeout(function() {
 		simulationListView();
-	}, timeout);
-	
-	setTimeout(function() {
-		AccountView();
-	}, timeout);
-	
-	setTimeout(function() {
-		appDefaultView();
 	}, timeout);	
 }
 
@@ -60,6 +54,10 @@ function deviceHeaderView(){
  * Displays the user's information
  */
 function appDefaultView(){
+	//clears everything on the page
+	clearFooter();
+	clearSection();
+	
 	var local_device = get_local_device();
 	//sets the top bar to be the default look
 	defaultheaderView();
@@ -96,11 +94,11 @@ function simulationListView(){
 	clearFooter();
 	clearSection();
 
-	var simulations = get_local_simulation_names();
+	var simulations = get_local_simulation_list();
 	
 	
 	//adds the list of simulations into the page
-	var html =  SimulationListTemplate(simulations);
+	var html =  SimulationDataListTemplate(simulations);
 	//gets the container of the page
 	var content = getContainer();
 	//sets the default sidebar page
@@ -152,59 +150,68 @@ function simulationSideBarView(){
  ****/
 
 function networkTopologyView(){
+	//removes previously occuring stylesheets and javascript files if they occured before
+	removeFile('topologyView.css', 'css');
+	removeFile('Manipulation.js', 'js');
+	removeFile('Shapes.js', 'js');
+	removeFile('Drawing.js', 'js');
+
 	defaultheaderView(); 
 	
 	clearNav();
 	clearFooter();
 	clearSection();
 
-	var simulations = get_local_simulation_names();
-	defaultheaderView();
-	var html =  SimulationListTemplate(simulations);
 	var content = getContainer();
-	defaultsideBarView();
+	//defaultsideBarView();
 	loadStyleSheet('../css/topologyView.css');
-	loadJSFile('../gui/interact-1.2.2.js');
 	loadJSFile('/gui/Manipulation.js');
 	loadJSFile('/gui/Shapes.js');
 	loadJSFile('/gui/Drawing.js');
 	
 	var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
-			"<script src='../public/ClientJS/interact-1.2.2.js'></script>" +
-			"<script src='../public/ClientJS/toplogyManipulationGUI.js'></script>" +
+			"<script src='../gui/interact-1.2.2.js'></script>" +
+			"<script src='../gui/Manipulation.js'></script>" +
 			"<br><button class='buttton' type='button' onclick = createDeviceGraphic()>New Device</button>" +
 					"<button class='buttton'  type='button' onclick = createNetworkGraphic()>New Network</button>" +
-							"<button class='buttton'  type='button' onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>" +
-									"<button class='buttton' type='button' onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>" +
-											"<button class='buttton' type='button' onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>" +
-													"<button class='buttton' type='button' onclick = clearCanvas()>Clear Canvas</button>" +
+							//"<button class='buttton'  type='button' onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>" +
+									//"<button class='buttton' type='button' onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>" +
+											//"<button class='buttton' type='button' onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>" +
+													//"<button class='buttton' type='button' onclick = clearCanvas()>Clear Canvas</button>" +
 															"</div>";
 	var content = getContainer();
 	content.innerHTML = html;
+	//generate our topology view from the simulation
+	var simulation  = get_local_simulation();
+	
+	//generateTopology(simulation.partition_list, 800);
 }
+
 
 /***
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
  */
 function eventLogsView(){
-	defaultheaderView(); 
-	
-	clearNav();
+	removeFile('topologyView.css', 'css');
+	removeFile('EventLogView.css', 'css');
+	removeFile('EventLogView.js', 'js');
+	removeFile('Manipulation.js', 'js');
+	removeFile('Shapes.js', 'js');
+	removeFile('Drawing.js', 'js');
+
+	//clearNav();
 	clearFooter();
 	clearSection();
-	
-	var simulations  = get_local_simulation_names();
+
 	defaultheaderView();
 
-	var html =  SimulationListTemplate(simulations);
 	var content = getContainer();
-	defaultsideBarView();
+	//defaultsideBarView();
 	
 	loadStyleSheet('../css/topologyView.css');
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../view/EventLogView.js');
-	loadJSFile('../gui/interact-1.2.2.js');
 	loadJSFile('../gui/Manipulation.js');
 	loadJSFile('../gui/Shapes.js');
 	loadJSFile('../gui/Drawing.js');
@@ -251,6 +258,24 @@ function RegisterView(id){
 	document.getElementById('simulation_id_div').value = id;
 }
 
+function SimulationManagementView(){
+	clearNav();
+	clearFooter();
+	clearSection();
+	clearContainer();
+	
+	var local_simulation = get_local_simulation();
+	var aside = getSideBar();
+	var sidebar = SimulationSideBarView(local_simulation._id);
+	aside.innerHTML = sidebar;
+}
+
+
+function SimulationManagementSideBarView(){
+	var sidebar = document.getElementById('template18');
+	
+	aside.innerHTML = sidebar.innerHTML;
+}
 /**
  * Displays the list of all networks not sure if necessary
  */

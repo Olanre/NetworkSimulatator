@@ -19,7 +19,7 @@ function Simulation(simulation_name){
 	this.simulationJSON.num_devices = 0;
 	this.simulationJSON.num_networks = 0;
 	this.simulationJSON.simulation_population = 0;
-	this.simulationJSON.activiy_logs = '';
+	this.simulationJSON.activity_logs = '';
 	
 	this.simulationJSON.partition_list=[];
 	this._id=(new Database.Simulation())._id;
@@ -39,6 +39,7 @@ function Simulation(simulation_name){
 	this.removeNetwork=removeNetwork;
 	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
+	this.updateSimulationLog = updateSimulationLog;
 }
 
 function createNewSimulation(simulation_name){
@@ -144,6 +145,11 @@ function mergePartitions(partitionA,partitionB){
 		}
 	}
 }
+
+function updateSimulationLog(new_activity){
+	this.simulationJSON.activity_logs += new_activity;
+}
+
 
 
 module.exports.createNewSimulation=createNewSimulation;
