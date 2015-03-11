@@ -185,7 +185,7 @@ function networkTopologyView(){
 	//generate our topology view from the simulation
 	var simulation  = get_local_simulation();
 	
-	//generateTopology(simulation.partition_list, 800);
+	generateTopology(simulation.partition_list, 800);
 }
 
 
