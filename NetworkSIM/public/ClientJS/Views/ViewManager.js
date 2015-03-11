@@ -148,7 +148,6 @@ function simulationSideBarView(){
 function networkTopologyView(){
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
-	removeFile('interact-1.2.2.js', 'js');
 	removeFile('Manipulation.js', 'js');
 	removeFile('Shapes.js', 'js');
 	removeFile('Drawing.js', 'js');
@@ -190,7 +189,13 @@ function networkTopologyView(){
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
  */
 function eventLogsView(){
-	
+	removeFile('topologyView.css', 'css');
+	removeFile('EventLogView.css', 'css');
+	removeFile('EventLogView.js', 'js');
+	removeFile('Manipulation.js', 'js');
+	removeFile('Shapes.js', 'js');
+	removeFile('Drawing.js', 'js');
+
 	//clearNav();
 	clearFooter();
 	clearSection();
@@ -203,10 +208,9 @@ function eventLogsView(){
 	loadStyleSheet('../css/topologyView.css');
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../view/EventLogView.js');
-	//loadJSFile('../gui/interact-1.2.2.js');
 	loadJSFile('../gui/Manipulation.js');
-	//loadJSFile('../gui/Shapes.js');
-	//loadJSFile('../gui/Drawing.js');
+	loadJSFile('../gui/Shapes.js');
+	loadJSFile('../gui/Drawing.js');
 	
 	var html =
 	"<div id='title-bar'>"+
