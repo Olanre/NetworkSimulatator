@@ -244,6 +244,10 @@ function eventLogsView(){
 		"</div>"
 	var content = getContainer();
 	content.innerHTML = html;
+	//calls the EventLogView function for viewing the history
+	setTimeout(function(){
+		populatePage(get_local_history());
+	}, 3000);
 }
 
 /**
