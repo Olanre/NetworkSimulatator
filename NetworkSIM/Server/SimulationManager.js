@@ -44,6 +44,25 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	return state;
 }
 
+exports.getAllActiveDevices = function(simulation_id){
+	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	
+	var List = [];
+	if(simulation != -1){
+		deviceList=simulation.getDevices();
+	
+		for(index in deviceList){
+			if(deviceList[index].deviceJSON.verified == true){
+				device=deviceList[index].deviceJSON;
+				AppList.push(device);
+			}
+		}
+	}
+	
+
+	return AppList;
+}
+
 module.exports.getBlankAppState = function(){
 	var state={};
 	state.simulation= {};
@@ -60,12 +79,12 @@ module.exports.getSimulationNames=function(){
 	return names_list;
 }
 
-module.exports.getSimulationHistory=function(event_data){
-	var history = {};
-	for(index in simulationList){
-		names_list.push(simulationList[index].simulationJSON.simulation_name);
+module.exports.getSimulationHistory=function(simulation_id){
+	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	if (simulation_history == -1){
+		simulation_history = {};
 	}
-	return names_list;
+	return simulation_history;
 }
 
 module.exports.getSimulationList=function(){

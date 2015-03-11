@@ -23,7 +23,6 @@ function authToken(token, id){
 	var body = {'token': token, 'simulation_id': id};
 	params = JSON.stringify(body);
 	//sets the method by which the server handles the call. 
-	var url = "/authenticate/authToken";
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
 	updateLocalEventsSimulationId(id);

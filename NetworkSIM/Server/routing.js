@@ -19,7 +19,7 @@ function handleClient (socket) {
 	var id = generateUID();
     // to make things interesting, have it send every second
 	console.info('New client connected (id=' + socket.id + ').');
-	client_map[id] = socket.id;
+	
 	io.to(socket.id).emit('session_start', id);
 
     socket.on("disconnect", function () {
@@ -38,12 +38,21 @@ function handleClient (socket) {
     		console.log(simulation);
     		SimulationManager.authToken(token, simulation, function(obj){
     			//for now allow empty tokens
+    			
     			if(obj.Response == 'Success'){
+    				//map the socket_id to that users token
+    				client_map[token] = socket.id;
     				console.log("Successful authenication" );
     					handleEventQueue(token, events, function(){
-    					console.log(simulation);
-    					var state = SimulationManager.getAppStateForDevice(token,simulation);
-    					io.to(socket.id).emit('syncState', state);
+	    					//the painful part, we need to send it to all clients in the simulation
+	    					var list = getAllActiveDevices(simulation);
+	    					for(device in list){
+	    						var user_token = device.token;
+	    						var socket_id = client_map[user_token];
+	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
+	        					io.to(socket_id).emit('syncState', state);
+	    						
+	    					}    					
     				});
     				
     			}else{
@@ -70,6 +79,24 @@ function handleClient (socket) {
     		console.log(obj);
     		io.to(socket.id).emit('validate_user', obj);
     	});
+    });
+    
+    socket.on("/get/History", function (data){
+    	
+    	var json = JSON.parse(data);
+    	var token = json.token;
+    	var simulation_id = json.simulation_id;
+    	SimulationManager.authToken(token, simulation_id, function(obj){
+    		if(obj.Response == 'Success'){
+		    	var history = SimulationManager.getSimulationHistory(simulation_id);
+		    	io.to(socket.id).emit('syncHistory', history);
+    		}else{
+    			io.to(socket.id).emit('validate_user', obj);
+    		}
+    	});
+    	//for now allow empty tokens
+    		
+    	
     } );
     
     
