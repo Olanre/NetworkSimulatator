@@ -7,7 +7,7 @@ var simulationSchema = mongoose.Schema({
 	   simulation_population: Number,
 	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
-	   //partition_list: [oibPartition],
+	   partition_list: [{type : mongoose.Schema.Types.ObjectId, ref: 'Partition'}],
 	   activity_logs : String,	   
 });
 
