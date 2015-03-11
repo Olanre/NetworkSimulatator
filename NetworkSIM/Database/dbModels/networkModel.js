@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 //requires schema
 var Schema = mongoose.Schema;
 //reference User model here
+var User = require("/userModel").User;
+
 
 //defines the schema
 var networkSchema = mongoose.Schema({
