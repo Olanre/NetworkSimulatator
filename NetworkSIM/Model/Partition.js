@@ -1,12 +1,12 @@
 var Util=require("../Utilities/utilities.js");
 var Database=require("../Database/mongooseConnect.js");
+var PModel = require("../Database/dbModels/partitionModel.js");
 
 function Partition(partitionName, simulationName){
 	//Variables
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.network_list=[];
-	this._id = ('');
 
 	//Functions
 	this.addNetwork=addNetwork;
@@ -17,13 +17,15 @@ function Partition(partitionName, simulationName){
 	//Constructor contents
 	//JSON stuff
 	this.partitionJSON = {};
-	this.partitionJSON.network_list=[];
-	this.partitionJSON._id=this._id;
+	
 
 }
 
 function createNewPartition(partitionName,simulationName){
 	var createdPartition=new Partition(partitionName, simulationName);
+	var partitionJSON = new PModel();
+	createdPartition.attachJSON(partitionJSON);
+	partitionJSON.save();
 	//Wrapper class will handle this
 	//Database.savePartition(createdPartition.partitionJSON);
 	return createdPartition;
@@ -43,14 +45,13 @@ function loadPartitionFromJSON(partitionJSON){
 
 function attachJSON(partitionJSON){
 		this.partitionJSON=partitionJSON;
-		this.partition_name=partitionJSON.partition_name;
 		this._id=partitionJSON._id;
 }
 
 function addNetwork(network){
 		network.partitionObject=this;
 		this.network_list.push(network);
-		this.partitionJSON.network_list.push(network.networkJSON);
+		this.partitionJSON.network_list.push(network.networkJSON._id);
 }
 
 function removeNetwork(network){
@@ -72,7 +73,7 @@ function mergePartitions(partition){
 		for(key in networks){
 			networks[key].partitionObject=this;
 			networks[key].networkJSON.partition_name=this.partition_name;
-			this.partitionJSON.network_list.push(networks[key]);
+			this.partitionJSON.network_list.push(networks[key]._id);
 			this.network_list.push(partition.network_list[key]);
 		}
 };

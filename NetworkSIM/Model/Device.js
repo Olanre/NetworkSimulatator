@@ -1,5 +1,6 @@
 var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
+var DevModel = require("../Database/dbModels/userModel.js");
 
 function Device(deviceName,token, simulation_name , email){
 	
@@ -28,29 +29,26 @@ function Device(deviceName,token, simulation_name , email){
 	//Constructor contents
 
 	//Editing the JSON which represents the device. This will have to change when the database finally works.
-	this.activity='';
-	this.deviceJSON.current_device_name=deviceName;
-	this.deviceJSON.current_simulation = simulation_name;
-	this.deviceJSON.simulation_id = '';
-	this.deviceJSON.networks_created = [];	
-	this.deviceJSON.admin=false;
-	this.deviceJSON.registeredOn = '';
-	this.deviceJSON.current_network = '';
-	this.deviceJSON.current_partition = '';
-	this.deviceJSON.verified=false;
-	this.deviceJSON.email = deviceName;
-	this.deviceJSON.token=token;
-	this.deviceJSON._id=this._id;
-	this.deviceJSON.activity = '';
+	
 
 	this.networkObject.addDevice(this);
 }
 
 
 function createNewDevice(deviceName,token, simulation_name, email){
-	var createdDevice=new Device(deviceName,token, simulation_name ,email);
-	//wrapper class will be responsible for this
-	//Database.addUser(createdDevice.deviceJSON);
+	var createdDevice = new Device(deviceName,token, simulation_name ,email);
+	var deviceJSON = new DevModel();
+
+	deviceJSON.current_device_name=deviceName;
+	deviceJSON.current_simulation = simulation_name;
+	deviceJSON.admin=false;
+	deviceJSON.verified=false;
+	deviceJSON.email = deviceName;
+	deviceJSON.token=token;
+	createdDevice.deviceJSON=deviceJSON;
+
+	deviceJSON.save();
+
 	return createdDevice;
 }
 
@@ -63,7 +61,8 @@ function loadDeviceFromJSON(deviceJSON){
 function attachJSON(deviceJSON){
 	this.deviceJSON=deviceJSON;
 	this.device_name=deviceJSON.current_device_name;
-	this.unique_id=deviceJSON.unique_id;
+	this.token=deviceJSON.token;
+	this._id=deviceJSON.token;
 };
 
 

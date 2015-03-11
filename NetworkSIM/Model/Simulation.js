@@ -1,7 +1,7 @@
 var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
-var Database=require("../Database/mongooseConnect.js");
+var SimModel = require("../Database/dbModels/simulationModel.js");
 
 
 function Simulation(simulation_name){
@@ -15,15 +15,7 @@ function Simulation(simulation_name){
 	this.rdt = {};
 	
 	this.simulationJSON = {};
-	this.simulationJSON.simulation_name = simulation_name;
-	this.simulationJSON.num_devices = 0;
-	this.simulationJSON.num_networks = 0;
-	this.simulationJSON.simulation_population = 0;
-	this.simulationJSON.activity_logs = '';
 	
-	this.simulationJSON.partition_list=[];
-	this._id=(new Database.Simulation())._id;
-	this.simulationJSON._id=this._id;
 	
 	//admin.js stuff
 	this.importRDT=importRDT;
@@ -44,8 +36,15 @@ function Simulation(simulation_name){
 
 function createNewSimulation(simulation_name){
 	var createdSimulation=new Simulation(simulation_name);
-	//wrapper class should take care of this
-	//Database.addSim(createdSimulation.simulationJSON);
+	var simulationJSON= new SimModel();
+
+	simulationJSON.simulation_name = simulation_name;
+	simulationJSON.num_devices = 0;
+	simulationJSON.num_networks = 0;
+	simulationJSON.simulation_population = 0;
+	createdSimulation._id=simulationJSON._id;
+	createdSimulation.simulationJSON=simulationJSON;
+	simulationJSON.save();
 	return createdSimulation;
 }
 
@@ -65,6 +64,7 @@ function loadSimulationFromJSON(simulationJSON){
 function attachJSON(simulationJSON){
 		this.simulation_name=simulationJSON.simulation_name;
 		this.simulationJSON=simulationJSON;
+		this._id=simulationJSON._id;
 };
 
 function importRDT(rdt){
@@ -102,7 +102,8 @@ function getDevices(){
 function addPartition(partition){
 		
 		this.partition_list.push(partition);
-		this.simulationJSON.partition_list.push(partition.partitionJSON);
+		console.log(this.simulationJSON);
+		this.simulationJSON.partition_list.push(partition.partitionJSON._id);
 } 
 	
 
@@ -135,7 +136,7 @@ function removeNetwork(network){
 function mergePartitions(partitionA,partitionB){
 	for(index in this.partition_list){
 
-		if(this.partition_list[index].partition_name==partitionB.partition_name){
+		if(this.partition_list[index]._id==partitionB._id){
 
 			this.partition_list.splice(index,1);
 			this.simulationJSON.partition_list.splice(index,1);

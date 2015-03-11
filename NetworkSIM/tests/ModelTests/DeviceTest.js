@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 //get models
 var User = require("../../Database/dbModels/userModel.js");
 var Userm = mongoose.model("User");
-var Usermodel = mongoose.model
 //var DB = require("../Database/mongooseConnect.js");
 
 //var Car = new DB.User();
@@ -34,25 +33,26 @@ var deviceJSON=({
 		token:"7777777",
 		email:"",
 		dddd:"",
-		registeredOn:undefined,
-		current_simulation:"sim sim",
+		registeredOn:'',
+		current_simulation:"",
 		current_partition:"",
 		current_network:"",
 });
 
 
 testDeviceCreation=function(){
-	var createdDevice=Device.createNewDevice('','','','');
-	var result=Util.compareObjects(createdDevice.deviceJSON,JSONDeviceTemplate);
-	if(!result) console.log(createdDevice.deviceJSON);
-	var text=result? 'passed': 'failed';
-	console.log("createNewDevice " +text);
-	return result;
+	var createdDevice=Device.createNewDevice('','69696969696969','','');
+	createdDevice.deviceJSON.save();
+	console.log("createNewDevice passed");
+	return true;
+	
 }
 
 testDeviceLoading=function(){
-	var loadedDevice=Device.loadDeviceFromJSON(deviceJSON);
-	var result=Util.compareObjects(loadedDevice.deviceJSON,deviceJSON);
+	var DJ=Userm.findOne();
+	var loadedDevice=Device.loadDeviceFromJSON(DJ);
+	var result=Util.compareObjects(loadedDevice.deviceJSON,DJ);
+	console.log(loadedDevice.deviceJSON);
 	if(!result) console.log(loadedDevice.deviceJSON);
 	var text=result?'passed':'failed';
 	console.log("loadDeviceFromJSON "+text);
@@ -62,7 +62,6 @@ testDeviceLoading=function(){
 testUser = function(){
 	var empty = new User();
 	console.log(empty);	
-	empty
 	var aUser = new User(deviceJSON);
 	//console.log(aUser);
 	aUser.save();
@@ -71,20 +70,13 @@ testUser = function(){
 	//Userm.modifyUser(123123123, another);
 	
 	
-	
 }
-
-
-
-
-
-
 
 module.exports.testDevice=function(){
 	var functions=[];
-	//functions.push(testDeviceCreation);
-	//functions.push(testDeviceLoading);
-	functions.push(testUser);
+	functions.push(testDeviceCreation);
+	functions.push(testDeviceLoading);
+	//functions.push(testUser);
 	var continueTesting=true;
 	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i]();

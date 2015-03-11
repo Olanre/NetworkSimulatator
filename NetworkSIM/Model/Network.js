@@ -1,6 +1,6 @@
 var Util=require("../Utilities/utilities.js");
 var Partition= require('./Partition.js');
-var Database= require("../Database/mongooseConnect.js");
+var NetModel = require("../Database/dbModels/networkModel.js");
 var DeviceIterator=require('./Iterators/DeviceIterator.js');
 
 function Network(networkName, networkKind){
@@ -14,7 +14,6 @@ function Network(networkName, networkKind){
 	this.partitionObject=Partition.createNewPartition('','');
 	this.device_list=[];
 	this.networkJSON={};
-	this._id=("");
 
 	//Required Functions//
 	this.addDevice=addDevice;
@@ -28,11 +27,7 @@ function Network(networkName, networkKind){
 	//Constructor contents
 
 	//Editing the JSON which represents the network. This will have to change when the database finally works.
-	this.networkJSON.device_list=[];
-	this.networkJSON.network_type=networkKind;
-	this.networkJSON.network_name=networkName;
-	this.networkJSON.partition_name = '';
-	this.networkJSON._id=this._id;
+
 
 	this.partitionObject.addNetwork(this);
 	this.deviceIterator = new DeviceIterator(this.device_list);
@@ -40,6 +35,16 @@ function Network(networkName, networkKind){
 
 function createNewNetwork(networkName,networkKind){
 	var createdNetwork=new Network(networkName,networkKind);
+	var networkJSON =  new NetModel();
+
+	networkJSON.network_type=networkKind;
+	networkJSON.network_name=networkName;
+	networkJSON.partition_name = '';
+	createdNetwork._id=networkJSON._id;
+	createdNetwork.networkJSON=networkJSON;
+
+	networkJSON.save();
+
 	return createdNetwork;
 }
 
@@ -62,7 +67,7 @@ function attachJSON(networkJSON){
 
 //we assume that we will only add devices through a network
 function addDevice(device){
-		this.networkJSON.device_list.push(device.deviceJSON);
+		this.networkJSON.device_list.push(device.deviceJSON._id);
 		this.device_list.push(device);
 		device.joinNetwork(this);
 };
@@ -76,7 +81,7 @@ function removeDevice(device){
 		}
 		//delete from the JSON device list
 		for (var i =0; i< this.networkJSON.device_list.length;i++){
-			if (this.networkJSON.device_list[i].token == device.token){
+			if (this.networkJSON.device_list[i] == device.deviceJSON._id){
 				this.networkJSON.device_list.splice(i,1);
 				break;
 			}

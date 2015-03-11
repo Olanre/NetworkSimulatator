@@ -1,8 +1,8 @@
-var Util=require("../Utilities/utilities.js");
-var Device=require("../Model/Device.js");
-var Network=require("../Model/Network.js");
-var Partition=require("../Model/Partition.js");
-var Simulation=require("../Model/Simulation.js");
+var Util=require("../../Utilities/utilities.js");
+var Device=require("../../Model/Device.js");
+var Network=require("../../Model/Network.js");
+var Partition=require("../../Model/Partition.js");
+var Simulation=require("../../Model/Simulation.js");
 
 var JSONSimulationTemplate={
 		partion_list : undefined,
@@ -131,8 +131,6 @@ module.exports.testAddNetwork=function(){
 	var result = foundNetwork!=-1;
 	var text=result ? 'passed' : 'failed';
 	console.log("addNetwork "+text);
-
-	console.log(createdSimulation.simulationJSON.partition_list[0].network_list[0]);
 
 	return result;
 
