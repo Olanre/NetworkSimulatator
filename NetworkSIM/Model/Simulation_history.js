@@ -26,7 +26,7 @@ function createNewSimulationHistory(simulation_id){
 }
 
 function addState( new_state){
-	this.simulation_historyJSON.state.push(new_state);
+	this.simulation_historyJSON.state.push(new_state.stateJSON);
 }
 
 module.exports.createNewSimulationHistory = createNewSimulationHistory;

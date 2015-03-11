@@ -42,7 +42,7 @@ socket.on('syncState', function(appState){
 });
 
 socket.on('syncHistory',  function(appHistory){
-	if( isEmpty(appHistory) == true){
+	if( isEmpty(appHistory) == false){
 		store_local_history(appHistory);
 		console.log(appHistory);
 	}else{

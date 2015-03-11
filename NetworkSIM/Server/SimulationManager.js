@@ -81,12 +81,11 @@ module.exports.getSimulationNames=function(){
 
 module.exports.getSimulationHistory=function(simulation_id){
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
-	console.log(simulationHistoryList);
-	console.log(simulation_id);
+	
 	if (simulation_history == -1){
-		simulation_history = {};
+		simulation_history.simulation_historyJSON = {};
 	}
-	return simulation_history;
+	return simulation_history.simulation_historyJSON;
 }
 
 module.exports.getSimulationList=function(){
@@ -106,7 +105,7 @@ module.exports.getSimulationList=function(){
 }
 
 
-function authToken(token, simulation_id, callback){
+function authToken(token, simulation_id,  callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
@@ -118,10 +117,9 @@ function authToken(token, simulation_id, callback){
 			//console.log(deviceList);
 			for(var index = 0; index < deviceList.length; index++){
 				if(deviceList[index].token == token){
-					
+					var timestamp = new Date().toISOString();
 					res.Response = "Success";
 					if(deviceList[index].deviceJSON.verified !== true){
-						var timestamp = new Date();
 						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
 						simulation.updateSimulationLog(new_activity);
 						deviceList[index].deviceJSON.verified = true;
@@ -202,7 +200,9 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	var history_state = History_State.createNewHistory_State(simulation, time_stamp);
+	var jsonstring = JSON.stringify(simulation.simulationJSON);
+	var json = JSON.parse(jsonstring);
+	var history_state = History_State.createNewHistory_State(json, time_stamp);
 	simulation_history.addState(history_state);
 	// Add database stuff
 	simulationHistoryList.push(simulation_history);
@@ -344,7 +344,10 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
 	if(simulation_history != -1){
-		var history_state = History_State.createNewHistory_State(simulationObject, time_stamp);
+		var jsonstring = JSON.stringify(simulationObject.simulationJSON);
+		var json = JSON.parse(jsonstring);
+		console.log(json);
+		var history_state = History_State.createNewHistory_State(json, time_stamp);
 		simulation_history.addState(history_state);
 	}
 }
