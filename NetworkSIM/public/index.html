@@ -130,7 +130,8 @@
 			</li>
 			<li>						
 				<a href="#" onclick = "eventLogsView()">Temporary Event Logs view</a>						
-			</li>						
+			</li>
+			
 		</ul>					
 	</div>				
 </script>
@@ -353,7 +354,7 @@
 				
 				<tr> 
 					<td> <span class = 'text'> Local Counter </span> </td> 
-					<td id = 'local_count'> " {{localcount}}</td>
+					<td id = 'local_count'>  {{localcount}}</td>
 				</tr>
 				<tr>
 					<td>  <span class = 'text'> Global Counter </span> </td>
@@ -414,12 +415,12 @@
 
 
 
-<script type = "StatesLiseTemplate" id = "template13">
+<script type = "StatesListTemplate" id = "template13">
 	<table>
-		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView(&quot;" + states[i].timestamp + "&quot;) '> " +
+		str += "<tr id = '" + states[i].timestamp + "'> <td> <div onclick = 'updateStatesView()' + states[i].timestamp + "&') > '" +
 				states[i].timestamp + " </td> <td> Revert </td> </tr>
 	</table>
-	}
+	
 </script>
 
 <script type = "AdminDeviceListTemplate" id = "template14">
@@ -437,12 +438,43 @@
 </script>
 
 <script type = "SimulationLogTemplate" id = "template15">
-	<div class = 'logs'> {{logs}} </div>"
+	<div class = 'logs'> {{logs}} </div>
 </script>
 
 <script type = "SimulationListTemplate" id = "template16" >
 
 </script>
+
+<script type = "UploadFileTemplate" id="template17">
+
+		<div id="uploadFiles"class='content' onload="handleFiles();">
+
+
+				<div id="rdtDiv" class="uploadContainer">
+
+					<div id="rdtFiles" class="fileContainer"></div>
+					<input id="uploadRDT" type="file"  onchange="handleFiles();" multiple> selected files: 
+					<span id="rdtfileNum">0</span>; total size: <span id="rdtfileSize">0</span>
+
+				</div>
+
+
+				<div id="appDiv" class="uploadContainer">
+
+					<div id="appFiles" class ="fileContainer"></div>
+					<input id="uploadApp" type="file"  onchange="handleFiles();" multiple> selected files: 
+					<span id="appfileNum">0</span>; total size: <span id="appfileSize">0</span>
+
+				</div>
+					
+
+
+				<button id="uploadButton" name="Send file" onclick="readFiles()">Upload</button>
+
+		</div>
+
+</script>
+
 <body>
 		<!-- onload optional -->		
 		<div id = 'app'>			

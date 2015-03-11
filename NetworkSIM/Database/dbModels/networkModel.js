@@ -26,12 +26,13 @@ networkSchema.statics.saveNetwork = function (aNetwork)
 	newNetwork.save();
 }
 
+
+
 networkSchema.statics.getNetworkByName = function (aName, callback)
 {
-	Network.findOne( {network_name: aName}, function(err, obj)
+	this.findOne( {network_name: aName}, function(err, obj)
 	{
 		if(err) console.log("no network with name: " + aName );
-		
 		console.log("found network" + obj);
 		callback(obj);
 	});
@@ -39,7 +40,7 @@ networkSchema.statics.getNetworkByName = function (aName, callback)
 
 networkSchema.statics.modifyNetworkByName = function (aString, aNetwork)
 {
-	Network.findOne({network_name : aString}, function(err, obj)
+	this.findOne({network_name : aString}, function(err, obj)
 	{
 		if(err) console.log("No network with that name");
 		obj = aNetwork;
