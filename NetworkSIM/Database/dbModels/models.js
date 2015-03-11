@@ -2,7 +2,7 @@
 //is run.
 
 //Initializing the models , might store in mongooseConnect
-var models = ['userModel.js', 'networkModel.js', 'simulationModel.js'];
+var models = ['userModel.js', 'networkModel.js', 'simulationModel.js', 'partitionModel.js'];
 exports.initialize = function() {
     var l = models.length;
     for (var i = 0; i < l; i++) {
