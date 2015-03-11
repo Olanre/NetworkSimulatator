@@ -31,11 +31,12 @@ function Device(deviceName,token, simulation_name , email){
 	this.activity='';
 	this.deviceJSON.current_device_name=deviceName;
 	this.deviceJSON.current_simulation = simulation_name;
+	this.deviceJSON.simulation_id = '';
 	this.deviceJSON.networks_created = [];	
 	this.deviceJSON.admin=false;
 	this.deviceJSON.registeredOn = '';
-	this.deviceJSON.current_network='',
-	this.deviceJSON.current_partition='',
+	this.deviceJSON.current_network = '';
+	this.deviceJSON.current_partition = '';
 	this.deviceJSON.verified=false;
 	this.deviceJSON.email = deviceName;
 	this.deviceJSON.token=token;

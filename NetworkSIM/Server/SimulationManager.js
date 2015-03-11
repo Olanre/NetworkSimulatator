@@ -76,40 +76,29 @@ module.exports.getSimulationList=function(){
 	
 }
 
-module.exports.setSimulationNames=function(new_list){
-	for(var i = 0; i <new_list.length; i++){
-		simulationList[i].simulationJSON.simulation_name = new_list[i];
-		
-	}
-	
-}
 
 function authToken(token, simulation_id, callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
-	simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
-	if(simulation_history != -1){
-		for(i in simulationList){
-			//simulation=Util.findByUniqueID(simulation_id,simulationList);
-			simulation = simulationList[i];
-			if(simulation != -1){
-				deviceList=simulation.getDevices();
-				//console.log(deviceList);
-				for(var index = 0; index < deviceList.length; index++){
-					if(deviceList[index].token == token){
-						
-						res.Response = "Success";
-						var timestamp = new Date();
-						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
-						simulation.updateSimulationLog(new_activity);
-						deviceList[index].deviceJSON.verified = true;
-						
-						var history_state = History_State.createNewHistory_State(simulation, timestamp);
-						simulation_history.addState(history_state);
-						
-						break;
-					}
+	for(i in simulationList){
+		//simulation=Util.findByUniqueID(simulation_id,simulationList);
+		simulation = simulationList[i];
+		if(simulation != -1){
+			deviceList=simulation.getDevices();
+			//console.log(deviceList);
+			for(var index = 0; index < deviceList.length; index++){
+				if(deviceList[index].token == token){
+					
+					res.Response = "Success";
+					var timestamp = new Date();
+					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+					simulation.updateSimulationLog(new_activity);
+					deviceList[index].deviceJSON.verified = true;
+					
+					saveSimulationState( simulation_id, timestamp, simulation);
+					
+					break;
 				}
 			}
 		}
@@ -132,7 +121,7 @@ function createSimulation(event_data, time_stamp) {
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
 	
-	var new_activity = "Simulation created " +  event_data.simulation_name + " at " + time_stamp + "\n";
+	var new_activity = "Simulation " +  event_data.simulation_name + " created at " + time_stamp + "\n";
 	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
 	simulation.simulationJSON.num_devices = event_data.num_devices;
@@ -164,8 +153,9 @@ function createSimulation(event_data, time_stamp) {
 						createdDevice=Device.createNewDevice(device, token ,event_data.simulation_name);
 						createdDevice.deviceJSON.current_network = network;
 						createdDevice.deviceJSON.current_partition = partition;
+						createdDevice.deviceJSON.simulation_id = simulation._id;
 						createdDevice.deviceJSON.registeredOn = date.toString();
-						
+						console.log(createdDevice.deviceJSON);
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,token,event_data.simulation_name);
@@ -199,6 +189,9 @@ function createDevice(event_data, time_stamp) {
 		//add to activity log
 		simulation.updateSimulationLog(new_activity);
 		simulation.addDevice(device);
+		
+		//save the state
+		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
 		
 	//Add database calls
@@ -212,7 +205,7 @@ function createNetwork(event_data, time_stamp){
 		var partition=Util.findByUniqueID(event_data.partition_id,simulation.partition_list);
 		var network= Network.createNewNetwork(event_data.network_name);
 		var new_activity = "Network " +  event_data.network_name +  " was created  at " + time_stamp + "\n";
-		simulaton.updateSimulationLog(new_activity);
+		simulation.updateSimulationLog(new_activity);
 	
 		if(partition!=-1){
 			partition.addNetwork(network,"Wi-Fi");
@@ -220,6 +213,8 @@ function createNetwork(event_data, time_stamp){
 		else{
 			simulation.addNetwork(network);
 		}
+		//save the state
+		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
 
 
@@ -234,6 +229,9 @@ function removeDevice(event_data, time_stamp){
 	//var device=Util.getByUniqueID(device_name,simulationObject.gets());
 	//var new_activity = "Device " +  device.device_name +  " was deleted " + time_stamp + "\n";
 	//simulation.updateSimulationLog(new_activity);
+	//save the state
+	/** saveSimulationState( simulation._id, time_stamp, simulation);
+	 * */
 
 
 }
@@ -245,8 +243,13 @@ function removeNetwork(event_data, time_stamp){
 	
 	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
 	//var network=Util.getByUniqueID(network_id,simulationObject.gets());
-	//var new_activity = "Network " +  network.network_name +  " was deleted " + time_stamp + "\n";
+	//var new_activity = "Network " +  network.networkName +  " was deleted " + time_stamp + "\n";
 	//simulation.updateSimulationLog(new_activity);
+	
+	//save the state
+	/** //save the state
+		saveSimulationState( simulation._id, time_stamp, simulation);
+	*/
 }
 
 function addDeviceToNetwork(event_data, time_stamp){
@@ -264,8 +267,11 @@ function addDeviceToNetwork(event_data, time_stamp){
 			if(device.networkObject!=network){
 				console.log('adding');
 				network.addDevice(device);
-				var new_activity = "Device " +  device.device_name +  " added to network " + network.network_name + " at " + time_stamp + "\n";
+				var new_activity = "Device " +  device.device_name +  " added to network " + network.networkName + " at " + time_stamp + "\n";
 				simulation.updateSimulationLog(new_activity, simulation);
+				
+				//save the state
+				saveSimulationState( simulation_id, time_stamp, simulation);
 			}
 		}
 	}
@@ -285,6 +291,8 @@ function mergePartitions(event_data, time_stamp){
 		var new_activity = "Two Partitions, " +  partitionA.partition_name +  " and "  + partitionB.partition_name + " were merged on " + timestamp + "\n";
 		simulation.updateSimulationLog(new_activity);
 		simulationObject.mergePartitions(partitionA,partitionB);
+		//save the state
+		saveSimulationState( simulation_id, time_stamp, simulationObject);
 	}
 
 	//Add database calls
@@ -293,6 +301,21 @@ function mergePartitions(event_data, time_stamp){
 //TODO
 function dividePartitions(event_data, time_stamp){
 	
+}
+
+/** saves the state of the simulation for us
+ * 
+ * @param simulation_id,  the id of the simulation to be stored
+ * @param time_stamp, the current timestamp the event recieved is
+ * @param simulationObject, the simulation object
+ */
+function saveSimulationState( simulation_id, time_stamp, simulationObject){
+	//save the state
+	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	if(simulation_history != -1){
+		var history_state = History_State.createNewHistory_State(simulationObject, time_stamp);
+		simulation_history.addState(history_state);
+	}
 }
 
 

@@ -53,7 +53,7 @@ function deviceHeaderView(){
 /**
  * Displays the user's information
  */
-/*function appDefaultView(){
+function appDefaultView(){
 	var local_device = get_local_device();
 	//sets the top bar to be the default look
 	defaultheaderView();
@@ -67,7 +67,7 @@ function deviceHeaderView(){
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
 	}
-}*/
+}
 
 /**
  * sets the sidebar of the page to look as it should when the page is opened
