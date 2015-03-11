@@ -60,6 +60,14 @@ module.exports.getSimulationNames=function(){
 	return names_list;
 }
 
+module.exports.getSimulationHistory=function(event_data){
+	var history = {};
+	for(index in simulationList){
+		names_list.push(simulationList[index].simulationJSON.simulation_name);
+	}
+	return names_list;
+}
+
 module.exports.getSimulationList=function(){
 	var names_list=[];
 	var new_entry;
