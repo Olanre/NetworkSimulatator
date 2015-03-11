@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 //requires schema
 var Schema = mongoose.Schema;
 //reference User model here
-var User = require("/userModel").User;
+var User = require("./userModel").User;
 
 
 //defines the schema
@@ -13,7 +13,7 @@ var networkSchema = mongoose.Schema({
 	 //type string
 	 network_type : String,
 	 //array of type objectID's (every object has one) in reference to a User model. This object id will give you a User model.
-	 device_list : [{type : Schema.Types.ObjectID, ref: 'User'}],
+	 device_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'User'}],
 	 
 	});
 
