@@ -35,14 +35,15 @@ function Device(deviceName,token, simulation_name , email){
 }
 
 
-function createNewDevice(deviceName,token, simulation_name, email){
-	var createdDevice = new Device(deviceName,token, simulation_name ,email);
+function createNewDevice(deviceName,token, simulation_id, email){
+	var createdDevice = new Device(deviceName,token, simulation_id ,email);
 	var deviceJSON = new DevModel();
 
 	deviceJSON.current_device_name=deviceName;
-	deviceJSON.current_simulation = simulation_name;
+	deviceJSON.current_simulation = simulation_id;
 	deviceJSON.admin=false;
 	deviceJSON.verified=false;
+	
 	deviceJSON.email = deviceName;
 	deviceJSON.token=token;
 	createdDevice.deviceJSON=deviceJSON;

@@ -42,6 +42,7 @@ function createNewSimulation(simulation_name){
 	simulationJSON.num_devices = 0;
 	simulationJSON.num_networks = 0;
 	simulationJSON.simulation_population = 0;
+	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
 	createdSimulation.simulationJSON=simulationJSON;
 	simulationJSON.save();
