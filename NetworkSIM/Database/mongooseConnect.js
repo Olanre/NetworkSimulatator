@@ -75,7 +75,7 @@ var Sim = mongoose.model('Sim', simulationSchema, 'newSimFormat');
 
 //STATE - storing logs as a string
  var stateSchema = mongoose.Schema({
-	id : String,
+	simulation_id : String,
 	state : [StateObject],
 });
 
@@ -86,7 +86,6 @@ var State = mongoose.model('State', stateSchema, ' newStateSchema');
 var stateObject = mongoose.Schema({
    simulation : String,
    timeStamp : String,
-   devices : [User],
 });
 
 
