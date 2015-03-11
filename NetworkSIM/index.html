@@ -410,12 +410,8 @@
 </script>
 
 <script type = "SimulationLogTemplate" id = "template17">
-	"<tableclass = 'logs'>
-			{{^logs.length}
-				<tr > 
-					<td>   {{logs}}    </td> 
-				</tr>
-			{{/logs.length}}
+	<table>
+					 {{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
  </table>
 </script>
 

@@ -29,6 +29,8 @@ function authToken(token, id){
 	updateLocalEventsSimulationId(id);
 	//sends the token to be validated by the server
 	socket.emit('/authenticate/authToken', params);
+	setTimeout( function(){ simulationListView(); }
+	, 1000 );
 }
 
 /**
