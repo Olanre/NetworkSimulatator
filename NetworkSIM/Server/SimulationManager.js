@@ -145,7 +145,6 @@ function authToken(token, simulation_id,  callback){
 
 function createSimulation(event_data, time_stamp) {
 
-	var date = new Date();
 	var map=event_data.config_map;
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
@@ -183,7 +182,7 @@ function createSimulation(event_data, time_stamp) {
 						createdDevice.deviceJSON.current_network = network;
 						createdDevice.deviceJSON.current_partition = partition;
 						createdDevice.deviceJSON.simulation_id = simulation._id;
-						createdDevice.deviceJSON.registeredOn = date.toString();
+						createdDevice.deviceJSON.registeredOn = time_stamp;
 						
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
@@ -200,12 +199,15 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	var jsonstring = JSON.stringify(simulation.simulationJSON);
-	var json = JSON.parse(jsonstring);
-	var history_state = History_State.createNewHistory_State(json, time_stamp);
-	simulation_history.addState(history_state);
+	//var jsonstring = JSON.stringify(simulation.simulationJSON);
+	//var json = JSON.parse(jsonstring);
+	//var history_state = History_State.createNewHistory_State(json, time_stamp);
+	//simulation_history.addState(history_state);
 	// Add database stuff
+	//create a new history object
 	simulationHistoryList.push(simulation_history);
+	//save our state in the history object
+	saveSimulationState( simulation._id, time_stamp, simulation)
 	simulationList.push(simulation);
 	return simulation;
 }	
