@@ -107,6 +107,9 @@ function handleEventQueue(token, eventQueue, callback) {
 			case '/divide/Partition':
 				SimulationManager.dividePartition(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
+            case '/upload':
+                FileManager.uploadAllFiles(eventQueue[i].event_data);
+                break;
 
 			default:
 				break;
