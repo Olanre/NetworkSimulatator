@@ -22,7 +22,7 @@ function newEventQueue(){
  */
 function addToEventQueue(route, event_data, time_stamp){
 	var local_events = get_local_events();
-	if(local_events== null){
+	if(local_events == null){
 		local_events = newEventQueue();
 	}
 	//creates the query to the server
@@ -47,6 +47,9 @@ function updateLocalEventsToken(token){
 function updateLocalEventsSimulationId(id){
 	//gets the events
 	var local_events = get_local_events();
+	if(local_events == null){
+		local_events = newEventQueue();
+	}
 	//sets the token to the token of the user
 	local_events.simulation_id = id;
 	//returns the new object to the local storage.

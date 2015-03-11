@@ -7,6 +7,7 @@ var TokenManager = require("./TokenManager.js");
 var Util = require("../Utilities/utilities.js");
 var TokenMailer = require("./TokenPropagatorEmail.js");
 var Database = require("../Database/mongooseConnect.js");
+var Models = require('../Database/dbModels/models.js');
 var Device = require("../Model/Device.js");
 var Partition = require("../Model/Partition.js");
 var Network = require("../Model/Network.js");
@@ -19,6 +20,7 @@ var fs=require('fs');
 //TODO We need to fill this in on load!
 var simulationList = [];
 var simulationHistoryList = [];
+Models.initialize();
 
 exports.getAppStateForDevice = function(token,simulation_id){
 
@@ -44,6 +46,25 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	return state;
 }
 
+exports.getAllActiveDevices = function(simulation_id){
+	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	
+	var List = [];
+	if(simulation != -1){
+		deviceList=simulation.getDevices();
+	
+		for(index in deviceList){
+			if(deviceList[index].deviceJSON.verified == true){
+				device=deviceList[index].deviceJSON;
+				List.push(device);
+			}
+		}
+	}
+	
+
+	return List;
+}
+
 module.exports.getBlankAppState = function(){
 	var state={};
 	state.simulation= {};
@@ -60,12 +81,13 @@ module.exports.getSimulationNames=function(){
 	return names_list;
 }
 
-module.exports.getSimulationHistory=function(event_data){
-	var history = {};
-	for(index in simulationList){
-		names_list.push(simulationList[index].simulationJSON.simulation_name);
+module.exports.getSimulationHistory=function(simulation_id){
+	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	
+	if (simulation_history == -1){
+		simulation_history.simulation_historyJSON = {};
 	}
-	return names_list;
+	return simulation_history.simulation_historyJSON;
 }
 
 module.exports.getSimulationList=function(){
@@ -85,7 +107,7 @@ module.exports.getSimulationList=function(){
 }
 
 
-function authToken(token, simulation_id, callback){
+function authToken(token, simulation_id,  callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
@@ -97,10 +119,9 @@ function authToken(token, simulation_id, callback){
 			//console.log(deviceList);
 			for(var index = 0; index < deviceList.length; index++){
 				if(deviceList[index].token == token){
-					
+					var timestamp = new Date().toISOString();
 					res.Response = "Success";
 					if(deviceList[index].deviceJSON.verified !== true){
-						var timestamp = new Date();
 						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
 						simulation.updateSimulationLog(new_activity);
 						deviceList[index].deviceJSON.verified = true;
@@ -126,7 +147,6 @@ function authToken(token, simulation_id, callback){
 
 function createSimulation(event_data, time_stamp) {
 
-	var date = new Date();
 	var map=event_data.config_map;
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
@@ -164,8 +184,8 @@ function createSimulation(event_data, time_stamp) {
 						createdDevice.deviceJSON.current_network = network;
 						createdDevice.deviceJSON.current_partition = partition;
 						createdDevice.deviceJSON.simulation_id = simulation._id;
-						createdDevice.deviceJSON.registeredOn = date.toString();
-						console.log(createdDevice.deviceJSON);
+						createdDevice.deviceJSON.registeredOn = time_stamp;
+						
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,token,event_data.simulation_name);
@@ -181,10 +201,15 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	var history_state = History_State.createNewHistory_State(simulation, time_stamp);
-	simulation_history.addState(history_state);
+	//var jsonstring = JSON.stringify(simulation.simulationJSON);
+	//var json = JSON.parse(jsonstring);
+	//var history_state = History_State.createNewHistory_State(json, time_stamp);
+	//simulation_history.addState(history_state);
 	// Add database stuff
+	//create a new history object
 	simulationHistoryList.push(simulation_history);
+	//save our state in the history object
+	saveSimulationState( simulation._id, time_stamp, simulation)
 	simulationList.push(simulation);
 	return simulation;
 }	
@@ -323,7 +348,10 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
 	if(simulation_history != -1){
-		var history_state = History_State.createNewHistory_State(simulationObject, time_stamp);
+		var jsonstring = JSON.stringify(simulationObject.simulationJSON);
+		var json = JSON.parse(jsonstring);
+		console.log(json);
+		var history_state = History_State.createNewHistory_State(json, time_stamp);
 		simulation_history.addState(history_state);
 	}
 }

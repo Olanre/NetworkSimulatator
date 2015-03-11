@@ -1,6 +1,10 @@
-var Device=require("../Model/Device.js");
-var Util=require("../Utilities/utilities.js");
-var Network=require("../Model/Network.js");
+var Device=require("../../Model/Device.js");
+var Util=require("../../Utilities/utilities.js");
+var Network=require("../../Model/Network.js");
+
+
+
+
 //var DB = require("../Database/mongooseConnect.js");
 
 //var Car = new DB.User();
@@ -9,16 +13,17 @@ var Network=require("../Model/Network.js");
 //console.log(Car);
 
 var JSONDeviceTemplate={
-	current_device_name:'',
-	current_simulation:'',
-	networks_created:[],
-	admin: false,
-	registeredOn:'',
-	current_network:'',
-	current_partition:'',
-	verified: false,
-	email:'',
-	token:''
+		token:"",
+		email:"",
+		verified: false,
+		current_partition: "",
+		current_network: "",
+		registeredOn: "",
+		admin: false,
+		networks_created: [],
+		current_simulation: "",
+		current_device_name: "",
+		activity : "",
 };
 
 var deviceJSON={

@@ -14,7 +14,7 @@ function Network(networkName, networkKind){
 	this.partitionObject=Partition.createNewPartition('','');
 	this.device_list=[];
 	this.networkJSON={};
-	this._id=(new Database.Network())._id;
+	this._id=("");
 
 	//Required Functions//
 	this.addDevice=addDevice;

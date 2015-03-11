@@ -1,17 +1,24 @@
+//requires mongoose
 var mongoose = require('mongoose');
+//requires schema
 var Schema = mongoose.Schema;
 //reference User model here
+var User = require("./userModel").User;
 
 
+//defines the schema
 var networkSchema = mongoose.Schema({
-	
+	 //type string
 	 network_name : String,
+	 //type string
 	 network_type : String,
-	 device_list : [{type : Schema.Types.ObjectID, ref: 'User'}],
+	 //array of type objectID's (every object has one) in reference to a User model. This object id will give you a User model.
+	 device_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'User'}],
 	 
 	});
 
-networkSchema.statics
+
+//These are all static functions
 
 networkSchema.statics.saveNetwork = function (aNetwork)
 { 
@@ -30,7 +37,7 @@ networkSchema.statics.getNetworkByName = function (aName, callback)
 	});
 }
 
-networkSchema.statics.modifyNetowrkByName = function (aString, aNetwork)
+networkSchema.statics.modifyNetworkByName = function (aString, aNetwork)
 {
 	Network.findOne({network_name : aString}, function(err, obj)
 	{
@@ -42,5 +49,5 @@ networkSchema.statics.modifyNetowrkByName = function (aString, aNetwork)
 	});
 }
 
-
-module.exports = mongoose.model('Network', networkSchema, networks);
+//exporting is done this way, defines, declares Network as the name of this schema/function model. 
+module.exports = mongoose.model('Network', networkSchema, 'networks');

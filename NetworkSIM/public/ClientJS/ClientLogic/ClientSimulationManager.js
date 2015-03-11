@@ -39,27 +39,33 @@ function wrapCreateSimulation() {
 /**
  * Function to get a new simulation from the server
  */
-function getSimulation(simulation_name){
+function getSimulation(simulation_id){
 	var param = {
-			'simulation_name': simulation_name,
+			'token' :  getLocalDeviceToken(),
+			'simulation_id': simulation_id,
 			};
 	params = JSON.stringify(param);
 	var url = '/get/Simulation';
 	//sends the request to be validated by the server
-	send2Server(url, params, render);
+	socket.emit(url, params);
 }
 
 /**
  * Function to get the states associates from a simulation 
  */
-function getSimulationState(simulation_name){
+function getSimulationHistory(simulation_id){
+	console.log(simulation_id);
 	var param = {
-			'simulation_name': simulation_name,
+			'token' :  getLocalDeviceToken(), 
+			'simulation_id': simulation_id,
 			};
 	params = JSON.stringify(param);
-	var url = '/get/States';
+	var url = '/get/History';
 	//sends the request to be validated by the server
-	send2Server(url, params, render);
+	socket.emit(url, params);
+	setTimeout( function(){ eventLogsView(); }
+	, 1000 );
+	
 }
 
 

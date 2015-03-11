@@ -7,7 +7,6 @@ var express = require('express');
 var path = require('path');
 var logger = require('express-logger');
 var SimulationManager = require('./Server/SimulationManager');
-var Database = require("./Database/mongooseConnect.js");
 var Router = require("./Server/routing.js");
 
 

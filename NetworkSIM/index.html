@@ -16,6 +16,7 @@
 		
 		<!--  Utilities -->
 		<script src = '../js/Utilities.js' type='text/javascript'></script>
+		<script src = '../js/PartitionListUtilities.js' type='text/javascript'></script>
 		
 		<!--  Models -->
 		<script src='../logic/ClientDeviceManager.js' type='text/javascript'></script>
@@ -41,6 +42,7 @@
 		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'> </script>
 		<script src = '../template/CounterAppTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewLogsTemplate.js' type='text/javascript'></script>
+		<script src = '../template/SimulationSideBarTemplate.js' type='text/javascript'></script>
 		
 		<!--  Views -->
 		<script src = '../view/CSSManager.js' type='text/javascript'></script>
@@ -247,7 +249,7 @@
 						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
 						</li>					
 						<li>						
-						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
+						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
 						</li>	
 					</ul>					
 				</div>		
@@ -413,26 +415,26 @@
 	 {{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
  </table>
 </script>
-
-<div class="col-sm-3 col-md-2 sidebar" id = "template18">					
-					<ul class="nav nav-sidebar">						
-						<li>						
-							<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						
-						</li>						
-						<li>						
-							<a href="#" onclick = "eventLogsView()">Simulation History</a>						
-						</li>
-						<li>						
-							<a href="#" onclick = "appDefaultView()">Applications</a>						
-						</li>
-						<li>						
-							<a href="#" onclick = "RDTView()">RDTs</a>						
-						</li>					
-						<li>						
-							<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
-						</li>	
-					</ul>					
-				</div>		
+<script type = "simulation History" id = "template18">	
+		<div class="col-sm-3 col-md-2 sidebar">				
+			<ul class="nav nav-sidebar">						
+				<li>						
+						<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						
+					</li>						
+					<li>						
+						<a href="#" onclick = "getSimulationHistory('{{simulation_id}}')">Simulation History</a>						
+					</li>
+					<li>						
+						<a href="#" onclick = "appDefaultView()">Applications</a>						
+					</li>
+					<li>						
+						<a href="#" onclick = "RDTView()">RDTs</a>						
+					</li>					
+					<li>						
+						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
+					</li>	
+				</ul>					
+		</div>		
 </script>
 
 <body>

@@ -58,6 +58,13 @@ function get_local_events(){
 	return JSON.parse(getFromStorage('localevents'));
 }
 
+/**
+ * gets the event queue from session storage
+ */
+function get_local_history(){
+	return JSON.parse(getFromStorage('simulation_history'));
+}
+
 /**********************************************************
  * 				Modifiers
  * *****************************************************/
@@ -76,4 +83,8 @@ function store_local_simulation_list(new_simulation_names){
 
 function store_local_events(new_events){
 	putinStorage( 'localevents', JSON.stringify(new_events));
+}
+
+function store_local_history(new_events){
+	putinStorage( 'simulation_history', JSON.stringify(new_events));
 }

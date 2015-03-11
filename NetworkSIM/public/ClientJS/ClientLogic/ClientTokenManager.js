@@ -19,11 +19,11 @@ function attachToken(new_token){
  * @token: a token code given by the user
  */
 function authToken(token, id){
+	var timestamp = new Date();
 	//sets the body of the message to the server to be the token
-	var body = {'token': token, 'simulation_id': id};
+	var body = {'token': token, 'simulation_id': id, 'time_stamp' : timestamp};
 	params = JSON.stringify(body);
 	//sets the method by which the server handles the call. 
-	var url = "/authenticate/authToken";
 	//adds the event to the event queue
 	updateLocalEventsToken(token);
 	updateLocalEventsSimulationId(id);

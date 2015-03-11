@@ -6,7 +6,7 @@ function Partition(partitionName, simulationName){
 	this.partition_name=partitionName;
 	this.simulation_name=simulationName;
 	this.network_list=[];
-	this._id = (new Database.Partition())._id;
+	this._id = ('');
 
 	//Functions
 	this.addNetwork=addNetwork;

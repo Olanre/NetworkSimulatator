@@ -9,7 +9,7 @@ function History_State(simulation, timestamp, devices){
 	this.simulation = simulation;
 	
 	this.stateJSON = {};
-	this.stateJSON.simulation = simulation.simulationJSON;
+	this.stateJSON.simulation = simulation;
 	this.stateJSON.timestamp = timestamp;
 	
 	//functions

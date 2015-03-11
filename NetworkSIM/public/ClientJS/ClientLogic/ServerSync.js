@@ -41,6 +41,15 @@ socket.on('syncState', function(appState){
 	}
 });
 
+socket.on('syncHistory',  function(appHistory){
+	if( isEmpty(appHistory) == false){
+		store_local_history(appHistory);
+		console.log(appHistory);
+	}else{
+		console.log('recieved empty object from server for simulation history');
+	}
+});
+
 /**
  * validate_user verifies whether the token input by the user is valid or not
  *

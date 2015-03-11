@@ -185,7 +185,7 @@ function networkTopologyView(){
 	//generate our topology view from the simulation
 	var simulation  = get_local_simulation();
 	
-	//generateTopology(simulation.partition_list, 800);
+	generateTopology(simulation.partition_list, 800);
 }
 
 
@@ -259,15 +259,21 @@ function RegisterView(id){
 }
 
 function SimulationManagementView(){
-	networkTopologyView();
-	SimulationManagementSideBarView();
+	clearNav();
+	clearFooter();
+	clearSection();
+	clearContainer();
 	
+	var local_simulation = get_local_simulation();
+	var aside = getSideBar();
+	var sidebar = SimulationSideBarView(local_simulation._id);
+	aside.innerHTML = sidebar;
 }
 
 
 function SimulationManagementSideBarView(){
 	var sidebar = document.getElementById('template18');
-	var aside = getSideBar();
+	
 	aside.innerHTML = sidebar.innerHTML;
 }
 /**
