@@ -1,109 +1,46 @@
 
-
-var testState={id : 'blahdu3', 
-	states:  [{ 
-		simulation : {
-			num_devices: 14,
-			num_networks: 6,
-			simulation_name: 'Jeffs sim',
-			id : 'blahdu3',
-			config_map : {
-		 		'Partition1': {
-		 			'networka' : { 'NoahiPad' : '1',  'OlanreiPhone': '2', 'devicec@mun.ca':'3'},
-		 			'networkb' : { 'deviced': '4', 'MarkMacBook': '5'},
-		 		},
-		  		'Partition2':{ 
-		  			'networkc' :{ 'EmilyPC': '6', 'deviceg@mun.ca' : '7',  'deviceh@mun.ca': '8'},
-		 			'networkd' :{'devicei@mun.ca':'9', 'device@mun.ca': '10'},
-		 			'networkTest' :{},
-		 		},
-		  		'Partition3':{ 
-		  			'networke' : { 'devicek':'11'} 
-		  		},
-		 		'freelist' : {'donna@mun.ca': '13', 'evicex' : '14'}
-		 	}
-		}, 
-		timestamp: '2015-01-01:02:44:00',
-		activity_logs: 'devicea: moved home \n devicea: headed out \n devicea: got well \n deviceb@mun.ca: got very hungry \n deviceb@mun.ca: didnt hang out',
-		devices : [
-			{ device: { 
-				current_device_name: 'NoahiPad',
-				activity: '2015-01-27-012:06:02: NoahiPad : Accessed RDT'
-				}
-			},
-			{ device: { 
-				current_device_name: 'OlanreiPhone',
-				activity: '2015-01-04:06:02: OlanreiPhone : Accessed RDT'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicec@mun.ca',
-				activity: '2015-01-22-10:06:02: devicec@mun.ca : Joined Network'
-				}
-			},
-			{ device: {
-				current_device_name: 'deviced',
-				activity: '2015-01-22-10:06:02: deviced: Accessed RDT'
-				}
-			},
-			{ device: {
-				current_device_name: 'MarkMacBook',
-				activity: '2014-12-31-23:59:02: MarkMacBook: Joined Network'
-				}
-			},
-			{ device: {
-				current_device_name: 'EmilyPC',
-				activity: '2014-12-31-23:00:22: EmilyPC: Logged Off'
-				}
-			},
-			{ device: {
-				current_device_name: 'deviceg@mun.ca',
-				activity: '2014-01-07:42:00: deviceg@mun.ca: I am the best device'
-				}
-			},
-			{ device: {
-				current_device_name: 'deviceh@mun.ca',
-				activity: '2015-01-012:42:00: deviceh@mun.ca: Accessed RDT'
-				}
-			},
-			{ device: {
-				current_device_name: 'devicei@mun.ca',
-				activity: '2015-01-012:42:00: devicei@mun.ca: Logged On'
-				}
-			},
-			{ device: {
-				current_device_name: 'device@mun.ca',
-				activity: ''
-				}
-			},
-			{ device: {
-				current_device_name: 'devicek',
-				activity: '2014-11-31-4:42:04: devicek: Logged Off'
-				}
-			},
-			{ device: {
-				current_device_name: 'donna@mun.ca',
-				activity: '2014-11-29-11:12:33: donna@mun.ca: Registered Token'
-				}
-			},
-			{ device: {
-				current_device_name: 'evicex',
-				activity: '2014-11-29-22:42:22: evicex: Left Network'
-				}
-			},
-		]
-	}]
-};
-
-
-
 var SimulationMap={};
 //should hold a states object I guess 
-var current_simulation_history;
+var current_simulation_history_list;
 var stateList={};
-var timeStampList=[];
 var simulationEvents=[];
 
+/**
+ *Initiates initial loading of the page, parses the test state and puts up dates
+ */ 
+function populatePage(simulation_history){
+	if(simulation_history!==null){
+		timeStampList=parseSimulationHistory(simulation_history);
+		//adds the listener to the document
+		document.body.onclick = mouseClick;
+		populateDates(timeStampList);
+	}
+	else{
+		console.log('populatePage passed a null simulation_history');
+	}
+}
+
+/**
+ *Parses a given simulation_history into timestamps and simulation objects
+ * Returns a list of the timestamps for handling
+ */
+function parseSimulationHistory(simulation_history){
+	if(simulation_history!==null&&simulation_history!==''){
+		timestampList=[];
+		current_simulation_history_list=simulation_history.state;
+		//iterate through all of the states
+		for (var i=0; i<current_simulation_history_list.length; i++){
+			timestamp=current_simulation_history_list[i].timestamp;
+			//arranges all simulations by timestamp in a key value pair
+			SimulationMap[timestamp]=current_simulation_history_list[i].simulation;
+			timestampList.push(timestamp);
+		}
+		return timestampList;
+	}
+	else{
+		console.log('parseSimulationHistory was passed a null simulation_history');
+	}
+}
 
 /**
  * Updates the title of the page with the name of the simulation
@@ -166,20 +103,12 @@ function selectSimulationDate(selected){
 	updatePageTitle(selected);
 	updateSimulationLogTitle(selected);
 	//get the logs from the states object for that simulation snapshot
-	simulationLogs=parseSimulationLogs(current_simulation_history,selected);
+	simulationLogs=parseSimulationLogs(current_simulation_history_list,selected);
 	populateSimulationLogs(simulationLogs);
 	setInteractable(false);
-	generateTopology(SimulationMap[selected],700);
-}
 
-/**
- *Initiates initial loading of the page, parses the test state and puts up dates
- */ 
-function populatePage(simulation_history){
-	parseSimulationHistory(simulation_history);
-	//adds the listener to the document
-	document.body.onclick = mouseClick;
-	populateDates(timeStampList);
+	console.log(SimulationMap[selected].partition_list);
+	generateTopology(SimulationMap[selected].partition_list,600);
 }
 
 /**
@@ -209,63 +138,42 @@ function mouseClick(e){
  * Upon clicking a device, this should derive all of the events that 
  */
 function deriveDeviceEvents(circleElem){
-	var deviceName=circleElem.name;
-	//holds the events for this device
-	var deviceEvents='';
-	var logDates = document.getElementById("log-dates")
-	var timeStamp = logDates.options[logDates.selectedIndex].innerHTML;
-	//find the simulation index for this timestamp
-	for (var i=0;i<current_simulation_history.length;i++){
-		console.log(current_simulation_history[i].timestamp);
-		if (current_simulation_history[i].timestamp==timeStamp){
-			//find the device this corresponds to
-			for (var j=0;j<current_simulation_history[i].devices.length;j++){
-				console.log(current_simulation_history[i].devices[j].device.current_device_name);
-				if(current_simulation_history[i].devices[j].device.current_device_name==deviceName){
-					deviceEvents=current_simulation_history[i].devices[j].device.activity;
-				}
-			}
-		}
-	}
-	//split the device events into an array
-	deviceArray=deviceEvents.split('\n');
-	return deviceArray;
-}
-
-
-/**
- *Parses a given state object into config maps and timestamps
- */
-function parseSimulationHistory(simulation_history){
-	var states=simulation_history.state;
-	current_simulation_history=states;
-	//iterate through all of the states
-	for (var i=0; i<states.length; i++){
-		timestamp=states[i].timestamp;
-		//gets all the timestamps from all of these states
-		timeStampList.push(states[i].timestamp);
-		//arranges all simulations by timestamp in a key value pair
-		SimulationMap[timestamp]=states[i].simulation;
+	if(circleElem.represents!==null){
+		var represents=circleElem.represents;
+		var device_log=represents.activity;
 	}
 }
 
 /**
  *Takes the state object and retrieves the logs for the simulation corresponnding to that particular timestamp
  */ 
-function parseSimulationLogs(states, timeStamp){
-	for (var i=0;i<states.length;i++){
-		console.log(states[i].timestamp +" and original is "+timestamp);
-		if (states[i].timestamp==timeStamp){
-			//this is a string, I'm guessing at how to parse it
-			simulationLogs = states[i].activity_logs;
-			console.log(simulationLogs);
-			//split strings
-			var logsArray= simulationLogs.split('\n');
-			//return array of all logs 
-			return logsArray
+function parseSimulationLogs(history_list, timeStamp){
+	if(history_list!==null&&history_list!==''&&timeStamp!==null&&timeStamp!==''){
+		for (var i=0;i<history_list.length;i++){
+			if (history_list[i].timestamp==timeStamp){
+				//this is a string, I'm guessing at how to parse it
+				simulationLogs = retrieveLogs(history_list[i].simulation);
+				//split strings
+				var logsArray= simulationLogs.split('\n');
+				//return array of all logs 
+				return logsArray
+			}
 		}
+		//if could not find this simulation
+		return "failed";
 	}
-	//if could not find this simulation
-	return "failed";
+	else{
+		console.log('parseSimulationLogs was passed null parameters');
+	}
 }
 
+
+function retrieveLogs(simulation){
+	//calls function from localSimulationManager
+	var device_list=getAllDeviceObjects(simulation);
+	var simulationLogs='';
+	for (var i =0;i<device_list.length;i++){
+		simulationLogs+=device_list[i].activity+'\n';
+	}
+	return simulationLogs;
+}

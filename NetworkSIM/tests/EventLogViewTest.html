@@ -4,10 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
+  	<script src = '../public/ClientJS/ClientLogic/LocalSimulationManager.js' type='text/javascript'></script>
+
     <link rel="stylesheet" href="../public/stylesheets/topologyView.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="../public/stylesheets/EventLogView.css" media="screen" type="text/css" />
+    <script src='../public/ClientJS/TopologyGUI/Shapes.js' type="text/javascript"></script>
+    <script src='../public/ClientJS/TopologyGUI/Drawing.js' type="text/javascript"></script>
+    <script src='TestObjects/TestSimulationObject.js' type="text/javascript"></script>
+    <script src='TestObjects/TestSimulationHistories.js' type="text/javascript"></script>
     <script src="../public/ClientJS/Views/EventLogView.js" type="text/javascript"></script>
-    <script src='../public/ClientJS/GUI/GUIShapes.js'></script>
+    <script src="../public/ClientJS/PartitionListUtilities.js" type="text/javascript"></script>
+    <script>
+    	//need this as page has not fully loaded by the time these are called
+    	window.onload=function(){
+	    	var hist=createHistory(3);
+	    	console.log(hist);
+	    	printHistoryState(hist);
+	    	console.log('************************TESTING*************************************');
+	    	populatePage(hist);
+    	}
+    </script>
 </head>
 
 <body>
@@ -19,8 +35,8 @@
 				<svg id ='svgCanv'>
 				</svg>
 				<!-- Note: these javascript files must be added AFTER svg -->
-				<script src='../public/ClientJS/GUI/interact-1.2.2.js'></script>
-				<script src='../public/ClientJS/GUI/toplogyManipulationGUI.js'></script>
+				<script src='../public/ClientJS/TopologyGUI/interact-1.2.2.js'></script>
+				<script src='../public/ClientJS/TopologyGUI/Manipulation.js'></script>
 			</div>
 			<div class = 'cell'>
 				<select size = '10' id ='log-dates' onchange='selectSimulationDate(this.value)'>

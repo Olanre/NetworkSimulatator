@@ -78,6 +78,26 @@ function getAllNetworkObjects(){
 }
 
 /**
+ * retrieves a list of all network objects in the simulation
+ */
+function getAllNetworkObjects(simulation){
+	if (simulation!==null){
+		var partition_list = simulation.partition_list;
+		var list = []; 
+		for(var i = 0; i < partition_list.length; i++){
+			var networks = partition_list[i].network_list;
+			for (var j = 0; j < networks.length; j++){
+				list.push(networks[j]);
+			}
+		}
+		return list;
+	}
+	else{
+		console.log("Error:getAllNetworkObjects recieved null simulation object");
+	}
+}
+
+/**
  * gets all of the tokens of the devices in this simulation
  */
 function getAllDeviceTokens(){
@@ -106,6 +126,25 @@ function getAllDeviceObjects(){
 	if (local_simulation!==null){
 		var list=[];
 		var network_list=getAllNetworkObjects();
+		for (var i=0;i<network_list.length;i++){
+			var device_list=network_list[i].device_list;
+			for (var j=0; j<device_list.length;j++){
+				list.push(device_list[j]);
+			}
+		}
+		return list;
+	}
+	else{
+		console.log("Error: getAllDeviceObjects was passed a null simulation object");
+	}
+}
+/**
+ * gets all device objects in a given simulation
+ */
+function getAllDeviceObjects(simulation){
+	if (simulation!==null){
+		var list=[];
+		var network_list=getAllNetworkObjects(simulation);
 		for (var i=0;i<network_list.length;i++){
 			var device_list=network_list[i].device_list;
 			for (var j=0; j<device_list.length;j++){
