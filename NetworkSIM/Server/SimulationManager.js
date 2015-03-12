@@ -42,6 +42,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	}
 	
 	var state = {};
+	console.log("About to enter deepCopy");
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	console.log(newJSON + " This is the new JSON");
 	newJSON.partition_list=buildPartitionList(simulation);

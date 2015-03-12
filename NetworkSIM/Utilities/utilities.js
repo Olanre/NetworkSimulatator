@@ -75,6 +75,5 @@ exports.deepCopy=function(item){
 	for (attribute in item){
 		copy[attribute]=exports.deepCopy(item[attribute]);
 	}
-	console.log(" Got this deep copy" + copy);
 	return copy;
 }
