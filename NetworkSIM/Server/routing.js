@@ -78,7 +78,6 @@ function handleClient (socket) {
     	var simulation_id = json.simulation_id;
     	SimulationManager.authToken(token, simulation_id, function(obj){
     	//for now allow empty tokens
-    		console.log(obj);
     		io.to(socket.id).emit('validate_user', obj);
     	});
     });
@@ -91,7 +90,6 @@ function handleClient (socket) {
     	SimulationManager.authToken(token, simulation_id, function(obj){
     		if(obj.Response == 'Success'){
 		    	var history = SimulationManager.getSimulationHistory(simulation_id);
-		    	console.log(history);
 		    	io.to(socket.id).emit('syncHistory', history);
     		}else{
     			io.to(socket.id).emit('validate_user', obj);

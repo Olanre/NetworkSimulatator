@@ -26,9 +26,6 @@ function Network(networkName, networkKind){
 
 	//Constructor contents
 
-	//Editing the JSON which represents the network. This will have to change when the database finally works.
-
-
 	this.partitionObject.addNetwork(this);
 	this.deviceIterator = new DeviceIterator(this.device_list);
 }

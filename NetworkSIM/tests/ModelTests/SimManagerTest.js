@@ -29,22 +29,7 @@ var simJSON={
 };
 function testCreateSimulation(){
 	var sim=SimMan.createSimulation(simJSON);
-	var partitions=sim.partition_list;
-
-
-	var networks=sim.getNetworks();
-	for(index in networks){
-
-		
-
-	}
-
-	console.log("device list");
-	var devices=sim.getDevices();
-
-	for(index in devices){
-		console.log(devices[index].device_name);
-	}
+	return true;
 }
 
 function testAuthenticate(){
@@ -52,8 +37,12 @@ function testAuthenticate(){
 	var token=simulation.partition_list[0].network_list[0].device_list[0].token;
 
 	SimMan.authToken(token,simulation._id,function(res){
-		console.log(res.Response);
+		var result=res.Response=='Success';
+		if(!result)console.log("testAuthenticate failed" +res.Response);
+		return result;
 	});
+
+
 
 }
 
@@ -64,12 +53,11 @@ function testSimulationNames(){
 	for(var i=0;i<4;i++){
 		simJSON.simulation_name=names[i];
 		simulation_list[i]= SimMan.createSimulation(simJSON);
-		console.log(simulation_list[i].simulationJSON.simulation_name);
 	}
 	var received_names=SimMan.getSimulationNames();
-	console.log(names);
-	console.log(received_names);
-	console.log(Util.compareObjects(names,received_names));
+	var result=Util.compareObjects(names,received_names);
+	if(!result) console.log("testSimulationNames failed \n"+received_names);
+	return result;
 }
 
 function testSimulationList(){
@@ -92,12 +80,15 @@ function testCreateDevice(){
 			device_name: 'testdevice'
 		};
 	var createdSim=SimMan.createSimulation(simJSON);
-	console.log(createdSim.simulationJSON.num_devices);
 	event_data.simulation_id=createdSim._id;
+	var oldDeviceList=createdSim.device_list;
 	SimMan.createDevice(event_data);
 
-	var deviceList=createdSim.getDevices();
-	console.log(createdSim.simulationJSON.num_devices);
+	var deviceList=createdSim.device_list;
+
+	var result=(deviceList.length-1)==oldDeviceList.length;
+	if(!result) console.log("testCreateDevice failed \n"+deviceList);
+	return result;
 
 }
 
@@ -148,11 +139,22 @@ function testGetAppState(){
 	console.log(appState);
 
 }
-//testCreateSimulation();
-//testAuthenticate();
-//testSimulationNames();
-//testSimulationList();
-//testCreateDevice();
-//testCreateNetwork();
-//testMoveDevice();
-testGetAppState();
+
+function testAll(){
+	var functions=[];
+
+	//functions.push(testCreateSimulation);
+	functions.push(testAuthenticate());
+	functions.push(testCreateDevice());
+	//functions.push(testCreateNetwork);
+	//functions.push(testMoveDevice);
+	//functions.push(testGetAppState);
+	var continueTesting=true;
+	for(var i=0;i<functions.length;i++){
+		continueTesting=continueTesting&&functions[i];
+		if(!continueTesting)break;
+	}
+	return continueTesting;
+}
+
+testAll();

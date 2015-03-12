@@ -2,7 +2,8 @@ var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
 var SimModel = require("../Database/dbModels/simulationModel.js");
-
+var NetworkIterator = require("./Iterators/NetworkIterator.js");
+var DeviceIterator = require("./Iterators/DeviceIterator.js")
 
 function Simulation(simulation_name){
 
@@ -10,7 +11,9 @@ function Simulation(simulation_name){
 	
 	this.partition_list = [];
 	this.device_list=[];
-	this.networkIterator = {};
+	this.network_list=[];
+	this.networkIterator = new NetworkIterator(network_list);
+	this.deviceIterator = new DeviceIterator(device_list);
 	this.app = '';
 	this.rdt = {};
 	
@@ -103,7 +106,6 @@ function getDevices(){
 function addPartition(partition){
 		
 		this.partition_list.push(partition);
-		console.log(this.simulationJSON);
 		this.simulationJSON.partition_list.push(partition.partitionJSON._id);
 } 
 	
@@ -119,6 +121,7 @@ function addNetwork(network){
 	var partition= Partition.createNewPartition();
 	partition.addNetwork(network);
 	this.partition_list.push(partition);
+	this.network_list.push(network);
 	this.simulationJSON.partition_list.push(partition.partitionJSON);
 	this.simulationJSON.num_networks++;
 

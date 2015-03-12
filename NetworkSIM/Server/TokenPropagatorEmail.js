@@ -22,7 +22,6 @@ function mailToken(email, token, sim_name){
 	    subject: 'Simulation Framework Registration',
 	    text: 'Your token is: ' + token + '  Use it to Register for Simulation: ' + sim_name
 	});
-	console.log(token);
 }
 
 exports.mailToken=mailToken;

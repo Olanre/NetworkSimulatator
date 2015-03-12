@@ -155,7 +155,7 @@ function authToken(token, simulation_id,  callback){
 		simulation = simulationList[i];
 		if(simulation != -1){
 			deviceList=simulation.getDevices();
-			//console.log(deviceList);
+	
 			for(var index = 0; index < deviceList.length; index++){
 				if(deviceList[index].token == token){
 					var timestamp = new Date().toISOString();
@@ -177,7 +177,6 @@ function authToken(token, simulation_id,  callback){
 	callback(res);
 	//bypassing database for now.
 	//TokenManager.authenticateToken(token, function(obj){
-		//console.log(obj);
 		//callback(obj);
 	//});
 		
@@ -338,9 +337,9 @@ function addDeviceToNetwork(event_data, time_stamp){
 		var device=Util.findByUniqueID(device_id,simulation.getDevices());
 		if(device != -1){
 			//don't add a device to a network they already belong to
-			//console.log(device.deviceJSON);
+
 			if(device.networkObject!=network){
-				console.log('adding');
+	
 				network.addDevice(device);
 				var new_activity = "Device " +  device.device_name +  " added to network " + network.networkName + " at " + time_stamp + "\n";
 				simulation.updateSimulationLog(new_activity, simulation);
@@ -390,7 +389,6 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	if(simulation_history != -1){
 		var jsonstring = JSON.stringify(simulationObject.simulationJSON);
 		var json = JSON.parse(jsonstring);
-		console.log(json);
 		var history_state = History_State.createNewHistory_State(json, time_stamp);
 		simulation_history.addState(history_state);
 	}
