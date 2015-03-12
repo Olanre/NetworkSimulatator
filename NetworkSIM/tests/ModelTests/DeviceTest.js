@@ -2,17 +2,12 @@ var Device=require("../../Model/Device.js");
 var Util=require("../../Utilities/utilities.js");
 var Network=require("../../Model/Network.js");
 
-
+//connection to database
 var mongoose = require('mongoose');
 //get models
 var User = require("../../Database/dbModels/userModel.js");
 var Userm = mongoose.model("User");
-//var DB = require("../Database/mongooseConnect.js");
 
-//var Car = new DB.User();
-//Car['token'] = 'Hellojhrwubgnbvni';
-//Car.networks_created.push("Hello Me");
-//console.log(Car);
 
 var JSONDeviceTemplate={
 		token:"",
@@ -58,6 +53,8 @@ testDeviceLoading=function(){
 	console.log("loadDeviceFromJSON "+text);
 	return result;
 }
+
+
 
 testUser = function(){
 	var empty = new User();
