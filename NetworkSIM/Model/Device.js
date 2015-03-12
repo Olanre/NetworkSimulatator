@@ -43,6 +43,8 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	deviceJSON.current_simulation = simulation_id;
 	deviceJSON.admin=false;
 	deviceJSON.verified=false;
+	deviceJSON.current_partition = '';
+	deviceJSON.current_network = '';
 	
 	deviceJSON.email = deviceName;
 	deviceJSON.token=token;

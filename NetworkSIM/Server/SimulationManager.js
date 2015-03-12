@@ -27,24 +27,29 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	var simulation,device,deviceList;
 
 	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	
 	if(simulation != -1){
 		deviceList=simulation.getDevices();
-	
+		
 		for(index in deviceList){
 			if(deviceList[index]._id==token){
+				
 				device=deviceList[index];
+				
 				break;
 			}
 		}
 	}
-
+	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	console.log(newJSON + " This is the new JSON");
 	newJSON.partition_list=buildPartitionList(simulation);
+	console.log(newJSON.partition_list + " This is the new JSON's partiton list");
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
-
+	console.log(state);
 	return state;
 }
 function buildPartitionList(simulation){

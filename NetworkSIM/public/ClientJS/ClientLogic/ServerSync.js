@@ -59,6 +59,7 @@ socket.on('syncHistory',  function(appHistory){
  */
 socket.on('validate_user', function(data){
 	object = data;
+	console.log(data);
 	//if the authentication was a success
 	if(object.Response == 'Success'){
 		alert('You have been authenicated. \nPlease wait to be redirected');
