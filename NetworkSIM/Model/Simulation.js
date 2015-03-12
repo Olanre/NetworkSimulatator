@@ -12,8 +12,8 @@ function Simulation(simulation_name){
 	this.partition_list = [];
 	this.device_list=[];
 	this.network_list=[];
-	this.networkIterator = new NetworkIterator(network_list);
-	this.deviceIterator = new DeviceIterator(device_list);
+	this.networkIterator = new NetworkIterator(this.network_list);
+	this.deviceIterator = new DeviceIterator(this.device_list);
 	this.app = '';
 	this.rdt = {};
 	
