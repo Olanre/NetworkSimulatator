@@ -36,7 +36,7 @@ simulationSchema.statics.getSimByName = function (aString, callback)
 //Modify simulation by name
 simulationSchema.statics.modifySimByName = function (aString, aSim)
 {
- Sim.findOne( {simulation_name: aString}, function(err,obj)
+ this.findOne( {simulation_name: aString}, function(err,obj)
  { 
    if(err) console.log("no sim with name " + aString);
    var LenneteSim = new Sim();
@@ -49,7 +49,7 @@ simulationSchema.statics.modifySimByName = function (aString, aSim)
 
 simulationSchema.statics.findAllSimulations = function (callback)
 {
-	Sim.find({}, function(err, sims) {
+	this.find({}, function(err, sims) {
 		if(err) callback("No simulations or err ln, 180");
 		callback(sims);
 	});
