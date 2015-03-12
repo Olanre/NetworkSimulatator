@@ -104,7 +104,7 @@ function simulationListView(){
 	//sets the default sidebar page
 	defaultsideBarView();
 
-	content.innerHTML = html;
+	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
 }
 
 /**
