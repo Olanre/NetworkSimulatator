@@ -42,7 +42,7 @@ function handleClient (socket) {
     			if(obj.Response == 'Success'){
     				//map the socket_id to that users token
     				client_map[token] = socket.id;
-    				console.log("Successful authenication" );
+    				console.log("Successful authenication");
     					handleEventQueue(token, events, function(){
 	    					//the painful part, we need to send it to all clients in the simulation
 	    					var list = SimulationManager.getAllActiveDevices(simulation);

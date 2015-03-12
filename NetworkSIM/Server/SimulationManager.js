@@ -39,11 +39,50 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	}
 
 	var state = {};
+	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	newJSON.partition_list=buildPartitionList(simulation);
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
 
 	return state;
+}
+function buildPartitionList(simulation){
+	var partition_list,network_list,device_list;
+	partition_list=simulation.partition_list;
+	var newNetworkList=[],newDeviceList=[],newPartitionList=[];
+
+	for (pIndex in partition_list){
+
+		network_list=partition_list[pIndex].network_list;
+
+		for(nIndex in network_list){
+			device_list=network_list[nIndex].device_list;
+
+			for(dIndex in device_list){
+				newDeviceList.push(device_list[dIndex].deviceJSON);
+			}
+
+			var network=Util.deepCopy(network_list[nIndex].networkJSON);
+			network.device_list=Util.deepCopy(newDeviceList);
+			newDeviceList=[];
+			newNewtworkList.push(network);
+			
+		}
+		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
+		partition.network_list=Util.deepCopy(newNetworkList);
+		newNetworkList=[];
+		newPartitionList.push(partition);
+	}
+	return newPartitionList;
+}
+function buildListObject(idList,objectList){
+	var list=[];
+	var item;
+	for(id in idList){
+		item=Util.findByUniqueID(idList[id],objectList);
+		list.push(item);
+	}
 }
 
 exports.getAllActiveDevices = function(simulation_id){
@@ -125,6 +164,7 @@ function authToken(token, simulation_id,  callback){
 						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
 						simulation.updateSimulationLog(new_activity);
 						deviceList[index].deviceJSON.verified = true;
+						simulation.simulationJSON.simulation_population++;
 						
 						saveSimulationState( simulation_id, timestamp, simulation);
 					}
