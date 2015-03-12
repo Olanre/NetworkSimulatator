@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var User = require("./partitionModel").Partition;
+
 var simulationSchema = mongoose.Schema({
 	   num_devices: Number,
 	   num_networks: Number,
@@ -23,7 +25,7 @@ simulationSchema.statics.addSim = function (aSim)
 //Find simulation by name
 simulationSchema.statics.getSimByName = function (aString, callback)
 {
- Sim.findOne( {simulation_name: aString}, function(err,obj)
+ this.findOne( {simulation_name: aString}, function(err,obj)
  { 
    if(err) console.log("no sim with name " + aString);
    
