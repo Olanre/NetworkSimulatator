@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var RDT = require("./rdtModel").RDT;
 
 var applicationSchema = mongoose.Schema({
 
@@ -8,7 +7,7 @@ var applicationSchema = mongoose.Schema({
 	version : String,
 	description : String,
 	main : String,
-	rdt_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'RDT'}]	
+	rdt_list : [{name : String, version: String, description : String, main : String, rdt_list : String}]	
 	
 	});
 
