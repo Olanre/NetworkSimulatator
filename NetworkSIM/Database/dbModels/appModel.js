@@ -1,12 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var RDT = require("./rdtModel").RDT;
 
 var applicationSchema = mongoose.Schema({
 
-	simulation_list : [String],
-	super_admin: String,
-	total_devices : Number,
-	total_networks : Number,
+	name : String,
+	version : String,
+	description : String,
+	main : String,
+	rdt_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'RDT'}]	
 	
 	});
 
@@ -39,4 +41,4 @@ applicationSchema.statics.modifyApp = function (NewApp)
 }
 
 
-module.exports = mongoose.model('App', aaplicationSchema, Apps);
+module.exports = mongoose.model('App', applicationSchema, Apps);
