@@ -4,6 +4,7 @@
 function viewApp(app_name){
 	var local_simulation = get_local_simulation();
 	var applications = local_simulation.applications;
+	console.log(applications);
 	
 }
 
