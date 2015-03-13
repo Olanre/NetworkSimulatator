@@ -20,7 +20,10 @@ window.onload = function(){
 			  'activity_logs': '' }
 			};
 	//creates the query to the server
-	addToEventQueue('/create/Simulation', event_data, time_stamp)
+	var simulations = get_local_simulation_list();
+	if(simulations.length < 1){
+		addToEventQueue('/create/Simulation', event_data, time_stamp);
+	}
 	
 }
 
@@ -62,7 +65,22 @@ function deviceHeaderView(){
 	content.innerHTML = html;
 }
 
+function adminAppsView(){
+	var local_session = get_local_simulation();
+	var applications = local_session.applications;
+	var html = viewAdminApplicationsTemplate(applications);
+	var content = getContainer();
+	content.innerHTML = html;
+}
 
+function RDTsView(){
+	var local_session = get_local_simulation();
+	var rdts = local_session.rdts;
+	var html = viewRDTsTemplate(rdts);
+	var content = getContainer();
+	content.innerHTML = html;
+	
+}
 /**
  * Displays the user's information
  */
@@ -333,7 +351,7 @@ function LogsView(){
 
 function uploadView(){
 	loadJSFile('../logic/FileUpload.js');
-	loadStyleSheet('../../stylesheets/FileUpload.css');
+	
 
 	var simulation={};
 	var html=uploadFileTemplate(simulation);

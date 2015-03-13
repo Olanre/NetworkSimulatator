@@ -56,9 +56,7 @@ function handleClient (socket) {
     				});
     				
     			}else{
-    				handleEventQueue(token, events, function(){
-    					console.log("Failed authentication");
-    					
+    				handleEventQueue(token, events, function(){    					
     					var state= SimulationManager.getBlankAppState();
     					
     					io.to(socket.id).emit('syncState', state);

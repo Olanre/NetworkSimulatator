@@ -43,7 +43,8 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	console.log("About to enter deepCopy");
-	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	//var newJSON=Util.deepCopy(simulation.simulationJSON);
+	var newJSON=simulation.simulationJSON;
 	console.log(newJSON + " This is the new JSON");
 	newJSON.partition_list=buildPartitionList(simulation);
 	console.log(newJSON.partition_list + " This is the new JSON's partiton list");
@@ -69,14 +70,18 @@ function buildPartitionList(simulation){
 				newDeviceList.push(device_list[dIndex].deviceJSON);
 			}
 
-			var network=Util.deepCopy(network_list[nIndex].networkJSON);
-			network.device_list=Util.deepCopy(newDeviceList);
+			//var network=Util.deepCopy(network_list[nIndex].networkJSON);
+			var network=network_list[nIndex].networkJSON;
+			//network.device_list=Util.deepCopy(newDeviceList);
+			network.device_list=newDeviceList;
 			newDeviceList=[];
-			newNewtworkList.push(network);
+			newNetworkList.push(network);
 			
 		}
-		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
-		partition.network_list=Util.deepCopy(newNetworkList);
+		//var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
+		var partition=partition_list[pIndex].partitionJSON;
+		//partition.network_list=Util.deepCopy(newNetworkList);
+		partition.network_list=newNetworkList;
 		newNetworkList=[];
 		newPartitionList.push(partition);
 	}
