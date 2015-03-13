@@ -2,6 +2,8 @@ var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
 var SimModel = require("../Database/dbModels/simulationModel.js");
+var AppModel = require("../Database/dbModels/appModel.js");
+var rdtModel = require("../Database/dbModels/RDTModel.js");
 var NetworkIterator = require("./Iterators/NetworkIterator.js");
 var DeviceIterator = require("./Iterators/DeviceIterator.js")
 
@@ -44,8 +46,8 @@ function createNewSimulation(simulation_name){
 	simulationJSON.simulation_name = simulation_name;
 	simulationJSON.num_devices = 0;
 	simulationJSON.num_networks = 0;
-	simulationJSON.applications = ['counterApp'];
-	simulationJSON.rdts = ['incrRDT'];
+	simulationJSON.applications = new AppModel();
+	simulationJSON.rdts = new rdtModel();
 	simulationJSON.simulation_population = 0;
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
