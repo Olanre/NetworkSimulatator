@@ -454,11 +454,11 @@
 	<table>
 	 	{{#apps}}<tr>
 			 <td> 
-				{{.}} 
+				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "DeployApp('{{.}}')"> Deploy </div>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{.}}')"> View App Specs </div>
+				<div class = 'btn btn-primary' onclick = "DeployApp('{{name}}')"> Deploy </div>
+				<div class = 'btn btn-primary' onclick = "ViewApp('{{name}}')"> View App Specs </div>
 			</td> 
 		</tr>{{/apps}}
  	</table>
@@ -500,10 +500,10 @@
 	<table>
 	 	{{#rdts}}<tr>
 			 <td> 
-				{{.}} 
+				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "ViewRDT('{{.}}')"> View Specification </div>
+				<div class = 'btn btn-primary' onclick = "ViewRDT('{{name}}')"> View Specification </div>
 			</td> 
 		</tr>{{/rdts}}
  	</table>

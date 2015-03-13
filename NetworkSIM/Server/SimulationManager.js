@@ -358,7 +358,7 @@ function addDeviceToNetwork(event_data, time_stamp){
 function attachRDT( rdt_name, simulation_id, spec){
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
-		var rdt = {'name': rdt_name, 'rdt_spec' : spec}
+		var rdt = {'name': rdt_name, 'rdt_spec' : spec};
 		simulation.simulationJSON.rdts.push(rdt);
 	}
 }
@@ -366,8 +366,10 @@ function attachRDT( rdt_name, simulation_id, spec){
 function attachApp( app_name, simulation_id, spec){
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
-		var app = {'name': app_name, 'app_spec' : spec}
+		var app = {'name': app_name, 'app_spec' : spec};
+		
 		simulation.simulationJSON.applications.push(app);
+		console.log(simulation.simulationJSON.applications);
 	}
 	
 }
