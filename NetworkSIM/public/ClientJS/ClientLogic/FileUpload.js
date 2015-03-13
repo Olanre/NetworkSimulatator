@@ -65,7 +65,7 @@ function DeleteFile(int){
 
 function readFiles(){
 	for(var i=0;i<current_files.length;i++) { 
-		uploadEvent= {name : '', simulation_id:'', type : '',  files: []};
+		uploadEvent= {name : '', simulation_id:'', spec : '', type : '',  files: []};
 		setup_reader(current_files[i]); 
 	}
 }
@@ -86,7 +86,10 @@ function hasRequiredFile(needle, haystack){
 	var bool = false;
 	for (var i = 0; i < haystack.length; i++){
 		if(haystack[i]['name'] === needle){
-			if(needle == 'package.json') uploadEvent.name = JSON.parse(haystack[i]['data']).name;
+			if(needle == 'package.json'){
+				uploadEvent.name = JSON.parse(haystack[i]['data']).name;
+				uploadEvent.spec = JSON.stringify(haystack[i]['data']);
+			}
 			bool = true;
 			break;
 		}
