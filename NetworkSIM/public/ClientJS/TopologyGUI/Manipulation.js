@@ -415,3 +415,4 @@ function orderCanvas(){
 	}
 	
 }
+generateTopology(get_local_simulation().partition_list,800);
