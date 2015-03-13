@@ -51,7 +51,7 @@ function handleClient (socket) {
 	    						var user_token = list[index]['token'];
 	    						var socket_id = client_map[user_token];
 	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
-	        					io.to(socket_id).emit('syncState', state);
+                                io.to(socket_id).emit('syncState', state);
 	    						
 	    					}    					
     				});
@@ -136,7 +136,6 @@ function handleEventQueue(token, eventQueue, callback) {
 				break;
             case '/upload':
                 FileManager.uploadAllFiles(eventQueue[i].event_data);
-                console.log("uploadin'")
                 break;
 
 			default:

@@ -2,7 +2,6 @@
  * New node file
  */
 function SimulationSideBarView(id){
-	console.log(id);
 	var template = document.getElementById('template18').innerHTML;
 	 textile = Hogan.compile(template);
 	 context = {'simulation_id' : id};

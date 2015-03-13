@@ -63,17 +63,5 @@ exports.findByUniqueID=function(uniqueID,list){
 	return -1;
 }
 exports.deepCopy=function(item){
-	var copy;
-	if(Array.isArray(item)){
-	 copy=[];
-	}
-	else {
-		if (item instanceof Object) copy={};
-		else return item;
-	}
-
-	for (attribute in item){
-		copy[attribute]=exports.deepCopy(item[attribute]);
-	}
-	return copy;
+	return JSON.parse(JSON.stringify(item))
 }

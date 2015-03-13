@@ -140,15 +140,26 @@ function testGetAppState(){
 
 }
 
+function testBuildPartitions(){
+	var simulation=SimMan.createSimulation(simJSON);
+	var partition_list=SimMan.buildPartitionList(simulation);
+	console.log(partition_list);
+	
+	for(partition in partition_list){
+		console.log(partition_list[partition].network_list);
+	}
+}
+
 function testAll(){
 	var functions=[];
 
 	//functions.push(testCreateSimulation);
-	functions.push(testAuthenticate());
-	functions.push(testCreateDevice());
+	//functions.push(testAuthenticate());
+	//functions.push(testCreateDevice());
 	//functions.push(testCreateNetwork);
 	//functions.push(testMoveDevice);
 	//functions.push(testGetAppState);
+	functions.push(testBuildPartitions);
 	var continueTesting=true;
 	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i];
@@ -156,5 +167,5 @@ function testAll(){
 	}
 	return continueTesting;
 }
-
-testAll();
+testBuildPartitions();
+//testAll();
