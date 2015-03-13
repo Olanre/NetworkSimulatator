@@ -42,10 +42,9 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	}
 	
 	var state = {};;
-	//var newJSON=Util.deepCopy(simulation.simulationJSON);
-	var newJSON=simulation.simulationJSON;
+	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	newJSON.partition_list=buildPartitionList(simulation);
-	state.simulation=simulation.simulationJSON;
+	state.simulation=newJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
 	return state;
@@ -65,22 +64,19 @@ function buildPartitionList(simulation){
 			for(dIndex in device_list){
 				newDeviceList.push(device_list[dIndex].deviceJSON);
 			}
-
-			//var network=Util.deepCopy(network_list[nIndex].networkJSON);
-			var network=network_list[nIndex].networkJSON;
-			//network.device_list=Util.deepCopy(newDeviceList);
+			var network=Util.deepCopy(network_list[nIndex].networkJSON);
+			network.device_list=Util.deepCopy(newDeviceList);
 			network.device_list=newDeviceList;
 			newDeviceList=[];
 			newNetworkList.push(network);
-			
 		}
-		//var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
-		var partition=partition_list[pIndex].partitionJSON;
-		//partition.network_list=Util.deepCopy(newNetworkList);
+		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
+		partition.network_list=Util.deepCopy(newNetworkList);
 		partition.network_list=newNetworkList;
 		newNetworkList=[];
 		newPartitionList.push(partition);
 	}
+	console.log(newPartitionList);
 	return newPartitionList;
 }
 function buildListObject(idList,objectList){
@@ -373,7 +369,6 @@ function attachApp( app_name, simulation_id, spec){
 		var app = {'name': app_name, 'app_spec' : spec}
 		simulation.simulationJSON.applications.push(app);
 	}
-
 	
 }
 
@@ -431,3 +426,4 @@ module.exports.createNetwork = createNetwork;
 module.exports.removeNetwork = removeNetwork;
 module.exports.mergePartitions = mergePartitions;
 module.exports.dividePartitions = dividePartitions;
+module.exports.buildPartitionList = buildPartitionList;
