@@ -31,7 +31,7 @@ function Device(deviceName,token, simulation_name , email){
 	//Editing the JSON which represents the device. This will have to change when the database finally works.
 	
 
-	this.networkObject.addDevice(this);
+	
 }
 
 
@@ -39,6 +39,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	var createdDevice = new Device(deviceName,token, simulation_id ,email);
 	var deviceJSON = new DevModel();
 
+	
 	deviceJSON.current_device_name=deviceName;
 	deviceJSON.current_simulation = simulation_id;
 	deviceJSON.admin=false;
@@ -50,6 +51,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	deviceJSON.token=token;
 	createdDevice.deviceJSON=deviceJSON;
 
+	createdDevice.networkObject.addDevice(createdDevice);
 	deviceJSON.save();
 
 	return createdDevice;
@@ -74,15 +76,17 @@ function joinNetwork(network){
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
 	  this.deviceJSON.current_network=network.network_name;
+	  this.deviceJSON.save();
 	  
 };
   
 function leaveNetwork(network){
 	  this.deviceJSON.current_network= '';
 	  this.networkObject = {};
-	  this.deviceJSON.current_partition= 'freelist';
+	  this.deviceJSON.current_partition= '';
 	  var networkIndex= network.device_list.indexOf(this);
 	  network.device_list.splice(networkIndex,1);
+	  this.deviceJSON.save();
 };
 
 //This is supposed to make the device join the network it used to be in. idk lol
@@ -90,7 +94,8 @@ function returnNetwork(){
 };
  
 function replicateRDT(rdt){
-	  this.rdt = rdt
+	  this.rdt = rdt;
+	  this.deviceJSON.save();
 };
 
 function accessRDT(){
@@ -100,6 +105,7 @@ function accessRDT(){
 
 function updateDeviceLog(new_activity){
 	this.deviceJSON.activity += new_activity;
+	this.deviceJSON.save();
 }
 
 

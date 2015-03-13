@@ -205,6 +205,7 @@ function createSimulation(event_data, time_stamp) {
 	for(partition in map){
 
 		if(partition=='freelist'){
+			console.log('freelist!!!');
 			for(device in map[partition]){
 				createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
 				simulation.addDevice(createdDevice);

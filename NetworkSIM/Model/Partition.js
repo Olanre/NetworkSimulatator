@@ -51,6 +51,8 @@ function addNetwork(network){
 		network.partitionObject=this;
 		this.network_list.push(network);
 		this.partitionJSON.network_list.push(network.networkJSON._id);
+		this.partitionJSON.save();
+		network.networkJSON.save();
 }
 
 function removeNetwork(network){
@@ -62,6 +64,7 @@ function removeNetwork(network){
 			network.networkJSON.partition_name='';
 			this.network_list.splice(index,1);
 			this.partitionJSON.network_list.splice(index,1);
+			this.partitionJSON.save();
 			
 		}
 	}
@@ -75,6 +78,7 @@ function mergePartitions(partition){
 			this.partitionJSON.network_list.push(networks[key]._id);
 			this.network_list.push(partition.network_list[key]);
 		}
+		this.partitionJSON.save();
 };
 
 module.exports.createNewPartition = createNewPartition;

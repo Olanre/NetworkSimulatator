@@ -26,12 +26,11 @@ function Network(networkName, networkKind){
 
 	//Constructor contents
 
-	this.partitionObject.addNetwork(this);
 	this.deviceIterator = new DeviceIterator(this.device_list);
 }
 
 function createNewNetwork(networkName,networkKind){
-	var createdNetwork=new Network(networkName,networkKind);
+	var createdNetwork = new Network(networkName,networkKind);
 	var networkJSON =  new NetModel();
 
 	networkJSON.network_type=networkKind;
@@ -39,7 +38,9 @@ function createNewNetwork(networkName,networkKind){
 	networkJSON.partition_name = '';
 	createdNetwork._id=networkJSON._id;
 	createdNetwork.networkJSON=networkJSON;
+	createdNetwork.attachJSON(networkJSON);
 
+	createdNetwork.partitionObject.addNetwork(createdNetwork);
 	networkJSON.save();
 
 	return createdNetwork;
@@ -67,6 +68,7 @@ function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON._id);
 		this.device_list.push(device);
 		device.joinNetwork(this);
+		this.networkJSON.save();
 };
 //we assume that we will only remove devices through a network
 function removeDevice(device){
@@ -85,16 +87,19 @@ function removeDevice(device){
 		}
 
 		device.leaveNetwork(this);
+		this.networkJSON.save();
 };
 
 function connectNetwork(network){
 		this.partitionObject.mergePartitions(network.partitionObject);
 		network.partitionObject=this.partitionObject;
 		network.networkJSON.partition_name=this.networkJSON.partition_name;
+		this.networkJSON.save();
 };
 
 function disconnectNetwork(network){
 		this.partitionObject.removeNetwork(network);
+		this.networkJSON.save();
 };
 
 module.exports.createNewNetwork = createNewNetwork;
