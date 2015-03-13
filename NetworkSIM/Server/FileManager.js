@@ -11,13 +11,13 @@ function uploadAllFiles(event_data){
 	var simulation_id = event_data.simulation_id;
 	var location = "./";
 	
-	console.log(__dirname);
+	//console.log(__dirname);
 	if(type=="App"){
 		
 		location = "../apps/"+folder_name;
 		mkdirp(__dirname + "/" +  location, function(err) { 
 			if(!err){
-				SimulationManager.attachApp( event_data.name, simulation_id, spec);
+				SimulationManager.attachApp( folder_name, simulation_id, spec);
 				for(var i=0;i<files.length;i++){
 					if(files[i].name == 'package.json'){
 						var package = JSON.parse(files[i]['data']).name;
