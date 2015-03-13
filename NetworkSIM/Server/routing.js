@@ -1,4 +1,5 @@
 var SimulationManager = require("./SimulationManager.js");
+var FileManager = require("./FileManager.js");
 var io = {};
 
 var clients = [];

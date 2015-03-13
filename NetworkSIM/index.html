@@ -445,8 +445,8 @@
 		</div>		
 </script>
 <script type = "AdminAppsListTemplate" id = "template19">
-	<h3> The Apps currently available in this simulation </h3>
-	
+	<h4> The Apps currently available in this simulation </h4>
+	<br>
 	<table>
 	 	{{#apps}}<tr>
 			 <td> 
@@ -458,22 +458,40 @@
 			</td> 
 		</tr>{{/apps}}
  	</table>
-
+	<br>
+	<hr>
+	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
+		<h4> Requirements </h4>
+		<p> Your Application must include a package.json and main.js <br>
+		The package.json describes the RDTs your application uses and the main file for interfacing with the app. <br>
+		An example is <br>
+		<code> 
+			{
+  			 	"name": "CounterApp",
+ 				 "version": "0.1.0",
+  			 	"description": "A small counter app for testing a incrementing data type",
+  				 "main": "index.html",
+				 "rdt_list" : [ "incRDT" ] 
+			}
+		</code>
+		</p>
+		<br>
+		<hr>
 		<div id="appDiv" class="uploadContainer">
 
-			<div id="appFiles" class ="fileContainer"></div>
-			<input id="uploadApp" type="file"  onchange="handleFiles();" multiple> selected files: 
-			<span id="appfileNum">0</span>; total size: <span id="appfileSize">0</span>
+			<div id="Files" class ="fileContainer"></div>
+			<input id="uploadApp" type="file"  onchange="handleFiles('uploadApp');" multiple> selected files: 
+			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 
 		</div>
-		<button id="uploadButton" name="Send file" onclick="pushFileEvent()">Upload</button>
+		<button id="uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
 	</div>
 </script>
 
 
 <script type = "RDTsListTemplate" id="template20">
-	<h3> The RDTs currently available in our framework </h3>
+	<h4> The RDTs currently available in our framework </h4>
 	
 	<table>
 	 	{{#rdts}}<tr>
@@ -485,16 +503,54 @@
 			</td> 
 		</tr>{{/rdts}}
  	</table>
-
+	<br>
+	<hr>
+	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
+		<h4> Requirements </h4>
+		<p> Your RDT must include a package.json and spec.md <br>
+		The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
+		An example is <br>
+		<code> 
+			{
+  			 	"name": "incRDT",
+ 			 	"version": "0.1.0",
+  			 	"description": "A replicated integer counter data type",
+  			 	"main": "rdtInterface.js"
+			}
+		</code>
+		<br> <hr> <br>
+		The spec.md described the behavior of your RDT so application developers know how to access values and manipulate your RDT
+		An example<br>
+		<code>
+			# incRDT: A simple replicated integer counter data type
 
+			A Counter object has two public methods:
+
+    		var c = new Counter();
+    		c.inc();    // increment the counter
+   			 c.val();    // read the counter value
+
+
+			The Counter object will be created for you and automatically replicated at each
+			device object from the `deviceIterator` you passed in to the module's `init`
+			method. There is no need to create Counter objects by yourself. In fact, the
+			Counter constructor function is not even exported.
+			
+			You should use the device object's `accessRDT` method to grab the copy of a
+			Counter that is created for you. Read the `network_topology.js` file and check
+			the interface of `Device`.
+		</code>
+		</p>
+		<br>
+		<hr>
 		<div id="appDiv" class="uploadContainer">
-			<div id="appFiles" class ="fileContainer"></div>
-			<input id="uploadRDT" type="file"  onchange="handleFiles();" multiple> selected files: 
-			<span id="rdtfileNum">0</span>; total size: <span id="rdtfileSize">0</span>
+			<div id="Files" class ="fileContainer"></div>
+			<input id="uploadRDT" type="file"  onchange="handleFiles('uploadRDT');" multiple> selected files: 
+			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button id="uploadButton" name="Send file" onclick="pushFileEvent()">Upload</button>
+		<button id="uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
 	</div>
 
 </script>

@@ -6,6 +6,5 @@ function viewAdminApplicationsTemplate(applications){
 	 textile = Hogan.compile(template);
 	 context = {'apps' : applications};
 	 tpl = textile.render(context);
-	 console.log(tpl);
 	 return tpl;
 }

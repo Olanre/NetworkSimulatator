@@ -12,6 +12,5 @@ function SimulationLogsTemplate(logs){
 	 var logs_array = logs.split("\n");
 	 context = {'logs' : logs_array};
 	 tpl = textile.render(context);
-	 console.log(tpl);
 	 return tpl;
 }

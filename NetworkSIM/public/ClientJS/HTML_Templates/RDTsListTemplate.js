@@ -6,6 +6,5 @@ function viewRDTsTemplate(rdts){
 	 textile = Hogan.compile(template);
 	 context = {'rdts' : rdts};
 	 tpl = textile.render(context);
-	 console.log(tpl);
 	 return tpl;
 }

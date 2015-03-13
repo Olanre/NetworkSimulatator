@@ -362,6 +362,19 @@ function addDeviceToNetwork(event_data, time_stamp){
 	}
 
 }
+
+function attachRDT( rdt_name, simulation_id){
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	if(simulation !== -1)
+	simulation.simulationJSON.rdts.push(rdt_name);
+}
+
+function attachApp( app_name, simulation_id){
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	if(simulation !== -1)
+	simulation.simulationJSON.applications.push(app_name);
+}
+
 //TODO untested
 function mergePartitions(event_data, time_stamp){
 
@@ -405,7 +418,8 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	}
 }
 
-
+module.exports.attachRDT = attachRDT;
+module.exports.attachApp = attachApp;
 module.exports.authToken = authToken;
 module.exports.simulationList=simulationList;
 module.exports.createSimulation=createSimulation;

@@ -45,6 +45,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   color: #4a4a4d;
+  margin: 0 auto; /* or margin: 0 auto 0 auto */
 }
 th,
 td {
@@ -85,6 +86,7 @@ td {
 	display: block;
 	background: #f8f8f9;
 	border : 2px;
+  	text-align:center
 }
 /*
  * Sidebar
