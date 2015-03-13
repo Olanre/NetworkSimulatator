@@ -47,14 +47,13 @@ function mouseOver(e){
 	}
 }
 //adds the listener to the document
-document.body.onmouseover =mouseOver;
-document.body.onmouseout = mouseOver;
+document.onmouseover = mouseOver;
+document.onmouseout = mouseOver;
 
 /****
  * Generates topology given a partition_list object
  ***/
 function generateTopology(partition_list, areaWidth){
-
 	displayed_partition_list=partition_list;
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
