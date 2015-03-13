@@ -7,7 +7,7 @@ var applicationSchema = mongoose.Schema({
 	version : String,
 	description : String,
 	main : String,
-	rdt_list : [{name : String, version: String, description : String, main : String, rdt_list : String}]	
+	rdt_spec : [{name : String, version: String, description : String, main : String, rdt_list : String}]	
 	
 	});
 
