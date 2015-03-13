@@ -1,5 +1,6 @@
 var path = require('path');
 var fs=require('fs');
+var mkdirp = require('mkdirp');
 var SimulationManager = require("./SimulationManager.js");
 
 function uploadAllFiles(event_data){
@@ -9,20 +10,35 @@ function uploadAllFiles(event_data){
 	var simulation_id = event_data.simulation_id;
 	var location = "./";
 	
-	
+	console.log(__dirname);
 	if(type=="App"){
+		
 		location = "../apps/"+folder_name;
-		SimulationManager.attachApp( event_data.name, simulation_id);
+		mkdirp(__dirname + "/" +  location, function(err) { 
+			if(!err){
+				SimulationManager.attachApp( event_data.name, simulation_id);
+				for(var i=0;i<files.length;i++){
+					
+					uploadFile(files[i],location + '/');
+				}
+			}
+		});
+		
 		
 	}else if(type=="RDT"){
 		
 		location = "../rdts/"+folder_name;
-		SimulationManager.attachRDT( event_data.name, simulation_id);
+		mkdirp(__dirname + "/" +location, function(err) { 
+			if(!err){
+				SimulationManager.attachRDT( event_data.name, simulation_id);
+				for(var i=0;i<files.length;i++){
+					
+					uploadFile(files[i],location + '/');
+				}
+			}
+		});
 	}
-	for(var i=0;i<files.length;i++){
-			
-			uploadFile(files[i],location + '/');
-	}
+	
 
 }
 

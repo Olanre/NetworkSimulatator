@@ -41,17 +41,13 @@ exports.getAppStateForDevice = function(token,simulation_id){
 		}
 	}
 	
-	var state = {};
-	console.log("About to enter deepCopy");
+	var state = {};;
 	//var newJSON=Util.deepCopy(simulation.simulationJSON);
 	var newJSON=simulation.simulationJSON;
-	console.log(newJSON + " This is the new JSON");
 	newJSON.partition_list=buildPartitionList(simulation);
-	console.log(newJSON.partition_list + " This is the new JSON's partiton list");
 	state.simulation=simulation.simulationJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
-	console.log(state);
 	return state;
 }
 function buildPartitionList(simulation){

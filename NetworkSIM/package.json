@@ -13,6 +13,7 @@
 	  "mongodb": "*",
 	  "mongoose": "*",
 	  "express-logger": "*",
-	  "nodemailer": "*"
+	  "nodemailer": "*",
+	  "mkdirp" : "*"
   }
 }

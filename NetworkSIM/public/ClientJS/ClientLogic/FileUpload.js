@@ -110,7 +110,7 @@ function pushFileEvent(file_type){
 	var upload = true;
 	
 	if( file_type == 'RDT'){
-		if(hasRequiredFile('spec.md') == false && hasRequiredFile('package.json') == false ){
+		if(hasRequiredFile('spec.md', uploadEvent.files) == false && hasRequiredFile('package.json', uploadEvent.files) == false ){
 			alert("Please include a Mark Down file for the specs \nPlease include a package.json file describing your RDT");
 			upload = false;
 		}
@@ -124,6 +124,9 @@ function pushFileEvent(file_type){
 	if( upload){
 		console.log(uploadEvent);
 		addToEventQueue('/upload',uploadEvent,new Date());
+		setTimeout(function(){
+			SimulationManagementView();
+		},5000);
 	}
 	
 	//
