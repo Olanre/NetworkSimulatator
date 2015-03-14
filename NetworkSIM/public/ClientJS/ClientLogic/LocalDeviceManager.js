@@ -3,8 +3,8 @@
  **************************************************/
 
 function getLocalDeviceToken(){
-	if(local_device!==null){
-		var local_device = get_local_device();
+	var local_device = get_local_device();
+	if(local_device!==null && local_device !== undefined){
 		return local_device.token;
 	}
 	else{

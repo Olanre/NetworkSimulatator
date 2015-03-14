@@ -17,14 +17,13 @@ function uploadAllFiles(event_data){
 		location = "../apps/"+folder_name;
 		mkdirp(__dirname + "/" +  location, function(err) { 
 			if(!err){
-				SimulationManager.attachApp( folder_name, simulation_id, spec);
+				
 				for(var i=0;i<files.length;i++){
-					if(files[i].name == 'package.json'){
-						var package = JSON.parse(files[i]['data']).name;
-						
-					}
+					
 					uploadFile(files[i],location + '/');
+					
 				}
+				SimulationManager.attachApp( location, simulation_id, spec);
 			}
 		});
 		
@@ -34,11 +33,12 @@ function uploadAllFiles(event_data){
 		location = "../rdts/"+folder_name;
 		mkdirp(__dirname + "/" +location, function(err) { 
 			if(!err){
-				SimulationManager.attachRDT( event_data.name, simulation_id, spec);
+				
 				for(var i=0;i<files.length;i++){
 					
 					uploadFile(files[i],location + '/');
 				}
+				SimulationManager.attachRDT(location, simulation_id, spec);
 			}
 		});
 	}

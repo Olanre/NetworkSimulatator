@@ -10,7 +10,7 @@ function Device(deviceName,token, simulation_name , email){
 	//Our Variables//
 	this.networkObject=Network.createNewNetwork('','');
 	this.networks_created = [];
-	this.rdt = {};
+	this.rdts = [];
 	this.token=token;
 	this.deviceJSON = {};
 	this._id= token;
@@ -94,13 +94,22 @@ function returnNetwork(){
 };
  
 function replicateRDT(rdt){
-	  this.rdt = rdt;
+	  this.rdts.push(rdt);
 	  this.deviceJSON.save();
+};
+
+//acces an rdt by name
+function accessRDT(rdt_name){
+	for(var i = 0; i < rdts.length; i++){
+		if(rdts[i].constructor.name == rdt_name) return this.rdts[i];
+		
+	}
 };
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device
-	return this.rdt;
+	var index = rdts.length-1;
+	return this.rdts[index];
 };
 
 function updateDeviceLog(new_activity){

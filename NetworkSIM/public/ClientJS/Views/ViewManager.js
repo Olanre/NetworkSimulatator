@@ -7,23 +7,8 @@ window.onload = function(){
 	loadStyleSheet('../css/dashboard.css');
 	//loadStyleSheet('../css/defaultPages.css');
 	defaultheaderView();
-	syncWithServer();
 	updateAllViews();
-	var time_stamp = new Date();
-	var event_data = { 'num_devices': 1,
-			  'num_networks': 1,
-			  'simulation_population': 0,
-			  'simulation_name': 'Test',
-			  'globalcount': 0,
-			  'tokenMethod': 'Email',
-			  'config_map': { 'frfr': { 'ggn': { 'device1' : 1 }, 'freelist': {} },
-			  'activity_logs': '' }
-			};
-	//creates the query to the server
-	var simulations = get_local_simulation_list();
-	if(simulations.length < 1){
-		addToEventQueue('/create/Simulation', event_data, time_stamp);
-	}
+	
 	
 }
 

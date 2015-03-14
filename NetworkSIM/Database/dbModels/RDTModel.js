@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 
 var RDTSchema = mongoose.Schema({
 	
-	name : String
-	rdt_spec : { name : String, version : String, description : String, main : String}     
+	name : String,
+	version : String,
+	description : String,
+	main : String    
 	
 	});
-w
-module.exports = mongoose.model('RDT', RDTSchema);
+module.exports = mongoose.model('RDT', RDTSchema, 'RDTs');

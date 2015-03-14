@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var User = require("./partitionModel").Partition;
+var partition = require("./partitionModel").Partition;
+var App = require("./appModel").App;
+var Rdt = require("./RDTModel").RDT;
 
 var simulationSchema = mongoose.Schema({
 	   num_devices: Number,
@@ -10,8 +12,8 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
 	   partition_list: [{type : mongoose.Schema.Types.ObjectId, ref: 'Partition'}],
-	   applications : [String],
-	   rdts : [String],
+	   applications : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}],
+	   rdts : [{type : mongoose.Schema.Types.ObjectId, ref: 'RDT'}],
 	   activity_logs : String,	   
 });
 

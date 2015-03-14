@@ -7,10 +7,10 @@ var applicationSchema = mongoose.Schema({
 	version : String,
 	description : String,
 	main : String,
-	rdt_spec : [{name : String, version: String, description : String, main : String, rdt_list : String}]	
+	rdt_list : [String]	
 	
 	});
 
 
 
-module.exports = mongoose.model('App', applicationSchema, Apps);
+module.exports = mongoose.model('App', applicationSchema, 'Apps');
