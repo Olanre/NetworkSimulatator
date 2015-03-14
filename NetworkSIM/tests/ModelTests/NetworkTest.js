@@ -1,6 +1,8 @@
 var Device=require("../../Model/Device.js");
 var Network=require("../../Model/Network.js");
 var Util=require("../../Utilities/utilities.js");
+var NetModel = require("../../Database/dbModels/networkModel.js");
+var DevModel = require("../../Database/dbModels/userModel.js");
 
 var JSONNetworkTemplate={
 	network_name:'testNetwork',
@@ -17,31 +19,38 @@ var networkJSON={
 }
 
 module.exports.testNetworkCreation=function(){
+	console.log("testing network creation");
 	var createdNetwork=Network.createNewNetwork('testNetwork','Wi-Fi');
-	console.log(JSONNetworkTemplate);
-	var result=Util.compareObjects(createdNetwork.networkJSON,JSONNetworkTemplate);
-	if(!result) console.log(createdNetwork.networkJSON);
-	var text=result ? 'passed': 'failed';
-	console.log("createNewNetwork " +text);
+	var id= createdNetwork.networkJSON._id;
 
-	return result;
+	var query = NetModel.where({_id:id});
+
+	return query.findOne(function(err,obj){
+
+		var result = setTimeout(function(){
+			return Util.compareObjects(obj,createdNetwork.networkJSON);
+		}, 1000);
+		
+		if(!result) console.log("NetworkCreation failed!\n"+obj+'\n'+createdNetwork.networkJSON);
+		return result;
+	});
 }
 
 module.exports.testNetworkLoading=function(){
-	var loadedNetwork=Network.loadNetworkFromJSON(networkJSON);
-	var result=Util.compareObjects(loadedNetwork.networkJSON,networkJSON);
-	if(!result) console.log(loadedNetwork.networkJSON);
-	var text=result ? 'passed':'failed';
-	console.log("loadNetworkFromJSON "+text);
-	return result;
+	console.log("testing network loading");
+	var createdNetwork=Network.createNewNetwork('testNetwork!','Wi-Fi');
+	var id = createdNetwork._id;
+	setTimeout(function(){
+			var theNetwork = Network.loadNetworkFromDatabase(id);
+			return true;
+		}, 3000);
 }
 
 module.exports.testNetworkJoining=function(){
-
-	var network=Network.createNewNetwork("testNetwork");
+	console.log("testing network joining");
+	var network=Network.createNewNetwork("testNetwork","Wi-Fi");
 	var device=Device.createNewDevice("testDevice");
 	network.addDevice(device);
-	
 	var inList=false;
 	var devList=network.device_list;
 
@@ -60,18 +69,29 @@ module.exports.testNetworkJoining=function(){
 			break;
 		}
 	}
+	setTimeout(function(){
+		NetModel.findOne({_id:network._id}, function(err,networkJSON){
+		var result = Util.compareObjects(networkJSON,network.networkJSON);
+		console.log(network.networkJSON+"\n"+ networkJSON);
+	});
 
+	DevModel.findOne({_id:device.deviceJSON._id}, function(err,deviceJSON){
+		var result = Util.compareObjects(deviceJSON,device.deviceJSON);
+		var text = result ? '' : 'device did not properly save to the database';
+		console.log(device.deviceJSON+"\n"+ deviceJSON);
+	});
+		}, 4000);
 	
 
 	var result=inList&&inJSONlist;
 	if(!result) console.log(network.networkJSON);
-	var text=result ? 'passed': 'failed';
-	console.log("addDevice "+text);
+	var text=result ? '': 'device is not connected to the network';
+	console.log(text);
 
 	result=testIfDeviceJoined(device,network);
 	if(!result) console.log(device.deviceJSON);
-	text=result ? 'passed':'failed';
-	console.log("joinNetwork "+text);
+	text=result ? '':'device does not reference the network';
+	console.log(text);
 
 	return result&&inList&&inJSONlist;
 }
@@ -179,18 +199,19 @@ module.exports.testNetworkDisconnection=function(){
 
 module.exports.testNetwork=function(){
 	var functions=[];
-	functions.push(module.exports.testNetworkCreation);
-	functions.push(module.exports.testNetworkLoading);
-	functions.push(module.exports.testNetworkJoining);
-	functions.push(module.exports.testNetworkLeaving);
-	functions.push(module.exports.testNetworkConnection);
-	functions.push(module.exports.testNetworkDisconnection);
+	functions.push(module.exports.testNetworkCreation());
+	functions.push(module.exports.testNetworkLoading());
+	functions.push(module.exports.testNetworkJoining());
+	functions.push(module.exports.testNetworkLeaving());
+	functions.push(module.exports.testNetworkConnection());
+	functions.push(module.exports.testNetworkDisconnection());
 	var continueTesting=true;
 
 	for(var i=0;i<functions.length;i++){
-		continueTesting=continueTesting&&functions[i]();
+		continueTesting=continueTesting&&functions[i];
 		if(!continueTesting)break;
 	}
+	console.log("Finished Testing!");
 	return continueTesting;
 }
 

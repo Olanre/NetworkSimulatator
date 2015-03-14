@@ -36,22 +36,26 @@ var deviceJSON=({
 
 
 testDeviceCreation=function(){
-	var createdDevice=Device.createNewDevice('','69696969696969','','');
-	createdDevice.deviceJSON.save();
-	console.log("createNewDevice passed");
-	return true;
-	
+	var createdDevice=Device.createNewDevice('testdevice','20XX','fort wenty','emily.innes@live.com');
+	var id= createdDevice.deviceJSON._id;
+
+	var query = User.where({_id:id});
+	return query.findOne(function(err,obj){
+
+		var result = setTimeout(function(){
+			return Util.compareObjects(obj,createdDevice.deviceJSON);
+		}, 1000);
+		
+		if(!result) console.log("DeviceCreation failed!\n"+obj+'\n'+createdDevice.deviceJSON);
+		return result;
+	});
 }
 
 testDeviceLoading=function(){
-	var DJ=Userm.findOne();
-	var loadedDevice=Device.loadDeviceFromJSON(DJ);
-	var result=Util.compareObjects(loadedDevice.deviceJSON,DJ);
-	console.log(loadedDevice.deviceJSON);
-	if(!result) console.log(loadedDevice.deviceJSON);
-	var text=result?'passed':'failed';
-	console.log("loadDeviceFromJSON "+text);
-	return result;
+	User.where({}).findOne(function(err,deviceJSON){
+		var loadedDevice=Device.loadDeviceFromDatabase(deviceJSON._id);
+		console.log(loadedDevice);
+	});
 }
 
 
@@ -72,7 +76,7 @@ testUser = function(){
 module.exports.testDevice=function(){
 	var functions=[];
 	functions.push(testDeviceCreation);
-	functions.push(testDeviceLoading);
+	//functions.push(testDeviceLoading);
 	//functions.push(testUser);
 	var continueTesting=true;
 	for(var i=0;i<functions.length;i++){
@@ -81,6 +85,7 @@ module.exports.testDevice=function(){
 			break;
 		}
 	}
+	console.log("All tests passed!");
 	return continueTesting;
 }
 

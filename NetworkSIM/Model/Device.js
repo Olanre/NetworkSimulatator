@@ -27,8 +27,6 @@ function Device(deviceName,token, simulation_name , email){
 	this.updateDeviceLog = updateDeviceLog;
 
 	//Constructor contents
-
-	//Editing the JSON which represents the device. This will have to change when the database finally works.
 	
 
 	
@@ -57,9 +55,14 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	return createdDevice;
 }
 
-function loadDeviceFromJSON(deviceJSON){
+function loadDeviceFromDatabase(deviceID){
 	var createdDevice=new Device('');
-	createdDevice.attachJSON(deviceJSON);
+	var query = DevModel.where({_id:deviceID});
+	query.findOne({_id: deviceID}, function(err,deviceJSON){
+		if(!err){
+		 createdDevice.attachJSON(deviceJSON);
+		}
+	});
 	return createdDevice;
 }
 
@@ -119,4 +122,4 @@ function updateDeviceLog(new_activity){
 
 
 module.exports.createNewDevice = createNewDevice;
-module.exports.loadDeviceFromJSON=loadDeviceFromJSON;
+module.exports.loadDeviceFromDatabase=loadDeviceFromDatabase;
