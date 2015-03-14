@@ -9,17 +9,17 @@ function NetworkIterator(networkList){
   
 	//Required
 	this.first = function() {
-		return networkList[0];
+		return this.networkList[0];
 	};
 	//Required
 	this.next = function() {
-		var network=networkList[index];
-		index++;
+		var network=this.networkList[index];
+		this.index++;
 		return network;
 	};
 	//Required
 	this.hasNext = function() {
-		return this.index<networkList.length;
+		return this.index<this.networkList.length;
 	};
 	//Required
 	this.reset = function() {

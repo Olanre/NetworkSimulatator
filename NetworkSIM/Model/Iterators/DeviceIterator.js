@@ -8,17 +8,17 @@ function DeviceIterator(deviceList){
 	this.index=0;
   //Required
   this.first = function() {
-	  return deviceList[0];
+	  return this.deviceList[0];
   };
   //Required
   this.next = function() {
-	  var device=deviceList[index];
-	  index++;
+	  var device=this.deviceList[index];
+	  this.index++;
 	  return device;
   };
   //Required
   this.hasNext = function() {
-	  return this.index<deviceList.length;
+	  return this.index<this.deviceList.length;
   };
   //Required
   this.reset = function() {

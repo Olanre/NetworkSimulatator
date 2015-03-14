@@ -367,7 +367,10 @@ function attachRDT( location, simulation_id, spec){
 		try{
 			setTimeout(function(){
 				var rdt = require(location + "/" + spec['main']);
-				console.log(location + "/" + spec['main']);
+				simulation.importRDT(rdt);
+				
+				//simulation.simulationJSON.rdts.push(spec);
+				
 			}, 1000);
 			
 			
@@ -391,7 +394,8 @@ function attachApp( location, simulation_id, spec){
 		try{
 			setTimeout(function(){
 				var app = require(location + "/" + spec['main']);
-				console.log(location + "/" + spec['main']);
+				simulation.importApp(app);
+				//simulation.simulationJSON.apps.push(spec);
 
 			}, 1000);
 			

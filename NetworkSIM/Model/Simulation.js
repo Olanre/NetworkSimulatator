@@ -49,6 +49,8 @@ function createNewSimulation(simulation_name){
 	simulationJSON.simulation_population = 0;
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
+	simulationJSON.rdts = [];
+	simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
 	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
@@ -76,6 +78,7 @@ function attachJSON(simulationJSON){
 
 function importRDT(rdt){
 		this.rdts.push(rdt);
+		rdt.init( this.networkIterator, this.deviceIterator);
 }
 	
 function importApp(app){
