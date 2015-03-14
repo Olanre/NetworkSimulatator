@@ -132,19 +132,17 @@
 </script>
 <script type = 'AdminSideBar-template'  id ="template5"   >
 	<div class="col-sm-3 col-md-2 sidebar">					
-		<ul class="nav nav-sidebar">						
-			<li class="active">							
-				<a href="#" onclick = "newSimulationView()">New Simulation  								
-					<span class="sr-only">(current) 								
+		<ul class="nav nav-sidebar">	
+			<li id="nav-option-simCreate" >						
+				<a href="#" onclick = "simulationListView()">Simulations
+				<span class="sr-only">								
 					</span>
 				</a>						
 			</li>						
-			<li>						
-				<a href="#" onclick = "simulationListView()">Simulations</a>						
-			</li>		
-								
-						
-									
+			<li id="nav-option-simView" class='active'>							
+				<a href="#" onclick = "newSimulationView()">New Simulation 
+				</a>						
+			</li>							
 		</ul>					
 	</div>				
 </script>
@@ -243,29 +241,6 @@
 		</table>
 	</div>
 </script>
-
-<script type = 'DeivceSideBar' id = 'template9'>
-
-<div class="col-sm-3 col-md-2 sidebar">					
-					<ul class="nav nav-sidebar">						
-						<li>						
-						<a href="#" onclick = "createNetworkView()">Create a new network</a>						
-						</li>						
-						<li>						
-						<a href="#" onclick = "NetworksListView()">View the Networks</a>						
-						</li>
-						<li>						
-						<a href="#" onclick = "LogsView()">View My Logs</a>						
-						</li>
-						<li>						
-						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
-						</li>					
-						<li>						
-						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
-						</li>	
-					</ul>					
-				</div>		
-</script>
 <script type='createSimulation-template' id = 'template10'>
 <h2> 
 		Create a Simulation
@@ -322,7 +297,7 @@
 	</div>
 	<br><br> 
 	 
-	<div class = 'btn btn-primary' onclick = "CreateSimulation()"> Start Simulation </div>
+	<div class = 'btn btn-primary' id='button-create-simulation' onclick = "CreateSimulation()"> Start Simulation </div>
 	</div>
 </script>
 
@@ -427,22 +402,22 @@
 	 {{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
  </table>
 </script>
-<script type = "simulation History" id = "template18">	
+<script type = "In Simulation Sidebar" id = "template18">	
 		<div class="col-sm-3 col-md-2 sidebar">				
 			<ul class="nav nav-sidebar">						
-				<li>						
+				<li id='nav-option-viewTopology'>						
 						<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						
 					</li>						
-					<li>						
+					<li id='nav-option-history'>						
 						<a href="#" onclick = "getSimulationHistory('{{simulation_id}}')">Simulation History</a>						
 					</li>
-					<li>						
+					<li id='nav-option-applications'>						
 						<a href="#" onclick = "adminAppsView()">Applications</a>						
 					</li>
-					<li>						
+					<li id='nav-option-RDTs'>						
 						<a href="#" onclick = "RDTsView()">RDTs</a>						
 					</li>					
-					<li>						
+					<li id='nav-option-backtosimulations'>						
 						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
 					</li>	
 				</ul>					

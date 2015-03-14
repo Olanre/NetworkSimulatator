@@ -124,3 +124,10 @@ function getGrandParentElement(start_point){
 	return start_point.parentNode.parentNode;
 	
 }
+
+function removeClass(class_name){
+	var list= document.getElementsByClassName(class_name);
+	for (var i=0; i<list.length;i++){
+		list[i].className='';
+	}
+}

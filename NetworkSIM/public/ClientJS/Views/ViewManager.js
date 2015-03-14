@@ -5,7 +5,7 @@ window.onload = function(){
 	defaultsideBarView();
 	loadStyleSheet('../css/bootstrap.min.css');
 	loadStyleSheet('../css/dashboard.css');
-	//loadStyleSheet('../css/defaultPages.css');
+	//loadStyleSheet('../css/test.css');
 	defaultheaderView();
 	updateAllViews();
 	
@@ -51,6 +51,9 @@ function deviceHeaderView(){
 }
 
 function adminAppsView(){
+	removeClass('active');
+	document.getElementById('nav-option-applications').className='active';
+
 	var local_session = get_local_simulation();
 	var applications = local_session.applications;
 	var html = viewAdminApplicationsTemplate(applications);
@@ -59,6 +62,9 @@ function adminAppsView(){
 }
 
 function RDTsView(){
+	removeClass('active');
+	document.getElementById('nav-option-RDTs').className='active';
+
 	var local_session = get_local_simulation();
 	var rdts = local_session.rdts;
 	var html = viewRDTsTemplate(rdts);
@@ -119,7 +125,8 @@ function simulationListView(){
 	var content = getContainer();
 	//sets the default sidebar page
 	defaultsideBarView();
-
+	removeClass('active');
+	document.getElementById('nav-option-simCreate').className='active';
 	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
 }
 
@@ -130,6 +137,9 @@ function newSimulationView(){
 	var simulation_view = document.getElementById('template10');
 	var html = simulation_view.innerHTML;
 	var content = getContainer();
+	//update the active link
+	removeClass('active');
+	document.getElementById('nav-option-simView').className='active';
 	content.innerHTML = html;
 }
 /**
@@ -166,6 +176,10 @@ function simulationSideBarView(){
  ****/
 
 function networkTopologyView(){
+	removeClass('active');
+	document.getElementById('nav-option-viewTopology').className='active';
+
+	document.getElementById('')
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
 	removeFile('Manipulation.js', 'js');
@@ -205,6 +219,9 @@ function networkTopologyView(){
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
  */
 function eventLogsView(){
+	removeClass('active');
+	document.getElementById('nav-option-history').className='active';
+
 	removeFile('topologyView.css', 'css');
 	removeFile('EventLogView.css', 'css');
 	removeFile('EventLogView.js', 'js');
@@ -256,7 +273,7 @@ function eventLogsView(){
 	//calls the EventLogView function for viewing the history
 	setTimeout(function(){
 		populatePage(get_local_history());
-	}, 3000);
+	}, 1000);
 }
 
 /**
@@ -281,6 +298,8 @@ function SimulationManagementView(){
 	var aside = getSideBar();
 	var sidebar = SimulationSideBarView(local_simulation._id);
 	aside.innerHTML = sidebar;
+	//loads the network topology
+	networkTopologyView();
 }
 
 

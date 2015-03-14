@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 
 var stateSchema = mongoose.Schema({
 	 //type string
-	 id : String,
-	 state_list : [{simulation : String, timeStamp : Date}],
+	 simulation_id : String,
+	 state : [{simulation : String, timestamp : Date}],
 	 
 	});
 stateSchema.statics.newState = function (aState)
