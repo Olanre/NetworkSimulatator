@@ -69,7 +69,7 @@ exports.deepCopy=function(item){
 		var item = JSON.parse(jsonstring);
 		
 	}else{
-		console.log("Passed undefined object to deepCopy");
+		//console.log("Passed undefined object to deepCopy");
 	}
 	return item;
 }
