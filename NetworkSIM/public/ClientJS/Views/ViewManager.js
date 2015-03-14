@@ -119,7 +119,8 @@ function simulationListView(){
 	var content = getContainer();
 	//sets the default sidebar page
 	defaultsideBarView();
-
+	removeClass('active');
+	document.getElementById('nav-option-simCreate').className='active';
 	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
 }
 
@@ -130,6 +131,9 @@ function newSimulationView(){
 	var simulation_view = document.getElementById('template10');
 	var html = simulation_view.innerHTML;
 	var content = getContainer();
+	//update the active link
+	removeClass('active');
+	document.getElementById('nav-option-simView').className='active';
 	content.innerHTML = html;
 }
 /**
@@ -166,6 +170,10 @@ function simulationSideBarView(){
  ****/
 
 function networkTopologyView(){
+	removeClass('active');
+	document.getElementById('nav-option-viewTopology').className='active';
+	
+	document.getElementById('')
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
 	removeFile('Manipulation.js', 'js');
