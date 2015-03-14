@@ -2,7 +2,10 @@ var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
 var SimModel = require("../Database/dbModels/simulationModel.js");
-
+var AppModel = require("../Database/dbModels/appModel.js");
+var rdtModel = require("../Database/dbModels/RDTModel.js");
+var NetworkIterator = require("./Iterators/NetworkIterator.js");
+var DeviceIterator = require("./Iterators/DeviceIterator.js")
 
 function Simulation(simulation_name){
 
@@ -10,9 +13,11 @@ function Simulation(simulation_name){
 	
 	this.partition_list = [];
 	this.device_list=[];
-	this.networkIterator = {};
-	this.app = '';
-	this.rdt = {};
+	this.network_list=[];
+	this.networkIterator = new NetworkIterator(this.network_list);
+	this.deviceIterator = new DeviceIterator(this.device_list);
+	this.apps = [];
+	this.rdts = [];
 	
 	this.simulationJSON = {};
 	
@@ -44,7 +49,10 @@ function createNewSimulation(simulation_name){
 	simulationJSON.simulation_population = 0;
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
+	simulationJSON.rdts = [];
+	simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
+	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
 	return createdSimulation;
 }
@@ -69,15 +77,19 @@ function attachJSON(simulationJSON){
 };
 
 function importRDT(rdt){
-		this.rdt = rdt;
+		this.rdts.push(rdt);
+		rdt.init( this.networkIterator, this.deviceIterator);
 }
 	
 function importApp(app){
-		this.app = app;		
+		this.apps.push(app);		
 }
 	
 function removeApp(app){
-		this.app = '';
+		var index = apps.indexOf(app);
+		if (index > -1) {
+		    apps.splice(index, 1);
+		}
 }
 
 function getNetworks(){
@@ -103,8 +115,8 @@ function getDevices(){
 function addPartition(partition){
 		
 		this.partition_list.push(partition);
-		console.log(this.simulationJSON);
 		this.simulationJSON.partition_list.push(partition.partitionJSON._id);
+		this.simulationJSON.save();
 } 
 	
 
@@ -112,16 +124,19 @@ function addDevice(device){
 	device.deviceJSON.simulation_name = this.simulationJSON.simulation_name;
 	this.device_list.push(device);
 	this.simulationJSON.num_devices++;
+	device.deviceJSON.save();
+	this.simulationJSON.save();
 }
 
 function addNetwork(network){
 
-	var partition= Partition.createNewPartition();
+	var partition= Partition.createNewPartition(this.simulationJSON.simulation_name, network.network_name);
 	partition.addNetwork(network);
 	this.partition_list.push(partition);
-	this.simulationJSON.partition_list.push(partition.partitionJSON);
+	this.network_list.push(network);
+	this.simulationJSON.partition_list.push(partition.partitionJSON._id);
 	this.simulationJSON.num_networks++;
-
+	this.simulationJSON.save();
 }
 
 function removeNetwork(network){
@@ -131,6 +146,7 @@ function removeNetwork(network){
 	}
 	network.partitionObject.removeNetwork(network);
 	this.simulationJSON.num_networks--;
+	this.simulationJSON.save();
 		
 }
 
@@ -146,10 +162,12 @@ function mergePartitions(partitionA,partitionB){
 
 		}
 	}
+	this.simulationJSON.save();
 }
 
 function updateSimulationLog(new_activity){
 	this.simulationJSON.activity_logs += new_activity;
+	this.simulationJSON.save();
 }
 
 

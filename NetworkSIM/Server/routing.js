@@ -1,4 +1,5 @@
 var SimulationManager = require("./SimulationManager.js");
+var FileManager = require("./FileManager.js");
 var io = {};
 
 var clients = [];
@@ -42,24 +43,21 @@ function handleClient (socket) {
     			if(obj.Response == 'Success'){
     				//map the socket_id to that users token
     				client_map[token] = socket.id;
-    				console.log("Successful authenication" );
+    				console.log("Successful authenication");
     					handleEventQueue(token, events, function(){
 	    					//the painful part, we need to send it to all clients in the simulation
 	    					var list = SimulationManager.getAllActiveDevices(simulation);
 	    					for(var index = 0; index < list.length; index++){
 	    						var user_token = list[index]['token'];
-	    						
 	    						var socket_id = client_map[user_token];
 	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
-	        					io.to(socket_id).emit('syncState', state);
+                                io.to(socket_id).emit('syncState', state);
 	    						
 	    					}    					
     				});
     				
     			}else{
-    				handleEventQueue(token, events, function(){
-    					console.log("Failed authentication");
-    					
+    				handleEventQueue(token, events, function(){    					
     					var state= SimulationManager.getBlankAppState();
     					
     					io.to(socket.id).emit('syncState', state);
@@ -78,7 +76,7 @@ function handleClient (socket) {
     	var simulation_id = json.simulation_id;
     	SimulationManager.authToken(token, simulation_id, function(obj){
     	//for now allow empty tokens
-    		console.log(obj);
+    		
     		io.to(socket.id).emit('validate_user', obj);
     	});
     });
@@ -91,7 +89,6 @@ function handleClient (socket) {
     	SimulationManager.authToken(token, simulation_id, function(obj){
     		if(obj.Response == 'Success'){
 		    	var history = SimulationManager.getSimulationHistory(simulation_id);
-		    	console.log(history);
 		    	io.to(socket.id).emit('syncHistory', history);
     		}else{
     			io.to(socket.id).emit('validate_user', obj);
@@ -139,7 +136,6 @@ function handleEventQueue(token, eventQueue, callback) {
 				break;
             case '/upload':
                 FileManager.uploadAllFiles(eventQueue[i].event_data);
-                console.log("uploadin'")
                 break;
 
 			default:

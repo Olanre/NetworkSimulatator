@@ -7,18 +7,15 @@ var Database = require('../Database/mongooseConnect.js');
 
 exports.authenticateToken = function authenticateToken(token, callback){
 	var user = Database.getUserByToken(token, function(obj){
-		//console.log(obj);
 		var res = {};
 		if(obj == null){
 			res.Response = 'Fail';
 		}else{
 			
-			console.log(token);
-			console.log(obj);
+			
 			res.Response = 'Success';
 			obj.verified = true;
 			Database.modifyUser(token, obj, function(){
-				console.log();
 			});
 		}
 		callback(res);

@@ -3,6 +3,8 @@
  */
 var socket = io.connect();
 
+var connected = false;
+
 /***
  * Handles creating a connection to the server
  */
@@ -59,6 +61,7 @@ socket.on('syncHistory',  function(appHistory){
  */
 socket.on('validate_user', function(data){
 	object = data;
+	console.log(data);
 	//if the authentication was a success
 	if(object.Response == 'Success'){
 		alert('You have been authenicated. \nPlease wait to be redirected');
@@ -70,8 +73,24 @@ socket.on('validate_user', function(data){
 });
 
 socket.on('connect', function () {
-	 console.log('Socket is connected.');
-	 syncWithServer();
+	
+	console.log('Socket is connected.');
+	var time_stamp = new Date();
+	var event_data = { 'num_devices': 1,
+			  'num_networks': 1,
+			  'simulation_population': 0,
+			  'simulation_name': 'Test',
+			  'globalcount': 0,
+			  'tokenMethod': 'Email',
+			  'config_map': { 'frfr': { 'ggn': { 'device1' : 1 } } },
+			  'activity_logs': '' };
+
+	//creates the query to the server
+	var simulations = get_local_simulation_list();
+	if( simulations == null || simulations.length == 0)
+	addToEventQueue('/create/Simulation', event_data, time_stamp);
+	connected = true;
+	syncWithServer();
 });
 
 socket.on('disconnect', function () {

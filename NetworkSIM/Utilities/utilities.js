@@ -62,3 +62,14 @@ exports.findByUniqueID=function(uniqueID,list){
 	
 	return -1;
 }
+exports.deepCopy=function(item){
+	if(item !== undefined && item !== ''){
+		//console.log( " This is item after the check\n" + item);
+		var jsonstring = JSON.stringify(item);
+		var item = JSON.parse(jsonstring);
+		
+	}else{
+		console.log("Passed undefined object to deepCopy");
+	}
+	return item;
+}

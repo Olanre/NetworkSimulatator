@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var partition = require("./partitionModel").Partition;
+var App = require("./appModel").App;
+var Rdt = require("./RDTModel").RDT;
+
 var simulationSchema = mongoose.Schema({
 	   num_devices: Number,
 	   num_networks: Number,
@@ -8,6 +12,8 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
 	   partition_list: [{type : mongoose.Schema.Types.ObjectId, ref: 'Partition'}],
+	   applications : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}],
+	   rdts : [{type : mongoose.Schema.Types.ObjectId, ref: 'RDT'}],
 	   activity_logs : String,	   
 });
 
@@ -23,7 +29,7 @@ simulationSchema.statics.addSim = function (aSim)
 //Find simulation by name
 simulationSchema.statics.getSimByName = function (aString, callback)
 {
- Sim.findOne( {simulation_name: aString}, function(err,obj)
+ this.findOne( {simulation_name: aString}, function(err,obj)
  { 
    if(err) console.log("no sim with name " + aString);
    
@@ -36,7 +42,7 @@ simulationSchema.statics.getSimByName = function (aString, callback)
 //Modify simulation by name
 simulationSchema.statics.modifySimByName = function (aString, aSim)
 {
- Sim.findOne( {simulation_name: aString}, function(err,obj)
+ this.findOne( {simulation_name: aString}, function(err,obj)
  { 
    if(err) console.log("no sim with name " + aString);
    var LenneteSim = new Sim();
@@ -49,7 +55,7 @@ simulationSchema.statics.modifySimByName = function (aString, aSim)
 
 simulationSchema.statics.findAllSimulations = function (callback)
 {
-	Sim.find({}, function(err, sims) {
+	this.find({}, function(err, sims) {
 		if(err) callback("No simulations or err ln, 180");
 		callback(sims);
 	});

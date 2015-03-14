@@ -11,8 +11,6 @@ function SimulationLogsTemplate(logs){
 	 textile = Hogan.compile(template);
 	 var logs_array = logs.split("\n");
 	 context = {'logs' : logs_array};
-	 console.log(context);
 	 tpl = textile.render(context);
-	 console.log(tpl);
 	 return tpl;
 }

@@ -1,17 +1,50 @@
 var path = require('path');
 var fs=require('fs');
+var mkdirp = require('mkdirp');
+var SimulationManager = require("./SimulationManager.js");
 
 function uploadAllFiles(event_data){
 	var files=event_data.files;
-
-	for(var i=0;i<files.length;i++){
-		if(files[i].type=="APP"){
-			uploadFile(files[i],"../apps/"+event_data.simulation_name+"/");
-		}
-		else{
-			uploadFile(files[i],"../rdts/"+event_data.simulation_name+"/");
-		}
+	var type = event_data.type;
+	var folder_name = event_data.name;
+	
+	var spec = JSON.parse(event_data.spec);
+	var simulation_id = event_data.simulation_id;
+	var location = "./";
+	
+	//console.log(__dirname);
+	if(type=="App"){
+		
+		location = "../apps/"+folder_name;
+		mkdirp(__dirname + "/" +  location, function(err) { 
+			if(!err){
+				
+				for(var i=0;i<files.length;i++){
+					
+					uploadFile(files[i],location + '/');
+					
+				}
+				SimulationManager.attachApp( location, simulation_id, spec);
+			}
+		});
+		
+		
+	}else if(type=="RDT"){
+		
+		location = "../rdts/"+folder_name;
+		mkdirp(__dirname + "/" +location, function(err) { 
+			if(!err){
+				
+				for(var i=0;i<files.length;i++){
+					
+					//uploadFile(files[i],location + '/');
+				}
+				SimulationManager.attachRDT(location, simulation_id, spec);
+			}
+		});
 	}
+	
+
 }
 
 function uploadFile(file,dir){

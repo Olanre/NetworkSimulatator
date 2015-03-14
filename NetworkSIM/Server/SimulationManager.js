@@ -27,23 +27,65 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	var simulation,device,deviceList;
 
 	simulation=Util.findByUniqueID(simulation_id,simulationList);
+	
 	if(simulation != -1){
 		deviceList=simulation.getDevices();
-	
+		
 		for(index in deviceList){
 			if(deviceList[index]._id==token){
+				
 				device=deviceList[index];
+				
 				break;
 			}
 		}
 	}
-
-	var state = {};
-	state.simulation=simulation.simulationJSON;
+	
+	var state = {};;
+	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	newJSON.partition_list=buildPartitionList(simulation);
+	state.simulation=newJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
-
 	return state;
+}
+function buildPartitionList(simulation){
+	var partition_list,network_list,device_list;
+	partition_list=simulation.partition_list;
+	var newNetworkList=[],newDeviceList=[],newPartitionList=[];
+
+	for (pIndex in partition_list){
+
+		network_list=partition_list[pIndex].network_list;
+
+		for(nIndex in network_list){
+			device_list=network_list[nIndex].device_list;
+
+			for(dIndex in device_list){
+				newDeviceList.push(device_list[dIndex].deviceJSON);
+			}
+			var network=Util.deepCopy(network_list[nIndex].networkJSON);
+			network.device_list=Util.deepCopy(newDeviceList);
+			network.device_list=newDeviceList;
+			newDeviceList=[];
+			newNetworkList.push(network);
+		}
+		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
+		partition.network_list=Util.deepCopy(newNetworkList);
+		partition.network_list=newNetworkList;
+		newNetworkList=[];
+		newPartitionList.push(partition);
+	}
+	//console.log(newPartitionList);
+	return newPartitionList;
+}
+function buildListObject(idList,objectList){
+	var list=[];
+	var item;
+	for(id in idList){
+		item=Util.findByUniqueID(idList[id],objectList);
+		list.push(item);
+	}
 }
 
 exports.getAllActiveDevices = function(simulation_id){
@@ -83,11 +125,21 @@ module.exports.getSimulationNames=function(){
 
 module.exports.getSimulationHistory=function(simulation_id){
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	var history = simulation_history.simulation_historyJSON;
+	
+	/**for( var index = 0; index <history['state'].length; index++){
+		var sim = history['state'][index].simulation;
+		console.log(sim);
+		var newJSON=Util.deepCopy(sim);
+		newJSON.partition_list=buildPartitionList(newJSON);
+		history['state'][index].simulation = newJSON;
+		
+	} */
 	
 	if (simulation_history == -1){
 		simulation_history.simulation_historyJSON = {};
 	}
-	return simulation_history.simulation_historyJSON;
+	return history;
 }
 
 module.exports.getSimulationList=function(){
@@ -116,7 +168,7 @@ function authToken(token, simulation_id,  callback){
 		simulation = simulationList[i];
 		if(simulation != -1){
 			deviceList=simulation.getDevices();
-			//console.log(deviceList);
+	
 			for(var index = 0; index < deviceList.length; index++){
 				if(deviceList[index].token == token){
 					var timestamp = new Date().toISOString();
@@ -125,6 +177,7 @@ function authToken(token, simulation_id,  callback){
 						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
 						simulation.updateSimulationLog(new_activity);
 						deviceList[index].deviceJSON.verified = true;
+						simulation.simulationJSON.simulation_population++;
 						
 						saveSimulationState( simulation_id, timestamp, simulation);
 					}
@@ -137,7 +190,6 @@ function authToken(token, simulation_id,  callback){
 	callback(res);
 	//bypassing database for now.
 	//TokenManager.authenticateToken(token, function(obj){
-		//console.log(obj);
 		//callback(obj);
 	//});
 		
@@ -154,14 +206,12 @@ function createSimulation(event_data, time_stamp) {
 	var new_activity = "Simulation " +  event_data.simulation_name + " created at " + time_stamp + "\n";
 	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
-	simulation.simulationJSON.num_devices = event_data.num_devices;
-	simulation.simulationJSON.num_networks = event_data.num_networks;
 	
 	
 	var createdPartition,createdNetwork,createdDevice;
 
 	for(partition in map){
-
+		
 		if(partition=='freelist'){
 			for(device in map[partition]){
 				createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
@@ -172,11 +222,13 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 		else{
-			createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
-			simulation.addPartition(createdPartition);
+			//createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
+			//simulation.addPartition(createdPartition);
 			for(network in map[partition]){
+				//console.log(network);
+				//console.log("Making a new network and partition");
 				createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
-				createdPartition.addNetwork(createdNetwork);
+				simulation.addNetwork(createdNetwork);
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
@@ -201,11 +253,6 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	//var jsonstring = JSON.stringify(simulation.simulationJSON);
-	//var json = JSON.parse(jsonstring);
-	//var history_state = History_State.createNewHistory_State(json, time_stamp);
-	//simulation_history.addState(history_state);
-	// Add database stuff
 	//create a new history object
 	simulationHistoryList.push(simulation_history);
 	//save our state in the history object
@@ -237,17 +284,12 @@ function createNetwork(event_data, time_stamp){
 
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
 	if(simulation != -1){
-		var partition=Util.findByUniqueID(event_data.partition_id,simulation.partition_list);
 		var network= Network.createNewNetwork(event_data.network_name);
 		var new_activity = "Network " +  event_data.network_name +  " was created  at " + time_stamp + "\n";
 		simulation.updateSimulationLog(new_activity);
 	
-		if(partition!=-1){
-			partition.addNetwork(network,"Wi-Fi");
-		}
-		else{
-			simulation.addNetwork(network);
-		}
+		simulation.addNetwork(network);
+
 		//save the state
 		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
@@ -288,6 +330,7 @@ function removeNetwork(event_data, time_stamp){
 }
 
 function addDeviceToNetwork(event_data, time_stamp){
+	var time_stamp = new Date().toISOString();
 	var network_id=event_data.network_id;
 	var device_id=event_data.device_token;
 	var simulation_id=event_data.simulation_id;
@@ -298,9 +341,9 @@ function addDeviceToNetwork(event_data, time_stamp){
 		var device=Util.findByUniqueID(device_id,simulation.getDevices());
 		if(device != -1){
 			//don't add a device to a network they already belong to
-			//console.log(device.deviceJSON);
+
 			if(device.networkObject!=network){
-				console.log('adding');
+	
 				network.addDevice(device);
 				var new_activity = "Device " +  device.device_name +  " added to network " + network.networkName + " at " + time_stamp + "\n";
 				simulation.updateSimulationLog(new_activity, simulation);
@@ -312,6 +355,62 @@ function addDeviceToNetwork(event_data, time_stamp){
 	}
 
 }
+
+function attachRDT( location, simulation_id, spec){
+	var time_stamp = new Date().toISOString();
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	if(simulation !== -1){
+		var new_activity = "The RDT " +  spec.name +  " was imported into the simulation at  " + time_stamp + "\n";
+		simulation.updateSimulationLog(new_activity);
+		
+		spec = JSON.parse(spec);
+		try{
+			setTimeout(function(){
+				var rdt = require(location + "/" + spec['main']);
+				simulation.importRDT(rdt);
+				
+				//simulation.simulationJSON.rdts.push(spec);
+				
+			}, 1000);
+			
+			
+		}
+		catch(err){
+			console.log(err);
+		}
+		//save the state
+		saveSimulationState( simulation._id, time_stamp, simulation);
+	}
+	
+}
+
+function attachApp( location, simulation_id, spec){
+	var time_stamp = new Date().toISOString();
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	if(simulation !== -1){
+		var new_activity = "The App " +  spec.name +  " was imported into the simulation  at " + time_stamp + "\n";
+		simulation.updateSimulationLog(new_activity);
+		spec = JSON.parse(spec);
+		try{
+			setTimeout(function(){
+				var app = require(location + "/" + spec['main']);
+				simulation.importApp(app);
+				//simulation.simulationJSON.apps.push(spec);
+
+			}, 1000);
+			
+		}
+		catch(err){
+			console.log(err);
+		}
+		//save the state
+		
+		saveSimulationState( simulation._id, time_stamp, simulation);
+	}
+	
+	
+}
+
 //TODO untested
 function mergePartitions(event_data, time_stamp){
 
@@ -347,16 +446,24 @@ function dividePartitions(event_data, time_stamp){
 function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+
 	if(simulation_history != -1){
-		var jsonstring = JSON.stringify(simulationObject.simulationJSON);
-		var json = JSON.parse(jsonstring);
-		console.log(json);
-		var history_state = History_State.createNewHistory_State(json, time_stamp);
+		
+		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
+			var sim = simulationObject.simulationJSON;
+			//var newJSON= Util.deepCopy(sim);
+			//if(newJSON !== undefined)newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
+			var jsonstring = JSON.stringify(sim);
+			var newJSON = JSON.parse(jsonstring);
+			
+		}
+		var history_state = History_State.createNewHistory_State(newJSON, time_stamp);
 		simulation_history.addState(history_state);
 	}
 }
 
-
+module.exports.attachRDT = attachRDT;
+module.exports.attachApp = attachApp;
 module.exports.authToken = authToken;
 module.exports.simulationList=simulationList;
 module.exports.createSimulation=createSimulation;
@@ -366,3 +473,4 @@ module.exports.createNetwork = createNetwork;
 module.exports.removeNetwork = removeNetwork;
 module.exports.mergePartitions = mergePartitions;
 module.exports.dividePartitions = dividePartitions;
+module.exports.buildPartitionList = buildPartitionList;

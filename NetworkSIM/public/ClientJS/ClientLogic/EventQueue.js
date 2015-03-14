@@ -9,7 +9,7 @@ function newEventQueue(){
 	queue.token = '';
 	queue.eventQueue = [];
 	queue.simulation_id = '';
-	store_local_events(local_events);
+	store_local_events(queue);
 	return queue;
 }
 
@@ -32,7 +32,9 @@ function addToEventQueue(route, event_data, time_stamp){
 	local_events.simulationId = getLocalSimulationId();
 	
 	store_local_events(local_events);
-	syncWithServer();
+	if(connected == true){
+		syncWithServer();
+	}
 }
 
 function updateLocalEventsToken(token){

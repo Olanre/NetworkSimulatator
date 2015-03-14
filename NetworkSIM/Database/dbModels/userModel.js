@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+//User Schema properties
 var userSchema = mongoose.Schema({
 	
 	token:String,
@@ -17,7 +19,7 @@ var userSchema = mongoose.Schema({
 	
 });
 
-
+//Functions available to a "User" object. Functions defined inside schema
 userSchema.statics.addUser = function (aUser)
 { 
   var Lennete = new User(aUser);
@@ -37,4 +39,6 @@ userSchema.statics.modifyUser = function (aToken, aUser)
 	  });
 }
 
+
+//Define Schema and Schema functions as a model called User, using the userSchema, and stored in a collection called "Users"
 module.exports = mongoose.model('User', userSchema, 'Users');

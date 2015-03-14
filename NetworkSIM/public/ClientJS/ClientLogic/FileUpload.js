@@ -1,12 +1,10 @@
-var current_rdtfiles=[];
-var current_appfiles=[];
-var uploadEvent={simulation_id:'', files: []};
+var current_files=[];
 
-function handleFiles() {
+var uploadEvent={};
 
-		current_rdtfiles = document.getElementById("uploadRDT").files;
-		current_appfiles = document.getElementById("uploadApp").files;
+function handleFiles(file_type) {
 		
+		current_files = document.getElementById(file_type).files;		
 		readFiles();
 		updateData();		
 
@@ -14,86 +12,91 @@ function handleFiles() {
 }
 
 function updateData(){
-	document.getElementById("rdtFiles").innerHTML='';
-	var appBytes = 0,
-		rdtBytes=0;
-		nRDTs = current_rdtfiles.length,
-		nApps = current_appfiles.length;
+	
+	var fileBytes = 0,
+		nFiles = current_files.length;
+		
 		var fileSize;
 
-		for (var nFileId = 0; nFileId < nRDTs; nFileId++) {
-			fileSize=current_rdtfiles[nFileId].size;
-			rdtBytes += fileSize;
+		var thediv = "<table>"
+		for (var nFileId = 0; nFileId < nFiles; nFileId++) {
+			fileSize=current_files[nFileId].size;
+			fileBytes += fileSize;
 
-			var thediv ="<div id='RDT"+nFileId+
-			"'><img src='../img/js-128.png' height='128' width='128'/><br> "+
-			current_rdtfiles[nFileId].name+"<br> Size: "+fileSize+" Bytes</div>";
-
-
-			document.getElementById("rdtFiles").innerHTML+=thediv;
-		}
-
-		for (var nFileId = 0; nFileId < nApps; nFileId++) {
-			fileSize=current_appfiles[nFileId].size;
-			appBytes += fileSize;
-
-			var ext= current_appfiles[nFileId].name.split('.').pop();
+			var ext= current_files[nFileId].name.split('.').pop();
 			var img;
 
 			switch (ext){
 				case "js":
-					img='../imgjs-128.png'
+					img='../img/js-128.png'
 					break;
 				default:
-					img='../imghtml-128.png';
+					img='../img/html-128.png';
 					break
 			}
+			
 
-			var thediv ="<div id='APP"+nFileId+
-			"'><img src='"+img+"' height='128' width='128'/><br> "+
-			current_appfiles[nFileId].name+"<br> Size: "+fileSize+" Bytes</div>";
+			 thediv +="<tr id='FILE"+nFileId+
+			"'> <td> <img src='"+img+"' height='128' width='128'/> </td> <td> "+
+			current_files[nFileId].name+"</td> <td> Size: "+fileSize+" Bytes" +
+					"<td> <div onclick = 'DeleteFile(" + nFileId + ")'> <img height='90' width='90' src='../img/file_delete.png'< /> </div> </td> </tr>";
+			
 
-
-			document.getElementById("appFiles").innerHTML+=thediv;
+			
 
 		}
+		 thediv +=" </table> ";
+		 document.getElementById("Files").innerHTML = thediv;
+		var fileSize = fileBytes + " bytes";
 
-		var rdtSize = rdtBytes + " bytes";
-		var appSize = appBytes + " bytes";
-
-		document.getElementById("rdtfileNum").innerHTML = nRDTs;
-		document.getElementById("rdtfileSize").innerHTML = rdtSize;
-
-		document.getElementById("appfileNum").innerHTML = nApps;
-		document.getElementById("appfileSize").innerHTML = appSize;
+		document.getElementById("fileNum").innerHTML = nFiles;
+		document.getElementById("fileSize").innerHTML = fileSize;
 }
 
-
+function DeleteFile(int){
+		
+		//
+		//delete current_files[int];
+		//console.log(current_files);
+		//uploadEvent.files = uploadEvent.files.splice(int, 1);
+		
+	 updateData();
+}
 
 function readFiles(){
-	var rdtReaders=[];
-	var appReaders=[];
-	var file;
-	uploadEvent={simulation_id:'', files: []};
-	for(var i=0;i<current_rdtfiles.length;i++){
-		rdtReaders.push(new FileReader());
-		var name=current_rdtfiles.item(i).name;
-		rdtReaders[i].onload=function(){
-			addFileToEvent(this,'APP',name);
-		};
-		rdtReaders[i].readAsText(current_rdtfiles.item(i));
-	}
-	for(var i=0;i<current_appfiles.length;i++){
-		appReaders.push(new FileReader());
-		var name=current_appfiles.item(i).name;
-
-		appReaders[i].onload=function(){
-			addFileToEvent(this,'APP',name);
-		};
-
-		appReaders[i].readAsText(current_appfiles.item(i));
+	for(var i=0;i<current_files.length;i++) { 
+		uploadEvent= {name : '', simulation_id:'', spec : '', type : '',  files: []};
+		setup_reader(current_files[i]); 
 	}
 }
+function setup_reader(file){
+	
+	fileReader = new FileReader();
+	var name=file.name;
+	var type = file.type;
+		
+	fileReader.onload=function(){
+		addFileToEvent(this,type ,name);
+	};
+	fileReader.readAsText(file);
+		 
+}
+
+function hasRequiredFile(needle, haystack){
+	var bool = false;
+	for (var i = 0; i < haystack.length; i++){
+		if(haystack[i]['name'] == needle){
+			if(needle == 'package.json'){
+				uploadEvent.name = JSON.parse(haystack[i]['data']).name;
+				uploadEvent.spec = JSON.stringify(haystack[i]['data']);
+			}
+			bool = true;
+			break;
+		}
+	}
+	return bool;
+}
+
 
 function addFileToEvent(filereader,type,name){
 	var theFile = {};
@@ -101,7 +104,37 @@ function addFileToEvent(filereader,type,name){
 	theFile.data=filereader.result;
 	theFile.name=name;
 	uploadEvent.files.push(theFile);
+	
 }
-function pushFileEvent(){
-	addToEventQueue('/upload',uploadEvent,new Date());
+function pushFileEvent(file_type){
+	var local_simulation = get_local_simulation();
+	uploadEvent.simulation_id = local_simulation._id;
+	uploadEvent.type = file_type;
+	var upload = true;
+	
+	if( file_type == 'RDT'){
+		if(hasRequiredFile('spec.md', uploadEvent.files) == false){
+			alert("Please include a Mark Down file for the specs");
+			upload = false;
+		}
+		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
+			alert("Please include a package.json file describing your RDT");
+			upload = false;
+		}
+	}
+	if( file_type == 'App'){
+		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
+			alert("Please include a package.json file describing your Application");
+			upload = false;
+		}
+	}
+	if( upload){
+		console.log(uploadEvent);
+		addToEventQueue('/upload',uploadEvent,new Date());
+		setTimeout(function(){
+			SimulationManagementView();
+		},5000);
+	}
+	
+	//
 }

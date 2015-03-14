@@ -18,5 +18,5 @@ stateSchema.statics.newState = function (aState)
   //console.log("Saved state" + state);
 }
 
-//exporting is done this way, defines, declares Network as the name of this schema/function model. 
+
 module.exports = mongoose.model('State', stateSchema, 'States');

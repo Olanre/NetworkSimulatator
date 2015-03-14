@@ -10,7 +10,7 @@ function Device(deviceName,token, simulation_name , email){
 	//Our Variables//
 	this.networkObject=Network.createNewNetwork('','');
 	this.networks_created = [];
-	this.rdt = {};
+	this.rdts = [];
 	this.token=token;
 	this.deviceJSON = {};
 	this._id= token;
@@ -31,7 +31,7 @@ function Device(deviceName,token, simulation_name , email){
 	//Editing the JSON which represents the device. This will have to change when the database finally works.
 	
 
-	this.networkObject.addDevice(this);
+	
 }
 
 
@@ -39,15 +39,19 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	var createdDevice = new Device(deviceName,token, simulation_id ,email);
 	var deviceJSON = new DevModel();
 
+	
 	deviceJSON.current_device_name=deviceName;
 	deviceJSON.current_simulation = simulation_id;
 	deviceJSON.admin=false;
 	deviceJSON.verified=false;
+	deviceJSON.current_partition = '';
+	deviceJSON.current_network = '';
 	
 	deviceJSON.email = deviceName;
 	deviceJSON.token=token;
 	createdDevice.deviceJSON=deviceJSON;
 
+	createdDevice.networkObject.addDevice(createdDevice);
 	deviceJSON.save();
 
 	return createdDevice;
@@ -72,15 +76,17 @@ function joinNetwork(network){
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.networkJSON.partition;
 	  this.deviceJSON.current_network=network.network_name;
+	  this.deviceJSON.save();
 	  
 };
   
 function leaveNetwork(network){
 	  this.deviceJSON.current_network= '';
 	  this.networkObject = {};
-	  this.deviceJSON.current_partition= 'freelist';
+	  this.deviceJSON.current_partition= '';
 	  var networkIndex= network.device_list.indexOf(this);
 	  network.device_list.splice(networkIndex,1);
+	  this.deviceJSON.save();
 };
 
 //This is supposed to make the device join the network it used to be in. idk lol
@@ -88,16 +94,27 @@ function returnNetwork(){
 };
  
 function replicateRDT(rdt){
-	  this.rdt = rdt
+	  this.rdts.push(rdt);
+	  this.deviceJSON.save();
+};
+
+//acces an rdt by name
+function accessRDT(rdt_name){
+	for(var i = 0; i < rdts.length; i++){
+		if(rdts[i].constructor.name == rdt_name) return this.rdts[i];
+		
+	}
 };
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device
-	return this.rdt;
+	var index = rdts.length-1;
+	return this.rdts[index];
 };
 
 function updateDeviceLog(new_activity){
 	this.deviceJSON.activity += new_activity;
+	this.deviceJSON.save();
 }
 
 

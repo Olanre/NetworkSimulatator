@@ -7,8 +7,9 @@ window.onload = function(){
 	loadStyleSheet('../css/dashboard.css');
 	//loadStyleSheet('../css/defaultPages.css');
 	defaultheaderView();
-	syncWithServer();
-	updateAllViews();	
+	updateAllViews();
+	
+	
 }
 
 /**
@@ -49,7 +50,22 @@ function deviceHeaderView(){
 	content.innerHTML = html;
 }
 
+function adminAppsView(){
+	var local_session = get_local_simulation();
+	var applications = local_session.applications;
+	var html = viewAdminApplicationsTemplate(applications);
+	var content = getContainer();
+	content.innerHTML = html;
+}
 
+function RDTsView(){
+	var local_session = get_local_simulation();
+	var rdts = local_session.rdts;
+	var html = viewRDTsTemplate(rdts);
+	var content = getContainer();
+	content.innerHTML = html;
+	
+}
 /**
  * Displays the user's information
  */
@@ -153,8 +169,6 @@ function networkTopologyView(){
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
 	removeFile('Manipulation.js', 'js');
-	removeFile('Shapes.js', 'js');
-	removeFile('Drawing.js', 'js');
 
 	defaultheaderView(); 
 	
@@ -165,14 +179,12 @@ function networkTopologyView(){
 	var content = getContainer();
 	//defaultsideBarView();
 	loadStyleSheet('../css/topologyView.css');
+	var html=NetworkTopologyTemplate(get_local_simulation());
+	var content=getContainer();
+	content.innerHTML=html;
 	loadJSFile('/gui/Manipulation.js');
-	loadJSFile('/gui/Shapes.js');
-	loadJSFile('/gui/Drawing.js');
-	
-	var html="<div id='bigDiv'>" +
+	/*var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
-			"<script src='../gui/interact-1.2.2.js'></script>" +
-			"<script src='../gui/Manipulation.js'></script>" +
 			"<br><button class='buttton' type='button' onclick = createDeviceGraphic()>New Device</button>" +
 					"<button class='buttton'  type='button' onclick = createNetworkGraphic()>New Network</button>" +
 							//"<button class='buttton'  type='button' onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>" +
@@ -185,7 +197,7 @@ function networkTopologyView(){
 	//generate our topology view from the simulation
 	var simulation  = get_local_simulation();
 	
-	generateTopology(simulation.partition_list, 800);
+	generateTopology(simulation.partition_list, 800);*/
 }
 
 
@@ -197,8 +209,6 @@ function eventLogsView(){
 	removeFile('EventLogView.css', 'css');
 	removeFile('EventLogView.js', 'js');
 	removeFile('Manipulation.js', 'js');
-	removeFile('Shapes.js', 'js');
-	removeFile('Drawing.js', 'js');
 
 	//clearNav();
 	clearFooter();
@@ -212,9 +222,7 @@ function eventLogsView(){
 	loadStyleSheet('../css/topologyView.css');
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../view/EventLogView.js');
-	loadJSFile('../gui/Manipulation.js');
-	loadJSFile('../gui/Shapes.js');
-	loadJSFile('../gui/Drawing.js');
+	
 	
 	var html =
 	"<div id='title-bar'>"+
@@ -244,6 +252,7 @@ function eventLogsView(){
 		"</div>"
 	var content = getContainer();
 	content.innerHTML = html;
+	loadJSFile('../gui/Manipulation.js');
 	//calls the EventLogView function for viewing the history
 	setTimeout(function(){
 		populatePage(get_local_history());
@@ -320,7 +329,7 @@ function LogsView(){
 
 function uploadView(){
 	loadJSFile('../logic/FileUpload.js');
-	loadStyleSheet('../../stylesheets/FileUpload.css');
+	
 
 	var simulation={};
 	var html=uploadFileTemplate(simulation);
