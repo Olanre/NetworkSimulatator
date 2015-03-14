@@ -25,6 +25,7 @@ function createNewRDT_Spec( spec){
 	specJSON.version = spec.version;
 	specJSON.description = spec.description;
 	specJSON.main = spec.main;
+	New_Spec.specJSON = specJSON;
 	New_Spec.attachJSON(specJSON);
 	specJSON.save();
 	return New_Spec;

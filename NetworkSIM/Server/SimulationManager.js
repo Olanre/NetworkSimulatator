@@ -139,9 +139,9 @@ module.exports.getSimulationHistory=function(simulation_id){
 		history['state'][index].simulation = newJSON;
 		
 	} */
-	
-	if (simulation_history == -1){
-		simulation_history.simulation_historyJSON = {};
+	console.log(history);
+	if (history == -1){
+		history = {};
 	}
 	return history;
 }
@@ -206,7 +206,6 @@ function createSimulation(event_data, time_stamp) {
 	var map=event_data.config_map;
 	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
 	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
-	
 	var new_activity = "Simulation " +  event_data.simulation_name + " created at " + time_stamp + "\n";
 	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
@@ -221,16 +220,11 @@ function createSimulation(event_data, time_stamp) {
 				createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
 				simulation.addDevice(createdDevice);
 				TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
-				
 			}
 		}
 
 		else{
-			//createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
-			//simulation.addPartition(createdPartition);
 			for(network in map[partition]){
-				//console.log(network);
-				//console.log("Making a new network and partition");
 				createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
 				simulation.addNetwork(createdNetwork);
 
@@ -257,10 +251,11 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
+	
 	//create a new history object
 	simulationHistoryList.push(simulation_history);
 	//save our state in the history object
-	saveSimulationState( simulation._id, time_stamp, simulation)
+	saveSimulationState( simulation._id, time_stamp, simulation);
 	simulationList.push(simulation);
 	return simulation;
 }	
@@ -456,22 +451,19 @@ function dividePartitions(event_data, time_stamp){
 function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
-
-	if(simulation_history != -1){
+	if(simulation_history != -1 && simulation_history !== undefined){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
 			var sim = simulationObject.simulationJSON;
 			var newJSON= Util.deepCopy(sim);
-			//console.log(sim);
-			if(newJSON !== undefined){
-				//console.log(newJSON);
-				newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
-			}
+
+			newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
 			var newJSON = JSON.stringify(sim);
 			
 		}
 		var history_state = History_State.createNewHistory_State(newJSON, time_stamp);
-		simulation_history.addState(history_state);
+		simulation_history.addState(history_state.stateJSON);
+		console.log(simulation_history.simulation_historyJSON + "Done");
 	}
 }
 
