@@ -212,3 +212,9 @@ function loadJSFile(path){
      fileref.setAttribute("src", path);
      document.getElementsByTagName("head")[0].appendChild(fileref)
 }
+
+function isInt(value) {
+	  return !isNaN(value) && 
+	         parseInt(Number(value)) == value && 
+	         !isNaN(parseInt(value, 10));
+}

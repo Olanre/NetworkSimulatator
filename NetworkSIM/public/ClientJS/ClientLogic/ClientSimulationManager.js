@@ -2,12 +2,19 @@
  * CreateSimulation creates a new simulation in the application.
  */
 function CreateSimulation(){
-	var body = wrapCreateSimulation();
-	var url = "/create/Simulation";
-	var timestamp = new Date();
-	addToEventQueue(url, body, timestamp);
-	setTimeout( function(){ simulationListView(); }
-	, 1000 );
+	if(checkParametersWereEntered()){
+		//deactivates the button
+		document.getElementById('button-create-simulation').onclick=null;
+		var body = wrapCreateSimulation();
+		var url = "/create/Simulation";
+		var timestamp = new Date();
+		addToEventQueue(url, body, timestamp);
+		setTimeout( function(){ simulationListView(); }
+		, 1000 );
+	}
+	else{
+		alert("Please enter all parameters correctly");
+	}
 }
 
 /**
@@ -124,5 +131,19 @@ function generateConfigMap(level, start_element){
 			return simulation_map;
 			break;
 	}
-	
+}
+
+//checks if the parameters to creating a simulation were input correctly.
+function checkParametersWereEntered(){
+	var num_devices=document.getElementById('num_devices').value;
+	var simulation_name=document.getElementById('simulation_name').value;
+	var num_networks=document.getElementById('num_networks').value;
+	var token_method=document.getElementById('tokenmethod').value;
+	if(isInt(num_devices)&&num_devices!==null&&num_devices!==''&&isInt(num_networks)&&num_networks!==null&&num_networks!==''&&
+			simulation_name!==null&&simulation_name!==''&&token_method!==''&&token_method!==null){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
