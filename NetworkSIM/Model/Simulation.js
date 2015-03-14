@@ -2,8 +2,8 @@ var Util=require("../Utilities/utilities.js");
 var Network=require("./Network.js");
 var Partition=require("./Partition.js");
 var SimModel = require("../Database/dbModels/simulationModel.js");
-var AppModel = require("../Database/dbModels/appModel.js");
-var rdtModel = require("../Database/dbModels/RDTModel.js");
+var App = require("./App_Spec.js");
+var RDT = require("./RDT_Spec.js");
 var NetworkIterator = require("./Iterators/NetworkIterator.js");
 var DeviceIterator = require("./Iterators/DeviceIterator.js")
 
@@ -18,6 +18,8 @@ function Simulation(simulation_name){
 	this.deviceIterator = new DeviceIterator(this.device_list);
 	this.apps = [];
 	this.rdts = [];
+	this.app_specs = [];
+	this.rdt_specs = [];
 	
 	this.simulationJSON = {};
 	
@@ -34,6 +36,8 @@ function Simulation(simulation_name){
 	this.addDevice=addDevice;
 	this.addNetwork=addNetwork;
 	this.removeNetwork=removeNetwork;
+	this.attachRDTSpec = attachRDTSpec;
+	this.attachAppSpec = attachAppSpec;
 	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
@@ -49,8 +53,6 @@ function createNewSimulation(simulation_name){
 	simulationJSON.simulation_population = 0;
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
-	simulationJSON.rdts = [];
-	simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
 	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
@@ -80,16 +82,29 @@ function importRDT(rdt){
 		this.rdts.push(rdt);
 		rdt.init( this.networkIterator, this.deviceIterator);
 }
+
+function attachAppSpec( appSpec){
+	this.simulationJSON.apps.push(appSpec.specJSON._id);
+	this.app_specs.push(appSpec);
+	this.simulationJSON.save();
+}
+
+function attachRDTSpec( rdtSpec){
+	this.simulationJSON.rdts.push(rdtSpec.specJSON._id);
+	this.rdt_specs.push(rdtSpec);
+	this.simulationJSON.save();
+}
 	
 function importApp(app){
 		this.apps.push(app);		
 }
 	
 function removeApp(app){
-		var index = apps.indexOf(app);
+		var index = this.apps.indexOf(app);
 		if (index > -1) {
-		    apps.splice(index, 1);
+		    this.apps.splice(index, 1);
 		}
+		
 }
 
 function getNetworks(){

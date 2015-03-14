@@ -14,6 +14,8 @@ var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
 var Simulation_History = require("../Model/Simulation_history.js");
 var History_State = require("../Model/History_state.js");
+var App_Spec = require("../Model/App_Spec.js");
+var RDT_Spec = require("../Model/RDT_Spec.js");
 var path = require('path');
 var fs=require('fs');
 
@@ -71,10 +73,12 @@ function buildPartitionList(simulation){
 			newNetworkList.push(network);
 		}
 		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
-		partition.network_list=Util.deepCopy(newNetworkList);
-		partition.network_list=newNetworkList;
-		newNetworkList=[];
-		newPartitionList.push(partition);
+		if(partition !== undefined){
+			partition.network_list=Util.deepCopy(newNetworkList);
+			partition.network_list=newNetworkList;
+			newNetworkList=[];
+			newPartitionList.push(partition);
+		}
 	}
 	//console.log(newPartitionList);
 	return newPartitionList;
@@ -366,9 +370,13 @@ function attachRDT( location, simulation_id, spec){
 		spec = JSON.parse(spec);
 		try{
 			setTimeout(function(){
+				//require the rdt in our simulation
 				var rdt = require(location + "/" + spec['main']);
 				simulation.importRDT(rdt);
 				
+				//attach the specs for the RDT into the simulation
+				var new_spec = RDT_Spec.createNewRDT_Spec( spec);
+				simulation.attachRDTSpec(new_spec);
 				//simulation.simulationJSON.rdts.push(spec);
 				
 			}, 1000);
@@ -395,6 +403,8 @@ function attachApp( location, simulation_id, spec){
 			setTimeout(function(){
 				var app = require(location + "/" + spec['main']);
 				simulation.importApp(app);
+				var new_spec = App_Spec.createNewApp_Spec( spec);
+				simulation.attachAppSpec(new_spec);
 				//simulation.simulationJSON.apps.push(spec);
 
 			}, 1000);
@@ -451,10 +461,13 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
 			var sim = simulationObject.simulationJSON;
-			//var newJSON= Util.deepCopy(sim);
-			//if(newJSON !== undefined)newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
-			var jsonstring = JSON.stringify(sim);
-			var newJSON = JSON.parse(jsonstring);
+			var newJSON= Util.deepCopy(sim);
+			//console.log(sim);
+			if(newJSON !== undefined){
+				//console.log(newJSON);
+				newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
+			}
+			var newJSON = JSON.stringify(sim);
 			
 		}
 		var history_state = History_State.createNewHistory_State(newJSON, time_stamp);
