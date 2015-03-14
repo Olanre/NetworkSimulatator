@@ -360,14 +360,21 @@ function attachRDT( location, simulation_id, spec){
 	var time_stamp = new Date().toISOString();
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
-		var new_activity = "The App " +  spec.name +  " was imported into the simulation at  " + time_stamp + "\n";
+		var new_activity = "The RDT " +  spec.name +  " was imported into the simulation at  " + time_stamp + "\n";
 		simulation.updateSimulationLog(new_activity);
 		
-		var rdt_spec = {'name': rdt_name, 'rdt_spec' : spec};
-		//simulation.simulationJSON.rdts.push(rdt);
-		console.log(location + "/" + spec.main);
-		//var rdt = require(location + spec.main)
-		
+		spec = JSON.parse(spec);
+		try{
+			setTimeout(function(){
+				var rdt = require(location + "/" + spec['main']);
+				console.log(location + "/" + spec['main']);
+			}, 1000);
+			
+			
+		}
+		catch(err){
+			console.log(err);
+		}
 		//save the state
 		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
@@ -378,14 +385,22 @@ function attachApp( location, simulation_id, spec){
 	var time_stamp = new Date().toISOString();
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
-		var new_activity = "The RDT " +  spec.name +  " was imported into the simulation  at " + time_stamp + "\n";
+		var new_activity = "The App " +  spec.name +  " was imported into the simulation  at " + time_stamp + "\n";
 		simulation.updateSimulationLog(new_activity);
-		
-		var app_spec = {'name': app_name, 'app_spec' : spec};
-		
-		//simulation.simulationJSON.applications.push(app);
-		
+		spec = JSON.parse(spec);
+		try{
+			setTimeout(function(){
+				var app = require(location + "/" + spec['main']);
+				console.log(location + "/" + spec['main']);
+
+			}, 1000);
+			
+		}
+		catch(err){
+			console.log(err);
+		}
 		//save the state
+		
 		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
 	
@@ -427,13 +442,16 @@ function dividePartitions(event_data, time_stamp){
 function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+
 	if(simulation_history != -1){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
-			console.log('about to enter');
 			var sim = simulationObject.simulationJSON;
-			var newJSON=Util.deepCopy(sim);
-			newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
+			//var newJSON= Util.deepCopy(sim);
+			//if(newJSON !== undefined)newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
+			var jsonstring = JSON.stringify(sim);
+			var newJSON = JSON.parse(jsonstring);
+			
 		}
 		var history_state = History_State.createNewHistory_State(newJSON, time_stamp);
 		simulation_history.addState(history_state);

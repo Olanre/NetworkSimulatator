@@ -73,7 +73,7 @@ socket.on('validate_user', function(data){
 });
 
 socket.on('connect', function () {
-	connected = true;
+	
 	console.log('Socket is connected.');
 	var time_stamp = new Date();
 	var event_data = { 'num_devices': 1,
@@ -87,7 +87,9 @@ socket.on('connect', function () {
 
 	//creates the query to the server
 	var simulations = get_local_simulation_list();
+	if( simulations == null || simulations.length == 0)
 	addToEventQueue('/create/Simulation', event_data, time_stamp);
+	connected = true;
 	syncWithServer();
 });
 

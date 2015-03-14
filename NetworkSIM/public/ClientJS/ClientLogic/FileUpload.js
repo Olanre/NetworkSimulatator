@@ -85,7 +85,7 @@ function setup_reader(file){
 function hasRequiredFile(needle, haystack){
 	var bool = false;
 	for (var i = 0; i < haystack.length; i++){
-		if(haystack[i]['name'] === needle){
+		if(haystack[i]['name'] == needle){
 			if(needle == 'package.json'){
 				uploadEvent.name = JSON.parse(haystack[i]['data']).name;
 				uploadEvent.spec = JSON.stringify(haystack[i]['data']);
@@ -113,8 +113,12 @@ function pushFileEvent(file_type){
 	var upload = true;
 	
 	if( file_type == 'RDT'){
-		if(hasRequiredFile('spec.md', uploadEvent.files) == false && hasRequiredFile('package.json', uploadEvent.files) == false ){
-			alert("Please include a Mark Down file for the specs \nPlease include a package.json file describing your RDT");
+		if(hasRequiredFile('spec.md', uploadEvent.files) == false){
+			alert("Please include a Mark Down file for the specs");
+			upload = false;
+		}
+		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
+			alert("Please include a package.json file describing your RDT");
 			upload = false;
 		}
 	}

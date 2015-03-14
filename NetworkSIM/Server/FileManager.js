@@ -7,6 +7,7 @@ function uploadAllFiles(event_data){
 	var files=event_data.files;
 	var type = event_data.type;
 	var folder_name = event_data.name;
+	
 	var spec = JSON.parse(event_data.spec);
 	var simulation_id = event_data.simulation_id;
 	var location = "./";
