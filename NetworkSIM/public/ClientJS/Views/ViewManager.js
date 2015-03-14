@@ -273,7 +273,7 @@ function eventLogsView(){
 	//calls the EventLogView function for viewing the history
 	setTimeout(function(){
 		populatePage(get_local_history());
-	}, 3000);
+	}, 1000);
 }
 
 /**
@@ -298,6 +298,8 @@ function SimulationManagementView(){
 	var aside = getSideBar();
 	var sidebar = SimulationSideBarView(local_simulation._id);
 	aside.innerHTML = sidebar;
+	//loads the network topology
+	networkTopologyView();
 }
 
 
