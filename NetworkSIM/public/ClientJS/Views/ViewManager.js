@@ -51,6 +51,9 @@ function deviceHeaderView(){
 }
 
 function adminAppsView(){
+	removeClass('active');
+	document.getElementById('nav-option-applications').className='active';
+
 	var local_session = get_local_simulation();
 	var applications = local_session.applications;
 	var html = viewAdminApplicationsTemplate(applications);
@@ -59,6 +62,9 @@ function adminAppsView(){
 }
 
 function RDTsView(){
+	removeClass('active');
+	document.getElementById('nav-option-RDTs').className='active';
+
 	var local_session = get_local_simulation();
 	var rdts = local_session.rdts;
 	var html = viewRDTsTemplate(rdts);
@@ -172,7 +178,7 @@ function simulationSideBarView(){
 function networkTopologyView(){
 	removeClass('active');
 	document.getElementById('nav-option-viewTopology').className='active';
-	
+
 	document.getElementById('')
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
@@ -213,6 +219,9 @@ function networkTopologyView(){
  * A view which allows you to view the logs for devices and simulations based on a particular timestamp
  */
 function eventLogsView(){
+	removeClass('active');
+	document.getElementById('nav-option-history').className='active';
+
 	removeFile('topologyView.css', 'css');
 	removeFile('EventLogView.css', 'css');
 	removeFile('EventLogView.js', 'js');
