@@ -10,7 +10,6 @@ var Network = require("./networkModel").Network;
 
 var partitionSchema = mongoose.Schema({
 	 //type string
-	 id : String,
 	 network_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'Network'}],
 	 
 	});
@@ -24,9 +23,9 @@ partitionSchema.statics.savePartition = function (aPartition)
 	newPartition.save();
 }
 
-partitionSchema.statics.getPartitionByName = function (aName, callback)
+partitionSchema.statics.getPartitionByID = function (anID, callback)
 {
-	Partition.findOne({partition_name : aName}, function(err, obj)
+	Partition.findOne({c}, function(err, obj)
 	{
 		if(err) console.log("No partition with name " + aName);
 		//console.log("found partition" + obj);
