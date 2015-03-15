@@ -7,7 +7,7 @@ function dividePartition(split_networks_list, partition_id){
 		var params = { 
 				'split_networks_list': split_networks_list, 
 				'partition_id': partition_id, 
-				'simulation_name': local_simulation._id,
+				'simulation_id': local_simulation._id,
 				};
 		var url = '/divide/Partition';
 		var timestamp = new Date();

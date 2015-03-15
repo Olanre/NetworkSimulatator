@@ -371,8 +371,6 @@ function addDeviceToNetwork(event_data, time_stamp){
 
 }
 
-
-//TODO untested
 function mergePartitions(event_data, time_stamp){
 
 	var partition_a = event_data.partition_a;
@@ -393,9 +391,20 @@ function mergePartitions(event_data, time_stamp){
 	//Add database calls
 }
 
-//TODO
+
 function dividePartition(event_data, time_stamp){
-	
+
+	var network_list = event_data.split_networks_list;
+	var partitionID = event_data.partition_id;
+	var simulationID = event_data.simulationID;
+	var simulationObject = Util.findByUniqueID(simulationID, simulationList);;
+	if(simulationObject!=-1){
+		var partition = Util.findByUniqueID(partitionID, simulationObject.partition_list);
+		for(var index =0; index<network_list.length;index++){
+			partition.removeNetwork(network_list[index]);
+		}
+		saveSimulationState(simulation_id,time_stamp,simulationObject);
+	}
 }
 
 /** saves the state of the simulation for us
