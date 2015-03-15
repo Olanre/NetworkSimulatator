@@ -41,6 +41,17 @@ userSchema.statics.modifyUser = function (aToken, aUser)
 	  });
 }
 
+userSchema.statics.getUserByID = function (anID, callback)
+{
+	this.findOne( {_id : anID}, function(err, obj)
+	{
+		if(err) console.log("no user with id: " + anID );
+		console.log("found network" + obj);
+		callback(obj);
+	});
+}
+
+
 
 //Define Schema and Schema functions as a model called User, using the userSchema, and stored in a collection called "Users"
 module.exports = mongoose.model('User', userSchema, 'Users');

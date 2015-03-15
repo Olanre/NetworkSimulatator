@@ -28,11 +28,11 @@ networkSchema.statics.saveNetwork = function (aNetwork)
 
 
 
-networkSchema.statics.getNetworkByName = function (aName, callback)
+networkSchema.statics.getNetworkByID = function (anID, callback)
 {
-	this.findOne( {network_name: aName}, function(err, obj)
+	this.findOne( {_id : anID}, function(err, obj)
 	{
-		if(err) console.log("no network with name: " + aName );
+		if(err) console.log("no network with id: " + anID );
 		console.log("found network" + obj);
 		callback(obj);
 	});

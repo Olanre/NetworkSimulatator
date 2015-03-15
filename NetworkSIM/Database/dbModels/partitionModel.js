@@ -25,7 +25,7 @@ partitionSchema.statics.savePartition = function (aPartition)
 
 partitionSchema.statics.getPartitionByID = function (anID, callback)
 {
-	Partition.findOne({c}, function(err, obj)
+	Partition.findOne({_id : anID}, function(err, obj)
 	{
 		if(err) console.log("No partition with name " + aName);
 		//console.log("found partition" + obj);
