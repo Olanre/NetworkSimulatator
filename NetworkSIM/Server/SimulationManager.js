@@ -125,10 +125,12 @@ exports.getAllActiveDevices = function(simulation_id){
 		deviceList=simulation.getDevices();
 	
 		for(index in deviceList){
-			if(deviceList[index].deviceJSON.verified == true){
-				device=deviceList[index].deviceJSON;
-				List.push(device);
-			}
+			//if(deviceList[index] !== undefined){
+				if(deviceList[index].deviceJSON.verified == true){
+					device=deviceList[index].deviceJSON;
+					List.push(device);
+				}
+			//}
 		}
 	}
 	

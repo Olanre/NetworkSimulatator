@@ -7,8 +7,8 @@ function NetworksListTemplate(networks, local_device){
 		if(local_device.current_network == networks[i]['_id']){
 			str +=  "<tr id = '" + networks[i]['_id'] + "'> " +
 					" <td> " + networks[i]['network_name'] +  " </td>" +
-					" <td> <div class = 'btn btn-primary'  onclick = 'removeDevicefromNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;)'> " +
-			"Leave Network </div> </td> </tr>";
+					" <td> <!--  <div class = 'btn btn-primary'  onclick = 'removeDevicefromNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;)'>  " +
+			"Leave Network </div> --> </td> </tr>";
 		}
 		else{
 			str += "<tr  id = '" + networks[i]['_id'] + "'>" +

@@ -130,8 +130,8 @@ function getNetworks(){
 				merged.push(Networks[j]);
 			}
 							
-		}
-		
+		}  
+		console.log(merged);
 		return merged;
 }
 
@@ -143,13 +143,12 @@ function getDevices(){
 
 			for( var j = 0 ; j < Networks.length; j++){
 					var Devices = Networks[j].device_list;
-				for (var k =0 ; k<Networks.length; k++){
-					merged.push(Devices[k]);
-				}
+					for (var k =0 ; k<Devices.length; k++){
+						merged.push(Devices[k]);
+					}
 			}
 							
 		}
-		
 		return merged;
 		
 }
