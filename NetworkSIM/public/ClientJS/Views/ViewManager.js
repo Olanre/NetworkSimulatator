@@ -65,12 +65,50 @@ function RDTsView(){
 	removeClass('active');
 	document.getElementById('nav-option-RDTs').className='active';
 
-	var local_session = get_local_simulation();
-	var rdts = local_session.rdts;
+	var local_simulation = get_local_simulation();
+	var rdts = local_simulation.rdts;
 	var html = viewRDTsTemplate(rdts);
 	var content = getContainer();
 	content.innerHTML = html;
 	
+}
+
+function ViewRDT(name, e){
+	var local_simulation = get_local_simulation();
+	var rdts = local_simulation.rdts;
+	
+	if(e.innerHTML.indexOf("View Specification") > -1 ){
+		for(var i = 0; i < rdts.length; i++){
+			if(rdts[i].name == name){
+				var div = document.getElementById(name);
+				if(div !== null) div.innerHTML = "<code>" + JSON.parse(JSON.stringify(rdts[i])) + "</code>";
+			}
+		}
+		e.innerHTML = 'Hide';
+	}else if( e.innerHTML.indexOf('Hide') > -1 ){
+		var div = document.getElementById(name);
+		if(div !== null) div.innerHTML = "";
+		e.innerHTML = 'View Specification'
+	}
+}
+
+function ViewApp(name, e){
+	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
+	if(e.innerHTML.indexOf("View Specification") > -1 ){
+		for(var i = 0; i < apps.length; i++){
+			if(app[i].name == name){
+				var div = document.getElementById(name);
+				if(div !== null) div.innerHTML = "<code>" + JSON.parse(JSON.stringify(apps[i])) + "</code>";
+			}
+		}
+		e.innerHTML = 'Hide';
+	}else if( e.innerHTML.indexOf('Hide') > -1 ){
+		var div = document.getElementById(name);
+		if(div !== null) div.innerHTML = "";
+		e.innerHTML = 'View Specification'
+	}
 }
 /**
  * Displays the user's information

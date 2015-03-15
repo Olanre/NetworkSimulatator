@@ -46,6 +46,10 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	newJSON.partition_list=buildPartitionList(simulation);
+	console.log(newJSON);
+	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
+	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
+	//console.log(newJSON);
 	state.simulation=newJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
@@ -87,9 +91,12 @@ function buildPartitionList(simulation){
 function buildListObject(idList,objectList){
 	var list=[];
 	var item;
-	for(id in idList){
-		item=Util.findByUniqueID(idList[id],objectList);
-		list.push(item);
+	if(idList !== undefined){
+		console.log(idList);
+		for(id in idList){
+			item=Util.findByUniqueID(idList[id],objectList);
+			list.push(item);
+		}
 	}
 	return list;
 }
@@ -353,10 +360,11 @@ function attachRDT( location, simulation_id, spec){
 	var time_stamp = new Date().toISOString();
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
+		spec = JSON.parse(spec);
 		var new_activity = "The RDT " +  spec.name +  " was imported into the simulation at  " + time_stamp + "\n";
 		simulation.updateSimulationLog(new_activity);
 		
-		spec = JSON.parse(spec);
+		
 		try{
 			setTimeout(function(){
 				//require the rdt in our simulation
@@ -366,8 +374,8 @@ function attachRDT( location, simulation_id, spec){
 				//attach the specs for the RDT into the simulation
 				var new_spec = RDT_Spec.createNewRDT_Spec( spec);
 				simulation.attachRDTSpec(new_spec);
-				//simulation.simulationJSON.rdts.push(spec);
-				
+				//console.log(simulation.simulationJSON);
+
 			}, 1000);
 			
 			
@@ -385,16 +393,16 @@ function attachApp( location, simulation_id, spec){
 	var time_stamp = new Date().toISOString();
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
+		spec = JSON.parse(spec);
 		var new_activity = "The App " +  spec.name +  " was imported into the simulation  at " + time_stamp + "\n";
 		simulation.updateSimulationLog(new_activity);
-		spec = JSON.parse(spec);
+		
 		try{
 			setTimeout(function(){
 				var app = require(location + "/" + spec['main']);
 				simulation.importApp(app);
 				var new_spec = App_Spec.createNewApp_Spec( spec);
 				simulation.attachAppSpec(new_spec);
-				//simulation.simulationJSON.apps.push(spec);
 
 			}, 1000);
 			
