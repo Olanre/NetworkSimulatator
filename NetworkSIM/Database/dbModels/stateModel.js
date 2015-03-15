@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var stateSchema = mongoose.Schema({
 	 //type string
 	 simulation_id : String,
-	 state : {type : Array , "default" : [] },
+	 state : [{ simulation:  Object, timestamp : String }],
 	 
 	 
 	});

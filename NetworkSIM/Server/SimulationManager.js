@@ -43,7 +43,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 		}
 	}
 	
-	var state = {};;
+	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	newJSON.partition_list=buildPartitionList(simulation);
 	state.simulation=newJSON;
@@ -72,6 +72,7 @@ function buildPartitionList(simulation){
 			newDeviceList=[];
 			newNetworkList.push(network);
 		}
+		
 		var partition=Util.deepCopy(partition_list[pIndex].partitionJSON);
 		if(partition !== undefined){
 			partition.network_list=Util.deepCopy(newNetworkList);
@@ -90,6 +91,7 @@ function buildListObject(idList,objectList){
 		item=Util.findByUniqueID(idList[id],objectList);
 		list.push(item);
 	}
+	return list;
 }
 
 exports.getAllActiveDevices = function(simulation_id){
@@ -129,17 +131,9 @@ module.exports.getSimulationNames=function(){
 
 module.exports.getSimulationHistory=function(simulation_id){
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
-	var history = simulation_history.simulation_historyJSON;
 	
-	/**for( var index = 0; index <history['state'].length; index++){
-		var sim = history['state'][index].simulation;
-		console.log(sim);
-		var newJSON=Util.deepCopy(sim);
-		newJSON.partition_list=buildPartitionList(newJSON);
-		history['state'][index].simulation = newJSON;
-		
-	} */
-	console.log(history);
+	var history = simulation_history.simulation_historyJSON;
+
 	if (history == -1){
 		history = {};
 	}
@@ -454,16 +448,15 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	if(simulation_history != -1 && simulation_history !== undefined){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
-			var sim = simulationObject.simulationJSON;
-			var newJSON= Util.deepCopy(sim);
-
-			newJSON.partition_list=buildPartitionList(simulationObject.simulationJSON);
-			var newJSON = JSON.stringify(sim);
+			var newJSON= Util.deepCopy(simulationObject.simulationJSON);
+			//console.log(simulationObject.simulationJSON);
+			//console.log(newJSON);
+			newJSON.partition_list=buildPartitionList(simulationObject);
 			
 		}
+		
 		var history_state = History_State.createNewHistory_State(newJSON, time_stamp);
 		simulation_history.addState(history_state.stateJSON);
-		console.log(simulation_history.simulation_historyJSON + "Done");
 	}
 }
 

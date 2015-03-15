@@ -151,8 +151,8 @@ function addDevice(device){
 function addNetwork(network){
 
 	var partition= Partition.createNewPartition(this.simulationJSON.simulation_name, network.network_name);
-	partition.addNetwork(network);
 	this.partition_list.push(partition);
+	partition.addNetwork(network);
 	this.network_list.push(network);
 	this.simulationJSON.partition_list.push(partition.partitionJSON._id);
 	this.simulationJSON.num_networks++;

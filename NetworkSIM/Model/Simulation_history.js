@@ -25,7 +25,6 @@ function createNewSimulationHistory(simulation_id){
 	var New_StatesObj = new Simulation_History(simulation_id);
 	var simulation_historyJSON = new stateModel();
 	simulation_historyJSON.simulation_id = simulation_id;
-	//console.log(simulation_historyJSON);
 	New_StatesObj.simulation_historyJSON = simulation_historyJSON;
 	New_StatesObj.attachJSON(simulation_historyJSON);
 	simulation_historyJSON.save();
@@ -36,13 +35,12 @@ function createNewSimulationHistory(simulation_id){
 function addState( stateJSON){
 
 	this.simulation_historyJSON.state.push( stateJSON);
-	//console.log(this.simulation_historyJSON);
 	this.simulation_historyJSON.save();
 }
 
 function attachJSON( json){
 	
 	this.simulation_historyJSON = json;
-	//console.log(this.simulation_historyJSON);
+
 }
 module.exports.createNewSimulationHistory = createNewSimulationHistory;
