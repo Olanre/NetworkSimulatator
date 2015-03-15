@@ -54,7 +54,7 @@ document.onmouseout = mouseOver;
  * Generates topology given a partition_list object
  ***/
 function generateTopology(partition_list, areaWidth){
-	displayed_partition_list=partition_list;
+	console.log(partition_list);
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
 	var networkIndex=0;
@@ -103,6 +103,8 @@ function generateTopology(partition_list, areaWidth){
 		freeDevice.name=free_list[i].current_device_name;
 		freeDevice.draw();
 	}
+
+	displayed_partition_list=partition_list;
 		
 }
 
@@ -167,7 +169,6 @@ interact('.network')
 		    if (draggableElement.classList.contains('device')){
 			    dropzoneElement.classList.add('drop-target');
 			    draggableElement.classList.add('connected-device');
-			    //draggableElement.textContent = 'Dragged in';
 		    }
 		},
 
@@ -207,12 +208,8 @@ interact('.network')
 				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
 				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
 
-				//tracking the partition list
-				dropzone.represents.device_list.push(dragged.represents);
-				console.log("added a device");
-				//THIS IS STUFF TO INTERACT WITH MAINJS
-				//addDevice(deviceName, newNetworkName);
-				//this does not handle moving in and out of the free-list
+				console.log(dragged.represents.token + "\n"+dropzone.represents._id);
+				moveDeviceToNetwork(dragged.represents.token,dropzone.represents._id);
 				
 			}
 			if(dragClass==='network'){
@@ -220,29 +217,20 @@ interact('.network')
 				var circleDraggedTo = shapes[dropzoneElement.getAttribute('data-index')];
 				
 				if(!partitionExists(dropzone,dragged)){
-					//check if already in this partition
+
 					var partition=createPartitionGraphic(dropzone,dragged);
-					/*
-					//THIS IS STUFF TO INTERACT WITH MAINJS
-					oldNetworkName=shapes[draggableElement.getAttribute('data-index')].name;
-					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
+					var partitionA = findPartitionIDForNetwork(dropzone.represents);
+					var partitionB = findPartitionIDForNetwork(dragged.represents);
+					if(partitionA!=partitionB) mergePartition(partitionA,partitionB);
 					
-					oldNetworkPartition= getPartition(oldNetworkName);
-					newNetworkPartition= getPartition(newNetworkName);
-					
-					mergePartition(oldNetworkPartition, newNetworkPartition);*/
+
 				}
 				else{
+					var oldpartitionID=findPartitionIDForNetwork(dragged.represents);
+
+					console.log(oldpartitionID);
 					removePartition(dropzone,dragged);
-					/*
-					//what if we're breaking in half or just removing an extraneous line
-					//THIS IS STUFF TO INTERACT WITH MAINJS
-					breakApart=shapes[draggableElement.getAttribute('data-index')].name;
-					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
-					
-					newNetworkPartition= getPartition(newNetworkName);
-					
-					dividePartition(oldNetwork)*/
+
 					var newpartitionlist=breadthFirstSearch(dropzone,dragged);
 					var connected=false;
 					for(partition in newpartitionlist){
@@ -250,17 +238,13 @@ interact('.network')
 							connected=true;
 						}
 					}
+
 					if(!connected){
-						var oldpartition=buildPartition(newpartitionlist);
-						newpartitionlist=breadthFirstSearch(dragged);
-						var newpartition=buildPartition(newpartitionlist);
-						//depends on bad.js :)
-						var localsession=get_local_simulation();
-						var partitionname=getPartition(dragged.name);
-						localsession.config_map[partitionname]=oldpartition;
-						//depends on utilities.js
-						partitionname=generateUniqueId();
-						localsession.config_map[partitionname]=newpartition;
+						console.log(oldpartitionID);
+						var list = [];
+						list.push(dragged.represents);
+						dividePartition(list,oldpartitionID);
+						
 					}
 				}
 				snapToLocation(dragged,origin);
@@ -415,4 +399,20 @@ function orderCanvas(){
 	}
 	
 }
+
+function findPartitionIDForNetwork(networkObject){
+	for (var index=0;index<displayed_partition_list.length;index++){
+		var networks = displayed_partition_list[index].network_list;
+		//console.log(networks.length);
+		for(var netindex=0;netindex<networks.length;netindex++){
+			//console.log(networks[netindex]._id);
+			//console.log(dragged.represents._id);
+			if(networks[netindex]._id==networkObject._id){
+				return displayed_partition_list[index]._id;
+			}
+		}
+	}
+	return -1;
+}
+
 generateTopology(get_local_simulation().partition_list,800);

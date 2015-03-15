@@ -77,7 +77,6 @@ function handleClient (socket) {
     	var simulation_id = json.simulation_id;
     	SimulationManager.authToken(token, simulation_id, function(obj){
     	//for now allow empty tokens
-    		
     		io.to(socket.id).emit('validate_user', obj);
     	});
     });

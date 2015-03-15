@@ -23,14 +23,21 @@ app.use(logger({path: "./logfile.txt"}));
 
 
 SimulationModel.findAllSimulations(function(simJSONlist){
-
 	SimulationManager.loadSimulations(simJSONlist);
-	Router.injectIO(io);
-	io.on("connection", Router.handleClient);
+	setTimeout(function(){
+		
+		Router.injectIO(io);
+		io.on("connection", Router.handleClient);
 
-	server.listen(port, function(){
-	  	console.log('listening on *: ' + port);
-	});
+		SimulationManager.populateLists();
+		console.log("All simulations have been loaded.");
+
+		server.listen(port, function(){
+	  		console.log('listening on *: ' + port);
+		});
+
+	;},7000);
+	
 });
 
 app.get('/', function(request,response){

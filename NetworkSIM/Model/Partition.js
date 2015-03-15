@@ -33,9 +33,10 @@ function createNewPartition(partitionName,simulationName){
 }
 
 function loadPartitionFromDatabase(partitionID){
-	var createdPartition=new Partition('','');
+	var createdPartition = new Partition('','');
 	PModel.findOne({_id: partitionID},function(err,partitionJSON){
 		if(!err){
+
 				for(var index=0; index<partitionJSON.network_list.length;index++){
 					
 					var createdNetwork=Network.loadNetworkFromDatabase(partitionJSON.network_list[index]);

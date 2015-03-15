@@ -49,7 +49,6 @@ function createNewNetwork(networkName,networkKind){
 
 function loadNetworkFromDatabase(networkID){
 	var createdNetwork=new Network('','');
-
 	NetworkModel.findOne({_id:networkID}, function(err,networkJSON){
 		if(!err){
 			for(var index=0; index<networkJSON.device_list.length;index++){

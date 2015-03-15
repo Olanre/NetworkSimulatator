@@ -32,7 +32,7 @@ function moveDeviceToNetwork( device_token, network_id){
 			};
 		var url='/move/Device/Network';
 		var timestamp = new Date();
-		addToEventQueue(url,params,timestamp)
+		addToEventQueue(url,params,timestamp);
 	}
 	else{
 		console.log("moveDeviceToNetwork recieved null parameters");

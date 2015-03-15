@@ -69,10 +69,9 @@ function loadSimulationFromJSON(simulationJSON){
 	createdSimulation.attachJSON(simulationJSON);
 	
 	for(var index=0;index<simulationJSON.partition_list.length;index++){
-	
+
 		var createdPartition=Partition.loadPartitionFromDatabase(simulationJSON.partition_list[index]);
 		createdSimulation.partition_list.push(createdPartition);
-
 
 	}
 	return createdSimulation;
@@ -137,7 +136,21 @@ function getNetworks(){
 }
 
 function getDevices(){
-		return this.device_list;
+		var merged = [];
+		for(var i = 0; i < this.partition_list.length; i++){
+
+			var Networks = this.partition_list[i].network_list;
+
+			for( var j = 0 ; j < Networks.length; j++){
+					var Devices = Networks[j].device_list;
+				for (var k =0 ; k<Networks.length; k++){
+					merged.push(Devices[k]);
+				}
+			}
+							
+		}
+		
+		return merged;
 		
 }
 

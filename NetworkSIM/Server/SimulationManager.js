@@ -19,7 +19,6 @@ var History_State = require("../Model/History_state.js");
 var path = require('path');
 var fs=require('fs');
 
-//TODO We need to fill this in on load!
 var simulationList = [];
 var simulationHistoryList = [];
 Models.initialize();
@@ -29,7 +28,13 @@ exports.loadSimulations = function(simList){
 		console.log("loading "+ simList[sim].simulation_name);
 		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
 	}
-	console.log("All simulations have been loaded.");
+}
+exports.populateLists = function(){
+	for (sim in simulationList){
+
+		simulationList[sim].network_list=simulationList[sim].getNetworks();
+		simulationList[sim].device_list=simulationList[sim].getDevices();
+	}
 }
 
 exports.getAppStateForDevice = function(token,simulation_id){
@@ -73,7 +78,7 @@ function buildPartitionList(simulation){
 			device_list=network_list[nIndex].device_list;
 
 			for(dIndex in device_list){
-				device_list[dIndex].deviceJSON.apps = buildListObject( device_list[dIndex].deviceJSON.apps, simulation.app_specs);
+				//device_list[dIndex].deviceJSON.apps = buildListObject( device_list[dIndex].deviceJSON.apps, simulation.app_specs);
 				
 				newDeviceList.push(device_list[dIndex].deviceJSON);
 			}
@@ -174,35 +179,30 @@ function authToken(token, simulation_id,  callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
-	for(i in simulationList){
-		//simulation=Util.findByUniqueID(simulation_id,simulationList);
-		simulation = simulationList[i];
-		if(simulation != -1){
-			deviceList=simulation.getDevices();
-	
-			for(var index = 0; index < deviceList.length; index++){
-				if(deviceList[index].token == token){
-					var timestamp = new Date().toISOString();
-					res.Response = "Success";
-					if(deviceList[index].deviceJSON.verified !== true){
-						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
-						simulation.updateSimulationLog(new_activity);
-						deviceList[index].deviceJSON.verified = true;
-						simulation.simulationJSON.simulation_population++;
-						
-						saveSimulationState( simulation_id, timestamp, simulation);
-					}
-					
-					break;
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	//simulation = simulationList[i];
+
+	if(simulation != -1&&simulation!=undefined){
+		var deviceList=simulation.device_list;
+		for(var index = 0; index < deviceList.length; index++){
+
+			if(deviceList[index].token == token){
+				var timestamp = new Date().toISOString();
+				res.Response = "Success";
+				if(deviceList[index].deviceJSON.verified != true){
+					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+					simulation.updateSimulationLog(new_activity);
+					deviceList[index].deviceJSON.verified = true;
+					simulation.simulationJSON.simulation_population++;
+					saveSimulationState( simulation_id, timestamp, simulation);
 				}
+				
+				break;
 			}
 		}
 	}
+	
 	callback(res);
-	//bypassing database for now.
-	//TokenManager.authenticateToken(token, function(obj){
-		//callback(obj);
-	//});
 		
 }
 
@@ -363,6 +363,7 @@ function addDeviceToNetwork(event_data, time_stamp){
 		}
 	}
 
+
 }
 
 
@@ -388,7 +389,7 @@ function mergePartitions(event_data, time_stamp){
 }
 
 //TODO
-function dividePartitions(event_data, time_stamp){
+function dividePartition(event_data, time_stamp){
 	
 }
 
@@ -423,5 +424,5 @@ module.exports.createDevice = createDevice;
 module.exports.createNetwork = createNetwork;
 module.exports.removeNetwork = removeNetwork;
 module.exports.mergePartitions = mergePartitions;
-module.exports.dividePartitions = dividePartitions;
+module.exports.dividePartition = dividePartition;
 module.exports.buildPartitionList = buildPartitionList;

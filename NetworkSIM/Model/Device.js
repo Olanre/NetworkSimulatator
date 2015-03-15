@@ -37,7 +37,6 @@ function Device(deviceName,token, simulation_name , email){
 function createNewDevice(deviceName,token, simulation_id, email){
 	var createdDevice = new Device(deviceName,token, simulation_id ,email);
 	var deviceJSON = new DevModel();
-
 	
 	deviceJSON.current_device_name=deviceName;
 	deviceJSON.current_simulation = simulation_id;
@@ -58,8 +57,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 
 function loadDeviceFromDatabase(deviceID){
 	var createdDevice=new Device('');
-	var query = DevModel.where({_id:deviceID});
-	query.findOne({_id: deviceID}, function(err,deviceJSON){
+	DevModel.findOne({_id: deviceID}, function(err,deviceJSON){
 		if(!err){
 		 createdDevice.attachJSON(deviceJSON);
 		}
@@ -76,6 +74,7 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
+	  this.networkObject.removeDevice(this);
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.partitionObject._id;
 	  this.deviceJSON.current_network=network._id;
