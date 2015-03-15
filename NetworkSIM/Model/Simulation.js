@@ -131,7 +131,6 @@ function getNetworks(){
 			}
 							
 		}  
-		console.log(merged);
 		return merged;
 }
 
