@@ -12,12 +12,13 @@ var RDTSchema = mongoose.Schema({
 	});
 
 //static methods
-RDTSchema.statics.getRDTByName = function (aName, callback)
+
+RDTSchema.statics.getRDTByID = function (anID, callback)
 {
-	this.findOne( {name : aName}, function(err, obj)
+	this.findOne( {_id : anID}, function(err, obj)
 	{
-		if(err) console.log("no RDT with name: " + aName );
-		console.log("found RDT " + obj);
+		if(err) console.log("no RDT with id: " + anID );
+		console.log("found RDT: " + obj);
 		callback(obj);
 	});
 }

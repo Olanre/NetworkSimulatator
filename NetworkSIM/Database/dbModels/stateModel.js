@@ -12,6 +12,7 @@ var stateSchema = mongoose.Schema({
 	 
 	 
 	});
+
 stateSchema.statics.newState = function (aState)
 {
   var LenneteState = new State(aState)
@@ -19,12 +20,12 @@ stateSchema.statics.newState = function (aState)
   //console.log("Saved state" + state);
 }
 
-stateSchema.statics.getStateByName = function (aName, callback)
+stateSchema.statics.getStateByID = function (anID, callback)
 {
-	this.findOne( {simulation_id : aName}, function(err, obj)
+	this.findOne( {_id : anID}, function(err, obj)
 	{
-		if(err) console.log("no state with name: " + aName );
-		console.log("found state" + obj);
+		if(err) console.log("no state with id: " + anID );
+		console.log("found state " + obj);
 		callback(obj);
 	});
 }
