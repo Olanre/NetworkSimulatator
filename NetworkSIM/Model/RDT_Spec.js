@@ -36,6 +36,10 @@ function attachJSON(specJSON){
 	this._id=specJSON._id;
 }
 
+function loadRDTSpecfromDatabase( rdt_spec){
+	
+}
+
 function getSpec(){
 	return this.specJSON;
 }

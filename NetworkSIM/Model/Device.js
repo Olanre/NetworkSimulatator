@@ -110,6 +110,7 @@ function accessRDT(rdt_name){
 
 function attachAppSpec( app_specJSON){
 	this.deviceJSON.apps.push(app_specJSON._id);
+	 this.deviceJSON.save();
 }
 
 function accessRDT(){

@@ -40,6 +40,10 @@ function attachJSON(specJSON){
 	this._id=specJSON._id;
 }
 
+function loadAppSpecfromDatabase( app_spec){
+	
+}
+
 function getSpec(){
 	return this.specJSON;
 }
