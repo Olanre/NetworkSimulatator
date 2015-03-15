@@ -101,7 +101,8 @@ function attachRDTSpec( rdtSpec){
 }
 	
 function importApp(app){
-		this.apps.push(app);		
+		this.apps.push(app);	
+		
 }
 	
 function removeApp(app){
