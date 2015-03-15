@@ -41,6 +41,7 @@ function Simulation(simulation_name){
 	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
+	this.deployApp = deployApp;
 }
 
 function createNewSimulation(simulation_name){
@@ -114,9 +115,9 @@ function removeApp(app){
 }
 
 //deploy a the referenced app spec json object to all devices
-function deployApp(App_Spec){
+function deployApp(app_specJSON){
 	while (this.deviceIterator.hasNext()) {
-		  this.deviceIterator.next().attachAppSpec( App_Spec);
+		  this.deviceIterator.next().attachAppSpec( app_specJSON);
 	  }
 }
 

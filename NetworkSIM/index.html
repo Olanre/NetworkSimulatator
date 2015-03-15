@@ -22,12 +22,14 @@
 		<script src = '../js/PartitionListUtilities.js' type='text/javascript'></script>
 		
 		<!--  Models -->
+		<script src='../logic/SessionStorageManager.js' type='text/javascript'></script>	
+		<script src='../logic/ServerSync.js' type='text/javascript'></script>
 		<script src='../logic/ClientDeviceManager.js' type='text/javascript'></script>
+		<script src='../logic/ClientAppsManager.js' type='text/javascript'></script>
+		<script src='../logic/ClientRDTManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientNetworkManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientPartitionManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientTokenManager.js' type='text/javascript'></script>
-		<script src='../logic/SessionStorageManager.js' type='text/javascript'></script>	
-		<script src='../logic/ServerSync.js' type='text/javascript'></script>
 		<script src='../logic/EventQueue.js' type='text/javascript'></script>
 		<script src = '../logic/ClientSimulationManager.js' type='text/javascript'></script>
 		<script src = '../logic/LocalDeviceManager.js' type='text/javascript'></script>
@@ -469,9 +471,13 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "DeployApp('{{name}}')"> Deploy </div>
+				<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy </div>
 				
 			</td> 
+			<td>
+				<div class = 'btn btn-primary' onclick = "ViewApp('{{_id}}', this)">View Specification</div>
+			</td>
+			<td id = '{{_id}}' > </td>
 		</tr>{{/apps}}
  	</table>
 	<br>
@@ -515,9 +521,9 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "ViewRDT('{{name}}', this)">View Specification</div>
+				<div class = 'btn btn-primary' onclick = "ViewRDT('{{_id}}', this)">View Specification</div>
 			</td> 
-			<td id = '{{name}}'> </td>
+			<td id = '{{_id}}'> </td>
 		</tr>{{/rdts}}
  	</table>
 	<br>
@@ -589,10 +595,8 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "LaunchApp('{{name}}')"> Launch </div>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{name}}', this)"> View Description </div>
+				<div class = 'btn btn-primary' onclick = "LaunchApp('{{_id}}')"> Launch </div>
 			</td> 
-			<td id = '{{name}}'> </td>
 		</tr>{{/apps}}
  	</table>
 	<br>

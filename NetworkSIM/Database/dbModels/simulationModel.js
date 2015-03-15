@@ -12,7 +12,7 @@ var simulationSchema = mongoose.Schema({
 	   simulation_name: String, //unique id of the simulation
 	   tokenMethod : String,
 	   partition_list: [{type : mongoose.Schema.Types.ObjectId, ref: 'Partition'}],
-	   applications : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}],
+	   apps : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}],
 	   rdts : [{type : mongoose.Schema.Types.ObjectId, ref: 'RDT'}],
 	   activity_logs : String,	   
 });

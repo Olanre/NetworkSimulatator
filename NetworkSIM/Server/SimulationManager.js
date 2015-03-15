@@ -67,6 +67,8 @@ function buildPartitionList(simulation){
 			device_list=network_list[nIndex].device_list;
 
 			for(dIndex in device_list){
+				device_list[dIndex].deviceJSON.apps = buildListObject( device_list[dIndex].deviceJSON.apps, simulation.app_specs);
+				console.log(device_list[dIndex].deviceJSON.apps);
 				newDeviceList.push(device_list[dIndex].deviceJSON);
 			}
 			var network=Util.deepCopy(network_list[nIndex].networkJSON);
@@ -91,7 +93,6 @@ function buildListObject(idList,objectList){
 	var list=[];
 	var item;
 	if(idList !== undefined){
-		console.log(idList);
 		for(id in idList){
 			item=Util.findByUniqueID(idList[id],objectList);
 			list.push(item);

@@ -8,11 +8,11 @@ function viewApp(app_name){
 	
 }
 
-function DeployApp(app_name){
+function DeployApp(app_id){
 	var local_simulation = get_local_simulation();
-	if(local_simuation!==null){
+	if(local_simulation!==null){
 		var params = { 
-				'app_name': app_name, 
+				'app_id': app_id, 
 				'simulation_id': local_simulation._id,
 				};
 		var url = '/deploy/App';
@@ -24,11 +24,11 @@ function DeployApp(app_name){
 	}
 }
 
-function  LaunchApp(app_name){
+function  LaunchApp(app_id){
 	var local_simulation = get_local_simulation();
-	if(local_simuation!==null){
+	if(local_simulation!==null){
 		var params = { 
-				'app_name': app_name, 
+				'app_id': app_id, 
 				'simulation_id': local_simulation._id,
 				};
 		var url = '/launch/App';
