@@ -8,7 +8,7 @@ var path = require('path');
 var logger = require('express-logger');
 var SimulationManager = require('./Server/SimulationManager');
 var Router = require("./Server/routing.js");
-
+var SimulationModel = require("mongoose").model("Sim");
 
 
 var app = express();
@@ -18,6 +18,8 @@ var port = 3332;  // must be on port 3332 on excalibur for the grader
 
 var server = require("http").Server(app);
 var io = require("socket.io").listen(server);
+
+var simJSONlist = SimulationModel.findAllSimulations(SimulationManager.loadSimulations);
 
 Router.injectIO(io);
 io.on("connection", Router.handleClient);

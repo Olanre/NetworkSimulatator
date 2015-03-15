@@ -2,7 +2,7 @@
 The purpose of this class is to manage creating and modifying simulations.
 @author Emily
 ******/
-
+var mongoose = require("mongoose");
 var TokenManager = require("./TokenManager.js");
 var Util = require("../Utilities/utilities.js");
 var TokenMailer = require("./TokenPropagatorEmail.js");
@@ -24,6 +24,13 @@ var simulationList = [];
 var simulationHistoryList = [];
 Models.initialize();
 
+exports.loadSimulations = function(simList){
+	for (sim in simList){
+		console.log("loading "+ simList[sim].simulation_name);
+		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
+	}
+}
+
 exports.getAppStateForDevice = function(token,simulation_id){
 
 	var simulation,device,deviceList;
@@ -37,13 +44,12 @@ exports.getAppStateForDevice = function(token,simulation_id){
 			if(deviceList[index]._id==token){
 				
 				device=deviceList[index];
-				
 				break;
 			}
 		}
 	}
 	
-	var state = {};;
+	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	newJSON.partition_list=buildPartitionList(simulation);
 	state.simulation=newJSON;

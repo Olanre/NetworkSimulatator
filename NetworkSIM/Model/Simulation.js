@@ -67,10 +67,10 @@ function loadSimulationFromJSON(simulationJSON){
 	var createdSimulation= new Simulation('');
 	createdSimulation.attachJSON(simulationJSON);
 	
-	for(index in simulationJSON.partition_list){
+	for(var index=0;index<simulationJSON.partition_list.length;index++){
 	
 		var createdPartition=Partition.loadPartitionFromDatabase(simulationJSON.partition_list[index]);
-		this.partition_list.push(createdPartition);
+		createdSimulation.partition_list.push(createdPartition);
 
 
 	}

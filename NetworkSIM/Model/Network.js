@@ -49,15 +49,16 @@ function createNewNetwork(networkName,networkKind){
 
 function loadNetworkFromDatabase(networkID){
 	var createdNetwork=new Network('','');
-	//for some reason, sometimes networkJSON is undefined!
+
 	NetworkModel.findOne({_id:networkID}, function(err,networkJSON){
 		if(!err){
 			for(var index=0; index<networkJSON.device_list.length;index++){
 				var createdDevice=Device.loadDeviceFromDatabase(networkJSON.device_list[index]);
 				createdNetwork.device_list.push(createdDevice);
 				createdDevice.networkObject=createdNetwork;
-				createdNetwork.attachJSON(networkJSON);
+				
 			}
+			createdNetwork.attachJSON(networkJSON);
 		}
 	});
 	

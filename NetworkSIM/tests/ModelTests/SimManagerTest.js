@@ -1,7 +1,8 @@
-var SimMan=require("../../Server/SimulationManager.js");
+//var SimMan=require("../../Server/SimulationManager.js");
 var Util=require("../../Utilities/utilities.js");
 var Device=require('../../Model/Device.js');
-var simJSON={
+
+/*var simJSON={
 		num_devices: 12,
 		num_networks: 3,
 		simulation_population: undefined,
@@ -26,7 +27,7 @@ var simJSON={
 		 },
 		tokenMethod : undefined,
 		activity_logs : undefined,
-};
+};*/
 function testCreateSimulation(){
 	var sim=SimMan.createSimulation(simJSON);
 	return true;
@@ -41,8 +42,6 @@ function testAuthenticate(){
 		if(!result)console.log("testAuthenticate failed" +res.Response);
 		return result;
 	});
-
-
 
 }
 
@@ -150,6 +149,8 @@ function testBuildPartitions(){
 	}
 }
 
+
+
 function testAll(){
 	var functions=[];
 
@@ -159,7 +160,7 @@ function testAll(){
 	//functions.push(testCreateNetwork);
 	//functions.push(testMoveDevice);
 	//functions.push(testGetAppState);
-	functions.push(testBuildPartitions);
+	//functions.push(testBuildPartitions);
 	var continueTesting=true;
 	for(var i=0;i<functions.length;i++){
 		continueTesting=continueTesting&&functions[i];
@@ -167,5 +168,6 @@ function testAll(){
 	}
 	return continueTesting;
 }
-testBuildPartitions();
+//testBuildPartitions();
 //testAll();
+//testPopulateServer();
