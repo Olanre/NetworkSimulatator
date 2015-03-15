@@ -28,3 +28,14 @@ function getVerified(){
 		console.log("Error: getVerified passed a null local_device");
 	}
 }
+
+function getLocalDeviceLogs(){
+	var local_device = get_local_device();
+	if(local_device!==null){
+		return local_device.activity;
+	}
+	else{
+		console.log("Error:getLocalSimulationLogs passed null simulation object");
+		return '';
+	}
+}

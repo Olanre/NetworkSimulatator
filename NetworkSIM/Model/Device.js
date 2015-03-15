@@ -21,6 +21,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.leaveNetwork=leaveNetwork;
 	this.replicateRDT=replicateRDT;
 	this.accessRDT=accessRDT;
+	this.attachAppSpec = attachAppSpec;
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
@@ -44,7 +45,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	deviceJSON.verified=false;
 	deviceJSON.current_partition = '';
 	deviceJSON.current_network = '';
-	
+	deviceJSON.activity = '';
 	deviceJSON.email = deviceName;
 	deviceJSON.token=token;
 	createdDevice.deviceJSON=deviceJSON;
@@ -75,10 +76,9 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
-	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
-	  this.deviceJSON.current_partition=network.networkJSON.partition;
-	  this.deviceJSON.current_network=network.network_name;
+	  this.deviceJSON.current_partition=network.partitionObject._id;
+	  this.deviceJSON.current_network=network._id;
 	  this.deviceJSON.save();
 	  
 };
@@ -108,6 +108,10 @@ function accessRDT(rdt_name){
 		
 	}
 };
+
+function attachAppSpec( app_specJSON){
+	this.deviceJSON.apps.push(app_specJSON._id);
+}
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device

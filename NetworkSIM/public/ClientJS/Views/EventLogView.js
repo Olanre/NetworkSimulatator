@@ -121,7 +121,7 @@ function selectSimulationDate(selected){
 	populateSimulationLogs(simulationLogs);
 	setInteractable(false);
 
-	console.log(SimulationMap[selected].partition_list);
+	//console.log(SimulationMap[selected].partition_list);
 	generateTopology(SimulationMap[selected].partition_list,600);
 }
 
@@ -157,7 +157,8 @@ function deriveDeviceEvents(circleElem){
 		console.log('represennts: '+circleElem.represents._id);
 		var represents=circleElem.represents;
 		var device_log=represents.activity;
-		var device_log=device_log.split('\n');
+		console.log(represents);
+		if(device_log.indexOf("\n") > -1) device_log=device_log.split('\n');
 		return device_log;
 	}
 	else{
@@ -192,9 +193,11 @@ function parseSimulationLogs(history_list, timeStamp){
 function retrieveLogs(simulation){
 	//calls function from localSimulationManager
 	var device_list=getAllDeviceObjects(simulation);
-	var simulationLogs='';
+	
+	
 	for (var i =0;i<device_list.length;i++){
 		simulationLogs+=device_list[i].activity+'\n';
 	}
+	var simulationLogs= simulation.activity_logs;
 	return simulationLogs;
 }

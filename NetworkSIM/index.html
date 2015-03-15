@@ -22,12 +22,14 @@
 		<script src = '../js/PartitionListUtilities.js' type='text/javascript'></script>
 		
 		<!--  Models -->
+		<script src='../logic/SessionStorageManager.js' type='text/javascript'></script>	
+		<script src='../logic/ServerSync.js' type='text/javascript'></script>
 		<script src='../logic/ClientDeviceManager.js' type='text/javascript'></script>
+		<script src='../logic/ClientAppsManager.js' type='text/javascript'></script>
+		<script src='../logic/ClientRDTManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientNetworkManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientPartitionManager.js' type='text/javascript'></script>
 		<script src = '../logic/ClientTokenManager.js' type='text/javascript'></script>
-		<script src='../logic/SessionStorageManager.js' type='text/javascript'></script>	
-		<script src='../logic/ServerSync.js' type='text/javascript'></script>
 		<script src='../logic/EventQueue.js' type='text/javascript'></script>
 		<script src = '../logic/ClientSimulationManager.js' type='text/javascript'></script>
 		<script src = '../logic/LocalDeviceManager.js' type='text/javascript'></script>
@@ -45,14 +47,14 @@
 		<script src = '../template/NetworkListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewDeviceTemplate.js' type='text/javascript'></script>
-		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'>
-		</script>
+		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'></script>
 		<script src = '../template/CounterAppTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewLogsTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationSideBarTemplate.js' type='text/javascript'></script>
 		<script src = '../template/UploadFileTemplate.js' type='text/javascript'></script>
 		<script src = '../template/RDTsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/AdminAppsListTemplate.js' type='text/javascript'></script>
+		<script src = '../template/DeviceAppsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/NetworkTopologyTemplate.js'></script>
 		
 		<!--  Views -->
@@ -67,10 +69,9 @@
 	
 
 <script type = 'create_network_template' id = "template1">
-<div class = 'createNetwork'>
-	<h1>Create a Network</h1>
-</div>
+
 <div class = 'container'>
+	<h3>Create a Network</h3>
 <table>
 	<tr>
 		<td>
@@ -241,6 +242,33 @@
 		</table>
 	</div>
 </script>
+<script type = 'DeivceSideBar' id = 'template9'>
+
+<div class="col-sm-3 col-md-2 sidebar">					
+					<ul class="nav nav-sidebar">						
+						<li>						
+						<a href="#" onclick = "createNetworkView()">Create a new network</a>						
+						</li>						
+						<li>						
+						<a href="#" onclick = "NetworksListView()">View the Networks</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "LogsView()">View My Logs</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
+						</li>					
+						<li>	
+						<li>						
+						<a href="#" onclick = "AccountView()">About Me</a>						
+						</li>	
+						<hr>				
+						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
+						</li>	
+						
+					</ul>					
+				</div>		
+</script>
 <script type='createSimulation-template' id = 'template10'>
 <h2> 
 		Create a Simulation
@@ -313,13 +341,18 @@
 </script>
 
 <script type = "AccountTemplate" id = "template12" >
-	<div>
-		<h2> Hello {{current_device_name}} in {{current_simulation}} </h2>
-	</div> 
+	
 	<div class = 'container'>
-		<div class = 'appinterface'> You Email: {{email}} </div>
+		<div>
+			<h3> Hello {{current_device_name}} </h3>
+		</div> 
 		<div class = 'counters'> 
 			<table>
+				<tr> 
+					<td> 
+					 	<div> Email: {{email}} </div>
+					</td>
+				</tr>
 				<tr> 
 					<td> 
 					 	<div> RegistedOn: {{registeredOn}} </div>
@@ -343,6 +376,7 @@
 			</table>
 		</div>
 	</div>
+	
 </script>
 
 <script type = "NetworkListTemplate" id = "template13">
@@ -351,7 +385,7 @@
 		<table>
 			{{#networks}}
 			
-				<tr  id = '{{id}}'> 
+				<tr  id = '{{_id}}'> 
 					<td> {{network_name}}  </td> 
 				</tr>
 			{{/networks}}
@@ -366,7 +400,7 @@
 		<table>
 			{{#devices}}
 			
-				<tr  id = '{{id}}'> 
+				<tr  id = '{{_id}}'> 
 					<td> {{current_device_name}}  </td> 
 				</tr>
 			{{/devices}}
@@ -412,11 +446,16 @@
 						<a href="#" onclick = "getSimulationHistory('{{simulation_id}}')">Simulation History</a>						
 					</li>
 					<li id='nav-option-applications'>						
-						<a href="#" onclick = "adminAppsView()">Applications</a>						
+						<a href="#" onclick = "adminAppsView()">Application Manager</a>						
 					</li>
+					
 					<li id='nav-option-RDTs'>						
-						<a href="#" onclick = "RDTsView()">RDTs</a>						
-					</li>					
+						<a href="#" onclick = "RDTsView()">RDT Manager</a>						
+					</li>		
+					<hr>			
+					<li id='nav-option-applications'>						
+						<a href="#" onclick = "appDefaultView()">My Device</a>						
+					</li>
 					<li id='nav-option-backtosimulations'>						
 						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
 					</li>	
@@ -432,9 +471,13 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "DeployApp('{{name}}')"> Deploy </div>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{name}}')"> View App Specs </div>
+				<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy </div>
+				
 			</td> 
+			<td>
+				<div class = 'btn btn-primary' onclick = "ViewApp('{{_id}}', this)">View Specification</div>
+			</td>
+			<td id = '{{_id}}' > </td>
 		</tr>{{/apps}}
  	</table>
 	<br>
@@ -478,8 +521,9 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "ViewRDT('{{name}}')"> View Specification </div>
+				<div class = 'btn btn-primary' onclick = "ViewRDT('{{_id}}', this)">View Specification</div>
 			</td> 
+			<td id = '{{_id}}'> </td>
 		</tr>{{/rdts}}
  	</table>
 	<br>
@@ -542,6 +586,21 @@
 	<\/script>
 </script>
 
+<script type = "DeviceAppsListTemplate" id = "template22">
+	<h4> The Apps available for you </h4>
+	<br>
+	<table>
+	 	{{#apps}}<tr>
+			 <td> 
+				{{name}} 
+			</td> 
+			<td> 
+				<div class = 'btn btn-primary' onclick = "LaunchApp('{{_id}}')"> Launch </div>
+			</td> 
+		</tr>{{/apps}}
+ 	</table>
+	<br>
+</script>
 <body>
 		<!-- onload optional -->		
 		<div id = 'app'>			
@@ -557,6 +616,7 @@
 			</aside></div>			
 				
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" > 
+				<br>
 				<section> 
 				</section>
 				<div id = "content"> Loading... </div>
