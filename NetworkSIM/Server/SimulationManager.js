@@ -52,11 +52,16 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
-	newJSON.partition_list=buildPartitionList(simulation);
+	
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
+	newJSON.partition_list=buildPartitionList(simulation);
+	
 	state.simulation=newJSON;
-	state.device=device.deviceJSON;
+	
+	device = Util.deepCopy(device.deviceJSON);
+	device.apps = buildListObject( device.apps, simulation.app_specs);
+	state.device=device;
 	state.simulation_list=module.exports.getSimulationList();
 	return state;
 }
@@ -73,9 +78,11 @@ function buildPartitionList(simulation){
 			device_list=network_list[nIndex].device_list;
 
 			for(dIndex in device_list){
-				device_list[dIndex].deviceJSON.apps = buildListObject( device_list[dIndex].deviceJSON.apps, simulation.app_specs);
+				var device = Util.deepCopy(device_list[dIndex].deviceJSON);
 				
-				newDeviceList.push(device_list[dIndex].deviceJSON);
+				device.apps = buildListObject( device.apps, simulation.app_specs);
+				console.log(device);
+				newDeviceList.push(device);
 			}
 			var network=Util.deepCopy(network_list[nIndex].networkJSON);
 			network.device_list=Util.deepCopy(newDeviceList);

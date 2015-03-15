@@ -132,6 +132,7 @@ function pushFileEvent(file_type){
 		console.log(uploadEvent);
 		addToEventQueue('/upload',uploadEvent,new Date());
 		setTimeout(function(){
+			syncWithServer();
 			SimulationManagementView();
 		},5000);
 	}
