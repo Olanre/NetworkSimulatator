@@ -141,6 +141,9 @@ function handleEventQueue(token, eventQueue, callback) {
             case '/deploy/App':
                 ApplicationManager.deployApp(eventQueue[i].event_data);
                 break;
+            case '/launch/App':
+                ApplicationManager.launchApp(eventQueue[i].event_data);
+                break;
 
 			default:
 				break;
