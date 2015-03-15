@@ -41,11 +41,12 @@ function Simulation(simulation_name){
 	this.mergePartitions=mergePartitions;
 	this.attachJSON=attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
+	this.deployApp = deployApp;
 }
 
 function createNewSimulation(simulation_name){
-	var createdSimulation=new Simulation(simulation_name);
-	var simulationJSON= new SimModel();
+	var createdSimulation = new Simulation(simulation_name);
+	var simulationJSON = new SimModel();
 
 	simulationJSON.simulation_name = simulation_name;
 	simulationJSON.num_devices = 0;
@@ -53,6 +54,9 @@ function createNewSimulation(simulation_name){
 	simulationJSON.simulation_population = 0;
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
+
+	//simulationJSON.rdts = [];
+	//simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
 	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
@@ -64,11 +68,13 @@ function loadSimulationFromJSON(simulationJSON){
 	var createdSimulation= new Simulation('');
 	createdSimulation.attachJSON(simulationJSON);
 	
-	for(partitionName in simulationJSON.partition_list){
-		var createdPartition=Partition.createNewPartition(partitionName,this.simulationJSON.simulation_name);
-		this.partition_list.push(createdPartition);
-	}
+	for(index in simulationJSON.partition_list){
 	
+		var createdPartition=Partition.loadPartitionFromDatabase(simulationJSON.partition_list[index]);
+		this.partition_list.push(createdPartition);
+
+
+	}
 	return createdSimulation;
 }
 
@@ -85,18 +91,19 @@ function importRDT(rdt){
 
 function attachAppSpec( appSpec){
 	this.simulationJSON.apps.push(appSpec.specJSON._id);
-	this.app_specs.push(appSpec);
+	this.app_specs.push(appSpec.specJSON);
 	this.simulationJSON.save();
 }
 
 function attachRDTSpec( rdtSpec){
 	this.simulationJSON.rdts.push(rdtSpec.specJSON._id);
-	this.rdt_specs.push(rdtSpec);
+	this.rdt_specs.push(rdtSpec.specJSON);
 	this.simulationJSON.save();
 }
 	
 function importApp(app){
-		this.apps.push(app);		
+		this.apps.push(app);	
+		
 }
 	
 function removeApp(app){
@@ -105,6 +112,13 @@ function removeApp(app){
 		    this.apps.splice(index, 1);
 		}
 		
+}
+
+//deploy a the referenced app spec json object to all devices
+function deployApp(app_specJSON){
+	while (this.deviceIterator.hasNext()) {
+		  this.deviceIterator.next().attachAppSpec( app_specJSON);
+	  }
 }
 
 function getNetworks(){
@@ -146,8 +160,8 @@ function addDevice(device){
 function addNetwork(network){
 
 	var partition= Partition.createNewPartition(this.simulationJSON.simulation_name, network.network_name);
-	partition.addNetwork(network);
 	this.partition_list.push(partition);
+	partition.addNetwork(network);
 	this.network_list.push(network);
 	this.simulationJSON.partition_list.push(partition.partitionJSON._id);
 	this.simulationJSON.num_networks++;

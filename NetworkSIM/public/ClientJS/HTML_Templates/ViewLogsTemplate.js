@@ -6,7 +6,7 @@
  * simulation
  * @param logs: The list of logs for this simulation.
  */
-function SimulationLogsTemplate(logs){
+function LogsTemplate(logs){
 	var template = document.getElementById('template17').innerHTML;
 	 textile = Hogan.compile(template);
 	 var logs_array = logs.split("\n");

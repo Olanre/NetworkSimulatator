@@ -21,14 +21,13 @@ function Device(deviceName,token, simulation_name , email){
 	this.leaveNetwork=leaveNetwork;
 	this.replicateRDT=replicateRDT;
 	this.accessRDT=accessRDT;
+	this.attachAppSpec = attachAppSpec;
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
 	this.updateDeviceLog = updateDeviceLog;
 
 	//Constructor contents
-
-	//Editing the JSON which represents the device. This will have to change when the database finally works.
 	
 
 	
@@ -46,7 +45,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	deviceJSON.verified=false;
 	deviceJSON.current_partition = '';
 	deviceJSON.current_network = '';
-	
+	deviceJSON.activity = '';
 	deviceJSON.email = deviceName;
 	deviceJSON.token=token;
 	createdDevice.deviceJSON=deviceJSON;
@@ -57,9 +56,14 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	return createdDevice;
 }
 
-function loadDeviceFromJSON(deviceJSON){
+function loadDeviceFromDatabase(deviceID){
 	var createdDevice=new Device('');
-	createdDevice.attachJSON(deviceJSON);
+	var query = DevModel.where({_id:deviceID});
+	query.findOne({_id: deviceID}, function(err,deviceJSON){
+		if(!err){
+		 createdDevice.attachJSON(deviceJSON);
+		}
+	});
 	return createdDevice;
 }
 
@@ -72,10 +76,9 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
-	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
-	  this.deviceJSON.current_partition=network.networkJSON.partition;
-	  this.deviceJSON.current_network=network.network_name;
+	  this.deviceJSON.current_partition=network.partitionObject._id;
+	  this.deviceJSON.current_network=network._id;
 	  this.deviceJSON.save();
 	  
 };
@@ -106,6 +109,10 @@ function accessRDT(rdt_name){
 	}
 };
 
+function attachAppSpec( app_specJSON){
+	this.deviceJSON.apps.push(app_specJSON._id);
+}
+
 function accessRDT(){
     // Access the previously registered replicated data type in the device
 	var index = rdts.length-1;
@@ -119,4 +126,4 @@ function updateDeviceLog(new_activity){
 
 
 module.exports.createNewDevice = createNewDevice;
-module.exports.loadDeviceFromJSON=loadDeviceFromJSON;
+module.exports.loadDeviceFromDatabase=loadDeviceFromDatabase;

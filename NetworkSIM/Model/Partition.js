@@ -1,6 +1,7 @@
 var Util=require("../Utilities/utilities.js");
 var Database=require("../Database/mongooseConnect.js");
 var PModel = require("../Database/dbModels/partitionModel.js");
+var NetworkModel = require("../Database/dbModels/networkModel.js");
 var NetworkIterator=require('./Iterators/NetworkIterator.js');
 
 function Partition(partitionName, simulationName){
@@ -30,13 +31,21 @@ function createNewPartition(partitionName,simulationName){
 	return createdPartition;
 }
 
-function loadPartitionFromJSON(partitionJSON){
+function loadPartitionFromDatabase(partitionID){
 	var createdPartition=new Partition('','');
-	attachJSON(createdPartition,partitionJSON);
-	for(var i=0;i<partitionJSON.network_list.length;i++){
-			var createdNetwork=Network.loadNetworkFromJSON(partitionJSON.network_list[i]);
-			createdPartition.addNetwork(cratedNetwork);
-	};
+	var query=PModel.where({_id: partitionID});
+
+	query.findOne(function(err,partitionJSON){
+
+		for(index in partitionJSON.network_list){
+			
+			var createdNetwork=Network.loadNetworkFromDatabase(partitionJSON.network_list[index]);
+			createdNetwork.partitionObject=createdPartition;
+			createdPartition.network_list.push(createdNetwork);
+
+		}
+		createdPartition.attachJSON(partitionJSON);
+	});
 
 		return createdPartition;
 }
@@ -82,4 +91,4 @@ function mergePartitions(partition){
 };
 
 module.exports.createNewPartition = createNewPartition;
-module.exports.loadPartitionFromJSON=loadPartitionFromJSON;
+module.exports.loadPartitionFromDatabase=loadPartitionFromDatabase;

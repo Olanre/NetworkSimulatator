@@ -1,7 +1,8 @@
 var Util=require("../Utilities/utilities.js");
 var Partition= require('./Partition.js');
-var NetModel = require("../Database/dbModels/networkModel.js");
+var NetworkModel = require("../Database/dbModels/networkModel.js");
 var DeviceIterator=require('./Iterators/DeviceIterator.js');
+var Device = require("./Device.js");
 
 function Network(networkName, networkKind){
 
@@ -31,14 +32,14 @@ function Network(networkName, networkKind){
 
 function createNewNetwork(networkName,networkKind){
 	var createdNetwork = new Network(networkName,networkKind);
-	var networkJSON =  new NetModel();
+	var networkJSON =  new NetworkModel();
 
 	networkJSON.network_type=networkKind;
 	networkJSON.network_name=networkName;
 	networkJSON.partition_name = '';
 	createdNetwork._id=networkJSON._id;
 	createdNetwork.networkJSON=networkJSON;
-	createdNetwork.attachJSON(networkJSON);
+	this.networkJSON=networkJSON;
 
 	createdNetwork.partitionObject.addNetwork(createdNetwork);
 	networkJSON.save();
@@ -46,13 +47,20 @@ function createNewNetwork(networkName,networkKind){
 	return createdNetwork;
 }
 
-function loadNetworkFromJSON(networkJSON){
+function loadNetworkFromDatabase(networkID){
 	var createdNetwork=new Network('','');
-	createdNetwork.attachJSON(networkJSON);
-	for(index in networkJSON.device_list){
-		var createdDevice=Device.loadDeviceFromJSON(networkJSON.device_list[index]);
-		createdNetwork.addDevice(createdDevice);
-	}
+	//for some reason, sometimes networkJSON is undefined!
+	NetworkModel.findOne({_id:networkID}, function(err,networkJSON){
+		if(!err){
+			for(var index=0; index<networkJSON.device_list.length;index++){
+				var createdDevice=Device.loadDeviceFromDatabase(networkJSON.device_list[index]);
+				createdNetwork.device_list.push(createdDevice);
+				createdDevice.networkObject=createdNetwork;
+				createdNetwork.attachJSON(networkJSON);
+			}
+		}
+	});
+	
 	return createdNetwork;
 }
 
@@ -103,4 +111,4 @@ function disconnectNetwork(network){
 };
 
 module.exports.createNewNetwork = createNewNetwork;
-module.exports.loadNetworkFromJSON=loadNetworkFromJSON;
+module.exports.loadNetworkFromDatabase=loadNetworkFromDatabase;

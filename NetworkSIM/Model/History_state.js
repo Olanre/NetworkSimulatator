@@ -5,23 +5,20 @@ var Database=require("../Database/mongooseConnect.js");
 var Util=require("../Utilities/utilities.js");
 var statemodel
 
-function History_State(simulation){
+function History_State(simulation, timestamp){
 	
 	this.simulation = simulation;
 	
 	this.stateJSON = {};
-
+	this.stateJSON.simulation = simulation;
+	this.stateJSON.timestamp = timestamp;
 	//functions
 	this.getSimulation = getSimulation;
 	this.attachJSON = attachJSON;
 }
 
 function createNewHistory_State(simulation, timestamp){
-	var New_State = new History_State(simulation);
-	var stateJSON = {};
-	stateJSON.simulation = simulation;
-	stateJSON.timestamp = timestamp;
-	attachJSON( stateJSON);
+	var New_State = new History_State(simulation, timestamp);
 	return New_State;
 }
 

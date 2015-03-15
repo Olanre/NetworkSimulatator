@@ -38,8 +38,7 @@ function updateAllViews( timeout){
 function AccountView(){
 	var local_device = get_local_device();
 	var html = AccountTemplate(local_device);
-	var content = getContainer();
-	content.innerHTML = html;
+	getSection().innerHTML = html;
 }
 
 function deviceHeaderView(){
@@ -55,7 +54,7 @@ function adminAppsView(){
 	document.getElementById('nav-option-applications').className='active';
 
 	var local_session = get_local_simulation();
-	var applications = local_session.applications;
+	var applications = local_session.apps;
 	var html = viewAdminApplicationsTemplate(applications);
 	var content = getContainer();
 	content.innerHTML = html;
@@ -65,12 +64,51 @@ function RDTsView(){
 	removeClass('active');
 	document.getElementById('nav-option-RDTs').className='active';
 
-	var local_session = get_local_simulation();
-	var rdts = local_session.rdts;
+	var local_simulation = get_local_simulation();
+	var rdts = local_simulation.rdts;
 	var html = viewRDTsTemplate(rdts);
 	var content = getContainer();
 	content.innerHTML = html;
 	
+}
+
+function ViewRDT(_id, e){
+	var local_simulation = get_local_simulation();
+	var rdts = local_simulation.rdts;
+	
+	if(e.innerHTML.indexOf("View Specification") > -1 ){
+		for(var i = 0; i < rdts.length; i++){
+			if(rdts[i]._id == _id){
+				var div = document.getElementById(_id);
+				if(div !== null) div.innerHTML = "<code>" + JSON.stringify(rdts[i]) + "</code>";
+			}
+		}
+		e.innerHTML = 'Hide';
+	}else if( e.innerHTML.indexOf('Hide') > -1 ){
+		var div = document.getElementById(_id);
+		if(div !== null) div.innerHTML = "";
+		e.innerHTML = 'View Specification'
+	}
+}
+
+function ViewApp(_id, e){
+	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
+	if(e.innerHTML.indexOf("View Specification") > -1 ){
+		for(var i = 0; i < apps.length; i++){
+			if(apps[i]._id == _id){
+				var div = document.getElementById(_id);
+				console.log(_id);
+				if(div !== null) div.innerHTML = "<code>" + JSON.stringify(apps[i]) + "</code>";
+			}
+		}
+		e.innerHTML = 'Hide';
+	}else if( e.innerHTML.indexOf('Hide') > -1 ){
+		var div = document.getElementById(_id);
+		if(div !== null) div.innerHTML = "";
+		e.innerHTML = 'View Specification'
+	}
 }
 /**
  * Displays the user's information
@@ -87,9 +125,9 @@ function appDefaultView(){
 		alert('You do not have permission to access this. Please get a token first.');
 	}else{
 		//sets the page to view to 'user information' page
-		var app = CounterAppTemplate(local_device);
+		var apps = DeviceAppsListTemplate(local_device.apps);
 		var content = getContainer();
-		content.innerHTML = app;
+		content.innerHTML = apps;
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
 	}
@@ -312,8 +350,9 @@ function SimulationManagementSideBarView(){
  * Displays the list of all networks not sure if necessary
  */
 function NetworksListView(){
+	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
-	var lists = getAllNetworkObjects();
+	var lists = getAllNetworkObjects(local_simulation);
 	var html = NetworksListTemplate(lists, local_device);
 	
 	getSection().innerHTML = html;
@@ -323,12 +362,10 @@ function NetworksListView(){
  * Displays the list of all devices
  */
 function DeviceListView(){
-	var devices = getAllDeviceObjects();
-	var html = "<div class = 'container'> " +
-	"<table>";
-	html += DevicesListTemplate(devices);
-	html += "</table>" +
-	"</div><br>";
+	var local_simulation = get_local_simulation();
+	var devices = getAllDeviceObjects(local_simulation);
+	var html =  DevicesListTemplate(devices);
+
 	getSection().innerHTML = html;
 }
 
@@ -336,8 +373,8 @@ function DeviceListView(){
  * changes the page view to the logs of this user.
  */
 function LogsView(){
-	var logs = getLocalSimulationLogs();
-	var html = SimulationLogsTemplate(logs);
+	var logs = getLocalDeviceLogs();
+	var html = LogsTemplate(logs);
 	var footer = getFooter();
 	footer.innerHTML = html;
 }

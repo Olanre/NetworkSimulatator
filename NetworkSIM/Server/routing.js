@@ -1,5 +1,6 @@
 var SimulationManager = require("./SimulationManager.js");
 var FileManager = require("./FileManager.js");
+var ApplicationManager = require("./ApplicationManager.js");
 var io = {};
 
 var clients = [];
@@ -136,6 +137,9 @@ function handleEventQueue(token, eventQueue, callback) {
 				break;
             case '/upload':
                 FileManager.uploadAllFiles(eventQueue[i].event_data);
+                break;
+            case '/deploy/App':
+                ApplicationManager.deployApp(eventQueue[i].event_data);
                 break;
 
 			default:

@@ -3,7 +3,7 @@ var Device=require("../../Model/Device.js");
 var Network=require("../../Model/Network.js");
 var Partition=require("../../Model/Partition.js");
 var Simulation=require("../../Model/Simulation.js");
-
+var SimModel = require("../../Database/dbModels/simulationModel.js");
 var JSONSimulationTemplate={
 		partion_list : undefined,
 		num_devices: undefined,
@@ -25,27 +25,32 @@ var simulationJSON={
 }
 
 module.exports.testSimulationCreation=function(){
-	var createdSimulation = Simulation.createNewSimulation();
-	var result=Util.compareObjects(JSONSimulationTemplate,createdSimulation.simulationJSON);
+	console.log("testing simulation creation");
+	var createdSimulation = Simulation.createNewSimulation("testsim1337");
+	var id= createdSimulation._id;
+
+	SimModel.findOne({_id: id}, function(err, obj){
+		var result = setTimeout(function(){
+			console.log(obj);
+			return Util.compareObjects(obj,createdSimulation.simulationJSON);
+		}, 1000);
+		
+		if(!result) console.log("SimulationCreation failed!\n"+obj+'\n'+createdSimulation.simulationJSON);
+		return result;
+	});
+
 	
-	console.log(JSONSimulationTemplate);
-	console.log(createdSimulation.simulationJSON);
-
-
-	var text= result ? 'passed' : 'failed';
-	console.log("createNewSimulation "+text);
-
-	return result;
 }
 
 module.exports.testSimulationLoading=function(){
 
-	var loadedSimulation=Simulation.loadSimulationFromJSON(simulationJSON);
-	var result=Util.compareObjects(loadedSimulation.simulationJSON, simulationJSON);
-	var text= result ? 'passed' : 'failed';
-	console.log("loadSimulationFromJSON "+ text);
-
-	return result;
+	console.log("testing simulation loading");
+	var createdSimulation=Simulation.createNewSimulation('testSimm!');
+	var id = createdSimulation._id;
+	setTimeout(function(){
+			var theSim = Network.loadSimulationFromDatabase(id);
+			return true;
+		}, 4000);
 
 }
 
@@ -154,7 +159,7 @@ module.exports.testRemoveNetwork=function(){
 module.exports.testSimulation=function(){
 	var functions=[];
 
-	//functions.push(module.exports.testSimulationCreation);
+	functions.push(module.exports.testSimulationCreation);
 	//functions.push(module.exports.testSimulationLoading);
 	functions.push(module.exports.testGetNetworks);
 	functions.push(module.exports.testGetDevices);
