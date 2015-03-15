@@ -38,8 +38,7 @@ function updateAllViews( timeout){
 function AccountView(){
 	var local_device = get_local_device();
 	var html = AccountTemplate(local_device);
-	var content = getContainer();
-	content.innerHTML = html;
+	getSection().innerHTML = html;
 }
 
 function deviceHeaderView(){

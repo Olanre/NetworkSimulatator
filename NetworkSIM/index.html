@@ -256,9 +256,14 @@
 						<li>						
 						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
 						</li>					
+						<li>	
 						<li>						
+						<a href="#" onclick = "AccountView()">About Me</a>						
+						</li>	
+						<hr>				
 						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
 						</li>	
+						
 					</ul>					
 				</div>		
 </script>
@@ -334,13 +339,18 @@
 </script>
 
 <script type = "AccountTemplate" id = "template12" >
-	<div>
-		<h2> Hello {{current_device_name}} in {{current_simulation}} </h2>
-	</div> 
+	
 	<div class = 'container'>
-		<div class = 'appinterface'> You Email: {{email}} </div>
+		<div>
+			<h3> Hello {{current_device_name}} </h3>
+		</div> 
 		<div class = 'counters'> 
 			<table>
+				<tr> 
+					<td> 
+					 	<div> Email: {{email}} </div>
+					</td>
+				</tr>
 				<tr> 
 					<td> 
 					 	<div> RegistedOn: {{registeredOn}} </div>
@@ -364,6 +374,7 @@
 			</table>
 		</div>
 	</div>
+	
 </script>
 
 <script type = "NetworkListTemplate" id = "template13">
@@ -441,7 +452,7 @@
 					</li>		
 					<hr>			
 					<li id='nav-option-applications'>						
-						<a href="#" onclick = "appDefaultView()">My Apps</a>						
+						<a href="#" onclick = "appDefaultView()">My Device</a>						
 					</li>
 					<li id='nav-option-backtosimulations'>						
 						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
@@ -601,6 +612,7 @@
 			</aside></div>			
 				
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" > 
+				<br>
 				<section> 
 				</section>
 				<div id = "content"> Loading... </div>

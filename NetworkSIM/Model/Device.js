@@ -76,10 +76,9 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
-	  this.deviceJSON.current_network=network.name;
 	  this.networkObject = network;
-	  this.deviceJSON.current_partition=network.networkJSON.partition;
-	  this.deviceJSON.current_network=network.network_name;
+	  this.deviceJSON.current_partition=network.partitionObject._id;
+	  this.deviceJSON.current_network=network._id;
 	  this.deviceJSON.save();
 	  
 };

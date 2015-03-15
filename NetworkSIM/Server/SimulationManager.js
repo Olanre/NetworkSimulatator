@@ -46,7 +46,6 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
 	newJSON.partition_list=buildPartitionList(simulation);
-	console.log(newJSON);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
 	//console.log(newJSON);

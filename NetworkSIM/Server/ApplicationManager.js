@@ -7,7 +7,12 @@ var Util = require("../Utilities/utilities.js");
 var App_Spec = require("../Model/App_Spec.js");
 
 function deployApp( event_data ){
-	
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	for(index in simulation.app_specs){
+		if(simulation.app_specs[index].name = event_data.app_name){
+			simulation.deployApp(simulation.app_specs[index]);
+		}
+	}
 }
 
 function launchApp( event_data){
