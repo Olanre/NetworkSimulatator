@@ -29,6 +29,7 @@ exports.loadSimulations = function(simList){
 		console.log("loading "+ simList[sim].simulation_name);
 		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
 	}
+	console.log("All simulations have been loaded.");
 }
 
 exports.getAppStateForDevice = function(token,simulation_id){
@@ -54,7 +55,6 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	newJSON.partition_list=buildPartitionList(simulation);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
-	//console.log(newJSON);
 	state.simulation=newJSON;
 	state.device=device.deviceJSON;
 	state.simulation_list=module.exports.getSimulationList();
@@ -74,7 +74,7 @@ function buildPartitionList(simulation){
 
 			for(dIndex in device_list){
 				device_list[dIndex].deviceJSON.apps = buildListObject( device_list[dIndex].deviceJSON.apps, simulation.app_specs);
-				console.log(device_list[dIndex].deviceJSON.apps);
+				
 				newDeviceList.push(device_list[dIndex].deviceJSON);
 			}
 			var network=Util.deepCopy(network_list[nIndex].networkJSON);
@@ -92,7 +92,7 @@ function buildPartitionList(simulation){
 			newPartitionList.push(partition);
 		}
 	}
-	//console.log(newPartitionList);
+
 	return newPartitionList;
 }
 function buildListObject(idList,objectList){
@@ -252,7 +252,7 @@ function createSimulation(event_data, time_stamp) {
 					    if(err) {
 					        console.log(err);
 					    } else {
-					       // console.log("The file was saved!");
+					        console.log("New tokens are saved in tokens.txt!");
 					    }
 					});
 				}
@@ -405,8 +405,6 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
 			var newJSON= Util.deepCopy(simulationObject.simulationJSON);
-			//console.log(simulationObject.simulationJSON);
-			//console.log(newJSON);
 			newJSON.partition_list=buildPartitionList(simulationObject);
 			
 		}

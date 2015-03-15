@@ -38,8 +38,8 @@ function Simulation(simulation_name){
 	this.removeNetwork=removeNetwork;
 	this.attachRDTSpec = attachRDTSpec;
 	this.attachAppSpec = attachAppSpec;
-	this.mergePartitions=mergePartitions;
-	this.attachJSON=attachJSON;
+	this.mergePartitions = mergePartitions;
+	this.attachJSON =attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
 	this.deployApp = deployApp;
 }

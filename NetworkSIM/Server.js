@@ -19,17 +19,19 @@ var port = 3332;  // must be on port 3332 on excalibur for the grader
 var server = require("http").Server(app);
 var io = require("socket.io").listen(server);
 
-var simJSONlist = SimulationModel.findAllSimulations(SimulationManager.loadSimulations);
-
-Router.injectIO(io);
-io.on("connection", Router.handleClient);
-
-server.listen(port, function(){
-	  console.log('listening on *: ' + port);
-	});
-
-
 app.use(logger({path: "./logfile.txt"}));
+
+
+SimulationModel.findAllSimulations(function(simJSONlist){
+
+	SimulationManager.loadSimulations(simJSONlist);
+	Router.injectIO(io);
+	io.on("connection", Router.handleClient);
+
+	server.listen(port, function(){
+	  	console.log('listening on *: ' + port);
+	});
+});
 
 app.get('/', function(request,response){
 	response.sendFile("/index.html", {"root": __dirname});	
