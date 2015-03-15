@@ -10,4 +10,16 @@ var RDTSchema = mongoose.Schema({
 	main : String    
 	
 	});
+
+//static methods
+RDTSchema.statics.getRDTByName = function (aName, callback)
+{
+	this.findOne( {name : aName}, function(err, obj)
+	{
+		if(err) console.log("no RDT with name: " + aName );
+		console.log("found RDT " + obj);
+		callback(obj);
+	});
+}
+
 module.exports = mongoose.model('RDT', RDTSchema, 'RDTs');

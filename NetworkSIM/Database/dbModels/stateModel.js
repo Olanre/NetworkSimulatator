@@ -19,5 +19,17 @@ stateSchema.statics.newState = function (aState)
   //console.log("Saved state" + state);
 }
 
+stateSchema.statics.getStateByName = function (aName, callback)
+{
+	this.findOne( {simulation_id : aName}, function(err, obj)
+	{
+		if(err) console.log("no state with name: " + aName );
+		console.log("found state" + obj);
+		callback(obj);
+	});
+}
+
+
+
 
 module.exports = mongoose.model('State', stateSchema, 'States');
