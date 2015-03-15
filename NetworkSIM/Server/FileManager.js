@@ -1,7 +1,9 @@
 var path = require('path');
 var fs=require('fs');
 var mkdirp = require('mkdirp');
-var SimulationManager = require("./SimulationManager.js");
+//var SimulationManager = require("./SimulationManager.js");
+var ApplicationManager = require("./ApplicationManager.js");
+var RDTManager = require("./RDTManager.js");
 
 function uploadAllFiles(event_data){
 	var files=event_data.files;
@@ -24,7 +26,7 @@ function uploadAllFiles(event_data){
 					uploadFile(files[i],location + '/');
 					
 				}
-				SimulationManager.attachApp( location, simulation_id, spec);
+				ApplicationManager.attachApp( location, simulation_id, spec);
 			}
 		});
 		
@@ -39,7 +41,7 @@ function uploadAllFiles(event_data){
 					
 					//uploadFile(files[i],location + '/');
 				}
-				SimulationManager.attachRDT(location, simulation_id, spec);
+				RDTManager.attachRDT(location, simulation_id, spec);
 			}
 		});
 	}

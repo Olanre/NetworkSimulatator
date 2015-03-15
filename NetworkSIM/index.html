@@ -45,14 +45,14 @@
 		<script src = '../template/NetworkListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewDeviceTemplate.js' type='text/javascript'></script>
-		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'>
-		</script>
+		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'></script>
 		<script src = '../template/CounterAppTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewLogsTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationSideBarTemplate.js' type='text/javascript'></script>
 		<script src = '../template/UploadFileTemplate.js' type='text/javascript'></script>
 		<script src = '../template/RDTsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/AdminAppsListTemplate.js' type='text/javascript'></script>
+		<script src = '../template/DeviceAppsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/NetworkTopologyTemplate.js'></script>
 		
 		<!--  Views -->
@@ -67,10 +67,9 @@
 	
 
 <script type = 'create_network_template' id = "template1">
-<div class = 'createNetwork'>
-	<h1>Create a Network</h1>
-</div>
+
 <div class = 'container'>
+	<h3>Create a Network</h3>
 <table>
 	<tr>
 		<td>
@@ -241,6 +240,28 @@
 		</table>
 	</div>
 </script>
+<script type = 'DeivceSideBar' id = 'template9'>
+
+<div class="col-sm-3 col-md-2 sidebar">					
+					<ul class="nav nav-sidebar">						
+						<li>						
+						<a href="#" onclick = "createNetworkView()">Create a new network</a>						
+						</li>						
+						<li>						
+						<a href="#" onclick = "NetworksListView()">View the Networks</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "LogsView()">View My Logs</a>						
+						</li>
+						<li>						
+						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
+						</li>					
+						<li>						
+						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
+						</li>	
+					</ul>					
+				</div>		
+</script>
 <script type='createSimulation-template' id = 'template10'>
 <h2> 
 		Create a Simulation
@@ -351,7 +372,7 @@
 		<table>
 			{{#networks}}
 			
-				<tr  id = '{{id}}'> 
+				<tr  id = '{{_id}}'> 
 					<td> {{network_name}}  </td> 
 				</tr>
 			{{/networks}}
@@ -366,7 +387,7 @@
 		<table>
 			{{#devices}}
 			
-				<tr  id = '{{id}}'> 
+				<tr  id = '{{_id}}'> 
 					<td> {{current_device_name}}  </td> 
 				</tr>
 			{{/devices}}
@@ -438,9 +459,8 @@
 			</td> 
 			<td> 
 				<div class = 'btn btn-primary' onclick = "DeployApp('{{name}}')"> Deploy </div>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{name}}', this)"> View Specification </div>
+				
 			</td> 
-			<td id = '{{name}}'> </td>
 		</tr>{{/apps}}
  	</table>
 	<br>
@@ -549,6 +569,23 @@
 	<\/script>
 </script>
 
+<script type = "DeviceAppsListTemplate" id = "template22">
+	<h4> The Apps available for you </h4>
+	<br>
+	<table>
+	 	{{#apps}}<tr>
+			 <td> 
+				{{name}} 
+			</td> 
+			<td> 
+				<div class = 'btn btn-primary' onclick = "LaunchApp('{{name}}')"> Launch </div>
+				<div class = 'btn btn-primary' onclick = "ViewApp('{{name}}', this)"> View Description </div>
+			</td> 
+			<td id = '{{name}}'> </td>
+		</tr>{{/apps}}
+ 	</table>
+	<br>
+</script>
 <body>
 		<!-- onload optional -->		
 		<div id = 'app'>			

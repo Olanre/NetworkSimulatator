@@ -10,6 +10,7 @@ function Device(deviceName,token, simulation_name , email){
 	//Our Variables//
 	this.networkObject=Network.createNewNetwork('','');
 	this.networks_created = [];
+	this.app_specs = [];
 	this.rdts = [];
 	this.token=token;
 	this.deviceJSON = {};
@@ -108,6 +109,11 @@ function accessRDT(rdt_name){
 		
 	}
 };
+
+function attachAppSpec( App_Spec){
+	this.app_specs.push(App_Spec);
+	this.deviceJSON.apps.push(rdtSpec.specJSON._id);
+}
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device

@@ -8,14 +8,30 @@ function viewApp(app_name){
 	
 }
 
-function deployApp(app_name){
+function DeployApp(app_name){
 	var local_simulation = get_local_simulation();
 	if(local_simuation!==null){
 		var params = { 
 				'app_name': app_name, 
 				'simulation_id': local_simulation._id,
 				};
-		var url = '/get/AppSpec';
+		var url = '/deploy/App';
+		var timestamp = new Date();
+		addToEventQueue(url, params, timestamp);
+	}
+	else{
+		console.log("local simulation was passed null parameters");
+	}
+}
+
+function  LaunchApp(app_name){
+	var local_simulation = get_local_simulation();
+	if(local_simuation!==null){
+		var params = { 
+				'app_name': app_name, 
+				'simulation_id': local_simulation._id,
+				};
+		var url = '/launch/App';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
 	}

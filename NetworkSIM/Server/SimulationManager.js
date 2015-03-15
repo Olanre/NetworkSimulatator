@@ -14,8 +14,8 @@ var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
 var Simulation_History = require("../Model/Simulation_history.js");
 var History_State = require("../Model/History_state.js");
-var App_Spec = require("../Model/App_Spec.js");
-var RDT_Spec = require("../Model/RDT_Spec.js");
+
+
 var path = require('path');
 var fs=require('fs');
 
@@ -225,9 +225,11 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 		else{
+			createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
+			simulation.addPartition(createdPartition);
 			for(network in map[partition]){
 				createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
-				simulation.addNetwork(createdNetwork);
+				createdPartition.addNetwork(createdNetwork);
 
 				for(device in map[partition][network]){
 						var token = TokenManager.generateToken();
@@ -252,7 +254,8 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	
+	simulation.simulationJSON.num_networks = event_data.num_networks;
+	simulation.simulationJSON.num_devices = event_data.num_devices;
 	//create a new history object
 	simulationHistoryList.push(simulation_history);
 	//save our state in the history object
@@ -356,67 +359,6 @@ function addDeviceToNetwork(event_data, time_stamp){
 
 }
 
-function attachRDT( location, simulation_id, spec){
-	var time_stamp = new Date().toISOString();
-	var simulation=Util.findByUniqueID(simulation_id,simulationList);
-	if(simulation !== -1){
-		spec = JSON.parse(spec);
-		var new_activity = "The RDT " +  spec.name +  " was imported into the simulation at  " + time_stamp + "\n";
-		simulation.updateSimulationLog(new_activity);
-		
-		
-		try{
-			setTimeout(function(){
-				//require the rdt in our simulation
-				var rdt = require(location + "/" + spec['main']);
-				simulation.importRDT(rdt);
-				
-				//attach the specs for the RDT into the simulation
-				var new_spec = RDT_Spec.createNewRDT_Spec( spec);
-				simulation.attachRDTSpec(new_spec);
-				//console.log(simulation.simulationJSON);
-
-			}, 1000);
-			
-			
-		}
-		catch(err){
-			console.log(err);
-		}
-		//save the state
-		saveSimulationState( simulation._id, time_stamp, simulation);
-	}
-	
-}
-
-function attachApp( location, simulation_id, spec){
-	var time_stamp = new Date().toISOString();
-	var simulation=Util.findByUniqueID(simulation_id,simulationList);
-	if(simulation !== -1){
-		spec = JSON.parse(spec);
-		var new_activity = "The App " +  spec.name +  " was imported into the simulation  at " + time_stamp + "\n";
-		simulation.updateSimulationLog(new_activity);
-		
-		try{
-			setTimeout(function(){
-				var app = require(location + "/" + spec['main']);
-				simulation.importApp(app);
-				var new_spec = App_Spec.createNewApp_Spec( spec);
-				simulation.attachAppSpec(new_spec);
-
-			}, 1000);
-			
-		}
-		catch(err){
-			console.log(err);
-		}
-		//save the state
-		
-		saveSimulationState( simulation._id, time_stamp, simulation);
-	}
-	
-	
-}
 
 //TODO untested
 function mergePartitions(event_data, time_stamp){
@@ -468,8 +410,7 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	}
 }
 
-module.exports.attachRDT = attachRDT;
-module.exports.attachApp = attachApp;
+module.exports.saveSimulationState = saveSimulationState;
 module.exports.authToken = authToken;
 module.exports.simulationList=simulationList;
 module.exports.createSimulation=createSimulation;

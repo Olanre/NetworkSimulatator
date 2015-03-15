@@ -113,6 +113,13 @@ function removeApp(app){
 		
 }
 
+//deploy a the referenced app spec json object to all devices
+function deployApp(App_Spec){
+	while (this.deviceIterator.hasNext()) {
+		  this.deviceIterator.next().attachAppSpec( App_Spec);
+	  }
+}
+
 function getNetworks(){
 		var merged = [];
 		for(var i = 0; i < this.partition_list.length; i++){

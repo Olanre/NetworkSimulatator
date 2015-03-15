@@ -81,7 +81,7 @@ function ViewRDT(name, e){
 		for(var i = 0; i < rdts.length; i++){
 			if(rdts[i].name == name){
 				var div = document.getElementById(name);
-				if(div !== null) div.innerHTML = "<code>" + JSON.parse(JSON.stringify(rdts[i])) + "</code>";
+				if(div !== null) div.innerHTML = "<code>" + JSON.stringify(rdts[i]) + "</code>";
 			}
 		}
 		e.innerHTML = 'Hide';
@@ -100,7 +100,7 @@ function ViewApp(name, e){
 		for(var i = 0; i < apps.length; i++){
 			if(app[i].name == name){
 				var div = document.getElementById(name);
-				if(div !== null) div.innerHTML = "<code>" + JSON.parse(JSON.stringify(apps[i])) + "</code>";
+				if(div !== null) div.innerHTML = "<code>" + JSON.stringify(apps[i]) + "</code>";
 			}
 		}
 		e.innerHTML = 'Hide';
@@ -125,9 +125,9 @@ function appDefaultView(){
 		alert('You do not have permission to access this. Please get a token first.');
 	}else{
 		//sets the page to view to 'user information' page
-		var app = CounterAppTemplate(local_device);
+		var apps = DeviceAppsListTemplate(local_device.apps);
 		var content = getContainer();
-		content.innerHTML = app;
+		content.innerHTML = apps;
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
 	}
@@ -350,8 +350,9 @@ function SimulationManagementSideBarView(){
  * Displays the list of all networks not sure if necessary
  */
 function NetworksListView(){
+	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
-	var lists = getAllNetworkObjects();
+	var lists = getAllNetworkObjects(local_simulation);
 	var html = NetworksListTemplate(lists, local_device);
 	
 	getSection().innerHTML = html;
@@ -361,12 +362,10 @@ function NetworksListView(){
  * Displays the list of all devices
  */
 function DeviceListView(){
-	var devices = getAllDeviceObjects();
-	var html = "<div class = 'container'> " +
-	"<table>";
-	html += DevicesListTemplate(devices);
-	html += "</table>" +
-	"</div><br>";
+	var local_simulation = get_local_simulation();
+	var devices = getAllDeviceObjects(local_simulation);
+	var html =  DevicesListTemplate(devices);
+
 	getSection().innerHTML = html;
 }
 
@@ -374,8 +373,8 @@ function DeviceListView(){
  * changes the page view to the logs of this user.
  */
 function LogsView(){
-	var logs = getLocalSimulationLogs();
-	var html = SimulationLogsTemplate(logs);
+	var logs = getLocalDeviceLogs();
+	var html = LogsTemplate(logs);
 	var footer = getFooter();
 	footer.innerHTML = html;
 }

@@ -31,6 +31,8 @@ footer{
     right: 5px;
 }
 
+
+
 aside{
 	font-size: 1.25em;
 }
@@ -87,6 +89,9 @@ td {
 	background: #f8f8f9;
 	border : 2px;
   	text-align:center
+}
+.container{
+	text-align:center
 }
 /*
  * Sidebar

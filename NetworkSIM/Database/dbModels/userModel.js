@@ -1,3 +1,4 @@
+var App = require("./appModel").App;
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -16,6 +17,7 @@ var userSchema = mongoose.Schema({
 	current_simulation: String,
 	current_device_name: String,
 	activity : String,
+	apps : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}]
 	
 });
 
