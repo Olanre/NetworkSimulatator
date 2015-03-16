@@ -38,7 +38,7 @@ function updateAllViews( timeout){
 function AccountView(){
 	var local_device = get_local_device();
 	var html = AccountTemplate(local_device);
-	getSection().innerHTML = html;
+	getContainer().innerHTML = html;
 }
 
 function deviceHeaderView(){
@@ -228,7 +228,7 @@ function newSimulationView(){
 function createNetworkView(){
 	var network_view = document.getElementById('template1');
 	var html = network_view.innerHTML;
-	var content = getSection();
+	var content = getContainer();
 	content.innerHTML = html;
 }
 
@@ -393,33 +393,42 @@ function SimulationManagementSideBarView(){
  * Displays the list of all networks not sure if necessary
  */
 function NetworksListView(){
+	clearNav();
+	clearFooter();
+	clearSection();
 	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
 	var lists = getAllNetworkObjects(local_simulation);
 	var html = NetworksListTemplate(lists, local_device);
 	
-	getSection().innerHTML = html;
+	getContainer().innerHTML = html;
 }
 
 /**
  * Displays the list of all devices
  */
 function DeviceListView(){
+	clearNav();
+	clearFooter();
+	clearSection();
 	var local_simulation = get_local_simulation();
 	var devices = getAllDeviceObjects(local_simulation);
 	var html =  DevicesListTemplate(devices);
 
-	getSection().innerHTML = html;
+	getContainer().innerHTML = html;
 }
 
 /**
  * changes the page view to the logs of this user.
  */
 function LogsView(){
+	clearNav();
+	clearFooter();
+	clearSection();
 	var logs = getLocalDeviceLogs();
 	var html = LogsTemplate(logs);
-	var footer = getFooter();
-	footer.innerHTML = html;
+	var content = getContainer();
+	content.innerHTML = html;
 }
 
 /**
