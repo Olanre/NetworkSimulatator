@@ -109,8 +109,7 @@ function handleClient (socket) {
     	SimulationManager.authToken(token, simulation_id, function(obj){
     		if(obj.Response == 'Success'){
     			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
-    			var response = {'new_val' : new_val};
-    			console.log(new_val);
+    			var response = {'new_val' : new_val , 'rdt_name' : json.event_data.name};
     			io.to(socket.id).emit('newRDTVal', response);
     		}
     		

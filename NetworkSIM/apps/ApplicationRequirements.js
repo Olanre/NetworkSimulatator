@@ -15,6 +15,7 @@ function manipulateRDT(rdtName, method){
 	var device_id = local_device._id;
 	var timestamp = new Date();
 	var route = '/manipulate/RDT';
+	console.log(rdtName);
 	var event_data = {'name' : rdtName, 'method' : method, 'device_id' : token, 'simulation_id' : simulation._id};
 	
 	var event = {'event_data' : event_data, 'timestamp' : timestamp, 'token' : token, 'simulation_id' : simulation._id};
@@ -24,7 +25,7 @@ function manipulateRDT(rdtName, method){
 }
 
 socket.on('newRDTVal', function(data){
-	newRDTVal(data['new_val']);
+	newRDTVal(data['new_val'], data['rdt_name']);
 });
 
 /**

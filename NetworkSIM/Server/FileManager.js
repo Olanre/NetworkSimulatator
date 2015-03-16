@@ -38,7 +38,7 @@ function uploadAllFiles(event_data, time_stamp){
 				
 				for(var i=0;i<files.length;i++){
 					
-					//uploadFile(files[i],location + '/');
+					uploadFile(files[i],location + '/');
 				}
 				RDTManager.attachRDT(location, simulation_id, spec, time_stamp);
 			}

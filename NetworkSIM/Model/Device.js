@@ -21,6 +21,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.leaveNetwork=leaveNetwork;
 	this.replicateRDT=replicateRDT;
 	this.accessRDT=accessRDT;
+	this.accessRDTByName = accessRDTByName;
 	this.attachAppSpec = attachAppSpec;
 	
 	//Our Functions//
@@ -97,17 +98,23 @@ function returnNetwork(){
  
 function replicateRDT(rdt){
 	  this.rdts.push(rdt);
+	  //this.deviceJSON.rdts.push(rdt)
 	  this.deviceJSON.save();
 };
 
 //acces an rdt by name
-function accessRDT(rdt_name){
-	var rdt = {};
-	for(var i = 0; i < rdts.length; i++){
-		if(rdts[i].constructor.name == rdt_name) rdt =  this.rdts[i];
+function accessRDTByName(rdt_name){
+	var test = null;
+	console.log(this);
+	for(var i = 0; i < this.rdts.length; i++){
+		
+		if(this.rdts[i].constructor.name === rdt_name) {
+			console.log("Foudn it");
+			test =  this.rdts[i];
+		}
 		
 	}
-	return rdt;
+	return test;
 };
 
 function attachAppSpec( app_specJSON){

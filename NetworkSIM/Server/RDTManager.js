@@ -47,14 +47,17 @@ function manipulateRDT(event_data, time_stamp){
 	
 	if(simulation !== null){
 		var deviceList = simulation.getDevices();
-		console.log(device_id);
 		var device = Util.findByUniqueID(device_id,deviceList);
 		if(device !== -1){
-			var activity = " Device " + device.current_device_name + " manipulated the RDT " + rdt_name + " performing an " + rdt_method + " at " + time_stamp;
+			var activity = " Device " + device.current_device_name + " manipulated the RDT " + rdt_name + " performing an " + rdt_method + " at " + time_stamp + "\n";
 			device.updateDeviceLog(activity);
-			var RDT = device.accessRDT(rdt_name);
-			RDT[rdt_method]();
-			val =  RDT.val();
+			var RDT = device.accessRDTByName(rdt_name);
+			
+			console.log(RDT.constructor.name + " " + rdt_name);
+			if(RDT !== null){
+				RDT[rdt_method]();
+				val =  RDT.val();
+			}
 		}else{
 			console.log("Device was not found for manipulating the RDT");
 		}
