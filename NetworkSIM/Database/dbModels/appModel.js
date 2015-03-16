@@ -11,13 +11,13 @@ var applicationSchema = mongoose.Schema({
 	
 	});
 
-appSchema.statics.getAppByID = function (anID, callback)
+applicationSchema.statics.getAppByID = function (anID, callback)
 {
 	this.findOne( {_id : anID}, function(err, obj)
 	{
 		if(err) console.log("no app with id: " + anID );
 		console.log("found app" + obj);
-		callback(obj);
+		callback(obj, err);
 	});
 }
 

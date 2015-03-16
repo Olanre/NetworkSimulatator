@@ -7,21 +7,34 @@ var simulationList = SimulationManager.simulationList;
 var Util = require("../Utilities/utilities.js");
 var App_Spec = require("../Model/App_Spec.js");
 
-function deployApp( event_data ){
+function deployApp( event_data, time_stamp ){
+	
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	
 	for(index in simulation.app_specs){
 		if(simulation.app_specs[index]._id == event_data.app_id){
-			simulation.deployApp(simulation.app_specs[index]);
+			var new_activity = "The App " +  simulation.app_specs[index].main +  " was deployed to all devices at " + time_stamp + "\n";
+			simulation.updateSimulationLog(new_activity);
+			simulation.deployApp(simulation.app_specs[index].specJSON);
 		}
 	}
+	SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
 }
 
-function launchApp( event_data){
-	console.log("Request to launch app came in")
+function launchApp( event_data, time_stamp){
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	if(simulation !== -1){
+		for(index in simulation.app_specs){
+			if(simulation.app_specs[index]._id == event_data.app_id){
+				console.log("Request to launch app came in");
+			}
+		}
+		
+	}
+	
 }
 
-function attachApp( location, simulation_id, spec){
-	var time_stamp = new Date().toISOString();
+function attachApp( location, simulation_id, spec, time_stamp){
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	if(simulation !== -1){
 		spec = JSON.parse(spec);

@@ -90,13 +90,13 @@ function importRDT(rdt){
 
 function attachAppSpec( appSpec){
 	this.simulationJSON.apps.push(appSpec.specJSON._id);
-	this.app_specs.push(appSpec.specJSON);
+	this.app_specs.push(appSpec);
 	this.simulationJSON.save();
 }
 
 function attachRDTSpec( rdtSpec){
 	this.simulationJSON.rdts.push(rdtSpec.specJSON._id);
-	this.rdt_specs.push(rdtSpec.specJSON);
+	this.rdt_specs.push(rdtSpec);
 	this.simulationJSON.save();
 }
 	

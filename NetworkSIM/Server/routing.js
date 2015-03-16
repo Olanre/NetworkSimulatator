@@ -139,13 +139,16 @@ function handleEventQueue(token, eventQueue, callback) {
                 break;
                 
             case '/deploy/App':
-                ApplicationManager.deployApp(eventQueue[i].event_data);
+                ApplicationManager.deployApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
                 
             case '/launch/App':
-                ApplicationManager.launchApp(eventQueue[i].event_data);
+                ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
-
+            
+            case '/manipulate/RDT':
+                ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
+                break;
 			default:
 				break;
 				

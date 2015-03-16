@@ -67,20 +67,17 @@ function addNetwork(network){
 
 function removeNetwork(network){
 
-	for(var index=0; index<this.network_list.length;index++){
-		if(this.network_list[index]._id==network._id){
-
-			console.log("removing "+this.network_list[index].networkName);
+	for(index in this.network_list){
+		if(this.network_list[index]==network){
 
 			network.partitionObject=createNewPartition();
-			network.partitionObject.addNetwork(network);
+			network.networkJSON.partition_name='';
 			this.network_list.splice(index,1);
 			this.partitionJSON.network_list.splice(index,1);
 			this.partitionJSON.save();
 			
 		}
 	}
-	return network.partitionObject;
 }
 
 function mergePartitions(partition){
