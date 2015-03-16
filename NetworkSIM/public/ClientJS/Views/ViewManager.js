@@ -295,13 +295,13 @@ function eventLogsView(){
 		"</div>"+
 		"<div class = 'row'>"+
 			"<div class= 'cell'>"+
-				"<h3 id='deviceLog-title'>Select a device in the GUI to view its logs</h3>"+
-				"<select size = '10' id ='device-log'>"+
+				"<h3 id='simulation-log-title'>Simulation logs</h3>"+
+				"<select size = '10' id ='simulation-log'>"+
 				"</select>"+
 			"</div>"+
 			"<div class='cell'>"+
-				"<h3 id='simulation-log-title'>Simulation logs</h3>"+
-				"<select size = '10' id ='simulation-log'>"+
+				"<h3 id='deviceLog-title'>Select a device in the GUI to view its logs</h3>"+
+				"<select size = '10' id ='device-log'>"+
 				"</select>"+
 			"</div>"+
 		"</div>"

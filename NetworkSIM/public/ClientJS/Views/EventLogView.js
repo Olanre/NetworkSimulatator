@@ -123,7 +123,7 @@ function selectSimulationDate(selected){
 
 	//console.log(SimulationMap[selected].partition_list);
 	setInteractable(false);
-	generateTopology(SimulationMap[selected].partition_list,600);
+	generateTopology(SimulationMap[selected].partition_list,700);
 }
 
 /**

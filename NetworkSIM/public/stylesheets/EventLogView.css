@@ -13,11 +13,10 @@
 
 #simulation-log{
 	background-color: #e3dde6;
-	height: 200px;
-	width: 300px;
+	height: 150px;
+	width: 700px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
-	border-radius: 25px;
 }
 h1{
 	padding-top:10px;
@@ -34,14 +33,14 @@ h1{
 #device-log{
 	background-color: #f2f2f2;
 	height: 150px;
-	width: 580px;
+	width: 300px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
 }
 
 #log-dates{
 	background-color: #f2f2f2;
-	height:650px;
+	height:700px;
 	width: 250px;
 	padding: 10px;
 	border-radius: 25px 0px 0px 25px;
@@ -55,4 +54,24 @@ h1{
 
 h3, h1{
 	text-align: center;
+}
+
+/****
+ *handles the scroll bar for our webpages
+ ****/
+::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, .3); 
 }
