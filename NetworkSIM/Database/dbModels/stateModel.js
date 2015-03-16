@@ -30,6 +30,13 @@ stateSchema.statics.getStateByID = function (anID, callback)
 	});
 }
 
+stateSchema.statics.findAllStates = function (callback)
+{
+	this.find({}, function(err, states) {
+		if(err) callback("No states or err ln, 180");
+		callback(states);
+	});
+}
 
 
 

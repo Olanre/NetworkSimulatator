@@ -32,6 +32,14 @@ exports.loadSimulations = function(simList){
 		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
 	}
 }
+
+exports.loadSimulationHistorys  = function(simHistoryList){
+	for(his in simHistoryList){
+		console.log("loading " + simHistoryList[his]._id);
+		simulationHistoryList.push(Simulation_History.loadSimulationHistoryFromJSON(simHistoryList[his]));
+		
+	}
+}
 exports.populateLists = function(){
 	for (sim in simulationList){
 
