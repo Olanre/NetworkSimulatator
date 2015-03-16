@@ -13,7 +13,7 @@ function NetworkIterator(networkList){
 	};
 	//Required
 	this.next = function() {
-		var network=this.networkList[index];
+		var network=this.networkList[this.index];
 		this.index++;
 		return network;
 	};

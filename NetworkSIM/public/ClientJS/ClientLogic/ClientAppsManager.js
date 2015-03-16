@@ -1,12 +1,7 @@
 /**
  * New node file
  */
-function viewApp(app_name){
-	var local_simulation = get_local_simulation();
-	var applications = local_simulation.applications;
-	console.log(applications);
-	
-}
+
 
 function DeployApp(app_id){
 	var local_simulation = get_local_simulation();
@@ -26,6 +21,8 @@ function DeployApp(app_id){
 
 function  LaunchApp(app_id){
 	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
 	if(local_simulation!==null){
 		var params = { 
 				'app_id': app_id, 
@@ -34,6 +31,9 @@ function  LaunchApp(app_id){
 		var url = '/launch/App';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
+		
+		ViewApp(app_id);
+		
 	}
 	else{
 		console.log("local simulation was passed null parameters");

@@ -1,6 +1,7 @@
 var SimulationManager = require("./SimulationManager.js");
 var FileManager = require("./FileManager.js");
 var ApplicationManager = require("./ApplicationManager.js");
+var RDTManager = require("./RDTManager.js");
 var io = {};
 
 var clients = [];
@@ -44,7 +45,7 @@ function handleClient (socket) {
     			if(obj.Response == 'Success'){
     				//map the socket_id to that users token
     				client_map[token] = socket.id;
-    				console.log("Successful authenication");
+    				console.log("Successful authentication");
     					handleEventQueue(token, events, function(){
 	    					//the painful part, we need to send it to all clients in the simulation
 	    					var list = SimulationManager.getAllActiveDevices(simulation);
@@ -99,6 +100,25 @@ function handleClient (socket) {
     	
     } );
     
+    socket.on("/manipulate/RDT", function(data){
+    	var json = JSON.parse(data);
+    	var token = json.token;
+    	var time_stamp = json.timestamp;
+    	var simulation_id = json.simulation_id;
+    	var new_val = 'Not available';
+    	SimulationManager.authToken(token, simulation_id, function(obj){
+    		if(obj.Response == 'Success'){
+    			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
+    			var response = {'new_val' : new_val , 'rdt_name' : json.event_data.name};
+    			io.to(socket.id).emit('newRDTVal', response);
+    		}
+    		
+    	});
+    		
+                
+    });
+                
+    
     
 };
 
@@ -135,15 +155,18 @@ function handleEventQueue(token, eventQueue, callback) {
 				SimulationManager.dividePartition(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
             case '/upload':
-                FileManager.uploadAllFiles(eventQueue[i].event_data);
+                FileManager.uploadAllFiles(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
+                
             case '/deploy/App':
-                ApplicationManager.deployApp(eventQueue[i].event_data);
+                ApplicationManager.deployApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
+                
             case '/launch/App':
-                ApplicationManager.launchApp(eventQueue[i].event_data);
+                ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
-
+            
+           
 			default:
 				break;
 				

@@ -9,6 +9,7 @@ var logger = require('express-logger');
 var SimulationManager = require('./Server/SimulationManager');
 var Router = require("./Server/routing.js");
 var SimulationModel = require("mongoose").model("Sim");
+var StateModel = require("mongoose").model("State");
 
 
 var app = express();
@@ -24,19 +25,25 @@ app.use(logger({path: "./logfile.txt"}));
 
 SimulationModel.findAllSimulations(function(simJSONlist){
 	SimulationManager.loadSimulations(simJSONlist);
-	setTimeout(function(){
+	
+	StateModel.findAllStates(function(simHistoryJSONlist){
+		SimulationManager.loadSimulationHistorys(simHistoryJSONlist);
 		
-		Router.injectIO(io);
-		io.on("connection", Router.handleClient);
-
-		SimulationManager.populateLists();
-		console.log("All simulations have been loaded.");
-
-		server.listen(port, function(){
-	  		console.log('listening on *: ' + port);
-		});
-
-	;},7000);
+		setTimeout(function(){
+			
+			Router.injectIO(io);
+			io.on("connection", Router.handleClient);
+	
+			SimulationManager.populateLists();
+			console.log("All simulations have been loaded.");
+	
+			server.listen(port, function(){
+		  		console.log('listening on *: ' + port);
+			});
+	
+		;},7000);
+		
+	});	
 	
 });
 
@@ -66,7 +73,7 @@ app.get('/gui/interact-1.2.2.js', function(request, response){
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'apps')));
 
 app.use("/css",  express.static(__dirname + '/public/stylesheets'));
 app.use("/logic", express.static(__dirname + '/public/ClientJS/ClientLogic'));
@@ -75,6 +82,7 @@ app.use("/view", express.static(__dirname + '/public/ClientJS/Views'));
 app.use("/gui", express.static(__dirname + '/public/ClientJS/GUI'));
 app.use("/js",  express.static(__dirname + '/public/ClientJS'));
 app.use("/img",  express.static(__dirname + '/public/img'));
+app.use("/apps",  express.static(__dirname + '/apps/'));
 
 exports.io=io;
 

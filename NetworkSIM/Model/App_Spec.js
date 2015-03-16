@@ -1,12 +1,4 @@
-/**
- * New node file
- */
-/**
- * New node file
- */
-/**
- * New node file
- */
+
 var Database=require("../Database/mongooseConnect.js");
 var Util=require("../Utilities/utilities.js");
 var appModel = require("../Database/dbModels/appModel.js");
@@ -40,8 +32,16 @@ function attachJSON(specJSON){
 	this._id=specJSON._id;
 }
 
-function loadAppSpecfromDatabase( app_spec){
-	
+function loadAppSpecFromDatabase(app_id, callback){
+	var createdAppSpec= new App_Spec('');
+	appModel.findOne({_id:app_id},function(err,appJSON){
+		if(!err){
+			createdAppSpec.attachJSON(appJSON);
+			callback(createdAppSpec);
+		}
+	});
+	console.log(createdAppSpec);
+	return createdAppSpec;
 }
 
 function getSpec(){
@@ -49,3 +49,4 @@ function getSpec(){
 }
 
 module.exports.createNewApp_Spec = createNewApp_Spec;
+module.exports.loadAppSpecFromDatabase = loadAppSpecFromDatabase;

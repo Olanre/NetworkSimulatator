@@ -258,7 +258,9 @@
 						<li>						
 						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
 						</li>					
-						<li>	
+						<li>
+						<a href='#'  onclick = "appDefaultView()"> My Apps </a>
+						</li>	
 						<li>						
 						<a href="#" onclick = "AccountView()">About Me</a>						
 						</li>	
@@ -454,7 +456,7 @@
 					</li>		
 					<hr>			
 					<li id='nav-option-applications'>						
-						<a href="#" onclick = "appDefaultView()">My Device</a>						
+						<a href="#" onclick = "deviceDefaultView()">My Device</a>						
 					</li>
 					<li id='nav-option-backtosimulations'>						
 						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
@@ -475,7 +477,7 @@
 				
 			</td> 
 			<td>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{_id}}', this)">View Specification</div>
+				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
 			</td>
 			<td id = '{{_id}}' > </td>
 		</tr>{{/apps}}
@@ -499,7 +501,13 @@
 		</code>
 		</p>
 		<br>
-		<hr>
+		<p> Finally your application needs to include two script tags at the start in order to work with our framework. 
+			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
+			<code> src="/js/socket.io.js"  </code> 
+			<br>
+			The javascript used to tie your logic with our RDT's must also be included as shown below <br>
+			<code>  src = "../ApplicationRequirements.js"  </code>
+		<hr> 
 		<div id="appDiv" class="uploadContainer">
 
 			<div id="Files" class ="fileContainer"></div>
@@ -521,7 +529,7 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "ViewRDT('{{_id}}', this)">View Specification</div>
+				<div class = 'btn btn-primary' onclick = "ViewRDTSpec('{{_id}}', this)">View Specification</div>
 			</td> 
 			<td id = '{{_id}}'> </td>
 		</tr>{{/rdts}}

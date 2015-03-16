@@ -42,6 +42,8 @@ function Simulation(simulation_name){
 	this.attachJSON =attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
 	this.deployApp = deployApp;
+	this.attachNetworkIterator = attachNetworkIterator;
+	this.attachDeviceIterator = attachDeviceIterator;
 }
 
 function createNewSimulation(simulation_name){
@@ -55,8 +57,6 @@ function createNewSimulation(simulation_name){
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
 
-	//simulationJSON.rdts = [];
-	//simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
 	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
@@ -74,8 +74,30 @@ function loadSimulationFromJSON(simulationJSON){
 		createdSimulation.partition_list.push(createdPartition);
 
 	}
+
+	for(var index =0; index<simulationJSON.apps.length ;index++){
+		
+		App.loadAppSpecFromDatabase(simulationJSON.apps[index], function(createdApp){
+			createdSimulation.app_specs.push(createdApp);
+			
+		});
+		
+	}
+
+	
+	
 	return createdSimulation;
 }
+
+function attachDeviceIterator(new_list){
+	this.deviceIterator = new DeviceIterator(new_list);
+	
+}
+
+function attachNetworkIterator( new_list){
+	this.networkIterator = new NetworkIterator(new_list);
+}
+
 
 function attachJSON(simulationJSON){
 		this.simulation_name=simulationJSON.simulation_name;
@@ -85,18 +107,20 @@ function attachJSON(simulationJSON){
 
 function importRDT(rdt){
 		this.rdts.push(rdt);
+		this.deviceIterator.index = 0;
+		this.networkIterator.index = 0;
 		rdt.init( this.networkIterator, this.deviceIterator);
 }
 
 function attachAppSpec( appSpec){
 	this.simulationJSON.apps.push(appSpec.specJSON._id);
-	this.app_specs.push(appSpec.specJSON);
+	this.app_specs.push(appSpec);
 	this.simulationJSON.save();
 }
 
 function attachRDTSpec( rdtSpec){
 	this.simulationJSON.rdts.push(rdtSpec.specJSON._id);
-	this.rdt_specs.push(rdtSpec.specJSON);
+	this.rdt_specs.push(rdtSpec);
 	this.simulationJSON.save();
 }
 	
@@ -115,7 +139,9 @@ function removeApp(app){
 
 //deploy a the referenced app spec json object to all devices
 function deployApp(app_specJSON){
+	this.deviceIterator.index = 0;
 	while (this.deviceIterator.hasNext()) {
+		console.log("About to deploy");
 		  this.deviceIterator.next().attachAppSpec( app_specJSON);
 	  }
 }
@@ -191,17 +217,18 @@ function removeNetwork(network){
 }
 
 function mergePartitions(partitionA,partitionB){
-	for(index in this.partition_list){
+	for(var index=0;index<this.partition_list.length;index++){
 
 		if(this.partition_list[index]._id==partitionB._id){
 
 			this.partition_list.splice(index,1);
 			this.simulationJSON.partition_list.splice(index,1);
-
-			partitionA.mergePartition(partitionB);
+			partitionA.mergePartitions(partitionB);
 
 		}
 	}
+	//console.log(this.partition_list)
+	//partitionA.mergePartition(partitionB);
 	this.simulationJSON.save();
 }
 

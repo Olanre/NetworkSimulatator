@@ -38,6 +38,7 @@ socket.on('syncState', function(appState){
 		store_local_simulation(appState.simulation);
 		store_local_device(appState.device);
 		store_local_simulation_list(appState.simulation_list);
+		console.log(" This devices_id is " + appState.device._id );
 	}
 	else{
 		console.log('recieved null object from server');
@@ -52,6 +53,8 @@ socket.on('syncHistory',  function(appHistory){
 		console.log('recieved empty object from server for simulation history');
 	}
 });
+
+
 
 /**
  * validate_user verifies whether the token input by the user is valid or not
@@ -79,5 +82,6 @@ socket.on('connect', function () {
 });
 
 socket.on('disconnect', function () {
+	connected = false;
 	  console.log('Socket is disconnected.');
 });

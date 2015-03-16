@@ -23,8 +23,8 @@ function mergePartition(partition_a_id, partition_b_id){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null && partition_a_id!==null && partition_b_id!==null){
 		var params = { 
-				'partition_a_id': partition_id, 
-				'partition_b_id' : partition_id,
+				'partition_a_id': partition_a_id, 
+				'partition_b_id' : partition_b_id,
 				'simulation_id': local_simulation._id,
 				};
 		var url = '/merge/Partitions';

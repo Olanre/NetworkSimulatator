@@ -21,6 +21,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.leaveNetwork=leaveNetwork;
 	this.replicateRDT=replicateRDT;
 	this.accessRDT=accessRDT;
+	this.accessRDTByName = accessRDTByName;
 	this.attachAppSpec = attachAppSpec;
 	
 	//Our Functions//
@@ -97,27 +98,36 @@ function returnNetwork(){
  
 function replicateRDT(rdt){
 	  this.rdts.push(rdt);
+	  //this.deviceJSON.rdts.push(rdt)
 	  this.deviceJSON.save();
 };
 
 //acces an rdt by name
-function accessRDT(rdt_name){
-	for(var i = 0; i < rdts.length; i++){
-		if(rdts[i].constructor.name == rdt_name) return this.rdts[i];
+function accessRDTByName(rdt_name){
+	var test = null;
+	for(var i = 0; i < this.rdts.length; i++){
+		
+		if(this.rdts[i].constructor.name === rdt_name) {
+			test =  this.rdts[i];
+		}
 		
 	}
+	return test;
 };
 
 function attachAppSpec( app_specJSON){
 	this.deviceJSON.apps.push(app_specJSON._id);
+	console.log(this.deviceJSON);
 	 this.deviceJSON.save();
 }
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device
-	var index = rdts.length-1;
+	var index = this.rdts.length-1;
 	return this.rdts[index];
 };
+
+
 
 function updateDeviceLog(new_activity){
 	this.deviceJSON.activity += new_activity;

@@ -181,15 +181,6 @@ interact('.network')
 			  var device=getRelatedShapeFromEvent(event);
 			  var deviceIndex=event.relatedTarget.getAttribute('data-index');
 			  delete network.children[deviceIndex];
-
-
-			  //tracking for partition list
-			  for(index in network.represents.device_list){
-			  	if(network.represents.device_list[index]===device.represents){
-			  		console.log("removed a device");
-			  		network.represents.device_list.splice(index,1);
-			  	}
-			  }
 			  
 		},
 
@@ -208,7 +199,7 @@ interact('.network')
 				deviceName=shapes[draggableElement.getAttribute('data-index')].name;
 				newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
 
-				console.log(dragged.represents.token + "\n"+dropzone.represents._id);
+				//console.log(dragged.represents.token + "\n"+dropzone.represents._id);
 				moveDeviceToNetwork(dragged.represents.token,dropzone.represents._id);
 				
 			}
@@ -228,7 +219,6 @@ interact('.network')
 				else{
 					var oldpartitionID=findPartitionIDForNetwork(dragged.represents);
 
-					console.log(oldpartitionID);
 					removePartition(dropzone,dragged);
 
 					var newpartitionlist=breadthFirstSearch(dropzone,dragged);
@@ -240,11 +230,12 @@ interact('.network')
 					}
 
 					if(!connected){
-						console.log(oldpartitionID);
 						var list = [];
-						list.push(dragged.represents);
+						for(var i=0;i<newpartitionlist.length;i++){
+							list.push(newpartitionlist[i].represents);
+							
+						}
 						dividePartition(list,oldpartitionID);
-						
 					}
 				}
 				snapToLocation(dragged,origin);

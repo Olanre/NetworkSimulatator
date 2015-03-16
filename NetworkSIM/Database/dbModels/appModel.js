@@ -11,6 +11,14 @@ var applicationSchema = mongoose.Schema({
 	
 	});
 
-
+applicationSchema.statics.getAppByID = function (anID, callback)
+{
+	this.findOne( {_id : anID}, function(err, obj)
+	{
+		if(err) console.log("no app with id: " + anID );
+		console.log("found app" + obj);
+		callback(obj, err);
+	});
+}
 
 module.exports = mongoose.model('App', applicationSchema, 'Apps');
