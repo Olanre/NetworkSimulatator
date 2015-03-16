@@ -82,6 +82,11 @@ function loadSimulationFromJSON(simulationJSON){
 		var createdRDT = RDT.loadRDTSpecFromDatabase(simulationJSON.rdts[index]);
 		createdSimulation.rdt_specs.push(createdRDT);
 	}
+	
+	this.device_list = this.getDevices();
+	this.network_list = this.getNetworks();
+	this.networkIterator = new NetworkIterator(this.network_list);
+	this.deviceIterator = new DeviceIterator(this.device_list);
 
 	return createdSimulation;
 }
@@ -124,7 +129,9 @@ function removeApp(app){
 
 //deploy a the referenced app spec json object to all devices
 function deployApp(app_specJSON){
+	console.log(this.deviceIterator);
 	while (this.deviceIterator.hasNext()) {
+		console.log("About to deploy");
 		  this.deviceIterator.next().attachAppSpec( app_specJSON);
 	  }
 }

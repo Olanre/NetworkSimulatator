@@ -38,7 +38,9 @@ function attachRDT( location, simulation_id, spec){
 }
 
 function manipulateRDT(event_data, time_stamp){
-	
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	var device_id = event_data.device_id;
+	var 
 }
 
 module.exports.attachRDT = attachRDT;

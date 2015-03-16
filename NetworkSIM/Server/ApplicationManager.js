@@ -13,7 +13,8 @@ function deployApp( event_data, time_stamp ){
 	
 	for(index in simulation.app_specs){
 		if(simulation.app_specs[index]._id == event_data.app_id){
-			var new_activity = "The App " +  simulation.app_specs[index].main +  " was deployed to all devices at " + time_stamp + "\n";
+			console.log(simulation.app_specs[index].specJSON.main);
+			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was deployed to all devices at " + time_stamp + "\n";
 			simulation.updateSimulationLog(new_activity);
 			simulation.deployApp(simulation.app_specs[index].specJSON);
 		}
@@ -61,4 +62,5 @@ function attachApp( location, simulation_id, spec, time_stamp){
 }
 
 module.exports.attachApp = attachApp;
+module.exports.launchApp = launchApp;
 module.exports.deployApp = deployApp;

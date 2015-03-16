@@ -34,6 +34,8 @@ exports.populateLists = function(){
 
 		simulationList[sim].network_list=simulationList[sim].getNetworks();
 		simulationList[sim].device_list=simulationList[sim].getDevices();
+		
+		ssimulationList[sim].device_list
 	}
 }
 
@@ -57,7 +59,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
-	
+	//console.log(simulation.app_specs);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
 	newJSON.partition_list=buildPartitionList(simulation);
@@ -66,6 +68,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	device = Util.deepCopy(device.deviceJSON);
 	device.apps = buildListObject( device.apps, simulation.app_specs);
+	//console.log(device.apps);
 	state.device=device;
 	state.simulation_list=module.exports.getSimulationList();
 	return state;
@@ -111,7 +114,9 @@ function buildListObject(idList,objectList){
 	if(idList !== undefined){
 		for(id in idList){
 			item=Util.findByUniqueID(idList[id],objectList);
-			list.push(item);
+			if(item != -1){
+				list.push(item);
+			}
 		}
 	}
 	return list;

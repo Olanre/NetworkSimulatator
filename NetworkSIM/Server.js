@@ -29,7 +29,7 @@ SimulationModel.findAllSimulations(function(simJSONlist){
 		Router.injectIO(io);
 		io.on("connection", Router.handleClient);
 
-		SimulationManager.populateLists();
+		//SimulationManager.populateLists();
 		console.log("All simulations have been loaded.");
 
 		server.listen(port, function(){
