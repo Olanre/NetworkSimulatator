@@ -26,6 +26,8 @@ function DeployApp(app_id){
 
 function  LaunchApp(app_id){
 	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
 	if(local_simulation!==null){
 		var params = { 
 				'app_id': app_id, 
@@ -34,6 +36,14 @@ function  LaunchApp(app_id){
 		var url = '/launch/App';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
+		
+		if(apps[i]._id == app_id){
+			var location = "../apps/"+apps[i].name + "/" + apps[i].main;
+			ViewApp(location);
+			
+				
+		}
+		
 	}
 	else{
 		console.log("local simulation was passed null parameters");

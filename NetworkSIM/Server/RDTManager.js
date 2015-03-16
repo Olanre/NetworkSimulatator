@@ -37,4 +37,8 @@ function attachRDT( location, simulation_id, spec){
 	
 }
 
+function manipulateRDT(event_data, time_stamp){
+	
+}
+
 module.exports.attachRDT = attachRDT;

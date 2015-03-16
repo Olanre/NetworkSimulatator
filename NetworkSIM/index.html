@@ -258,7 +258,9 @@
 						<li>						
 						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
 						</li>					
-						<li>	
+						<li>
+						<a href='#'  onclick = "appDefaultView()"> My Apps </a>
+						</li>	
 						<li>						
 						<a href="#" onclick = "AccountView()">About Me</a>						
 						</li>	
@@ -454,7 +456,7 @@
 					</li>		
 					<hr>			
 					<li id='nav-option-applications'>						
-						<a href="#" onclick = "appDefaultView()">My Device</a>						
+						<a href="#" onclick = "deviceDefaultView()">My Device</a>						
 					</li>
 					<li id='nav-option-backtosimulations'>						
 						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
@@ -475,7 +477,7 @@
 				
 			</td> 
 			<td>
-				<div class = 'btn btn-primary' onclick = "ViewApp('{{_id}}', this)">View Specification</div>
+				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
 			</td>
 			<td id = '{{_id}}' > </td>
 		</tr>{{/apps}}
@@ -521,7 +523,7 @@
 				{{name}} 
 			</td> 
 			<td> 
-				<div class = 'btn btn-primary' onclick = "ViewRDT('{{_id}}', this)">View Specification</div>
+				<div class = 'btn btn-primary' onclick = "ViewRDTSpec('{{_id}}', this)">View Specification</div>
 			</td> 
 			<td id = '{{_id}}'> </td>
 		</tr>{{/rdts}}

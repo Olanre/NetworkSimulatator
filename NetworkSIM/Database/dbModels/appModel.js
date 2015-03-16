@@ -17,7 +17,7 @@ applicationSchema.statics.getAppByID = function (anID, callback)
 	{
 		if(err) console.log("no app with id: " + anID );
 		console.log("found app" + obj);
-		callback(obj);
+		callback(obj, err);
 	});
 }
 
