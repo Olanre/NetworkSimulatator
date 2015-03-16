@@ -54,7 +54,6 @@ function manipulateRDT(event_data, time_stamp){
 			simulation.updateSimulationLog(activity);
 			//console.log(rdt_name + " RDTS " + device.rdts);
 			var RDT = device.accessRDTByName(rdt_name);
-			console.log(RDT);
 			if(RDT !== null){
 				RDT[rdt_method]();
 				val =  RDT.val();
