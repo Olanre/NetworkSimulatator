@@ -117,7 +117,6 @@ function accessRDTByName(rdt_name){
 
 function attachAppSpec( app_specJSON){
 	this.deviceJSON.apps.push(app_specJSON._id);
-	console.log(this.deviceJSON);
 	 this.deviceJSON.save();
 }
 

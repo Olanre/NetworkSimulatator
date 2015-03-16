@@ -56,7 +56,7 @@ exports.populateLists = function(){
 				simulationList[sim].rdt_specs.push(createdRDT);
 				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
 				var rdt = require(location);
-				console.log(createdRDT.specJSON.name);
+				console.log("  Importing this RDT " + createdRDT.specJSON.name);
 				simulationList[sim].importRDT(rdt);
 				
 			});
