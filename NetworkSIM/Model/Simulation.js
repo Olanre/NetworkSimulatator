@@ -55,8 +55,6 @@ function createNewSimulation(simulation_name){
 	simulationJSON.activity_logs = '';
 	createdSimulation._id=simulationJSON._id;
 
-	//simulationJSON.rdts = [];
-	//simulationJSON.apps = [];
 	createdSimulation.simulationJSON=simulationJSON;
 	createdSimulation.attachJSON(simulationJSON);
 	simulationJSON.save();
@@ -74,6 +72,17 @@ function loadSimulationFromJSON(simulationJSON){
 		createdSimulation.partition_list.push(createdPartition);
 
 	}
+
+	for(var index =0; index<simulationJSON.apps;index++){
+		var createdApp = App.loadAppSpecFromDatabase(simulationJSON.apps[index]);
+		createdSimulation.app_specs.push(createdApp);
+	}
+
+	for(var index=0; index<simulationJSON.rdts;index++){
+		var createdRDT = RDT.loadRDTSpecFromDatabase(simulationJSON.rdts[index]);
+		createdSimulation.rdt_specs.push(createdRDT);
+	}
+
 	return createdSimulation;
 }
 
@@ -191,17 +200,18 @@ function removeNetwork(network){
 }
 
 function mergePartitions(partitionA,partitionB){
-	for(index in this.partition_list){
+	for(var index=0;index<this.partition_list.length;index++){
 
 		if(this.partition_list[index]._id==partitionB._id){
 
 			this.partition_list.splice(index,1);
 			this.simulationJSON.partition_list.splice(index,1);
-
-			partitionA.mergePartition(partitionB);
+			partitionA.mergePartitions(partitionB);
 
 		}
 	}
+	//console.log(this.partition_list)
+	//partitionA.mergePartition(partitionB);
 	this.simulationJSON.save();
 }
 
