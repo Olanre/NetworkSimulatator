@@ -1,6 +1,6 @@
 
 var SimulationMap={};
-//should hold a states object I guess 
+
 var current_simulation_history_list;
 var stateList={};
 var simulationEvents=[];
@@ -122,6 +122,7 @@ function selectSimulationDate(selected){
 	setInteractable(false);
 
 	//console.log(SimulationMap[selected].partition_list);
+	setInteractable(false);
 	generateTopology(SimulationMap[selected].partition_list,600);
 }
 
