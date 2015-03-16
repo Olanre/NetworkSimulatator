@@ -49,10 +49,11 @@ function manipulateRDT(event_data, time_stamp){
 		var deviceList = simulation.getDevices();
 		var device = Util.findByUniqueID(device_id,deviceList);
 		if(device !== -1){
-			var activity = " Device " + device.current_device_name + " manipulated the RDT " + rdt_name + " performing an " + rdt_method + " at " + time_stamp + "\n";
+			var activity = " Device " + device.device_name + " manipulated the RDT " + rdt_name + " performing an " + rdt_method + " at " + time_stamp + "\n";
 			device.updateDeviceLog(activity);
+			simulation.updateSimulationLog(activity);
+			//console.log(rdt_name + " RDTS " + device.rdts);
 			var RDT = device.accessRDTByName(rdt_name);
-			
 			if(RDT !== null){
 				RDT[rdt_method]();
 				val =  RDT.val();

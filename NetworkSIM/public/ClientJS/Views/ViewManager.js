@@ -72,7 +72,7 @@ function RDTsView(){
 	
 }
 
-function ViewRDT(_id, e){
+function ViewRDTSpec(_id, e){
 	var local_simulation = get_local_simulation();
 	var rdts = local_simulation.rdts;
 	
@@ -91,7 +91,7 @@ function ViewRDT(_id, e){
 	}
 }
 
-function ViewApp(_id, e){
+function ViewAppSpec(_id, e){
 	var local_simulation = get_local_simulation();
 	var apps = local_simulation.apps;
 	
@@ -110,6 +110,48 @@ function ViewApp(_id, e){
 		e.innerHTML = 'View Specification'
 	}
 }
+
+function ViewApp( app_id){
+	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
+	for(var i = 0; i < apps.length; i++){
+		console.log(apps[i]);
+		if(apps[i]._id == app_id){
+			var location = "../apps/" + apps[i].name + "/" + apps[i].main;
+			
+		}
+	}
+	var frame = "<iframe src='" + location + "' width='100%' height='600px'> </iframe> ";
+	//clears everything on the page
+	clearFooter();
+	clearSection();
+	var content = getContainer();
+	content.innerHTML = frame;
+	
+}
+/**
+ * Displays the user's information
+ */
+function deviceDefaultView(){
+	//clears everything on the page
+	clearFooter();
+	clearSection();
+	
+	var local_device = get_local_device();
+	//sets the top bar to be the default look
+	defaultheaderView();
+	if(getVerified() == false){
+		alert('You do not have permission to access this. Please get a token first.');
+	}else{
+		appDefaultView();
+		//sets the page to view to 'user information' page
+		//sets the sidebar to the sidebar for when inside a simulation
+		simulationSideBarView();
+	}
+}
+
+
 /**
  * Displays the user's information
  */
