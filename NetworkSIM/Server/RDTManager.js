@@ -53,7 +53,6 @@ function manipulateRDT(event_data, time_stamp){
 			device.updateDeviceLog(activity);
 			var RDT = device.accessRDTByName(rdt_name);
 			
-			console.log(RDT.constructor.name + " " + rdt_name);
 			if(RDT !== null){
 				RDT[rdt_method]();
 				val =  RDT.val();
