@@ -501,7 +501,13 @@
 		</code>
 		</p>
 		<br>
-		<hr>
+		<p> Finally your application needs to include two script tags at the start in order to work with our framework. 
+			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
+			<code> src="/js/socket.io.js"  </code> 
+			<br>
+			The javascript used to tie your logic with our RDT's must also be included as shown below <br>
+			<code>  src = "../ApplicationRequirements.js"  </code>
+		<hr> 
 		<div id="appDiv" class="uploadContainer">
 
 			<div id="Files" class ="fileContainer"></div>

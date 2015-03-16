@@ -1,0 +1,9 @@
+{
+  "name": "nodejs-demo",
+  "version": "0.1.0",
+  "description": "Sample NodeJS server application",
+  "main": "start.js",
+  "rdt_list": [
+    "incrRDT"
+  ]
+}
