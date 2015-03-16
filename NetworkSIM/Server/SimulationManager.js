@@ -27,7 +27,7 @@ Models.initialize();
 
 exports.loadSimulations = function(simList){
 	for (sim in simList){
-		console.log("loading "+ simList[sim].simulation_name);
+		//console.log("loading "+ simList[sim].simulation_name);
 			
 		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
 	}
@@ -35,7 +35,7 @@ exports.loadSimulations = function(simList){
 
 exports.loadSimulationHistorys  = function(simHistoryList){
 	for(his in simHistoryList){
-		console.log("loading " + simHistoryList[his]._id);
+		//console.log("loading " + simHistoryList[his]._id);
 		simulationHistoryList.push(Simulation_History.loadSimulationHistoryFromJSON(simHistoryList[his]));
 		
 	}
@@ -46,22 +46,26 @@ exports.populateLists = function(){
 		simulationList[sim].network_list=simulationList[sim].getNetworks();
 		simulationList[sim].device_list=simulationList[sim].getDevices();
 
-		simulationList[sim].attachDeviceIterator(simulationList[sim].device_list);
-		
-		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
 		
 		//import and replicate our rdts
+		simulationList[sim].simulationJSON.rdts.length
 		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
 			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
-				simulationList[sim].rdt_specs.push(createdRDT);
+				simulationList[sim].attachRDTSpec(createdRDT);
 				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
 				var rdt = require(location);
-				console.log("  Importing this RDT " + createdRDT.specJSON.name);
+				
 				simulationList[sim].importRDT(rdt);
+				//console.log("  Importing this RDT " + rdt);
 				
 			});
 			
 		}
+		
+		
+		simulationList[sim].attachDeviceIterator(simulationList[sim].device_list);
+		
+		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
 		
 	}
 }

@@ -72,6 +72,17 @@ function RDTsView(){
 	
 }
 
+function TestsView(){
+	removeClass('active');
+	document.getElementById('nav-option-tests').className='active';
+
+	var local_simulation = get_local_simulation();
+	var tests = local_simulation.test;
+	var html = viewTestsTemplate(tests);
+	var content = getContainer();
+	content.innerHTML = html;
+}
+
 function ViewRDTSpec(_id, e){
 	var local_simulation = get_local_simulation();
 	var rdts = local_simulation.rdts;

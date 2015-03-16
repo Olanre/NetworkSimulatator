@@ -78,7 +78,7 @@ function loadSimulationFromJSON(simulationJSON){
 	for(var index =0; index<simulationJSON.apps.length ;index++){
 		
 		App.loadAppSpecFromDatabase(simulationJSON.apps[index], function(createdApp){
-			createdSimulation.app_specs.push(createdApp);
+			createdSimulation.attachAppSpec(createdApp);
 			
 		});
 		

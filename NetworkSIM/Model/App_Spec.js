@@ -34,13 +34,13 @@ function attachJSON(specJSON){
 
 function loadAppSpecFromDatabase(app_id, callback){
 	var createdAppSpec= new App_Spec('');
+	console.log(app_id);
 	appModel.findOne({_id:app_id},function(err,appJSON){
 		if(!err){
 			createdAppSpec.attachJSON(appJSON);
 			callback(createdAppSpec);
 		}
 	});
-	console.log(createdAppSpec);
 	return createdAppSpec;
 }
 

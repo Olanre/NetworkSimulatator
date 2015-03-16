@@ -39,7 +39,7 @@ function updateData(){
 			 thediv +="<tr id='FILE"+nFileId+
 			"'> <td> <img src='"+img+"' height='128' width='128'/> </td> <td> "+
 			current_files[nFileId].name+"</td> <td> Size: "+fileSize+" Bytes" +
-					"<td> <div onclick = 'DeleteFile(" + nFileId + ")'> <img height='90' width='90' src='../img/file_delete.png'< /> </div> </td> </tr>";
+					"</td> </tr>";
 			
 
 			
@@ -125,6 +125,12 @@ function pushFileEvent(file_type){
 	if( file_type == 'App'){
 		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
 			alert("Please include a package.json file describing your Application");
+			upload = false;
+		}
+	}
+	if( file_type == 'Test'){
+		if( hasRequiredFile('test.json', uploadEvent.files) == false ){
+			alert("Please include a test.json file for your Test Script");
 			upload = false;
 		}
 	}
