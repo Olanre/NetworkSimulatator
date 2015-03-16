@@ -14,6 +14,7 @@ var Network = require("../Model/Network.js");
 var Simulation = require("../Model/Simulation.js");
 var Simulation_History = require("../Model/Simulation_history.js");
 var History_State = require("../Model/History_state.js");
+var RDT = require("../Model/RDT_Spec.js");
 
 
 
@@ -41,6 +42,18 @@ exports.populateLists = function(){
 		
 		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
 		
+		//import and replicate our rdts
+		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
+			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
+				simulationList[sim].rdt_specs.push(createdRDT);
+				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
+				var rdt = require(location);
+				simulationList[sim].importRDT(rdt);
+				
+			});
+			
+		}
+		
 	}
 }
 
@@ -64,7 +77,6 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
-	//console.log(simulation.app_specs);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
 	newJSON.partition_list=buildPartitionList(simulation);
@@ -73,7 +85,6 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	device = Util.deepCopy(device.deviceJSON);
 	device.apps = buildListObject( device.apps, simulation.app_specs);
-	//console.log(device.apps);
 	state.device=device;
 	state.simulation_list=module.exports.getSimulationList();
 	return state;

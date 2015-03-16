@@ -32,31 +32,39 @@ function attachRDT( location, simulation_id, spec){
 			//}
 		}, 2000);
 		//save the state
-		SimulationManager.saveSimulationState( simulation._id, time_stamp, simulation);
+		SimulationManager.saveSimulationState( simulation_id, time_stamp, simulation);
 	}
 	
 }
 
 function manipulateRDT(event_data, time_stamp){
+	
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
 	var device_id = event_data.device_id;
 	var rdt_name = event_data.name;
 	var rdt_method = event_data.method;
 	var val = 'Not available';
+	
 	if(simulation !== null){
 		var deviceList = simulation.getDevices();
+		console.log(device_id);
 		var device = Util.findByUniqueID(device_id,deviceList);
-		if(device != -1){
+		if(device !== -1){
+			var activity = " Device " + device.current_device_name + " manipulated the RDT " + rdt_name + " performing an " + rdt_method + " at " + time_stamp;
+			device.updateDeviceLog(activity);
 			var RDT = device.accessRDT(rdt_name);
 			RDT[rdt_method]();
-			val =  RDT.val;
+			val =  RDT.val();
 		}else{
 			console.log("Device was not found for manipulating the RDT");
 		}
+		SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
 		
 	}
+	
 	return val;
 
 }
 
 module.exports.attachRDT = attachRDT;
+module.exports.manipulateRDT = manipulateRDT;

@@ -75,20 +75,16 @@ function loadSimulationFromJSON(simulationJSON){
 
 	}
 
-	for(var index =0; index<simulationJSON.apps;index++){
+	for(var index =0; index<simulationJSON.apps.length ;index++){
+		
 		App.loadAppSpecFromDatabase(simulationJSON.apps[index], function(createdApp){
 			createdSimulation.app_specs.push(createdApp);
-			console.log(createdSimulation.app_specs);
+			
 		});
 		
 	}
 
-	for(var index=0; index<simulationJSON.rdts;index++){
-		RDT.loadRDTSpecFromDatabase(simulationJSON.rdts[index], function(createdRDT){
-			createdSimulation.rdt_specs.push(createdRDT);
-		});
-		
-	}
+	
 	
 	return createdSimulation;
 }
@@ -102,6 +98,7 @@ function attachNetworkIterator( new_list){
 	this.networkIterator = new NetworkIterator(new_list);
 }
 
+
 function attachJSON(simulationJSON){
 		this.simulation_name=simulationJSON.simulation_name;
 		this.simulationJSON=simulationJSON;
@@ -110,6 +107,8 @@ function attachJSON(simulationJSON){
 
 function importRDT(rdt){
 		this.rdts.push(rdt);
+		this.deviceIterator.index = 0;
+		this.networkIterator.index = 0;
 		rdt.init( this.networkIterator, this.deviceIterator);
 }
 
@@ -140,7 +139,7 @@ function removeApp(app){
 
 //deploy a the referenced app spec json object to all devices
 function deployApp(app_specJSON){
-	
+	this.deviceIterator.index = 0;
 	while (this.deviceIterator.hasNext()) {
 		console.log("About to deploy");
 		  this.deviceIterator.next().attachAppSpec( app_specJSON);

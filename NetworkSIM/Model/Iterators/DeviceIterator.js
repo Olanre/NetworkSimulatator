@@ -12,7 +12,7 @@ function DeviceIterator(deviceList){
   };
   //Required
   this.next = function() {
-	  var device=this.deviceList[index];
+	  var device=this.deviceList[this.index];
 	  this.index++;
 	  return device;
   };

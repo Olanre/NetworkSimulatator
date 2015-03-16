@@ -118,9 +118,11 @@ function attachAppSpec( app_specJSON){
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device
-	var index = rdts.length-1;
+	var index = this.rdts.length-1;
 	return this.rdts[index];
 };
+
+
 
 function updateDeviceLog(new_activity){
 	this.deviceJSON.activity += new_activity;

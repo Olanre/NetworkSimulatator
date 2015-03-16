@@ -15,16 +15,16 @@ function manipulateRDT(rdtName, method){
 	var device_id = local_device._id;
 	var timestamp = new Date();
 	var route = '/manipulate/RDT';
-	var event_data = {'rdt_name' : rdtName, 'rdt_method' : method, 'device_id' : device_id, 'simulation_id' : simulation._id};
+	var event_data = {'name' : rdtName, 'method' : method, 'device_id' : token, 'simulation_id' : simulation._id};
 	
 	var event = {'event_data' : event_data, 'timestamp' : timestamp, 'token' : token, 'simulation_id' : simulation._id};
 	event = JSON.stringify(event);
-	console.log(event);
+	
 	socket.emit(route, event );
 }
 
 socket.on('newRDTVal', function(data){
-	newRDTVal(data);
+	newRDTVal(data['new_val']);
 });
 
 /**

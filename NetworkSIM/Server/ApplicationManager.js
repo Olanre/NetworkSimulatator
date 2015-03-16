@@ -55,7 +55,7 @@ function attachApp( location, simulation_id, spec, time_stamp){
 		}, 2000);
 		//save the state
 		
-		SimulationManager.saveSimulationState( simulation._id, time_stamp, simulation);
+		SimulationManager.saveSimulationState( simulation_id, time_stamp, simulation);
 	}
 	
 	

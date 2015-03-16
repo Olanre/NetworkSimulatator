@@ -174,7 +174,7 @@ function isEmpty(obj) {
         if (hasOwnProperty.call(obj, key)) return false;
     }
 
-    return true;
+    
 }
 
 /**

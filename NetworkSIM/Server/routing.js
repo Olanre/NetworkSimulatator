@@ -1,6 +1,7 @@
 var SimulationManager = require("./SimulationManager.js");
 var FileManager = require("./FileManager.js");
 var ApplicationManager = require("./ApplicationManager.js");
+var RDTManager = require("./RDTManager.js");
 var io = {};
 
 var clients = [];
@@ -100,7 +101,6 @@ function handleClient (socket) {
     } );
     
     socket.on("/manipulate/RDT", function(data){
-    	console.log(data);
     	var json = JSON.parse(data);
     	var token = json.token;
     	var time_stamp = json.timestamp;
@@ -108,9 +108,12 @@ function handleClient (socket) {
     	var new_val = 'Not available';
     	SimulationManager.authToken(token, simulation_id, function(obj){
     		if(obj.Response == 'Success'){
-    			new_val = ApplicationManager.manipulateRDT(data.event_data, data.time_stamp);
+    			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
+    			var response = {'new_val' : new_val};
+    			console.log(new_val);
+    			io.to(socket.id).emit('newRDTVal', response);
     		}
-    		io.to(socket.id).emit('newRDTVal', new_val);
+    		
     	});
     		
                 

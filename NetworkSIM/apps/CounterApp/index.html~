@@ -1,12 +1,11 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href = '../../stylesheets/dahsboard.css'>
-	<script src = '../js/ApplicationRequirements.js' type='text/javascript'></script>
+	<script src="/js/socket.io.js"></script>
+	<script src = '../ApplicationRequirements.js' type='text/javascript'></script>
 	<script type="text/javascript">
 		var local_count = 0;
 		
-		var local_device_id = get_local_device();
-
 		function incrCounter(){
 			var local_counter = document.getElementById('local_count').innerHTML = local_count + 1;
 			manipulateRDT('incRDT', 'inc' );
