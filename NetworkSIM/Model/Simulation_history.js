@@ -48,7 +48,7 @@ function addState( stateJSON){
 function attachJSON( json){
 	
 	this.simulation_historyJSON = json;
-	this._id = json._id;
+	this._id = json.simulation_id;
 
 }
 module.exports.createNewSimulationHistory = createNewSimulationHistory;

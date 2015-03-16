@@ -185,12 +185,15 @@ module.exports.getSimulationNames=function(){
 }
 
 module.exports.getSimulationHistory=function(simulation_id){
+	console.log(simulation_id);
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
 	
-	var history = simulation_history.simulation_historyJSON;
+	
 
-	if (history == -1){
+	if (simulation_history == -1){
 		history = {};
+	}else{
+		var history = simulation_history.simulation_historyJSON;
 	}
 	return history;
 }
@@ -463,6 +466,7 @@ function dividePartition(event_data, time_stamp){
 function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
+	
 	if(simulation_history != -1 && simulation_history !== undefined){
 		
 		if(simulationObject.simulationJSON !== undefined && simulationObject.simulationJSON !== 'undefined'){
