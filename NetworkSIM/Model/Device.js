@@ -102,10 +102,12 @@ function replicateRDT(rdt){
 
 //acces an rdt by name
 function accessRDT(rdt_name){
+	var rdt = {};
 	for(var i = 0; i < rdts.length; i++){
-		if(rdts[i].constructor.name == rdt_name) return this.rdts[i];
+		if(rdts[i].constructor.name == rdt_name) rdt =  this.rdts[i];
 		
 	}
+	return rdt;
 };
 
 function attachAppSpec( app_specJSON){

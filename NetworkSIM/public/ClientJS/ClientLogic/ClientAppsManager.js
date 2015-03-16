@@ -1,12 +1,7 @@
 /**
  * New node file
  */
-function viewApp(app_name){
-	var local_simulation = get_local_simulation();
-	var applications = local_simulation.applications;
-	console.log(applications);
-	
-}
+
 
 function DeployApp(app_id){
 	var local_simulation = get_local_simulation();
@@ -37,12 +32,7 @@ function  LaunchApp(app_id){
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
 		
-		if(apps[i]._id == app_id){
-			var location = "../apps/"+apps[i].name + "/" + apps[i].main;
-			ViewApp(location);
-			
-				
-		}
+		ViewApp(app_id);
 		
 	}
 	else{

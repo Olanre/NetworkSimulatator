@@ -99,6 +99,24 @@ function handleClient (socket) {
     	
     } );
     
+    socket.on("/manipulate/RDT", function(data){
+    	console.log(data);
+    	var json = JSON.parse(data);
+    	var token = json.token;
+    	var time_stamp = json.timestamp;
+    	var simulation_id = json.simulation_id;
+    	var new_val = 'Not available';
+    	SimulationManager.authToken(token, simulation_id, function(obj){
+    		if(obj.Response == 'Success'){
+    			new_val = ApplicationManager.manipulateRDT(data.event_data, data.time_stamp);
+    		}
+    		io.to(socket.id).emit('newRDTVal', new_val);
+    	});
+    		
+                
+    });
+                
+    
     
 };
 
@@ -135,7 +153,7 @@ function handleEventQueue(token, eventQueue, callback) {
 				SimulationManager.dividePartition(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
             case '/upload':
-                FileManager.uploadAllFiles(eventQueue[i].event_data);
+                FileManager.uploadAllFiles(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
                 
             case '/deploy/App':
@@ -146,9 +164,7 @@ function handleEventQueue(token, eventQueue, callback) {
                 ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
             
-            case '/manipulate/RDT':
-                ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
-                break;
+           
 			default:
 				break;
 				

@@ -1,0 +1,88 @@
+<html>
+<head>
+	<!-- Socket.IO -->
+	<script src="/js/socket.io.js"></script>
+	<script src = '../ApplicationRequirements.js' type='text/javascript'></script>
+	<script type="text/javascript">
+		var local_count = 0;
+		
+		function incrCounter(){
+			var local_counter = document.getElementById('local_count').innerHTML = local_count + 1;
+			manipulateRDT('incRDT', 'inc' );
+			
+		}
+		
+		function newRDTVal(new_val){
+			document.getElementById('global_count').innerHTML = new_val;
+		}
+	</script>
+	
+	
+	
+
+</head>
+<body>
+
+<div class = "application">
+	
+		<table>
+			<tr>
+				<td> 
+					<div class = "images" onclick = 'incrCounter()'> 
+						<img id = 'app_img' src = "/img/img.png">
+					</div>
+
+				</td>
+				
+			</tr>
+			<tr>
+				<td> 
+					<div class = "filters">
+						<form>
+							<input type="radio" onclick = "process('Crema', 'img')" name = "filters" value="crema" >Crema Filter<br>
+							<input type="radio" onclick = "process('Monochrome', 'img' )" name = "filters"  value="mono" >Monochrome Filter<br>
+							<input type="radio" onclick = "process('Ludwig', 'img')" name = "filters" value="ludwig" >Ludwig Filter<br>
+							
+						</form>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class = "chat">
+			<table> 
+				<tr>
+					<td> 
+						<h3> Picture Live Chat</h3>
+						<textarea id = "chatbox" rows="5" cols="50">
+							Mark: Haha love this
+							Mitis: Thanks
+						</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input placeholder = "Enter your response" type = "text" id = "chatline" size = "20" />
+					</td>
+					<td>
+						<div class="btn btn-primary" onclick="process('chatline', 'chatbox')"> Submit </div>
+					</td>
+					
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class = 'counters'> 
+		<table border='1'>
+			<tr> 
+				<td> <span class = 'text'> Local Counter </span> </td>
+				<td id = 'local_count'></td>
+			</tr> 
+			<tr>
+				<td>  <span class = 'text'> Global Counter </span> </td>
+				 <td id = 'global_count'></td> 
+			</tr> 
+		</table>
+	</div>
+</body>
+</html>

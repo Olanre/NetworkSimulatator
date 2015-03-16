@@ -32,13 +32,15 @@ function attachJSON(specJSON){
 	this._id=specJSON._id;
 }
 
-function loadAppSpecFromDatabase(app_id){
+function loadAppSpecFromDatabase(app_id, callback){
 	var createdAppSpec= new App_Spec('');
 	appModel.findOne({_id:app_id},function(err,appJSON){
 		if(!err){
 			createdAppSpec.attachJSON(appJSON);
+			callback(createdAppSpec);
 		}
 	});
+	console.log(createdAppSpec);
 	return createdAppSpec;
 }
 

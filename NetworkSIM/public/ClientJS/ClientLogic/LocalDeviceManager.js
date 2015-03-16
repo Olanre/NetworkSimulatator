@@ -29,6 +29,16 @@ function getVerified(){
 	}
 }
 
+function getLocalDeviceId(){
+	var local_device = get_local_device();
+	if(local_device!==null && local_device !== undefined){
+		return local_device._id;
+	}
+	else{
+		console.log("Error: getLocalDeviceToken passed a null local_device");
+	}
+}
+
 function getLocalDeviceLogs(){
 	var local_device = get_local_device();
 	if(local_device!==null){

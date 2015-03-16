@@ -16,6 +16,7 @@ var Simulation_History = require("../Model/Simulation_history.js");
 var History_State = require("../Model/History_state.js");
 
 
+
 var path = require('path');
 var fs=require('fs');
 
@@ -26,6 +27,7 @@ Models.initialize();
 exports.loadSimulations = function(simList){
 	for (sim in simList){
 		console.log("loading "+ simList[sim].simulation_name);
+			
 		simulationList.push(Simulation.loadSimulationFromJSON(simList[sim]));
 	}
 }
@@ -34,8 +36,11 @@ exports.populateLists = function(){
 
 		simulationList[sim].network_list=simulationList[sim].getNetworks();
 		simulationList[sim].device_list=simulationList[sim].getDevices();
+
+		simulationList[sim].attachDeviceIterator(simulationList[sim].device_list);
 		
-		ssimulationList[sim].device_list
+		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
+		
 	}
 }
 
@@ -115,7 +120,7 @@ function buildListObject(idList,objectList){
 		for(id in idList){
 			item=Util.findByUniqueID(idList[id],objectList);
 			if(item != -1){
-				list.push(item);
+				list.push(item.specJSON);
 			}
 		}
 	}

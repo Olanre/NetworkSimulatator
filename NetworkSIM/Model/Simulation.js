@@ -42,6 +42,8 @@ function Simulation(simulation_name){
 	this.attachJSON =attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
 	this.deployApp = deployApp;
+	this.attachNetworkIterator = attachNetworkIterator;
+	this.attachDeviceIterator = attachDeviceIterator;
 }
 
 function createNewSimulation(simulation_name){
@@ -74,21 +76,30 @@ function loadSimulationFromJSON(simulationJSON){
 	}
 
 	for(var index =0; index<simulationJSON.apps;index++){
-		var createdApp = App.loadAppSpecFromDatabase(simulationJSON.apps[index]);
-		createdSimulation.app_specs.push(createdApp);
+		App.loadAppSpecFromDatabase(simulationJSON.apps[index], function(createdApp){
+			createdSimulation.app_specs.push(createdApp);
+			console.log(createdSimulation.app_specs);
+		});
+		
 	}
 
 	for(var index=0; index<simulationJSON.rdts;index++){
-		var createdRDT = RDT.loadRDTSpecFromDatabase(simulationJSON.rdts[index]);
-		createdSimulation.rdt_specs.push(createdRDT);
+		RDT.loadRDTSpecFromDatabase(simulationJSON.rdts[index], function(createdRDT){
+			createdSimulation.rdt_specs.push(createdRDT);
+		});
+		
 	}
 	
-	this.device_list = this.getDevices();
-	this.network_list = this.getNetworks();
-	this.networkIterator = new NetworkIterator(this.network_list);
-	this.deviceIterator = new DeviceIterator(this.device_list);
-
 	return createdSimulation;
+}
+
+function attachDeviceIterator(new_list){
+	this.deviceIterator = new DeviceIterator(new_list);
+	
+}
+
+function attachNetworkIterator( new_list){
+	this.networkIterator = new NetworkIterator(new_list);
 }
 
 function attachJSON(simulationJSON){
@@ -129,7 +140,7 @@ function removeApp(app){
 
 //deploy a the referenced app spec json object to all devices
 function deployApp(app_specJSON){
-	console.log(this.deviceIterator);
+	
 	while (this.deviceIterator.hasNext()) {
 		console.log("About to deploy");
 		  this.deviceIterator.next().attachAppSpec( app_specJSON);

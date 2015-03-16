@@ -36,11 +36,12 @@ function attachJSON(specJSON){
 	this._id=specJSON._id;
 }
 
-function loadRDTSpecFromDatabase(rdt_id){
+function loadRDTSpecFromDatabase(rdt_id, callback){
 	var createdRDTSpec = new RDT_Spec('');
 	rdtModel.findOne({_id:rdt_id},function(err,rdtJSON){
 		if(!err){
 			createdRDTSpec.attachJSON(rdtJSON);
+			callback(createdRDTSpec);
 		}
 	});
 	return createdRDTSpec;

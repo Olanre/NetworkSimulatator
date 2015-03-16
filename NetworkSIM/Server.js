@@ -29,14 +29,14 @@ SimulationModel.findAllSimulations(function(simJSONlist){
 		Router.injectIO(io);
 		io.on("connection", Router.handleClient);
 
-		//SimulationManager.populateLists();
+		SimulationManager.populateLists();
 		console.log("All simulations have been loaded.");
 
 		server.listen(port, function(){
 	  		console.log('listening on *: ' + port);
 		});
 
-	;},7000);
+	;},8000);
 	
 });
 
@@ -66,7 +66,7 @@ app.get('/gui/interact-1.2.2.js', function(request, response){
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'apps')));
 
 app.use("/css",  express.static(__dirname + '/public/stylesheets'));
 app.use("/logic", express.static(__dirname + '/public/ClientJS/ClientLogic'));
@@ -75,6 +75,7 @@ app.use("/view", express.static(__dirname + '/public/ClientJS/Views'));
 app.use("/gui", express.static(__dirname + '/public/ClientJS/GUI'));
 app.use("/js",  express.static(__dirname + '/public/ClientJS'));
 app.use("/img",  express.static(__dirname + '/public/img'));
+app.use("/apps",  express.static(__dirname + '/apps/'));
 
 exports.io=io;
 

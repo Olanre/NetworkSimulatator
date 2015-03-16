@@ -8,7 +8,6 @@ var Util = require("../Utilities/utilities.js");
 var App_Spec = require("../Model/App_Spec.js");
 
 function deployApp( event_data, time_stamp ){
-	
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
 	
 	for(index in simulation.app_specs){
@@ -43,11 +42,12 @@ function attachApp( location, simulation_id, spec, time_stamp){
 		simulation.updateSimulationLog(new_activity);
 		setTimeout(function(){
 			//try{
-				var app = require(location + "/" + spec['main']);
+				
 				console.log("About to import");
-				simulation.importApp(app);
+				
 				var new_spec = App_Spec.createNewApp_Spec( spec);
 				simulation.attachAppSpec(new_spec);
+				simulation.importApp(new_spec);
 			
 			//}catch(err){
 			//	console.log(err);

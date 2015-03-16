@@ -111,13 +111,24 @@ function ViewAppSpec(_id, e){
 	}
 }
 
-function ViewApp( location){
-	var frame = "<iframe src='" + location + "'> </iframe> ";
+function ViewApp( app_id){
+	var local_simulation = get_local_simulation();
+	var apps = local_simulation.apps;
+	
+	for(var i = 0; i < apps.length; i++){
+		console.log(apps[i]);
+		if(apps[i]._id == app_id){
+			var location = "../apps/" + apps[i].name + "/" + apps[i].main;
+			
+		}
+	}
+	var frame = "<iframe src='" + location + "' width='100%' height='600px'> </iframe> ";
 	//clears everything on the page
 	clearFooter();
 	clearSection();
 	var content = getContainer();
 	content.innerHTML = frame;
+	
 }
 /**
  * Displays the user's information
