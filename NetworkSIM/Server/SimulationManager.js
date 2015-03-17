@@ -52,7 +52,7 @@ exports.populateLists = function(){
 		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
 		
 		//import and replicate our rdts
-		console.log(simulationList[sim].simulationJSON.rdts.length);
+		//console.log(simulationList[sim].simulationJSON.rdts.length);
 		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
 			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
 				simulationList[sim].rdt_specs.push(createdRDT);
@@ -64,7 +64,7 @@ exports.populateLists = function(){
 			});
 			
 		}
-		console.log(simulationList[sim].rdt_specs);
+		//console.log(simulationList[sim].rdt_specs);
 
 		
 		
@@ -119,7 +119,6 @@ function buildPartitionList(simulation){
 			device_list=network_list[nIndex].device_list;
 
 			for(dIndex in device_list){
-				console.log(device_list);
 				var device = Util.deepCopy(device_list[dIndex].deviceJSON);
 				device.apps = buildListObject( device.apps, simulation.app_specs);
 				newDeviceList.push(device);
@@ -138,13 +137,7 @@ function buildPartitionList(simulation){
 			newPartitionList.push(partition);
 		}
 	}
-	/*for(p in newPartitionList){
-		console.log("this partition has "+ newPartitionList[p].network_list.length+" networks");
-		for(n in newPartitionList[p].network_list){
-			console.log("this network has "+newPartitionList[p].network_list[n].device_list.length+" devices");
-		}
 
-	}*/
 	return newPartitionList;
 }
 
@@ -200,7 +193,6 @@ module.exports.getSimulationNames=function(){
 }
 
 module.exports.getSimulationHistory=function(simulation_id){
-	console.log(simulation_id);
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);
 	
 	
@@ -242,11 +234,15 @@ function authToken(token, simulation_id,  callback){
 				var timestamp = new Date().toISOString();
 				res.Response = "Success";
 				if(deviceList[index].deviceJSON.verified != true){
-					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenicated in the simulation at " + timestamp + "\n";
+					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenticated in the simulation at " + timestamp + "\n";
 					simulation.updateSimulationLog(new_activity);
 					deviceList[index].deviceJSON.verified = true;
+					deviceList[index].deviceJSON.save();
 					simulation.simulationJSON.simulation_population++;
 					saveSimulationState( simulation_id, timestamp, simulation);
+				}
+				else{
+					console.log(deviceList[index].deviceJSON.current_device_name+" connected");
 				}
 				
 				break;
@@ -420,40 +416,46 @@ function mergePartitions(event_data, time_stamp){
 		var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
 		var partitionB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
 
-		var new_activity = "Two Partitions, " +  partitionA.partition_name +  " and "  + partitionB.partition_name + " were merged on " + time_stamp + "\n";
+		var new_activity = "Connected networks on " + time_stamp + "\n";
 		simulationObject.updateSimulationLog(new_activity);
-		console.log("merging partitions!");
 		simulationObject.mergePartitions(partitionA,partitionB);
 		//save the state
 		saveSimulationState( simulation_id, time_stamp, simulationObject);
 	}
 
-	//Add database calls
 }
 
 function dividePartition(event_data, time_stamp){
 
 	var network_list = event_data.split_networks_list;
+	console.log(network_list);
 	var partitionID = event_data.partition_id;
 	var simulationID = event_data.simulation_id;
 	var simulationObject = Util.findByUniqueID(simulationID, simulationList);
 	var tempPartitionList =[];
+
 	if(simulationObject!=-1){
+
 		var partition = Util.findByUniqueID(partitionID, simulationObject.partition_list);
-		console.log("dividing partitions!");
+		var new_activity = "Disconnected networks on " + time_stamp + "\n";
 
 		for(var index =0; index<network_list.length;index++){
 
-			var network=Util.findByUniqueID(network_list[index]._id,simulationObject.getNetworks());
+			var network=Util.findByUniqueID(network_list[index]._id,partition.network_list);
 
 			if(network!=-1){
+				console.log("removing network "+network.networkName);
 				tempPartitionList.push(partition.removeNetwork(network));
 			}
-			for(var i=1;i<tempPartitionList.length;i++){
-				simulationObject.mergePartitions(tempPartitionList[i],tempPartitionList[i-1]);
-			}
-			simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
+			
 		}
+		console.log(partition.network_list);
+
+		for(var i=1;i<tempPartitionList.length;i++){
+				tempPartitionList[i].mergePartitions(tempPartitionList[i-1]);
+		}
+		simulationObject.updateSimulationLog(new_activity);
+		simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
 		saveSimulationState(simulationID,time_stamp,simulationObject);
 	}
 }

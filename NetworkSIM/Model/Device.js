@@ -30,8 +30,6 @@ function Device(deviceName,token, simulation_name , email){
 
 	//Constructor contents
 	
-
-	
 }
 
 

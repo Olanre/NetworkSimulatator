@@ -69,12 +69,12 @@ function removeNetwork(network){
 
 	for(var index=0; index<this.network_list.length;index++){
 		if(this.network_list[index]._id==network._id){
-
-			network.partitionObject=createNewPartition();
-			network.partitionObject.addNetwork(network);
+			var newPartition=createNewPartition('');
+			newPartition.addNetwork(network);
 			this.network_list.splice(index,1);
 			this.partitionJSON.network_list.splice(index,1);
 			this.partitionJSON.save();
+			break;
 			
 		}
 	}
@@ -82,12 +82,15 @@ function removeNetwork(network){
 }
 
 function mergePartitions(partition){
+
 		var networks=partition.network_list;
+
 		for(key in networks){
 			networks[key].partitionObject=this;
 			this.partitionJSON.network_list.push(networks[key]._id);
 			this.network_list.push(partition.network_list[key]);
 		}
+
 		this.partitionJSON.save();
 };
 

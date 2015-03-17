@@ -223,11 +223,11 @@ function mergePartitions(partitionA,partitionB){
 			this.partition_list.splice(index,1);
 			this.simulationJSON.partition_list.splice(index,1);
 			partitionA.mergePartitions(partitionB);
+			break;
 
 		}
 	}
 	//console.log(this.partition_list)
-	//partitionA.mergePartition(partitionB);
 	this.simulationJSON.save();
 }
 

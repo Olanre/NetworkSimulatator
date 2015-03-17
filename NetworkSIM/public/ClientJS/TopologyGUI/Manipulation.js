@@ -132,7 +132,6 @@ interact('.network')
 						var list = [];
 						for(var i=0;i<newpartitionlist.length;i++){
 							list.push(newpartitionlist[i].represents);
-							
 						}
 						dividePartition(list,oldpartitionID);
 					}
