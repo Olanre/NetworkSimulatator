@@ -107,24 +107,25 @@ exports.getAppStateForDevice = function(token,simulation_id){
 
 function buildPartitionList(simulation){
 	var partition_list,network_list,device_list;
+
 	partition_list=simulation.partition_list;
+
 	var newNetworkList=[],newDeviceList=[],newPartitionList=[];
 
 	for (pIndex in partition_list){
-
 		network_list=partition_list[pIndex].network_list;
 
 		for(nIndex in network_list){
 			device_list=network_list[nIndex].device_list;
 
 			for(dIndex in device_list){
+				console.log(device_list);
 				var device = Util.deepCopy(device_list[dIndex].deviceJSON);
 				device.apps = buildListObject( device.apps, simulation.app_specs);
 				newDeviceList.push(device);
 			}
 			var network=Util.deepCopy(network_list[nIndex].networkJSON);
 			network.device_list=Util.deepCopy(newDeviceList);
-			network.device_list=newDeviceList;
 			newDeviceList=[];
 			newNetworkList.push(network);
 		}
@@ -137,7 +138,13 @@ function buildPartitionList(simulation){
 			newPartitionList.push(partition);
 		}
 	}
+	/*for(p in newPartitionList){
+		console.log("this partition has "+ newPartitionList[p].network_list.length+" networks");
+		for(n in newPartitionList[p].network_list){
+			console.log("this network has "+newPartitionList[p].network_list[n].device_list.length+" devices");
+		}
 
+	}*/
 	return newPartitionList;
 }
 
@@ -392,9 +399,9 @@ function addDeviceToNetwork(event_data, time_stamp){
 			if(device.networkObject!=network){
 	
 				network.addDevice(device);
+
 				var new_activity = "Device " +  device.device_name +  " added to network " + network.networkName + " at " + time_stamp + "\n";
 				simulation.updateSimulationLog(new_activity, simulation);
-				
 				//save the state
 				saveSimulationState( simulation_id, time_stamp, simulation);
 			}

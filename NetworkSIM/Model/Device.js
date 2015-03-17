@@ -85,10 +85,8 @@ function joinNetwork(network){
   
 function leaveNetwork(network){
 	  this.deviceJSON.current_network= '';
-	  this.networkObject = {};
+	  this.networkObject = Network.createNewNetwork('','');
 	  this.deviceJSON.current_partition= '';
-	  var networkIndex= network.device_list.indexOf(this);
-	  network.device_list.splice(networkIndex,1);
 	  this.deviceJSON.save();
 };
 
