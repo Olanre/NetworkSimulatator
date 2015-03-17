@@ -40,6 +40,7 @@ exports.loadSimulationHistorys  = function(simHistoryList){
 		
 	}
 }
+
 exports.populateLists = function(){
 	for (sim in simulationList){
 
@@ -103,6 +104,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	state.simulation_list=module.exports.getSimulationList();
 	return state;
 }
+
 function buildPartitionList(simulation){
 	var partition_list,network_list,device_list;
 	partition_list=simulation.partition_list;
@@ -138,6 +140,7 @@ function buildPartitionList(simulation){
 
 	return newPartitionList;
 }
+
 function buildListObject(idList,objectList){
 	var list=[];
 	var item;
@@ -219,18 +222,15 @@ module.exports.getSimulationList=function(){
 	
 }
 
-
 function authToken(token, simulation_id,  callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
 	var simulation=Util.findByUniqueID(simulation_id,simulationList);
 	//simulation = simulationList[i];
-
 	if(simulation != -1&&simulation!=undefined){
 		var deviceList=simulation.device_list;
 		for(var index = 0; index < deviceList.length; index++){
-
 			if(deviceList[index].token == token){
 				var timestamp = new Date().toISOString();
 				res.Response = "Success";
@@ -250,8 +250,6 @@ function authToken(token, simulation_id,  callback){
 	callback(res);
 		
 }
-
-
 
 function createSimulation(event_data, time_stamp) {
 
@@ -315,7 +313,6 @@ function createSimulation(event_data, time_stamp) {
 	return simulation;
 }	
 
-
 function createDevice(event_data, time_stamp) {
 	
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
@@ -347,9 +344,7 @@ function createNetwork(event_data, time_stamp){
 		//save the state
 		saveSimulationState( simulation._id, time_stamp, simulation);
 	}
-
-
-};
+}
 
 //TODO
 function removeDevice(event_data, time_stamp){
@@ -363,8 +358,6 @@ function removeDevice(event_data, time_stamp){
 	//save the state
 	/** saveSimulationState( simulation._id, time_stamp, simulation);
 	 * */
-
-
 }
 
 //TODO
@@ -407,10 +400,7 @@ function addDeviceToNetwork(event_data, time_stamp){
 			}
 		}
 	}
-
-
 }
-
 function mergePartitions(event_data, time_stamp){
 	var partition_a = event_data.partition_a_id;
 	var partition_b = event_data.partition_b_id;
@@ -433,7 +423,6 @@ function mergePartitions(event_data, time_stamp){
 
 	//Add database calls
 }
-
 
 function dividePartition(event_data, time_stamp){
 
@@ -462,12 +451,6 @@ function dividePartition(event_data, time_stamp){
 	}
 }
 
-/** saves the state of the simulation for us
- * 
- * @param simulation_id,  the id of the simulation to be stored
- * @param time_stamp, the current timestamp the event recieved is
- * @param simulationObject, the simulation object
- */
 function saveSimulationState( simulation_id, time_stamp, simulationObject){
 	//save the state
 	var simulation_history = Util.findByUniqueID(simulation_id,simulationHistoryList);

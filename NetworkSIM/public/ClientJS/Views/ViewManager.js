@@ -110,7 +110,7 @@ function ViewAppSpec(_id, e){
 		for(var i = 0; i < apps.length; i++){
 			if(apps[i]._id == _id){
 				var div = document.getElementById(_id);
-				console.log(_id);
+				//console.log(_id);
 				if(div !== null) div.innerHTML = "<code>" + JSON.stringify(apps[i]) + "</code>";
 			}
 		}
@@ -127,7 +127,7 @@ function ViewApp( app_id){
 	var apps = local_simulation.apps;
 	
 	for(var i = 0; i < apps.length; i++){
-		console.log(apps[i]);
+		//console.log(apps[i]);
 		if(apps[i]._id == app_id){
 			var location = "../apps/" + apps[i].name + "/" + apps[i].main;
 			
@@ -274,7 +274,7 @@ function networkTopologyView(){
 	//removes previously occuring stylesheets and javascript files if they occured before
 	removeFile('topologyView.css', 'css');
 	removeFile('Manipulation.js', 'js');
-
+	removeFile('Drawing.js','js');
 	defaultheaderView(); 
 	
 	clearNav();
@@ -287,6 +287,7 @@ function networkTopologyView(){
 	var html=NetworkTopologyTemplate(get_local_simulation());
 	var content=getContainer();
 	content.innerHTML=html;
+	loadJSFile('../gui/Drawing.js');
 	loadJSFile('/gui/Manipulation.js');
 	/*var html="<div id='bigDiv'>" +
 			"<svg></svg>" +
@@ -317,19 +318,19 @@ function eventLogsView(){
 	removeFile('EventLogView.css', 'css');
 	removeFile('EventLogView.js', 'js');
 	removeFile('Manipulation.js', 'js');
+	removeFile('Drawing.js','js');
 
 	//clearNav();
 	clearFooter();
 	clearSection();
 
 	defaultheaderView();
-
-	var content = getContainer();
 	//defaultsideBarView();
 	
 	loadStyleSheet('../css/topologyView.css');
 	loadStyleSheet('../css/EventLogView.css');
 	loadJSFile('../view/EventLogView.js');
+	loadJSFile('../gui/Drawing.js');
 	
 	
 	var html =
@@ -360,7 +361,7 @@ function eventLogsView(){
 		"</div>"
 	var content = getContainer();
 	content.innerHTML = html;
-	loadJSFile('../gui/Manipulation.js');
+	//loadJSFile('../gui/Manipulation.js');
 	//calls the EventLogView function for viewing the history
 	setTimeout(function(){
 		clearCanvas();

@@ -116,13 +116,10 @@ function selectSimulationDate(selected){
 
 	updatePageTitle(selected);
 	updateSimulationLogTitle(selected);
+
 	//get the logs from the states object for that simulation snapshot
 	simulationLogs=parseSimulationLogs(current_simulation_history_list,selected);
 	populateSimulationLogs(simulationLogs);
-	setInteractable(false);
-
-	//console.log(SimulationMap[selected].partition_list);
-	setInteractable(false);
 	generateTopology(SimulationMap[selected].partition_list,700);
 }
 
@@ -154,11 +151,11 @@ function mouseClick(e){
  */
 function deriveDeviceEvents(circleElem){
 	if(circleElem.represents!==null){
-		console.log('circle elem:  '+circleElem);
-		console.log('represennts: '+circleElem.represents._id);
+		//console.log('circle elem:  '+circleElem);
+		//console.log('represennts: '+circleElem.represents._id);
 		var represents=circleElem.represents;
 		var device_log=represents.activity;
-		console.log(represents);
+		//console.log(represents);
 		if(device_log.indexOf("\n") > -1) device_log=device_log.split('\n');
 		return device_log;
 	}
