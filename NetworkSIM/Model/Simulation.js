@@ -64,21 +64,20 @@ function createNewSimulation(simulation_name){
 }
 
 function loadSimulationFromJSON(simulationJSON){
-
 	var createdSimulation= new Simulation('');
 	createdSimulation.attachJSON(simulationJSON);
 	
-	for(var index=0;index<simulationJSON.partition_list.length;index++){
+	for(var index=0;index<createdSimulation.simulationJSON.partition_list.length;index++){
 
-		var createdPartition=Partition.loadPartitionFromDatabase(simulationJSON.partition_list[index]);
+		var createdPartition=Partition.loadPartitionFromDatabase(createdSimulation.simulationJSON.partition_list[index]);
 		createdSimulation.partition_list.push(createdPartition);
 
 	}
 
-	for(var index =0; index<simulationJSON.apps.length ;index++){
+	for(var index =0; index<createdSimulation.simulationJSON.apps.length ;index++){
 		
-		App.loadAppSpecFromDatabase(simulationJSON.apps[index], function(createdApp){
-			createdSimulation.attachAppSpec(createdApp);
+		App.loadAppSpecFromDatabase(createdSimulation.simulationJSON.apps[index], function(createdApp){
+			createdSimulation.app_specs.push(createdApp);
 			
 		});
 		

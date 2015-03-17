@@ -45,27 +45,28 @@ exports.populateLists = function(){
 
 		simulationList[sim].network_list=simulationList[sim].getNetworks();
 		simulationList[sim].device_list=simulationList[sim].getDevices();
-
-		
-		//import and replicate our rdts
-		simulationList[sim].simulationJSON.rdts.length
-		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
-			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
-				simulationList[sim].attachRDTSpec(createdRDT);
-				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
-				var rdt = require(location);
-				
-				simulationList[sim].importRDT(rdt);
-				//console.log("  Importing this RDT " + rdt);
-				
-			});
-			
-		}
-		
 		
 		simulationList[sim].attachDeviceIterator(simulationList[sim].device_list);
 		
 		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
+		
+		//import and replicate our rdts
+		console.log(simulationList[sim].simulationJSON.rdts.length);
+		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
+			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
+				simulationList[sim].rdt_specs.push(createdRDT);
+				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
+				var rdt = require(location);
+				
+				simulationList[sim].importRDT(rdt);
+
+			});
+			
+		}
+		console.log(simulationList[sim].rdt_specs);
+
+		
+		
 		
 	}
 }
