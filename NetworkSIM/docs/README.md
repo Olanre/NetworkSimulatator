@@ -1,1 +1,0 @@
-Put your documentation and figures in this folder.
