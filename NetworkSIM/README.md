@@ -1,4 +1,6 @@
 									-- Group 2 README --
+									
+* Please note that the email you receive for authorizing a token may be placed in your spam folder. *									
 
 ---------------------------------
 Known issues
@@ -8,7 +10,7 @@ Known issues
   in iteration 4.
 
 ->To run our code:
-	Our server may be access from http://sc-2.cs.mun.ca/
+	Our server may be accessed from http://sc-2.cs.mun.ca/
 	-from this page a user may view the simulations available on this application in the "Simulation" tab, and create new simulations with the "new simulation" button. 
 	-Pressing "new simulation" allows you to create a new simulation. 
 	-for "token propagation method" the only currently supported method is "email" which must be entered in the token propagation method field. Currently 
@@ -38,7 +40,7 @@ Known issues
 	To import apps there is one in our tests folder under the folder testapp. Import all the files in that folder. 
 	To import rdts, there are two in our tests folder under testrdts. Each of the files in rdt1 and rdt2 should be imported. so to import the first rdt, import the files in rdt1, and to import the second rdt, import the files in rdt2. 
 
-	All rdts need a package.json and spec.md as explained in the framework.  The RDT’s Rio provided us uses several files such as the rdtinterface, counter, spec.md and package.json. The rdt1 and 2 have similar files. All of which should be imported. 
+	All rdts need a package.json and spec.md as explained in the framework.  The RDTï¿½s Rio provided us uses several files such as the rdtinterface, counter, spec.md and package.json. The rdt1 and 2 have similar files. All of which should be imported. 
 
 	So again for Apps
 	Go to our Working Directory of the Project called NetworkSim/tests/testapp
