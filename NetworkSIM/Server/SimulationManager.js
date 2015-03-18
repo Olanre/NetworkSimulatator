@@ -15,11 +15,8 @@ var Simulation = require("../Model/Simulation.js");
 var Simulation_History = require("../Model/Simulation_history.js");
 var History_State = require("../Model/History_state.js");
 var RDT = require("../Model/RDT_Spec.js");
-
-
-
 var path = require('path');
-var fs=require('fs');
+var fs = require('fs');
 
 var simulationList = [];
 var simulationHistoryList = [];
@@ -266,7 +263,8 @@ function createSimulation(event_data, time_stamp) {
 	
 	
 	var createdPartition,createdNetwork,createdDevice;
-
+	var tokenPath = 'tokens/'+event_data.simulation_name+".txt";
+	console.log(map);
 	for(partition in map){
 		
 		if(partition=='freelist'){
@@ -295,12 +293,12 @@ function createSimulation(event_data, time_stamp) {
 						simulation.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
 						TokenMailer.mailToken(device,token,event_data.simulation_name);
-						fs.writeFile(path.resolve(__dirname, 'tokens.txt'),token,function(err) {
+						var tokendata= token+"\n";
+						fs.appendFile(path.resolve(__dirname, tokenPath),tokendata,function(err) {
 					    if(err) {
 					        console.log(err);
-					    } else {
-					        console.log("New tokens are saved in tokens.txt!");
 					    }
+					    else console.log("Adding token "+tokendata+"\n");
 					});
 				}
 			}
@@ -445,7 +443,7 @@ function dividePartition(event_data, time_stamp){
 			var network=Util.findByUniqueID(network_list[index]._id,partition.network_list);
 
 			if(network!=-1){
-				console.log("removing network "+network.networkName);
+				//console.log("removing network "+network.networkName);
 				tempPartitionList.push(partition.removeNetwork(network));
 			}
 			
