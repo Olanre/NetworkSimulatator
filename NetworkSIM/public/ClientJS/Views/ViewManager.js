@@ -7,9 +7,31 @@ window.onload = function(){
 	loadStyleSheet('../css/dashboard.css');
 	//loadStyleSheet('../css/test.css');
 	defaultheaderView();
-	updateAllViews();
+	updateAllViews();	
+}
+
+/**
+ *Gets the view which displays a list of available simulations
+ */
+function simulationListView(){
+	//sets the header view
+	defaultheaderView(); 
+	//clears everything on the page
+	clearNav();
+	clearFooter();
+	clearSection();
+
+	var simulations = get_local_simulation_list();
 	
-	
+	//adds the list of simulations into the page
+	var html =  SimulationDataListTemplate(simulations);
+	//gets the container of the page
+	var content = getContainer();
+	//sets the default sidebar page
+	defaultsideBarView();
+	removeClass('active');
+	document.getElementById('nav-option-simCreate').className='active';
+	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
 }
 
 /**
@@ -193,31 +215,6 @@ function defaultheaderView(){
 	var header = document.getElementById('template6');
 	var head= getHeader();
 	head.innerHTML = header.innerHTML;
-}
-
-
-/**
- *Gets the view which displays a list of available simulations
- */
-function simulationListView(){
-	//sets the header view
-	defaultheaderView(); 
-	//clears everything on the page
-	clearNav();
-	clearFooter();
-	clearSection();
-
-	var simulations = get_local_simulation_list();
-	
-	//adds the list of simulations into the page
-	var html =  SimulationDataListTemplate(simulations);
-	//gets the container of the page
-	var content = getContainer();
-	//sets the default sidebar page
-	defaultsideBarView();
-	removeClass('active');
-	document.getElementById('nav-option-simCreate').className='active';
-	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
 }
 
 /**
