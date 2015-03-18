@@ -67,7 +67,7 @@ socket.on('validate_user', function(data){
 	console.log(data);
 	//if the authentication was a success
 	if(object.Response == 'Success'){
-		alert('You have been authenicated. \nPlease wait to be redirected');
+		alert('You have been authenticated. \nPlease wait to be redirected');
 		//sync with the server and redirect to the simulation
 		syncWithServer();	
 	}else{
