@@ -44,30 +44,30 @@ exports.loadSimulationHistorys  = function(simHistoryList){
 exports.populateLists = function(){
 	for (sim in simulationList){
 
-		simulationList[sim].network_list=simulationList[sim].getNetworks();
-		simulationList[sim].device_list=simulationList[sim].getDevices();
-		
-		simulationList[sim].attachDeviceIterator(simulationList[sim].device_list);
-		
-		simulationList[sim].attachNetworkIterator(simulationList[sim].network_list);
-		
-		//import and replicate our rdts
-		//console.log(simulationList[sim].simulationJSON.rdts.length);
-		for(var index=0; index<simulationList[sim].simulationJSON.rdts.length;index++){
-			RDT.loadRDTSpecFromDatabase(simulationList[sim].simulationJSON.rdts[index], function(createdRDT){
-				simulationList[sim].rdt_specs.push(createdRDT);
-				var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
-				var rdt = require(location);
-				
-				simulationList[sim].importRDT(rdt);
-
-			});
-			
-		}
+		populateSimulation ( simulationList[sim]);
 		//console.log(simulationList[sim].rdt_specs);
+	}
+}
 
-		
-		
+function populateSimulation ( Simulation){
+	Simulation.network_list=simulationList[sim].getNetworks();
+	Simulation.device_list=simulationList[sim].getDevices();
+	
+	Simulation.attachDeviceIterator(simulationList[sim].device_list);
+	
+	Simulation.attachNetworkIterator(simulationList[sim].network_list);
+	
+	//import and replicate our rdts
+	//console.log(simulationList[sim].simulationJSON.rdts.length);
+	for(var index=0; index< Simulation.simulationJSON.rdts.length;index++){
+		RDT.loadRDTSpecFromDatabase(Simulation.simulationJSON.rdts[index], function(createdRDT){
+			Simulation.rdt_specs.push(createdRDT);
+			var location = "../rdts/" + createdRDT.specJSON.name + "/" + createdRDT.specJSON.main;
+			var rdt = require(location);
+			
+			Simulation.importRDT(rdt);
+
+		});
 		
 	}
 }
@@ -92,6 +92,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	//console.log("Partition List "+newJSON.partition_list);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
 	newJSON.partition_list=buildPartitionList(simulation);
@@ -428,7 +429,7 @@ function mergePartitions(event_data, time_stamp){
 function dividePartition(event_data, time_stamp){
 
 	var network_list = event_data.split_networks_list;
-	console.log(network_list);
+	//console.log(network_list);
 	var partitionID = event_data.partition_id;
 	var simulationID = event_data.simulation_id;
 	var simulationObject = Util.findByUniqueID(simulationID, simulationList);
@@ -449,7 +450,7 @@ function dividePartition(event_data, time_stamp){
 			}
 			
 		}
-		console.log(partition.network_list);
+		//console.log(partition.network_list);
 
 		for(var i=1;i<tempPartitionList.length;i++){
 				tempPartitionList[i].mergePartitions(tempPartitionList[i-1]);
@@ -457,6 +458,7 @@ function dividePartition(event_data, time_stamp){
 		simulationObject.updateSimulationLog(new_activity);
 		simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
 		saveSimulationState(simulationID,time_stamp,simulationObject);
+		//console.log(simulationObject.simulationJSON.partition_list);
 	}
 }
 

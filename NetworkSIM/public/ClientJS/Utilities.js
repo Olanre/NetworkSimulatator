@@ -111,20 +111,15 @@ function insertAfter(newNode, referenceNode) {
 }
 
 function deepCopy(item){
-	var copy;
-	if(Array.isArray(item)){
-	 copy=[];
+	if(item !== undefined && item !== ''){
+		//console.log( " This is item after the check\n" + item);
+		var jsonstring = JSON.stringify(item);
+		var item = JSON.parse(jsonstring);
+		
+	}else{
+		console.log("Passed undefined object to deepCopy");
 	}
-	else {
-		if (item instanceof Object) copy={};
-		else return item;
-	}
-
-	for (attribute in item){
-		copy[attribute]=deepCopy(item[attribute]);
-	}
-
-	return copy;
+	return item;
 }
 
 function compareObjects(obj1,obj2){
@@ -217,4 +212,14 @@ function isInt(value) {
 	  return !isNaN(value) && 
 	         parseInt(Number(value)) == value && 
 	         !isNaN(parseInt(value, 10));
+}
+
+function findByUniqueID(uniqueID, list){
+	for(index in list){
+		if(list[index]._id==uniqueID){
+			return list[index];
+		} 
+	}
+	
+	return -1;
 }

@@ -8,7 +8,7 @@ function createNetwork(network_name){
 		var url = '/create/Network';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
-		appDefaultView();
+		
 	}
 	else{
 		console.log("createNetwork recieved null parameters");
@@ -21,7 +21,6 @@ function Device_makeNetwork(element){
 		var name = input.value;
 		if(name !== ''){
 			createNetwork(name);
-			appDefaultView();
 		}
 	}
 	

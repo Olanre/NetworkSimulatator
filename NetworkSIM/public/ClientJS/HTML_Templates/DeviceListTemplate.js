@@ -7,7 +7,6 @@
  * @returns str, the generated html string which was rendered from the network list provided
  */
 function AdminDevicesListTemplate(devices){
-	//console.log(devices);
 		var template = document.getElementById('template16').innerHTML;
 		 textile = Hogan.compile(template);
 		 context = { 'devices' : devices};
@@ -22,10 +21,22 @@ function AdminDevicesListTemplate(devices){
  * @returns str, the generated html string which was rendered from the network list provided
  */
 function DevicesListTemplate(devices){
-	//console.log(devices);
 	var template = document.getElementById('template14').innerHTML;
 	 textile = Hogan.compile(template);
-	 context = { 'devices' : devices};
+	 var devicesClone = deepCopy(devices);
+	 var simulation = get_local_simulation();
+	 for(dev in devicesClone){
+
+	 	for(index in simulation.partition_list){
+			var network = findByUniqueID(devicesClone[dev].current_network, simulation.partition_list[index].network_list);
+			if(network!=-1){
+				devicesClone[dev].current_network = network.network_name;
+				break;
+			}
+		}
+	 }
+
+	 context = { 'devices' : devicesClone};
 	 tpl = textile.render(context);
 	 return tpl;
 }

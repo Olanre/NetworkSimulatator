@@ -209,7 +209,6 @@ function simulationListView(){
 
 	var simulations = get_local_simulation_list();
 	
-	
 	//adds the list of simulations into the page
 	var html =  SimulationDataListTemplate(simulations);
 	//gets the container of the page

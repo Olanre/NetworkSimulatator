@@ -13,6 +13,7 @@ function createDevice(device_name){
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
 		addDeviceToFreeList( device_name );
+		deviceDefaultView();
 	}
 	else{
 		console.log("createDevice was passed null parameters");
@@ -33,6 +34,7 @@ function moveDeviceToNetwork( device_token, network_id){
 		var url='/move/Device/Network';
 		var timestamp = new Date();
 		addToEventQueue(url,params,timestamp);
+		deviceDefaultView();
 	}
 	else{
 		console.log("moveDeviceToNetwork recieved null parameters");

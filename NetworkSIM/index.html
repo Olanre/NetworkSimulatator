@@ -357,17 +357,12 @@
 				</tr>
 				<tr> 
 					<td> 
-					 	<div> RegistedOn: {{registeredOn}} </div>
+					 	<div> Registered On: {{registeredOn}} </div>
 					</td>
 				</tr>
 				<tr> 
 					<td>
 						<div> Token: {{token}}  </div>
-					</td> 
-				</tr>
-				<tr> 
-					<td>
-						<div> Current Partition: {{current_partition}}  </div>
 					</td> 
 				</tr>
 				<tr> 
@@ -400,10 +395,12 @@
 
 	<div class = 'container'>
 		<table>
+		<tr class='tableHeading'> <td> Device Name</td><td> Network</td></tr>
 			{{#devices}}
 			
 				<tr  id = '{{_id}}'> 
 					<td> {{current_device_name}}  </td> 
+					<td>{{current_network}}</td>
 				</tr>
 			{{/devices}}
 		</table>
