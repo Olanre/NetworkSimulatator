@@ -1,7 +1,13 @@
 									-- Group 2 README --
 
-->To run our code:
+---------------------------------
+Known issues
+-------------------------------
+1. Occasionally the server will not display the list of all created simulations. If this happens, please refresh the page, this should fix it.
+  The reason this happens is because some of the files are not loaded fast enough, and a function calls a file which does not yet exist. This will be fixed
+  in iteration 4.
 
+->To run our code:
 	Our server may be access from http://sc-2.cs.mun.ca/
 	-from this page a user may view the simulations available on this application in the "Simulation" tab, and create new simulations with the "new simulation" button. 
 	-Pressing "new simulation" allows you to create a new simulation. 
