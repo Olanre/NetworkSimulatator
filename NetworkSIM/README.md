@@ -20,5 +20,20 @@
 	 From there, you can view all of the events which have occurred up to this point in the box, and pressing on a device will show you all of the events (interactions with
 	 RDTs and applications as specified by Dr. Fiech) which have occured on this device up to this point.
 	-Pressing the My device button takes you to a page where you can get information on the device which you own, see your applications and RDTS, create networks, and move 
-	 between networks. 
+	 between networks.
+	 
+	 Applications and RDTS 
+	On the server ApplicationManager and RDTManager take care of calls for apps and  rdts respectively. This includes manipulating an RDT, deploying apps, launching an app and importing an rdt.
+
+	To import apps there is one in our tests folder under the folder testapp. Import all the files in that folder. 
+	To import rdts, there are two in our tests folder under testrdts. Each of the files in rdt1 and rdt2 should be imported. so to import the first rdt, import the files in rdt1, and to import the second rdt, import the files in rdt2. 
+
+	All rdts need a package.json and spec.md as explained in the framework.  The RDT’s Rio provided us uses several files such as the rdtinterface, counter, spec.md and package.json. The rdt1 and 2 have similar files. All of which should be imported. 
+
+	So again for Apps
+	Go to our Working Directory of the Project called NetworkSim/tests/testapp
+
+	For RDTS 
+	Go to our Working Directory of the Project called NetworkSim/tests/testrdts/rdt1
+	and to NetworkSim/tests/testrdts/rdt2
 	
