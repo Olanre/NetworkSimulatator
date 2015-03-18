@@ -79,6 +79,7 @@ socket.on('connect', function () {
 	console.log('Socket is connected.');
 	connected = true;
 	syncWithServer();
+	simulationListView();
 });
 
 socket.on('disconnect', function () {

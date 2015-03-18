@@ -92,6 +92,7 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	
 	var state = {};
 	var newJSON=Util.deepCopy(simulation.simulationJSON);
+	//console.log("Partition List "+newJSON.partition_list);
 	newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
 	newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
 	newJSON.partition_list=buildPartitionList(simulation);
@@ -428,7 +429,7 @@ function mergePartitions(event_data, time_stamp){
 function dividePartition(event_data, time_stamp){
 
 	var network_list = event_data.split_networks_list;
-	console.log(network_list);
+	//console.log(network_list);
 	var partitionID = event_data.partition_id;
 	var simulationID = event_data.simulation_id;
 	var simulationObject = Util.findByUniqueID(simulationID, simulationList);
@@ -449,7 +450,7 @@ function dividePartition(event_data, time_stamp){
 			}
 			
 		}
-		console.log(partition.network_list);
+		//console.log(partition.network_list);
 
 		for(var i=1;i<tempPartitionList.length;i++){
 				tempPartitionList[i].mergePartitions(tempPartitionList[i-1]);
@@ -457,6 +458,7 @@ function dividePartition(event_data, time_stamp){
 		simulationObject.updateSimulationLog(new_activity);
 		simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
 		saveSimulationState(simulationID,time_stamp,simulationObject);
+		//console.log(simulationObject.simulationJSON.partition_list);
 	}
 }
 
