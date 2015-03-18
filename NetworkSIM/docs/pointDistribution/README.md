@@ -1,1 +1,1 @@
-To be decided with Dr. Fiech on friday.
+We have 50 points to distribute. We give 10 points to each member of our group
