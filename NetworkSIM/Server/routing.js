@@ -49,9 +49,11 @@ function handleClient (socket) {
     					handleEventQueue(token, events, function(){
 	    					//the painful part, we need to send it to all clients in the simulation
 	    					var list = SimulationManager.getAllActiveDevices(simulation);
+	    					
 	    					for(var index = 0; index < list.length; index++){
 	    						var user_token = list[index]['token'];
 	    						var socket_id = client_map[user_token];
+	    						
 	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
                                 io.to(socket_id).emit('syncState', state);
 	    						
@@ -78,6 +80,7 @@ function handleClient (socket) {
     	var simulation_id = json.simulation_id;
     	SimulationManager.authToken(token, simulation_id, function(obj){
     	//for now allow empty tokens
+    		client_map[token] = socket.id;
     		io.to(socket.id).emit('validate_user', obj);
     	});
     });

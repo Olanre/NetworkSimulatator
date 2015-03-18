@@ -41,7 +41,7 @@ SimulationModel.findAllSimulations(function(simJSONlist){
 		  		console.log('listening on *: ' + port);
 			});
 	
-		;},9000);
+		;},1000);
 		
 	});	
 	

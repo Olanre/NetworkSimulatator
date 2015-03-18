@@ -12,6 +12,7 @@ function dividePartition(split_networks_list, partition_id){
 		var url = '/divide/Partition';
 		var timestamp = new Date();
 		addToEventQueue(url, params, timestamp);
+		
 	}else{
 		console.log("dividePartition was passed null parameters")
 	}
