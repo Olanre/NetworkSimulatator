@@ -14,8 +14,7 @@ Known issues
 	-for "token propagation method" the only currently supported method is "email" which must be entered in the token propagation method field. Currently 
 	 the email system may have been marked for spam, which we will handle next iteration, and therefore the tokens are displayed in the console.log as well.
 	 ---
-	 To view a token, after creating a simulation, right click on the page and press "inspect elements" then console. One of the outputs will be a token to the simulation
-	 you created. As well, in our files under the "server" folder is a text file called "tokens.txt" which contains a list to all of the tokens to the simulation.
+	 To view a token, if one was not emailed to you, in our files under the /server/tokens/tokens.txt which contains a token to the newest simulation which you have created.
 	 ---
 	-In the list of "simulations" you may  press "register" by any of the simulations and you will be prompted to enter a token which would have been
 	 mailed to you if you were one of the devices allowed in the simulation creation. As well, you can view the simulations to which you are 
