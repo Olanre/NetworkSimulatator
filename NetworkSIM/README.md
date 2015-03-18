@@ -12,10 +12,15 @@ Known issues
 	-from this page a user may view the simulations available on this application in the "Simulation" tab, and create new simulations with the "new simulation" button. 
 	-Pressing "new simulation" allows you to create a new simulation. 
 	-for "token propagation method" the only currently supported method is "email" which must be entered in the token propagation method field. Currently 
-	 the email system may have been marked for spam, which we will handle next iteration, and therefore the tokens are displayed as well.
+	 the email system may have been marked for spam, which we will handle next iteration, and therefore the tokens are displayed in the console.log as well.
+	 ---
+	 To view a token, after creating a simulation, right click on the page and press "inspect elements" then console. One of the outputs will be a token to the simulation
+	 you created. As well, in our files under the "server" folder is a text file called "tokens.txt" which contains a list to all of the tokens to the simulation.
+	 ---
 	-In the list of "simulations" you may  press "register" by any of the simulations and you will be prompted to enter a token which would have been
 	 mailed to you if you were one of the devices allowed in the simulation creation. As well, you can view the simulations to which you are 
 	 registered
+	
     -after entering a simulation, you have new choices on the side-bar
     -pressing Network Topology allows you to see a graphical representation of the topology. Move devices between networks, create partitions by dragging one network
     ontop of another, and delete partitions by dragging those networks ontop of eachother again.
