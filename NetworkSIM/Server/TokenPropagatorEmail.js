@@ -12,8 +12,8 @@ function mailToken(email, token, sim_name){
 	var transporter = nodemailer.createTransport({
 	    service: 'gmail',
 	    auth: {
-	        user: 'cs4770group2@gmail.com',
-	        pass: 'biggroup2'
+	        user: 'team24770@gmail.com',
+	        pass: 'fiechclass'
 	    }
 	});
 	transporter.sendMail({
