@@ -15,6 +15,10 @@ body{
 	background-color:white;
 }
 
+.active a{
+	color:#64c6ad !important;
+}
+
 .sidebar{
 	position: fixed;
 	top: 0px;
@@ -41,6 +45,14 @@ ul{
 	font-size:25px;
 	text-align:center;
 	min-width:100%;
+}
+
+.nav li:hover{
+	background-color:#92E0CC;
+}
+
+.active:hover{
+	background-color: #EEF9F6 !important;
 }
 
 .nav a{
