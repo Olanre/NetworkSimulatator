@@ -65,6 +65,9 @@ ul{
 }
 
 #content{
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
 	padding:15px;
 	width:auto;
 	position:relative;
@@ -78,6 +81,7 @@ ul{
 }
 
 .btn{
+  display: inline-block;
 	background-color: #64c6ad;
 	padding:8px;
 	border-radius: 10px;
@@ -116,25 +120,30 @@ CSS for the new simulation page
   font-size:20px;
   margin-left:auto;
   margin-right:auto;
+  text-align:left;
 }
 
-#available-list{
-  text-align:center;
-  margin-left:auto;
-  margin-right:auto;
-}
 
 #partition-creation-header{
   font-size:30px;
-  text-align:center;
 }
 
 #button-create-simulation{
   font-size:25px;
-  text-align:center;
   padding:15px;
 }
 
+#button-create-partition{
+  margin-top:25px;
+  font-size:20px;
+  padding:10px;
+}
+
+#config-map table{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
 
 /*-----------------------
  *handles the scroll bar for our webpages

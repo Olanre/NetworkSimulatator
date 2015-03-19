@@ -64,10 +64,6 @@ function updateavailableField(){
 }
 /**
  * addtoConfigTable inserts a new element in to
- * @param insert_point
- * @param name: variable stating what is being added to the config table
- * @param element: 
- * @returns {Boolean}
  */
 function addtoConfigTable(insert_point, name, element){
 	if( insert_point == null || element == null) return false;

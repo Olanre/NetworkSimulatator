@@ -88,8 +88,8 @@
 </div>
 </script>
 <script type = 'partition-template' id = 'template2'>
-<table  border='1' >
-	<tr >  
+<table>
+	<tr>  
 		<td> <input type = 'text' class = 'partition'  placeholder = 'Enter Partition Name' /> 
 		<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Partition', 'config-map')" > Delete</button> </td> 
 			<td>  
@@ -274,7 +274,7 @@
 <h1 class = 'flip-up-text'> 
 		Create a Simulation
 	</h1>
-	<div name = 'createpageone'>
+	<div name = 'createpageone' id='createpageone'>
 	<table id = 'propagatelist'>
 		<tr id = 'name'>
 			<td>
@@ -322,7 +322,7 @@
 	</div>  
 	
 	<div id = 'config-map'>	
-		<div class = 'btn btn-primary' onclick="addtoConfigTable(this, 'Partition', this)"> New Partition </div> 
+		<div class = 'btn btn-primary' id='button-create-partition' onclick="addtoConfigTable(this, 'Partition', this)"> New Partition </div> 
 	</div>
 	<br><br> 
 	 
@@ -504,7 +504,7 @@
 			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
 			<code> src="/js/socket.io.js"  </code> 
 			<br>
-			The javascript used to tie your logic with our RDT's must also be included as shown below <br>
+			The javascript used to tie your logic with our RDTs must also be included as shown below <br>
 			<code>  src = "../ApplicationRequirements.js"  </code>
 		<hr> 
 		<div id="appDiv" class="uploadContainer">
@@ -563,11 +563,11 @@
 
 
 			The Counter object will be created for you and automatically replicated at each
-			device object from the `deviceIterator` you passed in to the module's `init`
+			device object from the `deviceIterator` you passed in to the modules `init`
 			method. There is no need to create Counter objects by yourself. In fact, the
 			Counter constructor function is not even exported.
 			
-			You should use the device object's `accessRDT` method to grab the copy of a
+			You should use the device objects `accessRDT` method to grab the copy of a
 			Counter that is created for you. Read the `network_topology.js` file and check
 			the interface of `Device`.
 		</code>
