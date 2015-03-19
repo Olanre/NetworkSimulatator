@@ -31,7 +31,7 @@ function simulationListView(){
 	defaultsideBarView();
 	removeClass('active');
 	document.getElementById('nav-option-simCreate').className='active';
-	content.innerHTML = '<h1>List of current Simulations</h1>'+html;
+	content.innerHTML = '<h1 class="flip-up-text">List of current Simulations</h1>'+html;
 }
 
 /**
