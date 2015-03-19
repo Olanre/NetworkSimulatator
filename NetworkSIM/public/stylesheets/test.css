@@ -129,6 +129,12 @@ CSS for the new simulation page
   text-align:center;
 }
 
+#button-create-simulation{
+  font-size:25px;
+  text-align:center;
+  padding:15px;
+}
+
 
 /*-----------------------
  *handles the scroll bar for our webpages
