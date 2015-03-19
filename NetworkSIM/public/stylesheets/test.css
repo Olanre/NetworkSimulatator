@@ -82,7 +82,19 @@ ul{
 	padding:8px;
 	border-radius: 10px;
 	cursor: pointer;
+  -webkit-transition: bckground-color .8s ease-out;
+  -moz-transition: background-color .8s ease-out;
+  -o-transition: background-color .8s ease-out;
+  transition: background-color .8s ease-out;
 }
+
+.btn:hover{
+  background-color:#FBA4B0;
+}
+
+/*---------------------
+CSS for the simulations page
+----------------------*/
 
 .simulations_management{
 	font-size:24px;
@@ -95,6 +107,26 @@ ul{
 }
 
 #simslist td{
+}
+
+/*---------------------------------
+CSS for the new simulation page
+----------------------------------*/
+#propagatelist{
+  font-size:20px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#available-list{
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#partition-creation-header{
+  font-size:30px;
+  text-align:center;
 }
 
 
