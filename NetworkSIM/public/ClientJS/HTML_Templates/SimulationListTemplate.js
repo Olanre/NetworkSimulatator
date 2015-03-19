@@ -1,6 +1,6 @@
 function SimulationDataListTemplate(simulations){
 	var local_device = get_local_device();
-	var str = "<div class = 'simulations_management'> ";
+	var str = '<h1 class="flip-up-text">List of current Simulations</h1>'+ "<div class = 'simulations_management'> ";
 	str += " <table id = 'simslist'> ";
 	if(simulations !== null && simulations !== undefined ){
 		for (var i =0 ; i < simulations.length; i++) {
@@ -23,7 +23,7 @@ function SimulationDataListTemplate(simulations){
 //might want to use this instead, have to talk to Noah
 function SimulationListTemplate(simulations){
 	var local_device = get_local_device();
-	var str = "<div class = 'simulations_management'> ";
+	var str = '<h1 class="flip-up-text">List of current Simulations</h1>'+ "<div class = 'simulations_management'> ";
 	str += " <table id = 'simslist'> ";
 	if(simulations !== null && simulations !== undefined ){
 		for (var i =0 ; i < simulations.length; i++) {

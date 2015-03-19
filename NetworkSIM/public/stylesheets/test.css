@@ -6,11 +6,6 @@ body{
 	border-radius:50px;
 }
 
-#app{
-	padding:2%;
-	max-width:400;
-}
-
 .sidebar{
 	position: fixed;
 	top: 0px;
@@ -44,8 +39,8 @@ ul{
 }
 
 .nav li:hover{
-	background-color:white;
-  color:#64c6ad;
+	background-color:#FBA4B0;
+  color: white
 }
 
 .nav a{
@@ -66,17 +61,15 @@ ul{
 }
 
 .active:hover{
-  background-color:#64c6ad!important;
-  color:white !important;
+  background-color:#FDD0D6!important;
 }
 
 #content{
-	padding:10px;
-	width:80%;
+	padding:15px;
+	width:auto;
 	position:relative;
-	left:200px;
-	border-radius:25px;
-	background-color:#EEF9F6;
+	left:152px;
+	background-color:#555555;
 }
 
 #content h1{
@@ -102,24 +95,20 @@ ul{
 }
 
 
-/****
+/*-----------------------
  *handles the scroll bar for our webpages
- ****/
+ ------------------------*/
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
  
-/* Track */
-::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(76, 214, 144, .3); 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: rgba(85, 85, 85, 1); 
 }
 
 /* ---------------------------------- 
