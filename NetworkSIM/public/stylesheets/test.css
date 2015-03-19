@@ -92,8 +92,24 @@ ul{
   transition: background-color .8s ease-out;
 }
 
+.btn-2{
+  display: inline-block;
+  background-color: #FBA4B0;
+  padding:5px;
+  border-radius: 4px;
+  cursor: pointer;
+  -webkit-transition: bckground-color .8s ease-out;
+  -moz-transition: background-color .8s ease-out;
+  -o-transition: background-color .8s ease-out;
+  transition: background-color .8s ease-out;
+}
+
 .btn:hover{
   background-color:#FBA4B0;
+}
+
+.btn-2:hover{
+  background-color:#C4F4EB;
 }
 
 /*---------------------
@@ -108,9 +124,6 @@ CSS for the simulations page
 #simslist{
 	margin-left:auto;
 	margin-right:auto;
-}
-
-#simslist td{
 }
 
 /*---------------------------------
@@ -139,11 +152,15 @@ CSS for the new simulation page
   padding:10px;
 }
 
-#config-map table{
-  margin-left:auto;
-  margin-right:auto;
-  text-align:center;
+#config-map{
 }
+
+.partition-text-input{
+  padding:5px;
+  border-radius:3px;
+  border:none;
+}
+
 
 /*-----------------------
  *handles the scroll bar for our webpages

@@ -90,21 +90,21 @@
 <script type = 'partition-template' id = 'template2'>
 <table>
 	<tr>  
-		<td> <input type = 'text' class = 'partition'  placeholder = 'Enter Partition Name' /> 
-		<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Partition', 'config-map')" > Delete</button> </td> 
+		<td> <input type = 'text' class = 'partition partition-text-input'  placeholder = 'Enter Partition Name' /> 
+		<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Partition', 'config-map')" > Delete</div> </td> 
 			<td>  
-				<table  border='1'>
+				<table>
 					<tr> 
-						<td > <input type = 'text' class = 'network' placeholder = 'Enter Network Name' /> 
-						<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  </td> 
+						<td > <input type = 'text' class = 'network partition-text-input' placeholder = 'Enter Network Name' /> 
+						<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</div>  </td> 
 						<td> 
-							<div> <input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
-							<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
-							 <button type="button"  class = 'device-adder' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
+							<div> <input type = 'text' class = 'device partition-text-input'  placeholder = 'Please enter email address' /> 
+							<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</div> </div>
+							 <div class = 'device-adder btn-2' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </div>
 						</td>
 					</tr>
 					<tr>
-						<td > <button  type="button" class = 'net-adder' onclick = "addtoConfigTable(this.parentNode.parentNode, 'Network', this)" name = 'New Network'> New Network </button> </td>
+						<td > <div class = 'net-adder btn-2' onclick = "addtoConfigTable(this.parentNode.parentNode, 'Network', this)" name = 'New Network'> New Network </div> </td>
 					<tr>
 				 </table> 
 			</td>
