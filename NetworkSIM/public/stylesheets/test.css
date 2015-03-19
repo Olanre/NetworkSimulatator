@@ -68,7 +68,18 @@ ul{
 	position:relative;
 	left:250px;
 	border-radius:25px;
-	background-color:#f5f5f5;
+	background-color:#EEF9F6;
+}
+
+.btn{
+	background-color: #64c6ad;
+	padding:8px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+#simlist{
+	padding:10px;
 }
 
 
