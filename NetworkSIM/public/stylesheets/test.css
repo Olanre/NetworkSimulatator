@@ -64,11 +64,16 @@ ul{
 }
 #content{
 	padding:10px;
-	width:auto;
+	width:80%;
 	position:relative;
-	left:250px;
+	left:200px;
 	border-radius:25px;
 	background-color:#EEF9F6;
+}
+
+#content h1{
+	text-align:center;
+	font-size: 40px;
 }
 
 .btn{
@@ -78,8 +83,13 @@ ul{
 	cursor: pointer;
 }
 
+.simulations_management{
+	font-size:24px;
+}
+
 #simlist{
-	padding:10px;
+	margin-left:auto; 
+    margin-right:auto;
 }
 
 

@@ -3,9 +3,9 @@
  */
 window.onload = function(){
 	defaultsideBarView();
-	loadStyleSheet('../css/bootstrap.min.css');
-	loadStyleSheet('../css/dashboard.css');
-	//loadStyleSheet('../css/test.css');
+	//loadStyleSheet('../css/bootstrap.min.css');
+	//loadStyleSheet('../css/dashboard.css');
+	loadStyleSheet('../css/test.css');
 	defaultheaderView();
 	updateAllViews();	
 }
