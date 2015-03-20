@@ -218,7 +218,7 @@
 
 <script type= 'AttachToken-Template' id = 'template8'>
 	<div id = 'registersimulation'>
-		<h2> Register for Simulation</h2>
+		<h1 class='flip-up-text'> Register for Simulation</h1>
 	</div>
 	<div class = 'container'>
 		<table>
@@ -229,7 +229,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type = 'text' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
+					<input type = 'text' class='text-input' id = 'token' name = 'tokenvalue' placeholder = 'Enter Token Here' />
 				</td>
 			</tr>
 			<tr>
@@ -262,8 +262,7 @@
 						</li>	
 						<li>						
 						<a href="#" onclick = "AccountView()">About Me</a>						
-						</li>	
-						<hr>				
+						</li>				
 						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
 						</li>	
 						
@@ -281,7 +280,7 @@
 				<span class = 'textfield'> Simulation Name </span>
 			</td>
 			<td>
-				<input type = 'text' class='partition-text-input' id = 'simulation_name' name = 'simulation_name' size = '15' onclick = 'checkField(this)' />
+				<input type = 'text' class='text-input' id = 'simulation_name' name = 'simulation_name' size = '15' onclick = 'checkField(this)' />
 				<br/>
 			</td>
 		</tr>
@@ -290,7 +289,7 @@
 				<span class = 'textfield'> Number of Networks </span>
 			</td>
 			<td>
-				<input type = 'text' class='partition-text-input' id = 'num_networks' name = 'netnumbers' size = '15' onblur = "expandField(this)" />
+				<input type = 'text' class='text-input' id = 'num_networks' name = 'netnumbers' size = '15' onblur = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -299,7 +298,7 @@
 				<span class = 'textfield'> Number of Devices </span>
 			</td>
 			<td>
-				<input type = 'text' class='partition-text-input' id = 'num_devices' name = 'devicenumbers' size = '15' onblur = "expandField(this)" />
+				<input type = 'text' class='text-input' id = 'num_devices' name = 'devicenumbers' size = '15' onblur = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -308,7 +307,7 @@
 				<span class = 'textfield'> Token Propagation Method</span>
 			</td>
 			<td>
-				<input type = 'text' class='partition-text-input' id = 'tokenmethod' name = 'tokenmethod' size = '15' />
+				<input type = 'text' class='text-input' id = 'tokenmethod' name = 'tokenmethod' size = '15' />
 				<br/>
 			</td>
 		</tr>
@@ -444,21 +443,20 @@
 						<a href="#" onclick = "getSimulationHistory('{{simulation_id}}')">Simulation History</a>						
 					</li>
 					<li id='nav-option-applications'>						
-						<a href="#" onclick = "adminAppsView()">Application Manager</a>						
+						<a href="#" onclick = "adminAppsView()">Applications</a>						
 					</li>
 					
 					<li id='nav-option-RDTs'>						
-						<a href="#" onclick = "RDTsView()">RDT Manager</a>						
+						<a href="#" onclick = "RDTsView()">RDTs</a>						
 					</li>	
 					<li id='nav-option-tests'>
-						<a href = '#' onclick = "TestsView()" > Test Script Manager </a>
-					</li>	
-					<hr>			
+						<a href = '#' onclick = "TestsView()" > Test Scripts</a>
+					</li>				
 					<li id='nav-option-applications'>						
 						<a href="#" onclick = "deviceDefaultView()">My Device</a>						
 					</li>
 					<li id='nav-option-backtosimulations'>						
-						<a href="#" onclick = "simulationListView()">Back to Simulations</a>						
+						<a href="#" onclick = "simulationListView()">Back</a>						
 					</li>	
 				</ul>					
 		</div>		

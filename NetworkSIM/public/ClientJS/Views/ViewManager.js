@@ -330,9 +330,7 @@ function eventLogsView(){
 	
 	
 	var html =
-	"<div id='title-bar'>"+
-		"<h1 id ='page-title'>Event Logs View</h1>"+
-	"</div>"+
+		"<h1 id ='page-title' class='flip-up-text'>Event Logs View</h1>"+
 		"<div class = 'row'>"+
 			"<div class='cell'>"+
 				"<svg>"+
