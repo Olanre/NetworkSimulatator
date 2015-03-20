@@ -8,9 +8,6 @@
 		<link href="../ajax/favicon.ico" rel="icon">
 		<title>CS4770 Team 2 Project</title>
 		
-		<!--  CSS files -->
-		<link rel="stylesheet" type="text/css" href = '../../stylesheets/FileUpload.css'>
-		
 		<!--  Hogan.js -->
 		<script src="../js/hogan-3.0.1.js"></script>
 		
@@ -117,18 +114,18 @@
 <script type = 'network-template' id = 'template3'>
 			<tr> 
 				<td > <input type = 'text' class = 'network' placeholder = 'Enter Network Name' /> 
-					<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
+					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
 				</td> 
 				<td>
 					<div> <input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
-					<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
-					<button  type="button" class = 'device-adder' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
+					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
+					<button  type="button" class = 'device-adder btn' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
 				</td>
 			</tr>		
 </script>
 <script type = 'device-template' id = 'template4'>
 	<input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
-	<button  type="button" class = 'remover' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')" > Delete</button>
+	<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')" > Delete</button>
 
 </script>
 <script type = 'AdminSideBar-template'  id ="template5"   >
@@ -505,11 +502,12 @@
 		<div id="appDiv" class="uploadContainer">
 
 			<div id="Files" class ="fileContainer"></div>
-			<input id="uploadApp" type="file"  onchange="handleFiles('uploadApp');" multiple> selected files: 
+			<a href="#" class='btn upload-file-cover' onclick="document.getElementById('uploadApp').click(); return false;" />Browse</a>
+			<input id="uploadApp" type="file" onchange="handleFiles('uploadApp');" multiple> selected files: 
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 
 		</div>
-		<button id="uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
+		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
 	</div>
 </script>
 
@@ -569,11 +567,12 @@
 		<br>
 		<div id="appDiv" class="uploadContainer">
 			<div id="Files" class ="fileContainer"></div>
-			<input id="uploadRDT" type="file"  onchange="handleFiles('uploadRDT');" multiple> selected files: 
+			<a href="#" class='btn upload-file-cover' onclick="document.getElementById('uploadRDT').click(); return false;" />Browse</a>
+			<input id="uploadRDT" type="file" onchange="handleFiles('uploadRDT');" multiple> selected files: 
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button id="uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
+		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
 	</div>
 
 </script>
@@ -710,11 +709,12 @@
 		<br>
 		<div id="testDiv" class="uploadContainer">
 			<div id="Files" class ="fileContainer"></div>
-			<input id="uploadTest" type="file"  onchange="handleFiles('uploadTest');" multiple> selected files: 
+			<a href="#" class='btn upload-file-cover' onclick="document.getElementById('uploadTest').click(); return false;" />Browse</a>
+			<input id="uploadTest" type="file" onchange="handleFiles('uploadTest');" multiple> selected files: 
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button id="uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload</button>
+		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload</button>
 	</div>
 
 </script>

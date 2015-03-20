@@ -88,6 +88,9 @@ ul{
 }
 
 .btn{
+  text-decoration:none;
+  border: none;
+  outline:none;
   display: inline-block;
 	background-color: #64c6ad;
 	padding:8px;
@@ -100,6 +103,9 @@ ul{
 }
 
 .btn-2{
+  text-decoration:none;
+  border: none;
+  outline:none;
   display: inline-block;
   background-color: #FBA4B0;
   padding:5px;
@@ -163,9 +169,6 @@ CSS for the new simulation page
   padding:10px;
 }
 
-#config-map{
-}
-
 
 /*-------------------------------------
 Register for simulation page
@@ -174,6 +177,46 @@ Register for simulation page
   margin-right:auto;
   margin-left:auto;
   text-align:center;
+}
+
+/*--------------------------------
+Upload Apps RDTs and Test Scripts
+---------------------------------*/
+.uploadButton{
+  color:white;
+  text-align:center;
+  font-size:30px;
+  padding: 4px 4px 4px 4px;
+  border-radius:25px;
+  width: 350px;
+  height: 100px;
+  background-color: #4CD690;
+}
+
+#uploadTest{
+  width:0px;
+  height:0px;
+  visibility:hidden;
+}
+
+#uploadRDT{
+  width:0px;
+  height:0px;
+  visibility:hidden;
+}
+
+#uploadApp{
+  width:0px;
+  height:0px;
+  visibility:hidden;
+}
+
+.uploadContainer{
+  padding:50px;
+}
+
+.upload-file-cover{
+  color:white;
 }
 
 /*-----------------------
