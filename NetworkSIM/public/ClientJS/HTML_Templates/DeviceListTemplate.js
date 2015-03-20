@@ -7,11 +7,11 @@
  * @returns str, the generated html string which was rendered from the network list provided
  */
 function AdminDevicesListTemplate(devices){
-		var template = document.getElementById('template16').innerHTML;
-		 textile = Hogan.compile(template);
-		 context = { 'devices' : devices};
-		 tpl = textile.render(context);
-		 return tpl;
+	var template = document.getElementById('template16').innerHTML;
+	textile = Hogan.compile(template);
+	context = { 'devices' : devices};
+	tpl = textile.render(context);
+	return tpl;
 }
 
 /** 

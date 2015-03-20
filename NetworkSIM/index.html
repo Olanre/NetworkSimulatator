@@ -68,11 +68,12 @@
 <script type = 'create_network_template' id = "template1">
 
 <div class = 'container'>
-	<h3>Create a Network</h3>
+<h1 class='flip-up-text'>Create a Network</h1>
 <table>
 	<tr>
 		<td>
-			<input type = 'text' id = 'networkname' name = 'networkname' placeholder = 'Network Name here' />
+			Network Name:
+			<input type = 'text' class='text-input' id = 'networkname' name = 'networkname' placeholder = 'Name' />
 		</td>
 	</tr>
 	<tr>
@@ -245,7 +246,7 @@
 				<a href="#" onclick = "createNetworkView()">Create Network</a>						
 			</li>						
 			<li>						
-				<a href="#" onclick = "NetworksListView()">View the Networks</a>						
+				<a href="#" onclick = "NetworksListView()">View Networks</a>						
 			</li>
 			<li>						
 				<a href="#" onclick = "LogsView()">View My Logs</a>						
@@ -327,7 +328,6 @@
 
 
 <script type='DeviceViewTemplate' id = 'template11'>
-
 	<div>
 		<h3> Hello {{current_device_name}} in {{current_simulation}} </h3>
 		<h3> You are now in {{current_network}} </h3>
@@ -337,7 +337,7 @@
 </script>
 
 <script type = "AccountTemplate" id = "template12" >
-	
+	<h1 class='flip-up-text'>My Information</h1>
 	<div class = 'container'>
 		<div>
 			<h3> Hello {{current_device_name}} </h3>
@@ -386,7 +386,7 @@
 </script>
 
 <script type = "DeviceListTemplate" id = "template14">
-
+	<h1 class='flip-up-text'>Devices in this Simulation</h1>
 	<div class = 'container'>
 		<table>
 		<tr class='tableHeading'> <td> Device Name</td><td> Network</td></tr>
@@ -425,9 +425,10 @@
 </script>
 
 <script type = "SimulationLogTemplate" id = "template17">
+	<h1 class='flip-up-text'>My Event Logs</h1>
 	<table>
-	 {{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
- </table>
+	 	{{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
+	</table>
 </script>
 <script type = "In Simulation Sidebar" id = "template18">	
 		<div class="col-sm-3 col-md-2 sidebar">				
@@ -458,6 +459,7 @@
 		</div>		
 </script>
 <script type = "AdminAppsListTemplate" id = "template19">
+	<h1 class='flip-up-text'>Applications</h1>
 	<h4> The Apps currently available in this simulation </h4>
 	<br>
 	<table>
@@ -513,6 +515,7 @@
 
 
 <script type = "RDTsListTemplate" id="template20">
+	<h1 class='flip-up-text'>Replicated Data Types </h1>
 	<h4> The RDTs currently available in our framework </h4>
 	
 	<table>
@@ -609,7 +612,7 @@
 </script>
 
 <script type = "DeviceAppsListTemplate" id = "template22">
-	<h4> The Apps available for you </h4>
+	<h1 class='flip-up-text'>Available Applications</h1>
 	<br>
 	<table>
 	 	{{#apps}}<tr>
@@ -625,6 +628,7 @@
 </script>
 
 <script type = "TestsListTemplate" id="template23">
+	<h1 class='flip-up-text'>Automated Test Scripts</h1>
 	<h4> The Test Scripts currently available in our framework </h4>
 	
 	<table>

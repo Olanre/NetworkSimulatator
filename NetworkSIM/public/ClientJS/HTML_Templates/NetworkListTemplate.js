@@ -1,7 +1,8 @@
 function NetworksListTemplate(networks, local_device){
 	
 	var networks_created = local_device.networks_created;
-	var str = "<table><tr class='tableHeading'><td>Network Name</td><td>Network Population</td><td>Action</td></tr>";
+	var str = "<h1 class='flip-up-text'>Available Networks</h1>"+
+	"<table><tr class='tableHeading'><td>Network Name</td><td>Network Population</td><td>Action</td></tr>";
 	for(var i = 0; i< networks.length; i++){
 		if(local_device.current_network == networks[i]['_id']){
 			str +=  "<tr id = '" + networks[i]['_id'] + "'> " +
