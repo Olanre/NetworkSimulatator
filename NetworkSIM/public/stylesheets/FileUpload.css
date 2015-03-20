@@ -1,14 +1,4 @@
- body{
- 	padding:50px;
- }
-  .content{
-	background-color:white;
-	border-radius:25px;
-	text-align:center;
-	padding:10px;
-	min-width: 475px;
-	min-height: 400px;
-}
+
 
 #uploadButton{
 	text-align:center;

@@ -149,8 +149,7 @@
 </script>
 
 <script type = 'ApplicationView' ID ='template6'>
-		<nav class="navbar navbar-inverse navbar-fixed-top">	 			
-			
+		<nav class="navbar navbar-inverse navbar-fixed-top">
 		</nav>
 </script>
 <script type = 'ApplicationView-template' id = 'template7'>
@@ -243,32 +242,31 @@
 	</div>
 </script>
 <script type = 'DeviceSideBar' id = 'template9'>
-
-<div class="col-sm-3 col-md-2 sidebar">					
-					<ul class="nav nav-sidebar">						
-						<li>						
-						<a href="#" onclick = "createNetworkView()">Create a new network</a>						
-						</li>						
-						<li>						
-						<a href="#" onclick = "NetworksListView()">View the Networks</a>						
-						</li>
-						<li>						
-						<a href="#" onclick = "LogsView()">View My Logs</a>						
-						</li>
-						<li>						
-						<a href="#" onclick = "DeviceListView()">View Devices in this Simulation</a>						
-						</li>					
-						<li>
-						<a href='#'  onclick = "appDefaultView()"> My Apps </a>
-						</li>	
-						<li>						
-						<a href="#" onclick = "AccountView()">About Me</a>						
-						</li>				
-						<a href="#" onclick = "SimulationManagementView()">Back to Simulation </a>						
-						</li>	
-						
-					</ul>					
-				</div>		
+	<div class="col-sm-3 col-md-2 sidebar">					
+		<ul class="nav nav-sidebar">						
+			<li>						
+				<a href="#" onclick = "createNetworkView()">Create Network</a>						
+			</li>						
+			<li>						
+				<a href="#" onclick = "NetworksListView()">View the Networks</a>						
+			</li>
+			<li>						
+				<a href="#" onclick = "LogsView()">View My Logs</a>						
+			</li>
+			<li>						
+				<a href="#" onclick = "DeviceListView()">View Devices</a>						
+			</li>					
+			<li>
+				<a href='#'  onclick = "appDefaultView()"> My Apps </a>
+			</li>	
+			<li>						
+				<a href="#" onclick = "AccountView()">About Me</a>						
+			</li>
+			<li>				
+				<a href="#" onclick = "SimulationManagementView()">Back</a>
+			</li>	
+		</ul>					
+	</div>		
 </script>
 <script type='createSimulation-template' id = 'template10'>
 <h1 class = 'flip-up-text'> 
@@ -481,7 +479,6 @@
 		</tr>{{/apps}}
  	</table>
 	<br>
-	<hr>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<h4> Requirements </h4>
@@ -505,7 +502,6 @@
 			<br>
 			The javascript used to tie your logic with our RDTs must also be included as shown below <br>
 			<code>  src = "../ApplicationRequirements.js"  </code>
-		<hr> 
 		<div id="appDiv" class="uploadContainer">
 
 			<div id="Files" class ="fileContainer"></div>
@@ -533,7 +529,6 @@
 		</tr>{{/rdts}}
  	</table>
 	<br>
-	<hr>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<h4> Requirements </h4>
@@ -548,7 +543,7 @@
   			 	"main": "rdtInterface.js"
 			}
 		</code>
-		<br> <hr> <br>
+		<br> <br>
 		The spec.md described the behavior of your RDT so application developers know how to access values and manipulate your RDT
 		An example<br>
 		<code>
@@ -572,7 +567,6 @@
 		</code>
 		</p>
 		<br>
-		<hr>
 		<div id="appDiv" class="uploadContainer">
 			<div id="Files" class ="fileContainer"></div>
 			<input id="uploadRDT" type="file"  onchange="handleFiles('uploadRDT');" multiple> selected files: 
@@ -649,7 +643,6 @@
 		</tr>{{/tests}}
  	</table>
 	<br>
-	<hr>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<h4> Requirements </h4>
@@ -669,7 +662,7 @@
   			 	]
 			}
 		</code>
-		<br> <hr> <br>
+		<br> <br>
 		For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will
 		result in our framework rejecting your script
 		<br>
@@ -715,7 +708,6 @@
 		</table>
 		</p>
 		<br>
-		<hr>
 		<div id="testDiv" class="uploadContainer">
 			<div id="Files" class ="fileContainer"></div>
 			<input id="uploadTest" type="file"  onchange="handleFiles('uploadTest');" multiple> selected files: 
