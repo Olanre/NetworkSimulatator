@@ -53,8 +53,9 @@
 		<script src = '../template/RDTsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/AdminAppsListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/DeviceAppsListTemplate.js' type='text/javascript'></script>
-		<script src = '../template/NetworkTopologyTemplate.js'></script>
-		<script src = '../template/TestListTemplate.js'></script>
+		<script src = '../template/NetworkTopologyTemplate.js' type='text/javascript'></script>
+		<script src = '../template/TestListTemplate.js' type='text/javascript'></script>
+		<script src = '../template/EventLogViewTemplate.js' type='text/javascript'></script>
 		
 		<!--  Views -->
 		<script src = '../view/CSSManager.js' type='text/javascript'></script>
@@ -587,12 +588,31 @@
 
 <script type="topologyViewTemplate" id="template21">
 	<div id='bigDiv'>
-		<h1>Network Topology</h1>
+		<h1 class='flip-up-text'>Network Topology</h1>
 		<svg></svg>
 	</div>
 	<script type='text/javascript'>
 		
 	<\/script>
+</script>
+
+<script type="eventLogViewTemplate" id="template24">
+	<h1 id ='page-title' class='flip-up-text'>Event Logs View</h1>
+	<svg>
+	</svg>
+	<select size = '10' id ='log-dates' onchange='selectSimulationDate(this.value)'>
+	</select>
+	<br>
+	<div class='sim-log-cell'>
+		<h3 id='simulation-log-title'>Simulation logs</h3>
+		<select size = '10' id ='simulation-log'>
+		</select>
+	</div>
+	<div class='sim-log-cell'>
+		<h3 id='deviceLog-title'>Click a Device to  view logs</h3>
+		<select size = '10' id ='device-log'>
+		</select>
+	</div>
 </script>
 
 <script type = "DeviceAppsListTemplate" id = "template22">

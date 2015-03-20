@@ -3,9 +3,7 @@
  */
 window.onload = function(){
 	defaultsideBarView();
-	//loadStyleSheet('../css/bootstrap.min.css');
-	//loadStyleSheet('../css/dashboard.css');
-	loadStyleSheet('../css/test.css');
+	loadStyleSheet('../css/main.css');
 	defaultheaderView();
 	updateAllViews();	
 }
@@ -278,28 +276,12 @@ function networkTopologyView(){
 	clearSection();
 
 	var content = getContainer();
-	//defaultsideBarView();
 	loadStyleSheet('../css/topologyView.css');
 	var html=NetworkTopologyTemplate(get_local_simulation());
 	var content=getContainer();
 	content.innerHTML=html;
 	loadJSFile('../gui/Drawing.js');
 	loadJSFile('/gui/Manipulation.js');
-	/*var html="<div id='bigDiv'>" +
-			"<svg></svg>" +
-			"<br><button class='buttton' type='button' onclick = createDeviceGraphic()>New Device</button>" +
-					"<button class='buttton'  type='button' onclick = createNetworkGraphic()>New Network</button>" +
-							//"<button class='buttton'  type='button' onclick = generateTopology(testConfigMap1,800)>Load Configuration 1</button>" +
-									//"<button class='buttton' type='button' onclick = generateTopology(testConfigMap2,800)>Load Configuration 2</button>" +
-											//"<button class='buttton' type='button' onclick = generateTopology(testConfigMap3,800)>Load Configuration 3</button>" +
-													//"<button class='buttton' type='button' onclick = clearCanvas()>Clear Canvas</button>" +
-															"</div>";
-	var content = getContainer();
-	content.innerHTML = html;
-	//generate our topology view from the simulation
-	var simulation  = get_local_simulation();
-	
-	generateTopology(simulation.partition_list, 800);*/
 }
 
 
@@ -329,34 +311,12 @@ function eventLogsView(){
 	loadJSFile('../gui/Drawing.js');
 	
 	
-	var html =
-		"<h1 id ='page-title' class='flip-up-text'>Event Logs View</h1>"+
-		"<div class = 'row'>"+
-			"<div class='cell'>"+
-				"<svg>"+
-				"</svg>"+
-			"</div>"+
-			"<div class = 'cell'>"+
-				"<select size = '10' id ='log-dates' onchange='selectSimulationDate(this.value)'>"+
-				"</select>"+
-			"</div>"+
-		"</div>"+
-		"<div class = 'row'>"+
-			"<div class= 'cell'>"+
-				"<h3 id='simulation-log-title'>Simulation logs</h3>"+
-				"<select size = '10' id ='simulation-log'>"+
-				"</select>"+
-			"</div>"+
-			"<div class='cell'>"+
-				"<h3 id='deviceLog-title'>Select a device in the GUI to view its logs</h3>"+
-				"<select size = '10' id ='device-log'>"+
-				"</select>"+
-			"</div>"+
-		"</div>"
 	var content = getContainer();
-	content.innerHTML = html;
-	//loadJSFile('../gui/Manipulation.js');
-	//calls the EventLogView function for viewing the history
+	
+	var html=EventLogViewTemplate(get_local_simulation());
+	var content=getContainer();
+	content.innerHTML=html;
+
 	setTimeout(function(){
 		clearCanvas();
 		populatePage(get_local_history());
