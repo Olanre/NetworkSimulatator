@@ -5,6 +5,11 @@ body{
 	background-color: white;
 	font-family: 'Helvetica','Veranda';
 	border-radius:50px;
+  margin:0px;
+}
+
+#App{
+  width:100%;
 }
 
 code{
