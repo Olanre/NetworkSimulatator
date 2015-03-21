@@ -7,6 +7,10 @@ body{
 	border-radius:50px;
 }
 
+code{
+  color:#F9A3B2;
+}
+
 .text-input{
   padding:5px;
   border-radius:3px;
@@ -77,8 +81,8 @@ ul{
   margin-left:auto;
   margin-right:auto;
 	padding:15px;
+  padding-left:245px;
 	position:relative;
-	left:245px;
 	background-color:#555555;
 }
 
@@ -192,7 +196,7 @@ Upload Apps RDTs and Test Scripts
   border-radius:25px;
   width: 350px;
   height: 100px;
-  background-color: #4CD690;
+  background-color: #F05A75;
 }
 
 #uploadTest{

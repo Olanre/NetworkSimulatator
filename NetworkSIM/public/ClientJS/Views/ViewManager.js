@@ -59,6 +59,9 @@ function AccountView(){
 	var local_device = get_local_device();
 	var html = AccountTemplate(local_device);
 	getContainer().innerHTML = html;
+	simulationSideBarView();
+	removeClass('active');
+	document.getElementById('my-account-link').className='active';
 }
 
 function deviceHeaderView(){
@@ -175,10 +178,7 @@ function deviceDefaultView(){
 	if(getVerified() == false){
 		alert('You do not have permission to access this. Please get a token first.');
 	}else{
-		appDefaultView();
-		//sets the page to view to 'user information' page
-		//sets the sidebar to the sidebar for when inside a simulation
-		simulationSideBarView();
+		AccountView();
 	}
 }
 
@@ -203,6 +203,8 @@ function appDefaultView(){
 		content.innerHTML = apps;
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
+		removeClass('active');
+		document.getElementById('my-apps-link').className='active';
 	}
 }
 
@@ -235,6 +237,8 @@ function createNetworkView(){
 	var html = network_view.innerHTML;
 	var content = getContainer();
 	content.innerHTML = html;
+	removeClass('active');
+	document.getElementById('my-create-network-link').className='active';
 }
 
 /**
@@ -368,6 +372,8 @@ function NetworksListView(){
 	var html = NetworksListTemplate(lists, local_device);
 	
 	getContainer().innerHTML = html;
+	removeClass('active');
+	document.getElementById('my-networks-link').className='active';
 }
 
 /**
@@ -382,6 +388,8 @@ function DeviceListView(){
 	var html =  DevicesListTemplate(devices);
 
 	getContainer().innerHTML = html;
+	removeClass('active');
+	document.getElementById('my-devices-link').className='active';
 }
 
 /**
@@ -395,10 +403,12 @@ function LogsView(){
 	var html = LogsTemplate(logs);
 	var content = getContainer();
 	content.innerHTML = html;
+	removeClass('active');
+	document.getElementById('my-logs-link').className='active';
 }
 
 /**
-* Displays the upload page
+* Displays the page for uploading files
 **/
 
 function uploadView(){
