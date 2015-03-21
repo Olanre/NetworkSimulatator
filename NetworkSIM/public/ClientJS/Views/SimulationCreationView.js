@@ -63,16 +63,17 @@ function updateavailableField(){
 	document.getElementById('avail-networks').innerHTML = avail_networks;
 }
 /**
- * addtoConfigTable inserts a new element in to
+ * addtoConfigTable inserts a new element in to the page allowing you to create a new partition, network, and device
  */
 function addtoConfigTable(insert_point, name, element){
 	if( insert_point == null || element == null) return false;
 	var html = '';
 	element.disabled = false;
-	var div = createTrElement();
+	var div = null;
 	switch(name){
 		case 'Network':
 			if( avail_networks > 0){
+				div = createTrElement();
 				avail_networks -= 1;
 				avail_devices -= 1;
 				html = generateNetworkTable();
@@ -84,6 +85,7 @@ function addtoConfigTable(insert_point, name, element){
 		case 'Device':
 			
 			if( avail_devices >0 ){
+				div = createTrElement();
 				html = generateDeviceClass();
 				avail_devices -= 1;
 			}else{
@@ -93,6 +95,7 @@ function addtoConfigTable(insert_point, name, element){
 			break;
 		case 'Partition':
 			if( avail_devices >0 && avail_networks > 0 ){
+				div = createTableElement();
 				html = generatePartitionTable();
 				avail_networks -= 1;
 				avail_devices -= 1;
@@ -208,8 +211,13 @@ function enableButtons( buttons_array){
  */
 function createTrElement(){
 	var mydiv = document.createElement('tr');
-	return mydiv
-	
+	return mydiv;
+}
+
+function createTableElement(){
+	var mydiv = document.createElement('div');
+	mydiv.className='center-table';
+	return mydiv;
 }
 
 /**
@@ -217,7 +225,7 @@ function createTrElement(){
  */
 function createDivElement(){
 	var mydiv = document.createElement('div');
-	return mydiv
+	return mydiv;
 	
 }
 

@@ -78,7 +78,7 @@
 	</tr>
 	<tr>
 		<td>
-			<br> <div class = 'btn btn-primary' onclick = "Device_makeNetwork('networkname')"> Create Network</div>
+			<br> <div class = 'btn-2' onclick = "Device_makeNetwork('networkname')"> Create Network</div>
 		</td>
 	</tr>
 </table>
@@ -115,18 +115,18 @@
 <script type = 'network-template' id = 'template3'>
 			<tr> 
 				<td > <input type = 'text' class = 'network text-input' placeholder = 'Enter Network Name' /> 
-					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
+					<button  type="button" class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
 				</td> 
 				<td>
 					<div> <input type = 'text' class = 'device text-input'  placeholder = 'Please enter email address' /> 
-					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
-					<button  type="button" class = 'device-adder btn' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
+					<button  type="button" class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
+					<button  type="button" class = 'device-adder btn-2' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
 				</td>
 			</tr>		
 </script>
 <script type = 'device-template' id = 'template4'>
-	<input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
-	<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')" > Delete</button>
+	<input type = 'text' class = 'device text-input'  placeholder = 'Please enter email address' /> 
+	<button  type="button" class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')" > Delete</button>
 
 </script>
 <script type = 'AdminSideBar-template'  id ="template5"   >

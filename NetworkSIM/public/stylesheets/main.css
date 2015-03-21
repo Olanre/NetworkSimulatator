@@ -22,7 +22,7 @@ code{
   border:none;
   font-size:17px;
   font-family: 'Helvetica','Veranda';
-  color: #64c6ad;
+  color: #555555;
 }
 
 .sidebar{
@@ -129,8 +129,12 @@ ul{
   transition: background-color .8s ease-out;
 }
 
-.btn:hover, .btn-2:hover{
+.btn:hover{
   background-color:#FBA4B0;
+}
+
+.btn-2:hover{
+  background-color:#C4F4EB;
 }
 
 .center-table{
