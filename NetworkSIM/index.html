@@ -214,7 +214,7 @@
 				<span class = 'textfield'> Simulation Name </span>
 			</td>
 			<td>
-				<input type = 'text' class='text-input' id = 'simulation_name' name = 'simulation_name' size = '15' onclick = 'checkField(this)' />
+				<input type = 'text' class='text-input create-sim-field' id = 'simulation_name' name = 'simulation_name' size = '15' onclick = 'checkField(this)' />
 				<br/>
 			</td>
 		</tr>
@@ -223,7 +223,7 @@
 				<span class = 'textfield'> Number of Networks </span>
 			</td>
 			<td>
-				<input type = 'text' class='text-input' id = 'num_networks' name = 'netnumbers' size = '15' onblur = "expandField(this)" />
+				<input type = 'number' class='text-input create-sim-field' id = 'num_networks' name = 'netnumbers' size = '5' onblur = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -232,7 +232,7 @@
 				<span class = 'textfield'> Number of Devices </span>
 			</td>
 			<td>
-				<input type = 'text' class='text-input' id = 'num_devices' name = 'devicenumbers' size = '15' onblur = "expandField(this)" />
+				<input type = 'number' class='text-input create-sim-field' id = 'num_devices' name = 'devicenumbers' size = '5' onblur = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -241,7 +241,9 @@
 				<span class = 'textfield'> Token Propagation Method</span>
 			</td>
 			<td>
-				<input type = 'text' class='text-input' id = 'tokenmethod' name = 'tokenmethod' size = '15' />
+				<select class='text-input create-sim-field' id = 'tokenmethod' name = 'tokenmethod'>
+					<option value='email'> Email </option>
+				</select>
 				<br/>
 			</td>
 		</tr>
