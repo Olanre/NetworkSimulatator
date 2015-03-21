@@ -16,7 +16,7 @@ function simulationListView(){
 	defaultheaderView(); 
 	//clears everything on the page
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 
 	var simulations = get_local_simulation_list();
@@ -155,7 +155,7 @@ function ViewApp( app_id){
 	}
 	var frame = "<iframe src='" + location + "' width='100%' height='600px'> </iframe> ";
 	//clears everything on the page
-	clearFooter();
+	
 	clearSection();
 	var content = getContainer();
 	content.innerHTML = frame;
@@ -166,7 +166,7 @@ function ViewApp( app_id){
  */
 function deviceDefaultView(){
 	//clears everything on the page
-	clearFooter();
+	
 	clearSection();
 	
 	var local_device = get_local_device();
@@ -188,7 +188,7 @@ function deviceDefaultView(){
  */
 function appDefaultView(){
 	//clears everything on the page
-	clearFooter();
+	
 	clearSection();
 	
 	var local_device = get_local_device();
@@ -272,7 +272,7 @@ function networkTopologyView(){
 	defaultheaderView(); 
 	
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 
 	var content = getContainer();
@@ -299,7 +299,7 @@ function eventLogsView(){
 	removeFile('Drawing.js','js');
 
 	//clearNav();
-	clearFooter();
+	
 	clearSection();
 
 	defaultheaderView();
@@ -337,7 +337,7 @@ function RegisterView(id){
 
 function SimulationManagementView(){
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 	clearContainer();
 	
@@ -360,7 +360,7 @@ function SimulationManagementSideBarView(){
  */
 function NetworksListView(){
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
@@ -375,7 +375,7 @@ function NetworksListView(){
  */
 function DeviceListView(){
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 	var local_simulation = get_local_simulation();
 	var devices = getAllDeviceObjects(local_simulation);
@@ -389,7 +389,7 @@ function DeviceListView(){
  */
 function LogsView(){
 	clearNav();
-	clearFooter();
+	
 	clearSection();
 	var logs = getLocalDeviceLogs();
 	var html = LogsTemplate(logs);

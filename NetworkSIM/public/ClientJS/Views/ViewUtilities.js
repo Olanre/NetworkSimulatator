@@ -6,20 +6,11 @@
  * clears all of div's on the page 
  */
 function clearPageElements(){
-	 clearFooter();
 	 clearHeader();
 	 clearNav();
 	 clearSideBar();
 	 clearContainer();
 	 clearSection();
-}
-
-/**
- * clearFooter clears the footer on the page 
- */
-function clearFooter(){
-	var footer =document.getElementsByTagName("footer")[0];
-	footer.innerHTML = '';
 }
 
 /**
@@ -56,9 +47,6 @@ function clearContainer(){
 	
 }
 
-/**
- * clearFooter clears the section on the page 
- */
 function clearSection(){
 	var section = document.getElementsByTagName("section")[0];
 	section.innerHTML = '';
@@ -68,14 +56,6 @@ function clearSection(){
  * Get Html Elements
  * ----------------------
  */
-
-/**
- * getFooter gets the information within footer
- */
-function getFooter(){
-	var footer =document.getElementsByTagName("footer")[0];
-	return footer;
-}
 
 /**
  * getHeader gets the information within header

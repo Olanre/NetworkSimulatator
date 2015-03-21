@@ -89,15 +89,15 @@
 <script type = 'partition-template' id = 'template2'>
 <table>
 	<tr>  
-		<td> <input type = 'text' class = 'partition partition-text-input'  placeholder = 'Enter Partition Name' /> 
+		<td> <input type = 'text' class = 'partition partition-text-input text-input'  placeholder = 'Enter Partition Name' /> 
 		<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Partition', 'config-map')" > Delete</div> </td> 
 			<td>  
 				<table>
 					<tr> 
-						<td > <input type = 'text' class = 'network partition-text-input' placeholder = 'Enter Network Name' /> 
+						<td > <input type = 'text' class = 'network partition-text-input text-input' placeholder = 'Enter Network Name' /> 
 						<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</div>  </td> 
 						<td> 
-							<div> <input type = 'text' class = 'device partition-text-input'  placeholder = 'Please enter email address' /> 
+							<div> <input type = 'text' class = 'device partition-text-input text-input'  placeholder = 'Please enter email address' /> 
 							<div class = 'remover btn-2' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</div> </div>
 							 <div class = 'device-adder btn-2' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </div>
 						</td>
@@ -114,11 +114,11 @@
 </script>
 <script type = 'network-template' id = 'template3'>
 			<tr> 
-				<td > <input type = 'text' class = 'network' placeholder = 'Enter Network Name' /> 
+				<td > <input type = 'text' class = 'network text-input' placeholder = 'Enter Network Name' /> 
 					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode.parentNode, 'Network', 'config-map')" > Delete</button>  
 				</td> 
 				<td>
-					<div> <input type = 'text' class = 'device'  placeholder = 'Please enter email address' /> 
+					<div> <input type = 'text' class = 'device text-input'  placeholder = 'Please enter email address' /> 
 					<button  type="button" class = 'remover btn' onclick = "deletefromConfigTable(this.parentNode, 'Device', 'config-map')"  > Delete</button> </div>
 					<button  type="button" class = 'device-adder btn' onclick = "addtoConfigTable(this, 'Device', this)"  name = 'New Device'> New Device </button>
 				</td>
@@ -462,18 +462,18 @@
 	<h1 class='flip-up-text'>Applications</h1>
 	<h4> The Apps currently available in this simulation </h4>
 	<br>
-	<table>
+	<table class='center-table'>
 	 	{{#apps}}<tr>
 			 <td> 
 				{{name}} 
 			</td> 
+			<td>
+				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
+			</td>
 			<td> 
 				<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy </div>
 				
 			</td> 
-			<td>
-				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
-			</td>
 			<td id = '{{_id}}' > </td>
 		</tr>{{/apps}}
  	</table>
@@ -495,7 +495,7 @@
 		</code>
 		</p>
 		<br>
-		<p> Finally your application needs to include two script tags at the start in order to work with our framework. 
+		<p> Finally, your application needs to include two script tags at the start in order to work with our framework. 
 			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
 			<code> src="/js/socket.io.js"  </code> 
 			<br>
@@ -518,7 +518,7 @@
 	<h1 class='flip-up-text'>Replicated Data Types </h1>
 	<h4> The RDTs currently available in our framework </h4>
 	
-	<table>
+	<table class='center-table'>
 	 	{{#rdts}}<tr>
 			 <td> 
 				{{name}} 
@@ -724,13 +724,9 @@
 </script>
 <body>	
 		<div id = 'app'>			
-			<nav>
-			</nav>	
-			<div>	
 			<header> 
 			</header>			
-			
-			
+
 			<div class="row">
 				<div class="col-sm-3 col-md-2 sidebar"> <aside>
 			</aside></div>			
@@ -743,10 +739,7 @@
 				
 				</div>  
 				
-			</div>	
-			</div>		
-			<footer> 
-			</footer>		
+			</div>				
 		</div>	 	 	
 
 </body>

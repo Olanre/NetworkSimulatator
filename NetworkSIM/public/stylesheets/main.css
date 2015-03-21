@@ -117,12 +117,13 @@ ul{
   transition: background-color .8s ease-out;
 }
 
-.btn:hover{
+.btn:hover, .btn-2:hover{
   background-color:#FBA4B0;
 }
 
-.btn-2:hover{
-  background-color:#C4F4EB;
+.center-table{
+  margin-left:auto;
+  margin-right:auto;
 }
 
 /*---------------------
@@ -168,6 +169,7 @@ CSS for the new simulation page
   font-size:20px;
   padding:10px;
 }
+
 
 
 /*-------------------------------------

@@ -18,7 +18,7 @@ function updateData(){
 		
 		var fileSize;
 
-		var thediv = "<table>"
+		var thediv = "<table class='center-table'>"
 		for (var nFileId = 0; nFileId < nFiles; nFileId++) {
 			fileSize=current_files[nFileId].size;
 			fileBytes += fileSize;
