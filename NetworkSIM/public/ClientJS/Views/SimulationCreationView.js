@@ -217,10 +217,23 @@ function createTrElement(){
 	return mydiv;
 }
 
+/**
+ * Creates a table element in the dom
+ */
 function createTableElement(){
 	var mydiv = document.createElement('div');
 	mydiv.className='center-table';
 	return mydiv;
+}
+
+/**
+ * Sets the number of devices, networks, and partitions created to 0.
+ */
+function setCreateFieldsToZero(){
+	netnumbers = 0;
+	devicenumbers = 0;
+	avail_networks = 0;
+	avail_devices = 0;
 }
 
 /**

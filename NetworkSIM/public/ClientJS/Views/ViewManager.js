@@ -228,6 +228,8 @@ function newSimulationView(){
 	removeClass('active');
 	document.getElementById('nav-option-simView').className='active';
 	content.innerHTML = html;
+	//sets the number of devices, networks, and partitions created to 0
+	setCreateFieldsToZero();
 }
 /**
  * displays a field in which to create a new network in the new simulation page
