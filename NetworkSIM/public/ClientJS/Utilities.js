@@ -208,6 +208,9 @@ function loadJSFile(path){
      document.getElementsByTagName("head")[0].appendChild(fileref)
 }
 
+/*---
+ *Checks if a value is an integer
+ *---*/
 function isInt(value) {
 	  return !isNaN(value) && 
 	         parseInt(Number(value)) == value && 

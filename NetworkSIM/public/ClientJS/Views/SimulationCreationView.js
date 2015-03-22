@@ -14,23 +14,17 @@ var avail_devices = 0;
  * @param selector: the field in which to expand (ie devices, networks, etc)
  */
 function expandField(selector){
-	var number; 
+	var number = selector.value;
+	if(!isInt(number)||number<0){
+		number=0;
+	}
 	if (selector.name == 'netnumbers'){
-		number = selector.value;
-		if(isInt(number)){
-			netnumbers = number;
-		}
+		netnumbers = number;
 	}
 	if( selector.name == 'devicenumbers'){
-		number = selector.value;
-		if(isInt(number)){
-			devicenumbers = number;
-		}
+		devicenumbers = number;
 	}
-	if( netnumbers > 0 && devicenumbers > 0){
-		generateConfigTable();
-	}
-	
+	generateConfigTable();
 }
 
 function checkField(elem){
@@ -134,16 +128,12 @@ function registerNewEmail(e, insert_point){
 	parent_of_insert = insert_point.parentNode;
 	parent_of_insert.insertBefore(dummyelement, insert_point);
 	var email = document.getElementById('new_email').value = '';
-
-	
 }
 
 /**
  * deletefromConfigTable delete a field from the table. 
  * @param delete_point
  * @param name: what kind of field we are deleting from the table
- * @param map
- * @returns {Boolean}
  */
 function deletefromConfigTable(delete_point, name, map){
 	if( delete_point == null || map == null) return false;
@@ -234,6 +224,7 @@ function setCreateFieldsToZero(){
 	devicenumbers = 0;
 	avail_networks = 0;
 	avail_devices = 0;
+	updateavailableField();
 }
 
 /**
