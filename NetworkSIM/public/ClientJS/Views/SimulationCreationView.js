@@ -17,12 +17,15 @@ function expandField(selector){
 	var number; 
 	if (selector.name == 'netnumbers'){
 		number = selector.value;
-		netnumbers = number;
-		
+		if(isInt(number)){
+			netnumbers = number;
+		}
 	}
 	if( selector.name == 'devicenumbers'){
 		number = selector.value;
-		devicenumbers = number;
+		if(isInt(number)){
+			devicenumbers = number;
+		}
 	}
 	if( netnumbers > 0 && devicenumbers > 0){
 		generateConfigTable();

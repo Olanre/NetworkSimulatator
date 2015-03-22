@@ -204,8 +204,8 @@
 <script type='createSimulation-template' id = 'template10'>
 <h1 class = 'flip-up-text'> 
 		Create a Simulation
-	</h1>
-	<div name = 'createpageone' id='createpageone'>
+</h1>
+<div name = 'createpageone' id='createpageone'>
 	<table class='center-table' id = 'propagatelist'>
 		<tr id = 'name'>
 			<td>
@@ -221,7 +221,7 @@
 				<span class = 'textfield'> Number of Networks </span>
 			</td>
 			<td>
-				<input type = 'number' class='text-input create-sim-field' id = 'num_networks' name = 'netnumbers' size = '5' onblur = "expandField(this)" />
+				<input type = 'number' class='text-input create-sim-field' id = 'num_networks' name = 'netnumbers' size = '5' onchange = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -230,7 +230,7 @@
 				<span class = 'textfield'> Number of Devices </span>
 			</td>
 			<td>
-				<input type = 'number' class='text-input create-sim-field' id = 'num_devices' name = 'devicenumbers' size = '5' onblur = "expandField(this)" />
+				<input type = 'number' class='text-input create-sim-field' id = 'num_devices' name = 'devicenumbers' size = '5' onchange = "expandField(this)" />
 				<br/>
 			</td>
 		</tr>
@@ -250,8 +250,8 @@
 
 	<h2 id='partition-creation-header'> Partition the networks and devices</h2>
 	<div id ='available-list'>
-		Available Devices:  <div id = avail-devices> </div>
-		 Available Networks: <div id = avail-networks> </div>
+		Available Devices:  <div id = 'avail-devices'> </div>
+		 Available Networks: <div id = 'avail-networks'> </div>
 	</div>  
 	
 	<div id = 'config-map'>	
@@ -646,7 +646,6 @@
 	
 		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload</button>
 	</div>
-
 </script>
 <body>	
 		<div id = 'app'>			
