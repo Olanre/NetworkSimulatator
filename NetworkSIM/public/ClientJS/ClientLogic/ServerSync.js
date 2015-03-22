@@ -1,7 +1,7 @@
 /**
  * syncs with the server every 2 seconds
  */
-var socket = io.connect('http://sc-2.cs.mun.ca:3332');
+var socket = io.connect();
 
 var connected = false;
 
