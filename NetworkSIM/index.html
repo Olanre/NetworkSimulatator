@@ -132,14 +132,12 @@
 <script type = 'AdminSideBar-template'  id ="template5"   >
 	<div class="col-sm-3 col-md-2 sidebar">					
 		<ul class="nav nav-sidebar">	
-			<li id="nav-option-simCreate" >						
-				<a href="#" onclick = "simulationListView()">Simulations
-				<span class="sr-only">								
-					</span>
+			<li id="nav-option-simCreate" onclick = "simulationListView()">						
+				<a href="#">Simulations
 				</a>						
 			</li>						
-			<li id="nav-option-simView" class='active'>							
-				<a href="#" onclick = "newSimulationView()">New Simulation 
+			<li id="nav-option-simView" class='active' onclick = "newSimulationView()">							
+				<a href="#">New Simulation 
 				</a>						
 			</li>							
 		</ul>					
@@ -179,26 +177,26 @@
 <script type = 'DeviceSideBar' id = 'template9'>
 	<div class="col-sm-3 col-md-2 sidebar">					
 		<ul class="nav nav-sidebar">						
-			<li id='my-create-network-link'>						
-				<a href="#" onclick = "createNetworkView()">Create Network</a>						
+			<li id='my-create-network-link' onclick = "createNetworkView()">						
+				<a href="#">Create Network</a>						
 			</li>						
-			<li id='my-networks-link'>						
-				<a href="#" id='my-networks-link' onclick = "NetworksListView()">View Networks</a>
+			<li id='my-networks-link' onclick = "NetworksListView()">						
+				<a href="#">View Networks</a>
 			</li>
-			<li id='my-logs-link'>						
-				<a href="#" onclick = "LogsView()">View My Logs</a>						
+			<li id='my-logs-link' onclick = "LogsView()">						
+				<a href="#">View My Logs</a>						
 			</li>
-			<li id='my-devices-link'>						
-				<a href="#" onclick = "DeviceListView()">View Devices</a>						
+			<li id='my-devices-link' onclick = "DeviceListView()">						
+				<a href="#">View Devices</a>						
 			</li>					
-			<li id='my-apps-link'>
-				<a href='#' onclick = "appDefaultView()"> My Apps </a>
+			<li id='my-apps-link' onclick = "appDefaultView()">
+				<a href='#'> My Apps </a>
 			</li>	
-			<li id='my-account-link'>						
-				<a href="#" onclick = "AccountView()">About Me</a>						
+			<li id='my-account-link' onclick = "AccountView()">						
+				<a href="#">About Me</a>						
 			</li>
-			<li id='my-back-link'>				
-				<a href="#" onclick = "SimulationManagementView()">Back</a>
+			<li id='my-back-link' onclick = "SimulationManagementView()">				
+				<a href="#">Back</a>
 			</li>	
 		</ul>					
 	</div>		
@@ -360,32 +358,31 @@
 	</table>
 </script>
 <script type = "In Simulation Sidebar" id = "template18">	
-		<div class="col-sm-3 col-md-2 sidebar">				
-			<ul class="nav nav-sidebar">						
-				<li id='nav-option-viewTopology'>						
-						<a href="#" onclick = "networkTopologyView()"> Network Topology</a>						
-					</li>						
-					<li id='nav-option-history'>						
-						<a href="#" onclick = "getSimulationHistory('{{simulation_id}}')">Simulation History</a>						
-					</li>
-					<li id='nav-option-applications'>						
-						<a href="#" onclick = "adminAppsView()">Applications</a>						
-					</li>
-					
-					<li id='nav-option-RDTs'>						
-						<a href="#" onclick = "RDTsView()">RDTs</a>						
-					</li>	
-					<li id='nav-option-tests'>
-						<a href = '#' onclick = "TestsView()" > Test Scripts</a>
-					</li>				
-					<li id='nav-option-applications'>						
-						<a href="#" onclick = "deviceDefaultView()">My Device</a>						
-					</li>
-					<li id='nav-option-backtosimulations'>						
-						<a href="#" onclick = "simulationListView()">Back</a>						
-					</li>	
-				</ul>					
-		</div>		
+	<div class="col-sm-3 col-md-2 sidebar">				
+		<ul class="nav nav-sidebar">						
+			<li id='nav-option-viewTopology' onclick = "networkTopologyView()">						
+				<a href="#"> Network Topology</a>						
+			</li>						
+			<li id='nav-option-history' onclick = "getSimulationHistory('{{simulation_id}}')">						
+				<a href="#">Simulation History</a>						
+			</li>
+			<li id='nav-option-applications' onclick = "adminAppsView()">						
+				<a href="#">Applications</a>						
+			</li>			
+			<li id='nav-option-RDTs' onclick = "RDTsView()">						
+				<a href="#">RDTs</a>						
+			</li>	
+			<li id='nav-option-tests' onclick = "TestsView()">
+				<a href = '#' > Test Scripts</a>
+			</li>				
+			<li id='nav-option-applications' onclick = "deviceDefaultView()">						
+				<a href="#">My Device</a>						
+			</li>
+			<li id='nav-option-backtosimulations' onclick = "simulationListView()">						
+				<a href="#">Back</a>						
+			</li>	
+		</ul>					
+	</div>		
 </script>
 <script type = "AdminAppsListTemplate" id = "template19">
 	<h1 class='flip-up-text'>Applications</h1>
