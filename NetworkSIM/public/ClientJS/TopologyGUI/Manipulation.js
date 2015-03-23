@@ -257,6 +257,3 @@ function getRelatedShapeFromEvent(event){
  * orderCanvas orders all the shapes on the canvas so that devices
  * appear in front of networks, and so that connection lines appear behind the networks
  ****/
-
-
-generateTopology(get_local_simulation().partition_list,800);

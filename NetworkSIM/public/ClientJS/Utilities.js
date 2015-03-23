@@ -210,7 +210,7 @@ function loadJSFile(path, callback){
      fileref.setAttribute("src", path);
      document.getElementsByTagName("head")[0].appendChild(fileref);
      if (isFunction(callback)){
-    	 callbak();
+    	 callback();
      }
 }
 
