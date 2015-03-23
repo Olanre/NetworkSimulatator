@@ -20,8 +20,6 @@ var port = 3332;  // must be on port 3332 on excalibur for the grader
 var server = require("http").Server(app);
 var io = require("socket.io").listen(server);
 
-app.use(logger({path: "./logfile.txt"}));
-
 
 SimulationModel.findAllSimulations(function(simJSONlist){
 	SimulationManager.loadSimulations(simJSONlist);
