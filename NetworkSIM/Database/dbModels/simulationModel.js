@@ -9,7 +9,7 @@ var simulationSchema = mongoose.Schema({
 	   num_devices: Number,
 	   num_networks: Number,
 	   simulation_population: Number,
-	   simulation_name: String, //unique id of the simulation
+	   simulation_name: String, 
 	   tokenMethod : String,
 	   partition_list: [{type : mongoose.Schema.Types.ObjectId, ref: 'Partition'}],
 	   apps : [{type : mongoose.Schema.Types.ObjectId, ref: 'App'}],
