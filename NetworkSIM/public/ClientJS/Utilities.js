@@ -201,14 +201,20 @@ function loadStyleSheet(src){
         document.getElementsByTagName('head')[0].appendChild(stylesheet);
     }
 }
-function loadJSFile(path){
+/**
+ * loads a javascript file, with optional callback function
+ */
+function loadJSFile(path, callback){
 	 var fileref=document.createElement('script');
      fileref.setAttribute("type","text/javascript");
      fileref.setAttribute("src", path);
-     document.getElementsByTagName("head")[0].appendChild(fileref)
+     document.getElementsByTagName("head")[0].appendChild(fileref);
+     if (isFunction(callback)){
+    	 callbak();
+     }
 }
 
-/*---
+/**---
  *Checks if a value is an integer
  *---*/
 function isInt(value) {
@@ -223,6 +229,13 @@ function findByUniqueID(uniqueID, list){
 			return list[index];
 		} 
 	}
-	
 	return -1;
+}
+
+/**
+ * Checks if a variable is a function
+ */
+function isFunction(functionToCheck) {
+	 var getType = {};
+	 return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
