@@ -3,7 +3,7 @@
  * @param id: the key of the element to retrieve from local storage
  */
 function getFromStorage(id){
-	return sessionStorage.getItem(id);
+	return localStorage.getItem(id);
 }
 
 /**
@@ -13,7 +13,7 @@ function getFromStorage(id){
  */
 function putinStorage(id, item){
 	if( id !== null && item !== null){
-		sessionStorage.setItem(id, item);
+		localStorage.setItem(id, item);
 	}
 }
 
@@ -22,7 +22,6 @@ function putinStorage(id, item){
  */
 function clearStorage(){
     localStorage.clear();
-    sessionStorage.clear();
 }
 
 
