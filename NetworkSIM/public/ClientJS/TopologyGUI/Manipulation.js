@@ -53,6 +53,9 @@ interact('.device')
 		},
 	});
 
+/**
+ * Handles moving a network object in the topology view
+ */
 interact('.network')
 	
 	.dropzone({
