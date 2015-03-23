@@ -28,7 +28,6 @@ function Device(deviceName,token, simulation_name , email){
 	this.attachJSON=attachJSON;
 	this.updateDeviceLog = updateDeviceLog;
 
-	//Constructor contents
 	
 }
 
@@ -39,13 +38,13 @@ function createNewDevice(deviceName,token, simulation_id, email){
 	
 	deviceJSON.current_device_name=deviceName;
 	deviceJSON.current_simulation = simulation_id;
-	deviceJSON.admin=false;
-	deviceJSON.verified=false;
+	deviceJSON.admin = false;
+	deviceJSON.verified = false;
 	deviceJSON.current_partition = '';
 	deviceJSON.current_network = '';
 	deviceJSON.activity = '';
 	deviceJSON.email = deviceName;
-	deviceJSON.token=token;
+	deviceJSON.token = token;
 	createdDevice.deviceJSON=deviceJSON;
 
 	createdDevice.networkObject.addDevice(createdDevice);
@@ -55,7 +54,7 @@ function createNewDevice(deviceName,token, simulation_id, email){
 }
 
 function loadDeviceFromDatabase(deviceID){
-	var createdDevice=new Device('');
+	var createdDevice = new Device('');
 	DevModel.findOne({_id: deviceID}, function(err,deviceJSON){
 		if(!err){
 		 createdDevice.attachJSON(deviceJSON);
@@ -73,12 +72,13 @@ function attachJSON(deviceJSON){
 
 
 function joinNetwork(network){
-	  this.networkObject.removeDevice(this);
+
+	  if(this.networkObject!=network)this.networkObject.removeDevice(this);
+	  		  
 	  this.networkObject = network;
 	  this.deviceJSON.current_partition=network.partitionObject._id;
 	  this.deviceJSON.current_network=network._id;
 	  this.deviceJSON.save();
-	  
 };
   
 function leaveNetwork(network){

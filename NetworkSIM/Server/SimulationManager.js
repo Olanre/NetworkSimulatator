@@ -254,47 +254,79 @@ function authToken(token, simulation_id,  callback){
 
 function createSimulation(event_data, time_stamp) {
 
-	var map=event_data.config_map;
-	var simulation=Simulation.createNewSimulation(event_data.simulation_name);
-	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
+	var map = event_data.config_map;
+	var simulation = Simulation.createNewSimulation(event_data.simulation_name);
+
+	populateSimulationFromMap(map,simulation,time_stamp);
+
+	createAdminDevice(simulation);
+
 	var new_activity = "Simulation " +  event_data.simulation_name + " created at " + time_stamp + "\n";
-	//update simulation activity log
 	simulation.updateSimulationLog(new_activity);
-	
-	
+	var simulation_history = Simulation_History.createNewSimulationHistory(simulation._id);	
+	simulationHistoryList.push(simulation_history);
+	saveSimulationState(simulation._id, time_stamp, simulation);
+
+	simulation.simulationJSON.num_networks = event_data.num_networks;
+	simulation.simulationJSON.num_devices = event_data.num_devices;
+
+	simulationList.push(simulation);
+
+	return simulation;
+}
+
+function createAdminDevice(simulation){
+
+	var adminDevice = Device.createNewDevice('admin', TokenManager.generateToken(),simulation._id);
+	adminDevice.deviceJSON.admin = true;
+	simulation.addDevice(adminDevice);
+	simulation.partition_list.push(adminDevice.networkObject.partitionObject);
+	simulation.simulationJSON.partition_list.push(adminDevice.networkObject.partitionObject._id);
+	//adminDevice.networkObject.addDevice(adminDevice);
+	console.log(adminDevice.networkObject.device_list);
+	adminDevice.deviceJSON.save();
+}
+
+function populateSimulationFromMap(config_map,simulationObject,time_stamp){
+
 	var createdPartition,createdNetwork,createdDevice;
-	var tokenPath = 'tokens/'+event_data.simulation_name+".txt";
-	console.log(map);
-	for(partition in map){
+	var tokenPath = 'tokens/'+ simulationObject.simulationJSON.simulation_name+".txt";
+	for(partition in config_map){
 		
 		if(partition=='freelist'){
-			for(device in map[partition]){
-				createdDevice=Device.createNewDevice(device, TokenManager.generateToken(),event_data.simulation_name, device);
-				simulation.addDevice(createdDevice);
+			for(device in config_map[partition]){
+				createdDevice = Device.createNewDevice(device, TokenManager.generateToken(),simulationObject.simulation_name, device);
+				simulationObject.addDevice(createdDevice);
 				TokenMailer.mailToken(device,createdDevice.token,event_data.simulation_name);
 			}
 		}
 
 		else{
-			createdPartition=Partition.createNewPartition(partition,event_data.partition_name);
-			simulation.addPartition(createdPartition);
-			for(network in map[partition]){
+
+			createdPartition = Partition.createNewPartition(partition,'');
+			//console.log(simulationObject);
+			simulationObject.addPartition(createdPartition);
+
+			for(network in config_map[partition]){
+
 				createdNetwork=Network.createNewNetwork(network,"Wi-Fi",partition);
 				createdPartition.addNetwork(createdNetwork);
 
-				for(device in map[partition][network]){
+				for(device in config_map[partition][network]){
+
 						var token = TokenManager.generateToken();
-						createdDevice=Device.createNewDevice(device, token , simulation._id);
+						createdDevice = Device.createNewDevice(device, token , simulationObject._id);
 						createdDevice.deviceJSON.current_network = network;
 						createdDevice.deviceJSON.current_partition = partition;
-						createdDevice.deviceJSON.simulation_id = simulation._id;
+						createdDevice.deviceJSON.simulation_id = simulationObject._id;
 						createdDevice.deviceJSON.registeredOn = time_stamp;
 						
-						simulation.addDevice(createdDevice);
+						simulationObject.addDevice(createdDevice);
 						createdNetwork.addDevice(createdDevice);
-						TokenMailer.mailToken(device,token,event_data.simulation_name);
+						TokenMailer.mailToken(device,token,simulationObject.simulationJSON.simulation_name);
 						var tokendata= token+"\n";
 						fs.appendFile(path.resolve(__dirname, tokenPath),tokendata,function(err) {
+
 					    if(err) {
 					        console.log(err);
 					    }
@@ -305,15 +337,7 @@ function createSimulation(event_data, time_stamp) {
 		}
 
 	}
-	simulation.simulationJSON.num_networks = event_data.num_networks;
-	simulation.simulationJSON.num_devices = event_data.num_devices;
-	//create a new history object
-	simulationHistoryList.push(simulation_history);
-	//save our state in the history object
-	saveSimulationState( simulation._id, time_stamp, simulation);
-	simulationList.push(simulation);
-	return simulation;
-}	
+}
 
 function createDevice(event_data, time_stamp) {
 	
