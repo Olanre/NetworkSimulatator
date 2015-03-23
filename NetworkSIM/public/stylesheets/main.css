@@ -245,6 +245,10 @@ Upload Apps RDTs and Test Scripts
   color:white;
 }
 
+#uploadFiles{
+  padding:10px;
+}
+
 /*-----------------------
  *handles the scroll bar for our webpages
  ------------------------*/
