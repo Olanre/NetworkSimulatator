@@ -7,6 +7,10 @@ var devicenumbers = 0;
 var avail_networks = 0;
 //holds the number of devices availablle to fill
 var avail_devices = 0;
+//holds the number of network fields created on the page
+var created_network_field=0;
+//holds the number of device fields created on the page
+var created_device_field=0;
  
 
 /**
@@ -19,10 +23,20 @@ function expandField(selector){
 		number=0;
 	}
 	if (selector.name == 'netnumbers'){
-		netnumbers = number;
+		if(number<created_network_field){
+			//HANDLE THIS
+		}
+		else{
+			netnumbers = number-created_network_field;
+		}
 	}
 	if( selector.name == 'devicenumbers'){
-		devicenumbers = number;
+		if(!number<created_device_field){
+			//HANDLE THIS
+		}
+		else{
+			devicenumbers = number-created_device_field;
+		}
 	}
 	generateConfigTable();
 }
@@ -72,10 +86,10 @@ function addtoConfigTable(insert_point, name, element){
 			if( avail_networks > 0){
 				div = createTrElement();
 				avail_networks -= 1;
-				avail_devices -= 1;
 				html = generateNetworkTable();
-				
-			}else{
+				created_network_field+=1;
+			}
+			else{
 				element.disabled = true;
 			}
 			break;
@@ -85,24 +99,25 @@ function addtoConfigTable(insert_point, name, element){
 				div = createTrElement();
 				html = generateDeviceClass();
 				avail_devices -= 1;
-			}else{
+				created_device_field+=1;
+			}
+			else{
 				element.disabled = true;
 			}
 			
 			break;
 		case 'Partition':
-			if( avail_devices >0 && avail_networks > 0 ){
+			if(avail_networks > 0 ){
 				div = createTableElement();
 				html = generatePartitionTable();
 				avail_networks -= 1;
-				avail_devices -= 1;
-			}else{
+				created_network_field+=1
+			}
+			else{
 				element.disabled = true;
 			}
-			
 			break;
-		default:
-				
+		default:		
 	}
 	if( div !== null){
 		div.innerHTML = html;
@@ -141,32 +156,39 @@ function deletefromConfigTable(delete_point, name, map){
 	element = document.getElementById(map);
 	switch(name){
 		case 'Network':
+			removeDevices(delete_point);
 			avail_networks += 1;
-			removeDevices( delete_point);
-			if( avail_networks > 0){
-				var add_buttons = element.getElementsByClassName('net-adder');
-				enableButtons(add_buttons);
-			}
+			created_network_field-=1;
+			var add_buttons = element.getElementsByClassName('net-adder');
+			enableButtons(add_buttons);
+			console.log("created-network-field:"+created_network_field);
 			break;
 		case 'Device':
 			avail_devices += 1;
-			if( avail_devices >0 ){
-				var add_buttons = element.getElementsByClassName('device-adder');
-				enableButtons(add_buttons);
-			}
+			created_device_field-=1;
+			var add_buttons = element.getElementsByClassName('device-adder');
+			enableButtons(add_buttons);
+			console.log("created-device-field:"+created_device_field);
 			break;
 		case 'Partition':
 			removeNetworks( delete_point);
-			if( avail_devices >0 && avail_networks > 0 ){
-				var add_buttons = element.getElementsByClassName('partition-adder');
-				enableButtons(add_buttons);
-			}
+			var add_buttons = element.getElementsByClassName('partition-adder');
+			enableButtons(add_buttons);
 			break;
 		default:
 					
 	}
-	parent_of_delete = delete_point.parentNode;
+	var parent_of_delete = delete_point.parentNode;
 	parent_of_delete.removeChild(delete_point);
+	//handles deleting up-most table object
+	if (name == 'Partition'){
+		var grand_parent;
+		for (var i=0;i<3;i++){
+			grand_parent=parent_of_delete.parentNode;
+			grand_parent.removeChild(parent_of_delete);
+			parent_of_delete=grand_parent;
+		}
+	}
 	updateavailableField();
 }
 
@@ -177,16 +199,20 @@ function removeDevices( element){
 	var allDevices = element.getElementsByClassName('device');
 	for(var i = 0; i < allDevices.length; i++){
 		avail_devices += 1;
+		created_device_field-=1;
+		console.log("created-device-field:"+created_device_field);
 	}
 }
 
-/** Function to remove a network from the configuration table
+/** 
+ * Function to remove a network from the configuration table
  * @param element: the node cluster to be removed
  */
 function removeNetworks( element){
 	var allNetworks = element.getElementsByClassName('network');
-	for(var i = 0; i < allNetworks.length; i++){
-		deletefromConfigTable(allNetworks[i].parentNode.parentNode, 'Network', 'config-map')
+	var networks_length=allNetworks.length;
+	for(var i = 0; i < networks_length; i++){
+		deletefromConfigTable(allNetworks[0].parentNode.parentNode, 'Network', 'config-map');
 	}
 }
 
@@ -224,6 +250,8 @@ function setCreateFieldsToZero(){
 	devicenumbers = 0;
 	avail_networks = 0;
 	avail_devices = 0;
+	created_network_field=0;
+	created_device_field=0;
 	updateavailableField();
 }
 
