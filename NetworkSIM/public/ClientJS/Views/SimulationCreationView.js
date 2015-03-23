@@ -23,21 +23,27 @@ function expandField(selector){
 		number=0;
 	}
 	if (selector.name == 'netnumbers'){
+		console.log("NETWORK");
 		if(number<created_network_field){
-			selector.setCustomValidity('INVALID IN');
+			//HANDLE THIS
 		}
 		else{
 			netnumbers = number-created_network_field;
 		}
 	}
 	if( selector.name == 'devicenumbers'){
-		if(!number<created_device_field){
+		console.log("DEVICE");
+		if(number<created_device_field){
 			//HANDLE THIS
 		}
 		else{
 			devicenumbers = number-created_device_field;
 		}
 	}
+	console.log('create_network_field '+created_network_field);
+	console.log('create_device_field '+created_device_field);
+	console.log('netnumbers '+netnumbers);
+	console.log('devicenumbers '+devicenumbers);
 	generateConfigTable();
 }
 
@@ -52,9 +58,11 @@ function checkField(elem){
  * a new simulation.
  */
 function generateConfigTable(){
-	
+	console.log("HEREES");
 	avail_networks = netnumbers;
+	console.log("avail_networks "+avail_networks);
 	avail_devices = devicenumbers;
+	console.log("avail_networks "+avail_devices);
 	document.getElementById('avail-devices').innerHTML = avail_devices;
 	document.getElementById('avail-networks').innerHTML = avail_networks;
 	if( avail_devices >0 && avail_networks > 0 ){
@@ -86,6 +94,7 @@ function addtoConfigTable(insert_point, name, element){
 			if( avail_networks > 0){
 				div = createTrElement();
 				avail_networks -= 1;
+				netnumbers-=1;
 				html = generateNetworkTable();
 				created_network_field+=1;
 			}
@@ -94,11 +103,11 @@ function addtoConfigTable(insert_point, name, element){
 			}
 			break;
 		case 'Device':
-			
 			if( avail_devices >0 ){
 				div = createTrElement();
 				html = generateDeviceClass();
 				avail_devices -= 1;
+				devicenumbers-=1;
 				created_device_field+=1;
 			}
 			else{
@@ -111,6 +120,7 @@ function addtoConfigTable(insert_point, name, element){
 				div = createTableElement();
 				html = generatePartitionTable();
 				avail_networks -= 1;
+				netnumbers-=1;
 				created_network_field+=1
 			}
 			else{
@@ -158,6 +168,7 @@ function deletefromConfigTable(delete_point, name, map){
 		case 'Network':
 			removeDevices(delete_point);
 			avail_networks += 1;
+			netnumbers+=1;
 			created_network_field-=1;
 			var add_buttons = element.getElementsByClassName('net-adder');
 			enableButtons(add_buttons);
@@ -165,6 +176,7 @@ function deletefromConfigTable(delete_point, name, map){
 			break;
 		case 'Device':
 			avail_devices += 1;
+			devicenumbers+=1;
 			created_device_field-=1;
 			var add_buttons = element.getElementsByClassName('device-adder');
 			enableButtons(add_buttons);
