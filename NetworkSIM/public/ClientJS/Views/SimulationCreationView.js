@@ -24,7 +24,7 @@ function expandField(selector){
 	}
 	if (selector.name == 'netnumbers'){
 		if(number<created_network_field){
-			//HANDLE THIS
+			selector.setCustomValidity('INVALID IN');
 		}
 		else{
 			netnumbers = number-created_network_field;
