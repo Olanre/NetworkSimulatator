@@ -1,0 +1,66 @@
+<html>
+<head>
+	<script src="/js/socket.io.js"></script>
+	<script src = '../ApplicationRequirements.js' type='text/javascript'></script>
+	<script type="text/javascript">
+		var local_count = 0;
+		
+		function incrCounter(){
+			var local_counter = document.getElementById('local_count').innerHTML = local_count + 1;
+			local_count++;
+			manipulateRDT('Counter', 'inc' );
+			
+		}
+		
+		function decrCounter(){
+			var local_counter = document.getElementById('local_count').innerHTML = local_count - 1;
+			local_count--;
+			manipulateRDT('Counter', 'dec' );
+			
+		}
+		
+		function newRDTVal(new_val, name){
+			document.getElementById('global_count').innerHTML = new_val;
+		}
+	</script>
+	<link href="app.css" rel="stylesheet" type="text/css">
+	
+	
+
+</head>
+<body>
+	<div class='application'>
+		<div id= 'counters'>
+			<table border='0'>
+				<tr>
+					<td>
+						<div class = 'images' onclick ='incrCounter()'>
+							<img id = 'increment_img' src = "./incr.png" rel='./'/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class ='images' onclick ='decrCounter()'>
+							<img id='decrement_img' src = './decr.png' rel='./'/>
+						</div>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+		<div id='counterView'>
+			<table>
+			<tr> 
+					<td> <span class = 'text'> Local Counter </span> </td>
+					<td id = 'local_count'></td>
+				</tr> 
+				<tr>
+					<td>  <span class = 'text'> Global Counter </span> </td>
+					 <td id = 'global_count'></td> 
+				</tr> 
+			</table>
+		</div>
+	</div>
+</body>
+</html>
