@@ -7,13 +7,13 @@ function NetworksListTemplate(networks, local_device){
 		if(local_device.current_network == networks[i]['_id']){
 			str +=  "<tr id = '" + networks[i]['_id'] + "'> " +
 					" <td> " + networks[i]['network_name'] +  " </td>" +"<td>"+ networks[i].device_list.length+"</td>"+
-					" <td>   <div class = 'btn btn-primary'  <!--onclick = 'removeDevicefromNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;)-->'>  " +
+					" <td>   <div class = 'btn btn-primary' onclick = 'leaveNetworkWrapper( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;)'>  " +
 			"Leave Network </div>  </td> </tr>";
 		}
 		else{
 			str += "<tr  id = '" + networks[i]['_id'] + "'>" +
 				" <td> " + networks[i]['network_name'] + " </td>" +"<td>"+ networks[i].device_list.length+"</td>"+
-				" <td> <div class = 'btn btn-primary' onclick = 'moveDeviceToNetwork( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;) '> " +
+				" <td> <div class = 'btn btn-primary' onclick = 'joinNetworkWrapper( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;) '> " +
 							"Join Network </div> </td> </tr>";
 		}
 		if(networks_created !== undefined && networks_created !== null && networks_created.length > 0){
@@ -21,7 +21,7 @@ function NetworksListTemplate(networks, local_device){
 				
 				if( networks[i]['_id'] == networks_created[j] ){
 					str +=  "<td> <div class = 'btn btn-primary' onclick = 'deleteNetwork( &quot;" + networks[i]['_id'] + "&quot;)'> " +
-					"Join Network </div> </td> </tr>";
+					"Delete Network </div> </td> </tr>";
 				}
 			}
 		}
