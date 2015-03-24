@@ -259,7 +259,7 @@ function createSimulation(event_data, time_stamp) {
 
 	populateSimulationFromMap(map,simulation,time_stamp);
 
-	createAdminDevice(simulation);
+	//createAdminDevice(simulation);
 
 	var new_activity = "Simulation " +  event_data.simulation_name + " created at " + time_stamp + "\n";
 	simulation.updateSimulationLog(new_activity);
@@ -439,11 +439,13 @@ function mergePartitions(event_data, time_stamp){
 		var partitionA=Util.findByUniqueID(partition_a, simulationObject.partition_list);
 		var partitionB=Util.findByUniqueID(partition_b, simulationObject.partition_list);
 
-		var new_activity = "Connected networks on " + time_stamp + "\n";
-		simulationObject.updateSimulationLog(new_activity);
-		simulationObject.mergePartitions(partitionA,partitionB);
-		//save the state
-		saveSimulationState( simulation_id, time_stamp, simulationObject);
+		if(partitionA!=-1&&partitionB!=-1){
+				var new_activity = "Connected networks on " + time_stamp + "\n";
+				simulationObject.updateSimulationLog(new_activity);
+				simulationObject.mergePartitions(partitionA,partitionB);
+				//save the state
+				saveSimulationState( simulation_id, time_stamp, simulationObject);
+		}
 	}
 
 }
@@ -460,27 +462,33 @@ function dividePartition(event_data, time_stamp){
 	if(simulationObject!=-1){
 
 		var partition = Util.findByUniqueID(partitionID, simulationObject.partition_list);
-		var new_activity = "Disconnected networks on " + time_stamp + "\n";
+		if(partition!=-1){
+				var new_activity = "Disconnected networks on " + time_stamp + "\n";
+		
+				for(var index =0; index<network_list.length;index++){
+		
+					var network=Util.findByUniqueID(network_list[index]._id,partition.network_list);
+		
+					if(network!=-1){
+						//console.log("removing network "+network.networkName);
+						tempPartitionList.push(partition.removeNetwork(network));
+					}
+					
+				}
 
-		for(var index =0; index<network_list.length;index++){
-
-			var network=Util.findByUniqueID(network_list[index]._id,partition.network_list);
-
-			if(network!=-1){
-				//console.log("removing network "+network.networkName);
-				tempPartitionList.push(partition.removeNetwork(network));
-			}
-			
+				//console.log(partition.network_list);
+				if(tempPartitionList.length>0){
+					for(var i=1;i<tempPartitionList.length;i++){
+							tempPartitionList[i].mergePartitions(tempPartitionList[i-1]);
+					}
+					simulationObject.updateSimulationLog(new_activity);
+					console.log(tempPartitionList[tempPartitionList.length-1]);
+	
+					simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
+					saveSimulationState(simulationID,time_stamp,simulationObject);
+				}
+				//console.log(simulationObject.simulationJSON.partition_list);
 		}
-		//console.log(partition.network_list);
-
-		for(var i=1;i<tempPartitionList.length;i++){
-				tempPartitionList[i].mergePartitions(tempPartitionList[i-1]);
-		}
-		simulationObject.updateSimulationLog(new_activity);
-		simulationObject.addPartition(tempPartitionList[tempPartitionList.length-1]);
-		saveSimulationState(simulationID,time_stamp,simulationObject);
-		//console.log(simulationObject.simulationJSON.partition_list);
 	}
 }
 
