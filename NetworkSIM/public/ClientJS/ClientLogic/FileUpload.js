@@ -6,60 +6,48 @@ function handleFiles(file_type) {
 		
 		current_files = document.getElementById(file_type).files;		
 		readFiles();
-		updateData();		
-
-		
+		updateData();				
 }
 
 function updateData(){
 	
 	var fileBytes = 0,
-		nFiles = current_files.length;
-		
-		var fileSize;
+	nFiles = current_files.length;
+	var fileSize;
+	var thediv = "<table class='center-table'>";
+	for (var nFileId = 0; nFileId < nFiles; nFileId++) {
+		fileSize=current_files[nFileId].size;
+		fileBytes += fileSize;
 
-		var thediv = "<table class='center-table'>"
-		for (var nFileId = 0; nFileId < nFiles; nFileId++) {
-			fileSize=current_files[nFileId].size;
-			fileBytes += fileSize;
+		var ext= current_files[nFileId].name.split('.').pop();
+		var img;
 
-			var ext= current_files[nFileId].name.split('.').pop();
-			var img;
-
-			switch (ext){
-				case "js":
-					img='../img/js-128.png'
-					break;
-				default:
-					img='../img/html-128.png';
-					break
-			}
-			
-
-			 thediv +="<tr id='FILE"+nFileId+
-			"'> <td> <img src='"+img+"' height='128' width='128'/> </td> <td> "+
-			current_files[nFileId].name+"</td> <td> Size: "+fileSize+" Bytes" +
-					"</td> </tr>";
-			
-
-			
-
+		switch (ext){
+			case "js":
+				img='../img/js-128.png'
+				break;
+			default:
+				img='../img/html-128.png';
+				break;
 		}
-		 thediv +=" </table> ";
-		 document.getElementById("Files").innerHTML = thediv;
-		var fileSize = fileBytes + " bytes";
+		
 
-		document.getElementById("fileNum").innerHTML = nFiles;
-		document.getElementById("fileSize").innerHTML = fileSize;
+		 thediv +="<tr id='FILE"+nFileId+
+		"'> <td> <img src='"+img+"' height='128' width='128'/> </td> <td> "+
+		current_files[nFileId].name+"</td> <td> Size: "+fileSize+" Bytes" +
+				"</td> </tr>";
+
+	}
+	 thediv +=" </table> ";
+	 document.getElementById("Files").innerHTML = thediv;
+	var fileSize = fileBytes + " bytes";
+
+	document.getElementById("fileNum").innerHTML = nFiles;
+	document.getElementById("fileSize").innerHTML = fileSize;
 }
 
 function DeleteFile(int){
-		
-		//
-		//delete current_files[int];
-		//console.log(current_files);
-		//uploadEvent.files = uploadEvent.files.splice(int, 1);
-		
+				
 	 updateData();
 }
 
@@ -89,12 +77,46 @@ function hasRequiredFile(needle, haystack){
 			if(needle == 'package.json'){
 				uploadEvent.name = JSON.parse(haystack[i]['data']).name;
 				uploadEvent.spec = JSON.stringify(haystack[i]['data']);
+			}else if (needle == 'test.json'){
+				uploadEvent.name = JSON.parse(haystack[i]['data']).name;
+				uploadEvent.spec = JSON.stringify(haystack[i]['data']);
 			}
 			bool = true;
 			break;
 		}
 	}
 	return bool;
+}
+
+
+function checkRDTSinApp(){
+	var msg = "";
+	var local_simulation = get_local_simulation();
+	if(local_simulation != null){
+		
+		var rdts = local_simulation.rdts;
+		var data = JSON.parse(uploadEvent.spec);
+		var key = "rdt_list";
+		var app_rdts = data.rdt_list;
+		console.log(app_rdts);
+		console.log(data);
+		if(data.rdt_list !== null){
+			
+			if( rdts.length < 1){
+				
+				for( index in app_rdts){
+					
+					if( rdts.indexOf(app_rdts[index]) <= -1){
+						msg += "This application requires the RDT " + app_rdts[index]  + "\n Please import it using the RDT Manager Upload Tool \n\n";
+					}
+				}  
+			}
+			console.log(msg);
+			if(msg.length > 1){
+				alert(msg);
+			}
+		}
+	}
 }
 
 
@@ -127,6 +149,7 @@ function pushFileEvent(file_type){
 			alert("Please include a package.json file describing your Application");
 			upload = false;
 		}
+		checkRDTSinApp();
 	}
 	if( file_type == 'Test'){
 		if( hasRequiredFile('test.json', uploadEvent.files) == false ){

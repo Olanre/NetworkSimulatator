@@ -3,6 +3,7 @@ var fs=require('fs');
 var mkdirp = require('mkdirp');
 var ApplicationManager = require("./ApplicationManager.js");
 var RDTManager = require("./RDTManager.js");
+var TestScriptManager = require("./TestScriptManager.js");
 
 function uploadAllFiles(event_data, time_stamp){
 	var files=event_data.files;
