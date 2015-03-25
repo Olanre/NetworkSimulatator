@@ -1,7 +1,7 @@
-//This file needs to be run every single time an application
-//is run.
+/*
+ * Mongoose models are required here. 
+ */
 
-//Initializing the models , might store in mongooseConnect
 var models = ['userModel.js', 'networkModel.js', 'simulationModel.js', 'partitionModel.js', 'stateModel.js', 'appModel.js','RDTModel.js'];
 exports.initialize = function() {
     var l = models.length;

@@ -1,22 +1,23 @@
-//requires mongoose
+//requires mongoose node module
 var mongoose = require('mongoose');
+
 //requires schema
 var Schema = mongoose.Schema;
-//reference User model here
+
+//referencing the network model because partition has reference to network models
 var Network = require("./networkModel").Network;
-//defines the schema
-//console.log(Network);
 
-
+//partition objects will have an array-list of Network objects referenced by their ObjectId.
 var partitionSchema = mongoose.Schema({
-	 //type string
-	 network_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'Network'}],
-	 
+	 network_list : [{type : mongoose.Schema.Types.ObjectId, ref: 'Network'}], 
 	});
 
-//Partition Methods
+/*
+ * Below are static functions that can be used by a partition model.
+ */
 
 
+//
 partitionSchema.statics.savePartition = function (aPartition)
 {
 	var newPartition = new Partition(aPartition);
@@ -33,18 +34,17 @@ partitionSchema.statics.getPartitionByID = function (anID, callback)
 	});
 }
 
-
+//
 partitionSchema.statics.modifyPartitionByName = function (aString, aPartition)
 {
    Partition.findOne({partition_name : aString}, function(err,obj)
    {
-	   if(err) console.lgo("no Partition exists with that name");
+	   if(err) console.log("no Partition exists with that name");
 	   obj = aPartition;
 	   obj.save();
 	   console.log("partition saved");
-	   //callback();
    });
 }
 
-//exporting is done this way, defines, declares Network as the name of this schema/function model. 
+//export and define this mongoose model named "Partition", based off of "partitionSchema", and stored in collection "Partitions"
 module.exports = mongoose.model('Partition', partitionSchema, 'Partitions');
