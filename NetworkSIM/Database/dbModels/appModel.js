@@ -1,4 +1,7 @@
+//require mongoose node module
 var mongoose = require('mongoose');
+
+//require schema 
 var Schema = mongoose.Schema;
 
 var applicationSchema = mongoose.Schema({
