@@ -287,7 +287,9 @@ function networkTopologyView(){
 	var content=getContainer();
 	content.innerHTML=html;
 	loadJSFile('../gui/Drawing.js');
+	loadJSFile('/view/TopologyView.js');
 	loadJSFile('/gui/Manipulation.js',setTimeout(function(){generateTopology(get_local_simulation().partition_list,800);}, 800));
+
 }
 
 

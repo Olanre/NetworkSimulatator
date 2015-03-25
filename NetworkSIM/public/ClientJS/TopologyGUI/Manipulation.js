@@ -2,7 +2,7 @@ interactable=true;
 
 var origin = {x: 0, y: 0};
 var mouse = {x: 0, y: 0};
-
+var waitTime=800;
 document.addEventListener('mousemove', function(e){ 
     mouse.x = e.clientX || e.pageX; 
     mouse.y = e.clientY || e.pageY;
@@ -111,6 +111,7 @@ interact('.network')
 					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
 
 					moveDeviceToNetwork(dragged.represents.token,dropzone.represents._id);
+					setTimeout(updateTopology(shapes,get_local_simulation().partition_list),waitTime);
 				}
 			}
 			if(dragClass==='network'){
@@ -123,7 +124,10 @@ interact('.network')
 						var partition=createPartitionGraphic(dropzone,dragged);
 						var partitionA = findPartitionIDForNetwork(dropzone.represents);
 						var partitionB = findPartitionIDForNetwork(dragged.represents);
-						if(partitionA!=partitionB) mergePartition(partitionA,partitionB);
+						if(partitionA!=partitionB){
+							mergePartition(partitionA,partitionB);
+							setTimeout(updateTopology(shapes,get_local_simulation().partition_list),waitTime);
+						}
 					}
 					else{
 						var oldpartitionID=findPartitionIDForNetwork(dragged.represents);
@@ -144,6 +148,7 @@ interact('.network')
 								list.push(newpartitionlist[i].represents);
 							}
 							dividePartition(list,oldpartitionID);
+							setTimeout(updateTopology(shapes,get_local_simulation().partition_list),waitTime);
 						}
 					}
 					snapToLocation(dragged,origin);

@@ -1,6 +1,6 @@
 var uniqueDataIndex=0;
 var interactable=false;
-var displayed_partition_list={};
+//var displayed_partition_list={};
 
 var svgCanvas = document.querySelector('svg'),
 
