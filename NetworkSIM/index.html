@@ -582,8 +582,7 @@
   			 	"paramters": [
   			 		"rdts" : [{"name": "incRDT", "function" : "inc"} , {"name" : "decRDT", "function" : "dec"}],
   			 		"device_mobility" : "high",
-  			 		"operations" : 25,
-  			 		"partition_tolerance" : true
+  			 		"operations" : 25
   			 	]
 			}
 		</code>
@@ -625,11 +624,7 @@
 				<td> The number of operations you want on the RDT(s) </td> 
 				<td> 12 <br> 100 <br> 30 </td>
 			</tr>
-			<tr>
-				<td> partition tolerance </td> 
-				<td> Handle partition segmentation in the simulation <br> Certain partitions will not be allowed to communicate with each other</td> 
-				<td>True or False </td>
-			</tr>
+			
 		</table>
 		</p>
 		<br>
@@ -640,7 +635,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload</button>
+		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload and Run</button>
 	</div>
 </script>
 <body>	

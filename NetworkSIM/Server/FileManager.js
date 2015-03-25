@@ -48,6 +48,7 @@ function uploadAllFiles(event_data, time_stamp){
 
 }
 
+
 function uploadFile(file,dir){
 	fs.writeFile(path.resolve(__dirname,dir+file.name),file.data,function(err){
 		if(err) console.log(err);
