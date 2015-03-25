@@ -7,5 +7,3 @@ var db = mongoose.connect('mongodb://username:password@ds053139.mongolab.com:531
 mongoose.connection.once('connected', function(){
    console.log("Connected to database")
   });
-
-
