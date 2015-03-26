@@ -1,10 +1,14 @@
 /**
- * New node file
+ * Displays the page for viewing the applications in the simulations from the 
+ * Administrator's point of view.
  */
 function viewAdminApplicationsTemplate(applications){
+	//gets the html from index.html
 	var template = document.getElementById('template19').innerHTML;
-	 textile = Hogan.compile(template);
-	 context = {'apps' : applications};
-	 tpl = textile.render(context);
-	 return tpl;
+	//compiles the template with hogan
+	textile = Hogan.compile(template);
+	//inserts the applications into the page
+	context = {'apps' : applications};
+	tpl = textile.render(context);
+	return tpl;
 }
