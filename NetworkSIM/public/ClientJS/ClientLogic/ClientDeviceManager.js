@@ -38,3 +38,19 @@ function moveDeviceToNetwork( device_token, network_id){
 		console.log("moveDeviceToNetwork recieved null parameters");
 	}
 }
+
+function removeDeviceFromNetwork(device_token){
+	var local_simulation = get_local_simulation();
+	if (device_token!==null && local_simulation!==null){
+		var params = {
+			'simulation_id':local_simulation._id;
+			'device_token':device_token;
+		};
+		var url = '/move/Device/Freelist';
+		var timestamp = new Date();
+		addToEventQueue(url,params,timestamp);
+	}
+	else{
+		console.log("removeDeviceFromNetwork recieved null parameters");
+	}
+}
