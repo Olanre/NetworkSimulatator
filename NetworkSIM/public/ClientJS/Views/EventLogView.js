@@ -1,8 +1,11 @@
-
+//holds the current simulation map
 var SimulationMap={};
 
+//holds the current list of history
 var current_simulation_history_list;
+//holds the current simulation history states
 var stateList={};
+//holds the current list of events done on the simulation
 var simulationEvents=[];
 
 /**
@@ -51,7 +54,9 @@ function updatePageTitle(timestamp){
 	var title= document.getElementById("page-title");
 	title.innerHTML="Viewing event logs up to "+timestamp;
 }
-
+/**
+ * Updates the with what simulation log you are viewing
+ */
 function updateSimulationLogTitle(timestamp){
 	var title = document.getElementById('simulation-log-title');
 	title.innerHTML='logs for this simulation at '+timestamp;
@@ -65,6 +70,10 @@ function updateDeviceLogTitle(deviceName){
 	deviceTitle.innerHTML="Viewing event log for: "+deviceName;
 }
 
+/**
+ * Clears the title of what device log you are viewing
+ * Used when selecting a new log date to view from
+ */
 function clearDeviceLogTitle(){
 	var deviceTitle=document.getElementById("deviceLog-title");
 	deviceTitle.innerHTML='Select a device in the GUI to view its logs';
@@ -102,6 +111,10 @@ function populateDeviceLogs(deviceEvents){
 		deviceLogs.innerHTML+="<option value="+deviceEvents[i]+">"+deviceEvents[i]+"</option>";
 	}
 }
+
+/**
+ * Clears the list of logs for devices
+ */
 function clearDeviceLogs(){
 	var deviceLogs = document.getElementById("device-log");
 	deviceLogs.innerHTML="";
@@ -187,11 +200,12 @@ function parseSimulationLogs(history_list, timeStamp){
 	}
 }
 
-
+/**
+ * retrieves the logs from the simulation
+ */
 function retrieveLogs(simulation){
 	//calls function from localSimulationManager
 	var device_list=getAllDeviceObjects(simulation);
-	
 	
 	for (var i =0;i<device_list.length;i++){
 		simulationLogs+=device_list[i].activity+'\n';
