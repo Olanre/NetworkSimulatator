@@ -1,7 +1,15 @@
-function updateTopology(shapesList,partitionList){
+/**
+ * Functions for managing viewing the network topology
+ */
 
+/**
+ * Updates the network topology with a new partition list given the shapes list
+ */
+function updateTopology(shapesList,partitionList){
 	var network_list,device_list;
 	var networkShape,deviceShape;
+	//goes through each shape in the shapes list and compares its status to the corresponding 
+	//element in the partition list, if different, update it to the partition list
 	for(pIndex in partitionList){
 
 		network_list=partitionList[pIndex].network_list;
@@ -32,7 +40,9 @@ function updateTopology(shapesList,partitionList){
 		}
 	}
 }
-//lol i love writing bad code
+/**
+ * Finds a correspoding shape in the shapes list given a token, network_id, or partition_id
+ */
 function findCorrespondingShape(shapesList,item){
 
 	for(index in shapesList){
