@@ -1,3 +1,6 @@
+/**
+ * Handles all functionality of the event queue on the client side
+ **/
 
 /**
  * Initializes the local_events, which will hold all of the events
@@ -5,6 +8,7 @@
  * to be handled and recorded. This is stored in the JSON format.
  */ 
 function newEventQueue(){
+	//fills the new event queue object
 	var queue = {};
 	queue.token = '';
 	queue.eventQueue = [];
@@ -21,6 +25,7 @@ function newEventQueue(){
  * @timeStamp: is the time at which this event occurred
  */
 function addToEventQueue(route, event_data, time_stamp){
+	//gets the events stored on the client
 	var local_events = get_local_events();
 	if(local_events == null){
 		local_events = newEventQueue();
@@ -30,13 +35,17 @@ function addToEventQueue(route, event_data, time_stamp){
 	local_events.eventQueue.push(query);
 	local_events.token = getLocalDeviceToken();  
 	local_events.simulationId = getLocalSimulationId();
-	
+	//stores the events on the client
 	store_local_events(local_events);
 	if(connected == true){
+		//sends the events to the server
 		syncWithServer();
 	}
 }
 
+/**
+ * updates the token used to identify the event queue for the client
+ */
 function updateLocalEventsToken(token){
 	//gets the events
 	var local_events = get_local_events();
@@ -46,6 +55,9 @@ function updateLocalEventsToken(token){
 	store_local_events(local_events);
 }
 
+/**
+ * Updates the unique id (token) used to identify the event queue from the client
+ */
 function updateLocalEventsSimulationId(id){
 	//gets the events
 	var local_events = get_local_events();
@@ -60,15 +72,18 @@ function updateLocalEventsSimulationId(id){
 
 
 /**
- * Clears the event queue
+ * Clears the event queue for the client
  */
 function clearEventQueue(){
+	//gets the local events
 	local_events = get_local_events();
 	if(local_events !== null){
+		//empties the event queue
 		local_events.eventQueue = [];
 		store_local_events(local_events);
 	}
 	else{
+		//if null, create a new event queue 
 		local_events = newEventQueue();
 	}
 }
