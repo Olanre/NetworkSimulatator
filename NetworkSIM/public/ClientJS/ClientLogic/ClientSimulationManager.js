@@ -1,14 +1,21 @@
 /**
+ * Code for managing simulation objects on the client side
+ */
+
+/**
  * CreateSimulation creates a new simulation in the application.
  */
 function CreateSimulation(){
 	if(checkParametersWereEntered()){
-		//deactivates the button
+		//deactivates the create simulation button
 		document.getElementById('button-create-simulation').onclick=null;
+		//creates the event to send to the server
 		var body = wrapCreateSimulation();
 		var url = "/create/Simulation";
 		var timestamp = new Date();
+		//adds the event to the event queue
 		addToEventQueue(url, body, timestamp);
+		//loads the view of all created simulations
 		setTimeout( function(){ simulationListView(); }
 		, 1000 );
 	}
@@ -22,12 +29,15 @@ function CreateSimulation(){
  * @returns create_simulation, the new simulation object created
  */
 function wrapCreateSimulation() {
+	//gets the parameters of the new simulation to create
 	var simulation_name = document.getElementById('simulation_name').value;
 	var num_devices = document.getElementById('num_devices').value;
 	var num_networks = document.getElementById('num_networks').value;
 	var tokenMethod = document.getElementById('tokenmethod').value;
 	var config_div = document.getElementById('config-map');
 	var string = generateConfigMap(1, 'config-map');
+
+	//creates the create simulation object with this information
 	var create_simulation = {};
 	create_simulation.num_devices = parseInt(num_devices);
 	create_simulation.num_networks = parseInt(num_networks);
@@ -40,6 +50,7 @@ function wrapCreateSimulation() {
 	create_simulation.activity_logs = '';
 	
 	console.log(create_simulation);
+	//returns the simulation information to be added to the event
 	return create_simulation;
 }
 
@@ -47,6 +58,7 @@ function wrapCreateSimulation() {
  * Function to get a new simulation from the server
  */
 function getSimulation(simulation_id){
+	//creates the body of the event
 	var param = {
 			'token' :  getLocalDeviceToken(),
 			'simulation_id': simulation_id,
@@ -62,6 +74,7 @@ function getSimulation(simulation_id){
  */
 function getSimulationHistory(simulation_id){
 	console.log(simulation_id);
+	//creates the body of the event to send to the server
 	var param = {
 			'token' :  getLocalDeviceToken(), 
 			'simulation_id': simulation_id,
@@ -77,16 +90,21 @@ function getSimulationHistory(simulation_id){
 
 
 var incr = 0;
-/** Generates the config map from UI elements
+/** 
+ * Generates the fields on the create simulation page for the user to populate 
+ * and create a new simulation.
  * 
- * @param level, the starting recursive level
+ * @param level, the level of the field to insert
  * @param start_element, the starting HTML element
  * @returns {String}, the rendered JSON stringified config map
  */
 function generateConfigMap(level, start_element){
 	switch(level){
+		//if the level is partition
 		case 1:
+			//gets all the partitions from the input field 
 			var partitions = getAllPartitionsInputField();
+			//creates the simulation map with the inputted parameters
 			var simulation_map = '{';	
 			for (var i = 0; i < partitions.length; i++){
 				var partition_name = partitions[i].value;
@@ -97,12 +115,17 @@ function generateConfigMap(level, start_element){
 					simulation_map +=  '"' + partition_name + '": {' + generateConfigMap(2, start_element) + '},';
 				}
 			}
+			//returns the simulation map as an object
 			return simulation_map + '}' ;
 			break;
+		//if the level is network
 		case 2:
+			//gets all inputted networks
 			var networks = getAllNetworksInputField(start_element);
+			//generates the simultion map
 			var simulation_map = '';	
 			for (var i = 0; i < networks.length; i++){
+				//for each network, generates the information needed to be added to the simulation map
 				var network_name = networks[i].value;
 				simulation_map  += '"' + network_name + '" : {';
 				start_element = getGrandParentElement(networks[i]);
@@ -110,15 +133,17 @@ function generateConfigMap(level, start_element){
 					simulation_map +=  generateConfigMap(3, start_element) + '} ';
 				}else{
 					simulation_map +=  generateConfigMap(3, start_element) + '}, ';
-				}
-				
-				 
+				} 
 			}
 			return simulation_map;
 			break;
+		//if the level is device
 		case 3:
+			//gets all of the inputted devices
 			var devices = getAllDevicesInputField(start_element);
+			//creates an empty simulation map
 			var simulation_map = '';		
+			//fills the simulation map with the device
 			for (var i = 0; i < devices.length; i++){
 				incr += 1;	
 				var device_name = devices[i].value;
@@ -133,12 +158,16 @@ function generateConfigMap(level, start_element){
 	}
 }
 
-//checks if the parameters to creating a simulation were input correctly.
+/*
+ *checks if the parameters to creating a simulation were input correctly.
+ */
 function checkParametersWereEntered(){
+	//gets each of the elements
 	var num_devices=document.getElementById('num_devices').value;
 	var simulation_name=document.getElementById('simulation_name').value;
 	var num_networks=document.getElementById('num_networks').value;
 	var token_method=document.getElementById('tokenmethod').value;
+	//checks that each of the elements were entered correctly
 	if(isInt(num_devices)&&num_devices!==null&&num_devices!==''&&isInt(num_networks)&&num_networks!==null&&num_networks!==''&&
 			simulation_name!==null&&simulation_name!==''&&token_method!==''&&token_method!==null){
 		return true;
