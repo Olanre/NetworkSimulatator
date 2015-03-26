@@ -1,4 +1,8 @@
 /**
+ * Functions to handle interacting with the local storage on the client
+ */
+
+/**
  * getFromStorage gets an item from the local storage on the device by id
  * @param id: the key of the element to retrieve from local storage
  */
@@ -51,14 +55,14 @@ function get_local_simulation(){
 }
 
 /**
- * gets the event queue from session storage
+ * Returns the event queue from session storage
  */
 function get_local_events(){
 	return JSON.parse(getFromStorage('localevents'));
 }
 
 /**
- * gets the event queue from session storage
+ * Returns the event queue from session storage
  */
 function get_local_history(){
 	return JSON.parse(getFromStorage('simulation_history'));
@@ -68,22 +72,37 @@ function get_local_history(){
  * 				Modifiers
  * *****************************************************/
 
+/**
+ * Stores a simulation object in the local storage of the client
+ */
 function store_local_simulation(new_simulation){
 	putinStorage( 'simulation', JSON.stringify(new_simulation));
 }
 
+/**
+ * Stores a device objet in the local storage of the client
+ */
 function store_local_device(new_device){
 	putinStorage( 'device', JSON.stringify(new_device));
 }
 
+/**
+ * Stores a list of current simulation ids in the local storage of the client
+ */
 function store_local_simulation_list(new_simulation_names){
 	putinStorage( 'simulation_list', JSON.stringify(new_simulation_names));
 }
 
+/**
+ * Stores a new event queue in the local storage of the client
+ */
 function store_local_events(new_events){
 	putinStorage( 'localevents', JSON.stringify(new_events));
 }
 
+/**
+ * Stores a new simulation history in the local storage of the client
+ */
 function store_local_history(new_events){
 	putinStorage( 'simulation_history', JSON.stringify(new_events));
 }
