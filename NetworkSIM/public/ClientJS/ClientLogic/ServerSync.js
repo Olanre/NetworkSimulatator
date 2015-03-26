@@ -27,7 +27,7 @@ function syncWithServer(){
 
 
 /**
- * Callback function for receiving a new appState object (all information we need from the server)
+ * Callback function for receiving a new simulation object (all information we need from the server)
  */
 socket.on('syncState', function(appState){
 	//reset the current event queue after sending an item
