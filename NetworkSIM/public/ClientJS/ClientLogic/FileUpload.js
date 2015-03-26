@@ -1,7 +1,15 @@
+/**
+ * Functions which handle uploading files on the client side to the server
+ */
+
+//list of currently uploaded files
 var current_files=[];
 
 var uploadEvent={};
 
+/**
+ * 
+ */
 function handleFiles(file_type) {
 		
 		current_files = document.getElementById(file_type).files;		

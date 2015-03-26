@@ -1,6 +1,6 @@
 /**
  * Helper file for getting elements from simulation object which is stored in local storage and retrieved from the client
- * ALL OF THESE METHODS HAVE BEEN TESTED AND WORK CORRECTLY.
+ * These have been all tested to ensure that they work correctly 
  */
 /**
  * gets the list of partition id's for this current simulation
@@ -8,10 +8,11 @@
 function getAllPartitionIds(){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
+		//gets the partition list from the simulation
 		var partition_list = local_simulation.partition_list;
 		var list = [];
+		//for each partition, get its unique ID
 		for(var i = 0; i < partition_list.length; i++){
-			//hopefully using this instead of partition_list[i]['_id'] works
 			list.push(partition_list[i]._id);
 		}
 		return list;
@@ -22,11 +23,12 @@ function getAllPartitionIds(){
 }
 
 /**
- * gets a list of all partition objects in this simulation
+ * Returns a list of all partition objects in this simulation
  */
 function getAllPartitionObjects(){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
+		//returns the list of partition objects
 		return local_simulation.partition_list;
 	}
 	else{
@@ -36,16 +38,21 @@ function getAllPartitionObjects(){
 
 
 /**
- * gets the list of all network Id's in the simulation
+ * Returns the list of all network Id's in the simulation
  */
 function getAllNetworkIds(){
 	var local_simulation = get_local_simulation();
+	//if the currently stored simulation is not null
 	if (local_simulation!==null){
+		//gets the list of partition objects from the simulation
 		var partition_list = local_simulation.partition_list;
 		var list = []; 
-		for(var i = 0; i < partition_list.length; i++){
-			var networks = partition_list[i].network_list;
+			//gets the list of network objects from the partition
+			var networks = partition_list[i].network_list
+		//for each partition
+		for(var i = 0; i < partition_list.length; i++){;
 			for (var j = 0; j < networks.length; j++){
+				//addds the id of that network to the list
 				list.push(networks[j]._id);
 			}
 		}
@@ -57,16 +64,20 @@ function getAllNetworkIds(){
 }
 
 /**
- * retrieves a list of all network objects in the simulation
+ * Retrieves a list of all network objects in the simulation
  */
 function getAllNetworkObjects(){
 	var local_simulation = get_local_simulation();
+	//if the current simulation object of the client is not null
 	if (local_simulation!==null){
+		//gets the list of partitions of that simulation
 		var partition_list = local_simulation.partition_list;
 		var list = []; 
 		for(var i = 0; i < partition_list.length; i++){
+			//gets the list of networks of that partition
 			var networks = partition_list[i].network_list;
 			for (var j = 0; j < networks.length; j++){
+				//adds the network objects to the list
 				list.push(networks[j]);
 			}
 		}
@@ -78,15 +89,18 @@ function getAllNetworkObjects(){
 }
 
 /**
- * retrieves a list of all network objects in the simulation
+ * Retrieves a list of all network objects in the simulation
  */
 function getAllNetworkObjects(simulation){
 	if (simulation!==null){
+		//gets the list of partition in that simulation
 		var partition_list = simulation.partition_list;
 		var list = []; 
 		for(var i = 0; i < partition_list.length; i++){
+			//gets the list of partitions in that simulation 
 			var networks = partition_list[i].network_list;
 			for (var j = 0; j < networks.length; j++){
+				//adds the network to the list
 				list.push(networks[j]);
 			}
 		}
@@ -98,16 +112,19 @@ function getAllNetworkObjects(simulation){
 }
 
 /**
- * gets all of the tokens of the devices in this simulation
+ * Returns all of the tokens of the devices in this simulation
  */
 function getAllDeviceTokens(){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null){
+		//gets the list of networks
 		var networklist = getAllNetworkObjects();
 		var list = [];
 		for( var i = 0; i < networklist.length; i++){
+			//for each device in the network
 			var devicelist = networklist[i].device_list;
 			for(var j = 0; j < devicelist.length; j++){
+				//adds the token of that device to the list 
 				list.push(devicelist[j].token);
 			}
 		}
@@ -119,16 +136,19 @@ function getAllDeviceTokens(){
 }
 
 /**
- * gets all of the device objects in this simulation
+ * Retrieves all of the device objects in this simulation
  */
 function getAllDeviceObjects(){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
 		var list=[];
+		//gets all network objects for this simulation
 		var network_list=getAllNetworkObjects();
 		for (var i=0;i<network_list.length;i++){
+			//gets the list of devices from each network
 			var device_list=network_list[i].device_list;
 			for (var j=0; j<device_list.length;j++){
+				//adds each to the list
 				list.push(device_list[j]);
 			}
 		}
@@ -139,15 +159,18 @@ function getAllDeviceObjects(){
 	}
 }
 /**
- * gets all device objects in a given simulation
+ * Returns all device objects in a given simulation
  */
 function getAllDeviceObjects(simulation){
 	if (simulation!==null){
 		var list=[];
+		//gets the list of all networks in a simulation
 		var network_list=getAllNetworkObjects(simulation);
 		for (var i=0;i<network_list.length;i++){
+			//gets the list of devices in this network
 			var device_list=network_list[i].device_list;
 			for (var j=0; j<device_list.length;j++){
+				//adds that device to the list
 				list.push(device_list[j]);
 			}
 		}
@@ -159,7 +182,7 @@ function getAllDeviceObjects(simulation){
 }
 
 /**
- * returns the network object given the id of that network
+ * Returns the network object given the id of that network
  */
  function getNetworkObjectById(network_id){
  	var network_object=null;
@@ -174,13 +197,14 @@ function getAllDeviceObjects(simulation){
  }
 
 /**
- * gets a particular partition object given its _id
+ * Returns a particular partition object given its _id
  */
- function getPartitionObjectById(partition_id){
+function getPartitionObjectById(partition_id){
  	var partition_object=null;
- 	//i'm not checking for null here, is that right?
+ 	//gets the list of all partitions in this simulation
  	var partition_list=getAllPartitionObjects();
  	for (var i=0; i<partition_list.length;i++){
+ 		//find the partition with the same id in the list
  		if(partition_list[i]._id == partition_id){
  			partition_object=partition_list[i];
  		}
@@ -188,11 +212,15 @@ function getAllDeviceObjects(simulation){
  	return partition_object;
  }
 
- function getDeviceObjectByToken(device_token){
+/**
+ * Gets the device object given a device token
+ */
+function getDeviceObjectByToken(device_token){
  	var device_object=null;
- 	//i'm not checking for null here, is that right?
+ 	//gets the list of all device objects in this simulation
  	var device_list=getAllDeviceObjects();
  	for (var i=0; i<device_list.length;i++){
+ 		//if the device has the same token, return that token.
  		if(device_list[i].token==device_token){
  			device_object=device_list[i];
  		}
@@ -201,12 +229,14 @@ function getAllDeviceObjects(simulation){
  }
 
 /**
- * gets all the device tokens within a particular network object
+ * Return all the device tokens within a particular network object
  */
 function getDeviceTokensOfNetworkId(network_id){
+	//gets the network by the token
 	var network =getNetworkObjectById(network_id);
 	if(network!==null){
 		var list=[];
+		//for each device in the network, return a list of their tokens
 		for (var i=0; i<network.device_list.length;i++){
 			var token= network.device_list[i].token;
 			list.push(token);
@@ -219,9 +249,10 @@ function getDeviceTokensOfNetworkId(network_id){
 }
 
 /**
- * gets all of the device objects within a particular network
+ * Returns all of the device objects within a particular network
  */
 function getDeviceObectsOfNetworkId(network_id){
+	//gets the network belonging to that network id
 	var network =getNetworkObjectById(network_id);
 	if(network!==null){
 		return network.device_list;
@@ -232,7 +263,7 @@ function getDeviceObectsOfNetworkId(network_id){
 }
 
 /**
- * gets the activity logs for this simulation
+ * Returns the activity logs for this simulation
  */
 function getSimulationActivityLogs(){
 	var local_simulation = get_local_simulation();
@@ -245,16 +276,19 @@ function getSimulationActivityLogs(){
 }
 
 /**
- * gets the network id that a device is connected to
+ * Returns the network id that a device is connected to
  */
 function getNetworkIdOfDevice(device_token){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null&&device_token!==null){
+		//get all the network objects in the simulation
 		var list = getAllNetworkObjects();
 		var network_id = '';
+		//for each network get the list of devices in that network
 		for(var i = 0; i < list.length; i++){
 			var device_list = list[i].device_list;
 			for(var j = 0; j < device_list.length; j++){
+				//if the token of this device is the same, return the network id
 				if(device_list[j].token == device_token){
 					network_id = list[i]._id;
 				}
@@ -269,17 +303,19 @@ function getNetworkIdOfDevice(device_token){
 }
 
 /**
- * gets the network object which contains a device
+ * Returns the network object which contains a device
  */
 function getNetworkObjectOfDevice(device_token){
-	var local_simulation = get_local_simulation();
-	if(local_simulation!==null&&device_token!==null){
+	if(device_token!==null){
+		//gets the list of networks from the current simulation
 		var network_list = getAllNetworkObjects();
 		var network_obj = null;
 		for(var i = 0; i < network_list.length; i++){
+			//gets the list of devices for each network
 			var device_list = network_list[i].device_list;
 			for(var j = 0; j < device_list.length; j++){
 				if(device_list[j].token == device_token){
+					//if the device tokens are the same, return that network object
 					network_obj = network_list[i];
 				}
 			}
@@ -292,14 +328,18 @@ function getNetworkObjectOfDevice(device_token){
 }
 
 /**
- * gets the unique id of the partition which a network is in.
+ * Returns the unique id of the partition which a network is in.
  */
 function getPartitionIdOfNetwork(network_id){
+	//gets the current simulation of the client
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
+		//gets the list of partitions for this simulation
 		var partition_list = local_simulation.partition_list;
 		var partition_id = '';
 		for(var i = 0; i < partition_list.length; i++){
+			//for each network in the partition, check if matching ids, then return the id
+			//of the partition containing it.
 			var networks = partition_list[i].network_list;
 			for(var j = 0; j < networks.length; j++){
 				if(networks[j]._id == network_id){
@@ -316,16 +356,20 @@ function getPartitionIdOfNetwork(network_id){
 }
 
 /**
- * gets the partition object that a network is in
+ * Returns the partition object that a network is in
  */
 function getPartitionObjectOfNetwork(network_id){
+	//gets the current simulation that the client is in
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
+		//gets list of partitions in this simulation
 		var partition_list = local_simulation.partition_list;
 		var partition_obj = '';
 		for(var i = 0; i < partition_list.length; i++){
+			//gets list of networks in this partition
 			var networks = partition_list[i].network_list;
 			for(var j = 0; j < networks.length; j++){
+				//if the id of the network matches the id, then return the partition object containing it
 				if(networks[j]._id == network_id){
 					
 					partition_obj = partition_list[i];
@@ -340,13 +384,15 @@ function getPartitionObjectOfNetwork(network_id){
 }
 
 /**
- * gets the partition that a particular device is in
+ * Returns the partition that a particular device is in
  */
 function getPartitionIdOfDevice( device_id){
 	if(device_id!==null){
 		var Partition_id = '';
+		//gets the network id containing this device
 		var network_id =  getNetworkIdOfDevice(device_id);
 		if(network_id !== ''){
+			//gets the partition id of the partition containing the network
 			Partition_id =  getPartitionIdOfNetwork(network_id);
 		}
 		//if empty string is returned, means the device is not in a network.
@@ -358,11 +404,13 @@ function getPartitionIdOfDevice( device_id){
 }
 
 /**
- * Gets the unique Id of this simulation
+ * Returns the unique Id of this simulation
  */
 function getLocalSimulationId(){
+	//gets the simulation object which the client is currently in
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
+		//returns the id of that simulation object
 		return local_simulation._id;
 	}
 	else{
@@ -371,6 +419,9 @@ function getLocalSimulationId(){
 	}
 }
 
+/**
+ * Returns the event logs of this current simulation object 
+ **/
 function getLocalSimulationLogs(){
 	var local_simulation = get_local_simulation();
 	if (local_simulation!==null){
