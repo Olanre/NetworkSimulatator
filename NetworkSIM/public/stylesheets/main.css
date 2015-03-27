@@ -194,6 +194,14 @@ CSS for the new simulation page
   padding:10px;
 }
 
+#input-num-error{
+  font-size:15px;
+  color: #F05A75;
+  height:19px;
+  padding:2px;
+  margin:0px;
+}
+
 
 
 /*-------------------------------------

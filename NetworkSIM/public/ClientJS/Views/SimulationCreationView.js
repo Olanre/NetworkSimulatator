@@ -28,19 +28,25 @@ function expandField(selector){
 	//if changed the number of networks allowed for this simulation
 	if (selector.name == 'netnumbers'){
 		if(number<created_network_field){
-			//HANDLE THIS
+			var error=document.getElementById('input-num-error');
+			error.innerHTML='invalid number of networks, please delete some fields.';
 		}
 		else{
 			netnumbers = number-created_network_field;
+			var error=document.getElementById('input-num-error');
+			error.innerHTML='';
 		}
 	}
 	//if changed the number of devices allowed for this simulation
 	if( selector.name == 'devicenumbers'){
 		if(number<created_device_field){
-			//HANDLE THIS
+			var error=document.getElementById('input-num-error');
+			error.innerHTML='invalid number of devices, please delete some fields.';
 		}
 		else{
 			devicenumbers = number-created_device_field;
+			var error=document.getElementById('input-num-error');
+			error.innerHTML='';
 		}
 	}
 	//displays the number of networks and devices left to be added
