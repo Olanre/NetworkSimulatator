@@ -1,10 +1,18 @@
 /**
+ * Functions which handle viewing different pages in our application
+ */
+
+/**
  * Renders the start page
  */
 window.onload = function(){
+	//loads the default sidebar for not being in a simulation
 	defaultsideBarView();
+	//loads the css
 	loadStyleSheet('../css/main.css');
+	//loads the default header
 	defaultheaderView();
+	//calls the function to send information to necessary views
 	updateAllViews();	
 }
 
@@ -33,17 +41,7 @@ function simulationListView(){
 }
 
 /**
- * loadAppContent loads the content from a sync to the server
- *
-function loadAppContent(){
-	syncWithServer();
-	updateAllViews(400);
-	
-}*/
-
-
-/**
- * updates all of the views 
+ * Loads the necessary views for the start of viewing our application
  */
 function updateAllViews( timeout){
 	setTimeout(function() {
@@ -64,6 +62,9 @@ function AccountView(){
 	document.getElementById('my-account-link').className='active';
 }
 
+/**
+ * Displays the header for viewing a current device
+ */
 function deviceHeaderView(){
 	var local_device = get_local_device();
 	var local_session = get_local_simulation();
@@ -72,6 +73,9 @@ function deviceHeaderView(){
 	content.innerHTML = html;
 }
 
+/**
+ * Displays the page for viewing applications as an Administrator
+ */
 function adminAppsView(){
 	removeClass('active');
 	document.getElementById('nav-option-applications').className='active';
