@@ -63,15 +63,10 @@ function updateData(){
 	document.getElementById("fileSize").innerHTML = fileSize;
 }
 
-<<<<<<< HEAD
-function DeleteFile(){
-=======
 /**
  * Delete a file from the table on the page
  */
-function DeleteFile(int){
->>>>>>> refs/remotes/origin/master
-				
+function DeleteFile(int){		
 	 updateData();
 }
 
@@ -269,12 +264,9 @@ function pushFileEvent(file_type){
 		console.log(uploadEvent);
 		//add the event to the event queue
 		addToEventQueue('/upload',uploadEvent,new Date());
-<<<<<<< HEAD
 		var btn = document.getElementById('UploadButton');
 		if(btn !== null) btn.innerHTML = "Please Wait";
-=======
 		//send the information to the server
->>>>>>> refs/remotes/origin/master
 		setTimeout(function(){
 			syncWithServer();
 			//sets the view to simulation management
