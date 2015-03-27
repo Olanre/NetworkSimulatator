@@ -329,5 +329,4 @@ function generateNetworkTable(){
 function generateDeviceClass(){
 	var device_section = document.getElementById('template4');
 	return device_section.innerHTML;
-	
 }

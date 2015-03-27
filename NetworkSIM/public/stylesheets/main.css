@@ -263,7 +263,7 @@ Upload Apps RDTs and Test Scripts
 
 #network-scroll-table-wrapper{
   position:relative;
-  width:60%;
+  width:50%;
   margin-left:auto;
   margin-right:auto;
 }
@@ -280,7 +280,7 @@ Upload Apps RDTs and Test Scripts
 }
 
 #network-scroll-table-wrapper table tbody td{
-  padding-left:200px;
+  padding-left:50px;
 }
 
 #network-scroll-table-wrapper table thead td .table-header-text{
@@ -291,6 +291,16 @@ Upload Apps RDTs and Test Scripts
   height:20px;
 }
 
+#net-name-header{
+}
+
+#pop-name-header{
+  padding-left:200px;
+}
+
+#action-name-header{
+  padding-left:200px;
+}
 
 /*-----------------------
  *handles the scroll bar for our webpages

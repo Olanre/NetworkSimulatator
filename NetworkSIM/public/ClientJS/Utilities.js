@@ -239,3 +239,22 @@ function isFunction(functionToCheck) {
 	 var getType = {};
 	 return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
+
+/**
+ * Checks if an array contains duplicate elements
+ */
+ function arrayContainsDuplicates(arr){
+	var sorted_arr = arr.sort(); 
+	var results = [];
+	for (var i = 0; i < arr.length - 1; i++) {
+	    if (sorted_arr[i + 1] == sorted_arr[i]) {
+	        results.push(sorted_arr[i]);
+	    }
+	}
+	if (results.length>0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}

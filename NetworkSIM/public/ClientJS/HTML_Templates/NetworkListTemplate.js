@@ -11,9 +11,9 @@ function NetworksListTemplate(networks, local_device){
 			"<table class='center-table'>"+
 				"<thead>"+
 					"<tr>"+
-						"<td><scpan class='table-header-text'>Network Name</td></span>"+
-						"<td><scpan class='table-header-text'>Network Population</td></span>"+
-						"<td><scpan class='table-header-text'>Action</td></span>"+
+						"<td id='net-name-header'><scpan class='table-header-text'>Network Name</td></span>"+
+						"<td id ='pop-name-header'><scpan class='table-header-text'>Network Population</td></span>"+
+						"<td id='action-name-header'><scpan class='table-header-text'>Action</td></span>"+
 					"</tr>"+
 				"</thead>"+
 				"</tbody>";
