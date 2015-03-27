@@ -5,8 +5,18 @@ function NetworksListTemplate(networks, local_device){
 	//gets the networks created by a device
 	var networks_created = local_device.networks_created;
 	//str holds the html for the page
-	var str = "<h1 class='flip-up-text'>Available Networks</h1>"+
-	"<table class='center-table'><tr class='tableHeading'><td>Network Name</td><td>Network Population</td><td>Action</td></tr>";
+	var str = "<h1 class='flip-up-text'>Available Networks</h1>"+"<br>"+
+			"<div id='network-scroll-table-wrapper' >"+
+			"<div id='network-scroll-table-scroll'>"+
+			"<table class='center-table'>"+
+				"<thead>"+
+					"<tr>"+
+						"<td><scpan class='table-header-text'>Network Name</td></span>"+
+						"<td><scpan class='table-header-text'>Network Population</td></span>"+
+						"<td><scpan class='table-header-text'>Action</td></span>"+
+					"</tr>"+
+				"</thead>"+
+				"</tbody>";
 	//for each network, add html for interacting with that network to the page
 	for(var i = 0; i< networks.length; i++){
 		//if this network is the current network containing this device
@@ -35,6 +45,6 @@ function NetworksListTemplate(networks, local_device){
 		}
 	}
 	//end the table
-	str += "</table>" +"";
+	str += "</tbody></table>" +"</div></div>";
 	return str;
 }
