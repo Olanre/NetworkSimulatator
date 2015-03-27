@@ -97,6 +97,10 @@ function wrapRDTManipulator(device, rdt_element, simulation){
 	return event_data;
 }
 
+function generateReport(){
+
+}
+
 
 function renderMoves(){
 	switch(device_mobility) {

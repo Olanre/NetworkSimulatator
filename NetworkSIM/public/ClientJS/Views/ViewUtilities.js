@@ -3,6 +3,19 @@
  */
 
 /**
+ * Toggle the visibility of a div by id
+ */
+function toggle_visibility(id , element) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+       }else{
+          e.style.display = 'block';
+       }
+}
+
+
+/**
  * clears all of div's on the page 
  */
 function clearPageElements(){
