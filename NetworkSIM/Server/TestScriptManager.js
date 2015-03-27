@@ -71,7 +71,7 @@ function runScript(simulation){
 		
 		moves--;
 		
-		if(counter > 500) break;
+		//if(counter > 500) break;
 	}
 	
 	
