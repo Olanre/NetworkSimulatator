@@ -146,6 +146,10 @@ ul{
   margin-right:auto;
 }
 
+.text-left{
+  text-align:left;
+}
+
 /*---------------------
 CSS for the simulations page
 ----------------------*/
@@ -276,7 +280,7 @@ Upload Apps RDTs and Test Scripts
 }
 
 #network-scroll-table-wrapper table{
-  width:50%;
+  width:500px;
 }
 
 #network-scroll-table-wrapper table tbody td{
@@ -319,10 +323,31 @@ Upload Apps RDTs and Test Scripts
 }
 
 #network-scroll-table-scroll::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
     background: rgba(250, 250, 185, 1); 
 }
+
+/*--------------------------------
+Handles the device log views
+---------------------------------*/
+
+#logs-scroll-box{
+  margin-left:auto;
+  margin-right:auto;
+  background-color:#7D7D7D;
+  height:400px;
+  overflow:scroll;
+  width:80%;
+  border-radius:5px;
+}
+
+#logs-scroll-box::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(250, 250, 185, 1); 
+}
+
 
 /* ---------------------------------- 
 

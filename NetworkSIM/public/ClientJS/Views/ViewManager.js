@@ -204,6 +204,9 @@ function appDefaultView(){
 		//sets the page to view to 'user information' page
 		var apps = DeviceAppsListTemplate(local_device.apps);
 		var content = getContainer();
+		if(local_device.apps==''||local_device.apps==null){
+			apps += "No applications are registed to this device.";
+		}
 		content.innerHTML = apps;
 		//sets the sidebar to the sidebar for when inside a simulation
 		simulationSideBarView();
@@ -408,7 +411,10 @@ function LogsView(){
 	
 	clearSection();
 	var logs = getLocalDeviceLogs();
-	var html = LogsTemplate(logs);
+	if(logs==''||logs==null){
+		logs="This device has not performed any events so far.";
+	}
+	var html= LogsTemplate(logs);
 	var content = getContainer();
 	content.innerHTML = html;
 	removeClass('active');

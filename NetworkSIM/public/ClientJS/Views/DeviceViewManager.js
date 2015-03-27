@@ -1,5 +1,5 @@
 /**
- * Handles the views for devices, routing the correct functions and making sure things display correctly
+ * Handles routing the correct functions and making sure things display correctly for a device
  */
 
  /**
@@ -7,8 +7,7 @@
   */
 function joinNetworkWrapper(device_token, network_id){
 	moveDeviceToNetwork(device_token, network_id);
-	NetworksListView();
-	//set timeout
+	setTimeout(function(){ NetworksListView(); }, 500);
 }
 
  /**
@@ -16,5 +15,5 @@ function joinNetworkWrapper(device_token, network_id){
   */
 function leaveNetworkWrapper(device_token, network_id){
 	removeDevicefromNetwork(device_token, network_id);
-	NetworksListView();
+	setTimeout(function(){ NetworksListView(); }, 500);
 }

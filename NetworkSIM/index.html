@@ -345,9 +345,11 @@
 
 <script type = "SimulationLogTemplate" id = "template17">
 	<h1 class='flip-up-text'>My Event Logs</h1>
-	<table class='center-table'>
-	 	{{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
-	</table>
+	<div id='logs-scroll-box'>
+		<table class='center-table text-left'>
+		 	{{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
+		</table>
+	</div>
 </script>
 <script type = "In Simulation Sidebar" id = "template18">	
 	<div class="sidebar">				
