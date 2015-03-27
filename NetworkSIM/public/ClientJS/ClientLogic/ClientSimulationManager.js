@@ -6,7 +6,7 @@
  * CreateSimulation creates a new simulation in the application.
  */
 function CreateSimulation(){
-	if(checkParametersWereEntered()&&verifyNoDuplicateFields()){
+	if(verifyNoDuplicateFields()&&checkParametersWereEntered()){
 		//deactivates the create simulation button
 		document.getElementById('button-create-simulation').onclick=null;
 		//creates the event to send to the server
@@ -18,9 +18,6 @@ function CreateSimulation(){
 		//loads the view of all created simulations
 		setTimeout( function(){ simulationListView(); }
 		, 1000 );
-	}
-	else{
-		alert("Please enter all parameters correctly");
 	}
 }
 
@@ -168,7 +165,7 @@ function checkParametersWereEntered(){
 	var num_networks=document.getElementById('num_networks').value;
 	var token_method=document.getElementById('tokenmethod').value;
 	//checks that each of the elements were entered correctly
-	if(!isInt(num_devices)||num_devices==null||num_devices!==''){
+	if(!isInt(num_devices)||num_devices==null||num_devices==''){
 		alert("Please enter an integer value for the number of devices.");
 		return false;
 	}
@@ -180,17 +177,19 @@ function checkParametersWereEntered(){
 		alert("Please enter a name for the simulation.");
 		return false;
 	}
-	if(token_method==''||token_method!==null){
+	if(token_method==''||token_method==null){
 		alert("please enter a token method.");
 		return false;
 	}
 	if(avail_networks>0){
 		alert("Please create all networks.");
+		return false;
 	}
 	if (avail_devices>0){
-		alert("Please create all devices.")
+		alert("Please create all devices.");
+		return false;
 	}
-	return true
+	return true;
 }
 
 /** Function to get all the partition input fields in the document
@@ -280,5 +279,5 @@ function verifyNoDuplicateFields(){
 		return false;
 	}
 
-	return false;
+	return true;
 }
