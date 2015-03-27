@@ -56,22 +56,24 @@ function runScript(simulation){
 		
 		ran_network = Util.randomElement( networkList );
 		ran_device = Util.randomElement( deviceList );
-		var event_data = wrapDeviceMover( ran_device, ran_network, simulation);
-		var time_stamp = new Date().toISOString();
-		SimulationManager.addDeviceToNetwork(event_data, time_stamp);
-		console.log("ran_device is " + ran_device.device_name + " ran_network is " + ran_network.networkName);
-		if((counter % frequency) === 0){
-			console.log("Counter is now " + counter + " Frequency is set at" + frequency);
-			ran_rdt = Util.randomElement(script_rdts);
-			event_data = wrapRDTManipulator(ran_device, ran_rdt, simulation)
-			RDTManager.manipulateRDT(event_data, time_stamp);
-			operations--;
-			
+		if(ran_network !== undefined && ran_device !== undefined && simulation !== undefined){
+			var event_data = wrapDeviceMover( ran_device, ran_network, simulation);
+			var time_stamp = new Date().toISOString();
+			SimulationManager.addDeviceToNetwork(event_data, time_stamp);
+			console.log("ran_device is " + ran_device.device_name + " ran_network is " + ran_network.networkName);
+			if((counter % frequency) === 0){
+				console.log("Counter is now " + counter + " Frequency is set at" + frequency);
+				ran_rdt = Util.randomElement(script_rdts);
+				event_data = wrapRDTManipulator(ran_device, ran_rdt, simulation)
+				RDTManager.manipulateRDT(event_data, time_stamp);
+				operations--;
+				
+			}
 		}
 		
 		moves--;
 		
-		if(counter > 500) break;
+		//if(counter > 500) break;
 	}
 	
 	

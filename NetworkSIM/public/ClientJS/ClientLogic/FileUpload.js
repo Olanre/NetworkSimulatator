@@ -66,6 +66,7 @@ function updateData(){
 /**
  * Delete a file from the table on the page
  */
+
 function DeleteFile(int){		
 	 updateData();
 }
