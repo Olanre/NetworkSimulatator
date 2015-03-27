@@ -17,3 +17,28 @@ function leaveNetworkWrapper(device_token, network_id){
 	removeDevicefromNetwork(device_token, network_id);
 	setTimeout(function(){ NetworksListView(); }, 500);
 }
+
+/**
+ * Wrapper to make a network on the network create page
+ */
+function Device_makeNetwork(element){
+	//gets the name of the network input on the page
+	var input = document.getElementById(element);
+	console.log(input);
+	if(input !== null){
+		var name = input.value;
+		if(name !== ''&&name!==null){
+			//creates a network with this name
+			alert("Created a network with name: "+name);
+			createNetwork(name);
+		}
+		else{
+			alert("Please enter a non-empty network name.");
+			console.log("Device_makeNetwork recieved null parameters");
+		}
+	}
+	else{
+		alert("Please enter a non-empty network name.");
+		console.log("Device_makeNetwork recieved null parameters");
+	}
+}

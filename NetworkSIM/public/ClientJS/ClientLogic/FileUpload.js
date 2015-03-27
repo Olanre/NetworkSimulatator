@@ -271,7 +271,16 @@ function pushFileEvent(file_type){
 		setTimeout(function(){
 			syncWithServer();
 			//sets the view to simulation management
-			SimulationManagementView();
-		},5000);
+			if (file_type=='Test'){
+				alert("Test script is being run. Please view the simulation history to see the effect.");
+				eventLogsView();
+			}
+			else if (file_type == 'App'){
+				adminAppsView();
+			}
+			else if(file_type == 'RDT'){
+				RDTsView();
+			}
+		},3000);
 	}
 }
