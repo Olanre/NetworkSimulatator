@@ -62,6 +62,12 @@ exports.findByUniqueID=function(uniqueID,list){
 	
 	return -1;
 }
+
+exports.randomElement = function(array){
+	var element = array[Math.floor(Math.random()*array.length)];
+	return element;
+}
+
 exports.deepCopy=function(item){
 	if(item !== undefined && item !== ''){
 		//console.log( " This is item after the check\n" + item);

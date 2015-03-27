@@ -428,7 +428,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 
 		</div>
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
+		<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
 	</div>
 </script>
 
@@ -494,7 +494,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
+		<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
 	</div>
 
 </script>
@@ -550,7 +550,7 @@
 	<h1 class='flip-up-text'>Automated Test Scripts</h1>
 	<h4> The Test Scripts currently available in our framework </h4>
 	
-	<table class='center-table'>
+	<!-- <table class='center-table'>
 	 	{{#tests}}<tr>
 			 <td> 
 				{{name}} 
@@ -564,6 +564,7 @@
 			<td id = '{{_id}}'> </td>
 		</tr>{{/tests}}
  	</table>
+ 	-->
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
@@ -576,11 +577,11 @@
   			 	"name": "firstTest",
  			 	"version": "0.1.0",
   			 	"description": "The first automatic test script for our framework",
-  			 	"paramters": [
-  			 		"rdts" : [{"name": "incRDT", "function" : "inc"} , {"name" : "decRDT", "function" : "dec"}],
+  			 	"parameters": {
+  			 		"rdts" : [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}],
   			 		"device_mobility" : "high",
   			 		"operations" : 25
-  			 	]
+  			 	}
 			}
 		</code>
 		<br> <br>
@@ -601,13 +602,13 @@
 				<td> rdts </td> 
 				<td> The list of rdts you want your test to use. </td> 
 				<td> Example 1 
-					<code> [{"name": "incRDT", "function" : "inc"} , {"name" : "decRDT", "function" : "dec"}] </code>
+					<code> [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}] </code>
 					<br>
 					Example 2 
-					<code>[ {"name" : "decRDT", "function" : "dec"}] </code>
+					<code>[ {"name" : "decRDT", "method" : "dec"}] </code>
 					<br>
 					 Example 3 
-					<code> [{"name": "incRDT", "function" : "inc"} ] </code>
+					<code> [{"name": "incRDT", "method" : "inc"} ] </code>
 					<br>
 				</td>
 			</tr>
@@ -632,7 +633,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload and Run</button>
+		<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload and Run</button>
 	</div>
 </script>
 <body>	

@@ -45,7 +45,7 @@ function manipulateRDT(event_data, time_stamp){
 	var rdt_method = event_data.method;
 	var val = 'Not available';
 	
-	if(simulation !== null){
+	if(simulation !== -1){
 		var deviceList = simulation.getDevices();
 		var device = Util.findByUniqueID(device_id,deviceList);
 		if(device !== -1){

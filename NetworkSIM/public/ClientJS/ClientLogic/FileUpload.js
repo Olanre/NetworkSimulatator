@@ -63,10 +63,14 @@ function updateData(){
 	document.getElementById("fileSize").innerHTML = fileSize;
 }
 
+<<<<<<< HEAD
+function DeleteFile(){
+=======
 /**
  * Delete a file from the table on the page
  */
 function DeleteFile(int){
+>>>>>>> refs/remotes/origin/master
 				
 	 updateData();
 }
@@ -79,6 +83,7 @@ function readFiles(){
 		uploadEvent= {name : '', simulation_id:'', spec : '', type : '',  files: []};
 		setup_reader(current_files[i]); 
 	}
+	
 }
 /**
  * Sets up the file reader for reading in a file from the client
@@ -141,6 +146,7 @@ function checkRDTSinApp(){
 		var rdts = local_simulation.rdts;
 		//gets the data from the specification file uploaded
 		var data = JSON.parse(uploadEvent.spec);
+		data = JSON.parse(data);
 		var key = "rdt_list";
 		//gets the rdt_list the specifcatio information
 		var app_rdts = data.rdt_list;
@@ -158,6 +164,45 @@ function checkRDTSinApp(){
 			console.log(msg);
 			if(msg.length > 1){
 				alert(msg);
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+}
+
+function checkRDTSinScript(){
+	var msg = "";
+	var local_simulation = get_local_simulation();
+	if(local_simulation != null){
+		
+		var rdts = local_simulation.rdts;
+		var data = JSON.parse(uploadEvent.spec);
+		data = JSON.parse(data);
+		var key = "rdts";
+		var parameters = data.parameters;
+		
+		var script_rdts = parameters.rdts;
+		console.log(script_rdts);
+
+		if(script_rdts !== null){
+			
+			if( rdts.length < 1){
+				
+				for( index in script_rdts){
+					var rdt_name = script_rdts[index].name;
+					if( rdts.indexOf(script_rdts[rdt_name]) <= -1){
+						msg += "This script requires the RDT " + rdt_name  + "\n Please import it using the RDT Manager Upload Tool \n\n";
+					}
+				}  
+			}
+			console.log(msg);
+			if(msg.length > 1){
+				alert(msg);
+				return false;
+			}else{
+				return true;
 			}
 		}
 	}
@@ -207,21 +252,29 @@ function pushFileEvent(file_type){
 			alert("Please include a package.json file describing your Application");
 			upload = false;
 		}
-		checkRDTSinApp();
+		if(checkRDTSinApp() == false) upload = false;
 	}
 	//if uploading a test script
 	if( file_type == 'Test'){
+		
 		if( hasRequiredFile('test.json', uploadEvent.files) == false ){
 			alert("Please include a test.json file for your Test Script");
 			upload = false;
 		}
+		if( checkRDTSinScript() == false) upload = false;
+		
 	}
 	//passed all of the checks
 	if( upload){
 		console.log(uploadEvent);
 		//add the event to the event queue
 		addToEventQueue('/upload',uploadEvent,new Date());
+<<<<<<< HEAD
+		var btn = document.getElementById('UploadButton');
+		if(btn !== null) btn.innerHTML = "Please Wait";
+=======
 		//send the information to the server
+>>>>>>> refs/remotes/origin/master
 		setTimeout(function(){
 			syncWithServer();
 			//sets the view to simulation management

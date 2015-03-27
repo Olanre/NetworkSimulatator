@@ -8,11 +8,10 @@ var connected = false;
 
 
 
-function manipulateRDT(rdtName, method){
+function manipulateRDT(rdtName, method, fntoCall){
 	var local_device = get_local_device();
 	var simulation = get_local_simulation();
 	var token = local_device.token;
-	var device_id = local_device._id;
 	var timestamp = new Date();
 	var route = '/manipulate/RDT';
 	console.log(rdtName);
@@ -21,11 +20,11 @@ function manipulateRDT(rdtName, method){
 	var event = {'event_data' : event_data, 'timestamp' : timestamp, 'token' : token, 'simulation_id' : simulation._id};
 	event = JSON.stringify(event);
 	
-	socket.emit(route, event );
+	socket.emit(route, event, fntoCall );
 }
 
-socket.on('newRDTVal', function(data){
-	newRDTVal(data['new_val'], data['rdt_name']);
+socket.on('newRDTVal', function(data, fntoCall){
+	fntoCall(data['new_val'], data['rdt_name']);
 });
 
 /**

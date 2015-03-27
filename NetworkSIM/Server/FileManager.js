@@ -44,6 +44,8 @@ function uploadAllFiles(event_data, time_stamp){
 				RDTManager.attachRDT(location, simulation_id, spec, time_stamp);
 			}
 		});
+	}else if (type == "Test"){
+		TestScriptManager.init(simulation_id, spec, time_stamp);
 	}
 	
 
