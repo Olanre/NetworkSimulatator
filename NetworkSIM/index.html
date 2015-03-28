@@ -41,9 +41,7 @@
 		<script src = '../template/DeviceListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/NetworkListTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationListTemplate.js' type='text/javascript'></script>
-		<script src = '../template/ViewDeviceTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationRegistrationTemplate.js' type = 'text/javascript'></script>
-		<script src = '../template/CounterAppTemplate.js' type='text/javascript'></script>
 		<script src = '../template/ViewLogsTemplate.js' type='text/javascript'></script>
 		<script src = '../template/SimulationSideBarTemplate.js' type='text/javascript'></script>
 		<script src = '../template/UploadFileTemplate.js' type='text/javascript'></script>
@@ -55,7 +53,6 @@
 		<script src = '../template/EventLogViewTemplate.js' type='text/javascript'></script>
 		
 		<!--  Views -->
-		<script src = '../view/CSSManager.js' type='text/javascript'></script>
 		<script src = '../view/SimulationCreationView.js' type='text/javascript'></script>
 		<script src = '../view/ViewManager.js' type='text/javascript'></script>
 		<script src = '../view/DeviceViewManager.js' type='text/javascript'></script>
@@ -242,8 +239,7 @@
 			</td>
 		</tr>
 	</table>
-	
-
+	<div id = 'input-num-error'></div>
 	<h2 id='partition-creation-header'> Partition the networks and devices</h2>
 	<div id ='available-list'>
 		Available Networks: <span id = 'avail-networks'> </div>
@@ -349,9 +345,11 @@
 
 <script type = "SimulationLogTemplate" id = "template17">
 	<h1 class='flip-up-text'>My Event Logs</h1>
-	<table class='center-table'>
-	 	{{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
-	</table>
+	<div id='logs-scroll-box'>
+		<table class='center-table text-left'>
+		 	{{#logs}}<tr> <td> {{.}} </td> </tr>{{/logs}}
+		</table>
+	</div>
 </script>
 <script type = "In Simulation Sidebar" id = "template18">	
 	<div class="sidebar">				
@@ -402,27 +400,52 @@
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
-		<h4> Requirements </h4>
-		<p> Your Application must include a package.json and main.js <br>
-		The package.json describes the RDTs your application uses and the main file for interfacing with the app. <br>
-		An example is <br>
-		<code> 
-			{
-  			 	"name": "CounterApp",
- 				 "version": "0.1.0",
-  			 	"description": "A small counter app for testing a incrementing data type",
-  				 "main": "index.html",
-				 "rdt_list" : [ "incRDT" ] 
-			}
-		</code>
-		</p>
-		<br>
-		<p> Finally, your application needs to include two script tags at the start in order to work with our framework. 
-			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
-			<code> src="/js/socket.io.js"  </code> 
+		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
+		<div id = 'Requirements' style = "display:none">
 			<br>
-			The javascript used to tie your logic with our RDTs must also be included as shown below <br>
-			<code>  src = "../ApplicationRequirements.js"  </code>
+			<table class = "require-table">
+				<thead>
+				  <tr>
+				     <th> Requirement</th>
+				     <th>Example</th>
+				  </tr>
+				 </thead>
+				 <tbody>
+				 	<tr>
+				 		<td>
+					 		 Your Application must include a package.json and main.js <br>
+							The package.json describes the RDTs your application uses and the main file for interfacing with the app. 
+				 		</td>
+				 		<td>
+					 		<code> 
+								{
+					  			 	"name": "CounterApp",
+					 				 "version": "0.1.0",
+					  			 	"description": "A small counter app for testing a incrementing data type",
+					  				 "main": "index.html",
+									 "rdt_list" : [ "incRDT" ] 
+								}
+							</code>
+						</td>
+				 	</tr>
+				 	
+				 	<tr>
+				 		<td>
+				 			Your application needs to include two script tags at the start in order to work with our framework. 
+							This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
+							A javascript file used to tie your logic with our RDTs must also be included
+							
+				 		</td>
+				 		<td>
+				 			<code> src="/js/socket.io.js"  </code> 							
+							<code>  src = "../ApplicationRequirements.js"  </code>
+				 		</td>
+				 	</tr>
+				 
+				 </tbody>
+			</table>
+			
+		</div>
 		<div id="appDiv" class="uploadContainer">
 
 			<div id="Files" class ="fileContainer"></div>
@@ -431,7 +454,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 
 		</div>
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
+		<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('App')">Upload</button>
 	</div>
 </script>
 
@@ -454,41 +477,62 @@
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
-		<h4> Requirements </h4>
-		<p> Your RDT must include a package.json and spec.md <br>
-		The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
-		An example is <br>
-		<code> 
-			{
-  			 	"name": "incRDT",
- 			 	"version": "0.1.0",
-  			 	"description": "A replicated integer counter data type",
-  			 	"main": "rdtInterface.js"
-			}
-		</code>
-		<br> <br>
-		The spec.md described the behavior of your RDT so application developers know how to access values and manipulate your RDT
-		An example<br>
-		<code>
-			# incRDT: A simple replicated integer counter data type
-
-			A Counter object has two public methods:
-
-    		var c = new Counter();
-    		c.inc();    // increment the counter
-   			 c.val();    // read the counter value
-
-
-			The Counter object will be created for you and automatically replicated at each
-			device object from the `deviceIterator` you passed in to the modules `init`
-			method. There is no need to create Counter objects by yourself. In fact, the
-			Counter constructor function is not even exported.
-			
-			You should use the device objects `accessRDT` method to grab the copy of a
-			Counter that is created for you. Read the `network_topology.js` file and check
-			the interface of `Device`.
-		</code>
-		</p>
+		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
+		<div id = 'Requirements' style = "display:none">
+			<br>
+			<table class = "require-table">
+				<thead>
+				  <tr>
+				     <th> Requirement</th>
+				     <th>Example</th>
+				  </tr>
+				 </thead>
+				 <tbody>
+				 	<tr>
+				 		<td> Your RDT must include a package.json and spec.md <br>
+							The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
+						</td>
+						<td>
+							<code> 
+								{
+					  			 	"name": "incRDT",
+					 			 	"version": "0.1.0",
+					  			 	"description": "A replicated integer counter data type",
+					  			 	"main": "rdtInterface.js"
+								}
+							</code>
+						</td>
+					</tr>
+					<tr>
+						<td> 
+							The spec.md described the behavior of your RDT so application developers 
+							know how to access values and manipulate your RDT
+						</td>
+						<td>
+							<code>
+								# incRDT: A simple replicated integer counter data type
+					
+								A Counter object has two public methods:
+					
+					    		var c = new Counter();
+					    		c.inc();    // increment the counter
+					   			 c.val();    // read the counter value
+					
+					
+								The Counter object will be created for you and automatically replicated at each
+								device object from the `deviceIterator` you passed in to the modules `init`
+								method. There is no need to create Counter objects by yourself. In fact, the
+								Counter constructor function is not even exported.
+								
+								You should use the device objects `accessRDT` method to grab the copy of a
+								Counter that is created for you. Read the `network_topology.js` file and check
+								the interface of `Device`.
+							</code>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<br>
 		<div id="appDiv" class="uploadContainer">
 			<div id="Files" class ="fileContainer"></div>
@@ -497,7 +541,7 @@
 			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
 		</div>	
 	
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
+		<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('RDT')">Upload</button>
 	</div>
 
 </script>
@@ -511,7 +555,7 @@
 	</div>
 	<script type='text/javascript'>
 		
-	<\/script>
+	</script>
 </script>
 
 <script type="eventLogViewTemplate" id="template24">
@@ -551,9 +595,9 @@
 
 <script type = "TestsListTemplate" id="template23">
 	<h1 class='flip-up-text'>Automated Test Scripts</h1>
-	<h4> The Test Scripts currently available in our framework </h4>
+	<h4> The Test Scripts already deployed into our framework </h4>
 	
-	<table class='center-table'>
+	<!-- <table class='center-table'>
 	 	{{#tests}}<tr>
 			 <td> 
 				{{name}} 
@@ -567,75 +611,80 @@
 			<td id = '{{_id}}'> </td>
 		</tr>{{/tests}}
  	</table>
+ 	-->
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
-		<h4> Requirements </h4>
-		<p> Your Test script must be in the format of a JSON file <br>
-		The test.json describes the test, the RDTs the test uses and the general parameters for your test environment <br>
-		An example is <br>
-		<code> 
-			{
-  			 	"name": "firstTest",
- 			 	"version": "0.1.0",
-  			 	"description": "The first automatic test script for our framework",
-  			 	"paramters": [
-  			 		"rdts" : [{"name": "incRDT", "function" : "inc"} , {"name" : "decRDT", "function" : "dec"}],
-  			 		"device_mobility" : "high",
-  			 		"operations" : 25
-  			 	]
-			}
-		</code>
-		<br> <br>
-		For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will
-		result in our framework rejecting your script
-		<br>
-		For the parameter field the following paramters are acceptable
-		<br>
-		<table>
-			<thead>
-			  <tr>
-			     <th> Parameter Name</th>
-			     <th>Description</th>
-			     <th>Example of Values</th>
-			  </tr>
-			 </thead>
-			<tr>
-				<td> rdts </td> 
-				<td> The list of rdts you want your test to use. </td> 
-				<td> Example 1 
-					<code> [{"name": "incRDT", "function" : "inc"} , {"name" : "decRDT", "function" : "dec"}] </code>
-					<br>
-					Example 2 
-					<code>[ {"name" : "decRDT", "function" : "dec"}] </code>
-					<br>
-					 Example 3 
-					<code> [{"name": "incRDT", "function" : "inc"} ] </code>
-					<br>
-				</td>
-			</tr>
-			<tr>
-				<td> device_mobility </td> 
-				<td> Frequency of device movement within the simulation </td> 
-				<td> High <br> Medium <br> Low </td>
-			</tr>
-			<tr>
-				<td> operations </td> 
-				<td> The number of operations you want on the RDT(s) </td> 
-				<td> 12 <br> 100 <br> 30 </td>
-			</tr>
-			
-		</table>
-		</p>
-		<br>
-		<div id="testDiv" class="uploadContainer">
-			<div id="Files" class ="fileContainer"></div>
-			<a href="#" class='btn upload-file-cover' onclick="document.getElementById('uploadTest').click(); return false;" />Browse</a>
-			<input id="uploadTest" type="file" onchange="handleFiles('uploadTest');" multiple> selected files: 
-			<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
-		</div>	
-	
-		<button class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload and Run</button>
+		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
+		<div id = 'Requirements' style = "display:none">
+			<h4> Requirements </h4>
+			<p> Your Test script must be in the format of a JSON file <br>
+			The test.json describes the test, the RDTs the test uses and the general parameters for your test environment <br>
+			An example is <br>
+			<code> 
+				{
+	  			 	"name": "firstTest",
+	 			 	"version": "0.1.0",
+	  			 	"description": "The first automatic test script for our framework",
+	  			 	"parameters": {
+	  			 		"rdts" : [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}],
+	  			 		"device_mobility" : "high",
+	  			 		"operations" : 25
+	  			 	}
+				}
+			</code>
+			<br> <br>
+			For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will
+			result in our framework rejecting your script
+			<br>
+			For the parameter field the following paramters are acceptable
+			<br>
+			<table>
+				<thead>
+				  <tr>
+				     <th> Parameter Name</th>
+				     <th>Description</th>
+				     <th>Example of Values</th>
+				  </tr>
+				 </thead>
+				<tr>
+					<td> rdts </td> 
+					<td> The list of rdts you want your test to use. </td> 
+					<td> Example 1 
+						<code> [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}] </code>
+						<br>
+						Example 2 
+						<code>[ {"name" : "decRDT", "method" : "dec"}] </code>
+						<br>
+						 Example 3 
+						<code> [{"name": "incRDT", "method" : "inc"} ] </code>
+						<br>
+					</td>
+				</tr>
+				<tr>
+					<td> device_mobility </td> 
+					<td> Frequency of device movement within the simulation </td> 
+					<td> High <br> Medium <br> Low </td>
+				</tr>
+				<tr>
+					<td> operations </td> 
+					<td> The number of operations you want on the RDT(s) </td> 
+					<td> 12 <br> 100 <br> 30 </td>
+				</tr>
+				
+			</table>
+			</p>
+		</div>
+			<br>
+			<div id="testDiv" class="uploadContainer">
+				<div id="Files" class ="fileContainer"></div>
+				<a href="#" class='btn upload-file-cover' onclick="document.getElementById('uploadTest').click(); return false;" />Browse</a>
+				<input id="uploadTest" type="file" onchange="handleFiles('uploadTest');" multiple> selected files: 
+				<span id="fileNum">0</span>; total size: <span id="fileSize">0</span>
+			</div>	
+		
+			<button id = "UploadButton" class="btn uploadButton" name="Send file" onclick="pushFileEvent('Test')">Upload and Run</button>
+		
 	</div>
 </script>
 <body>	

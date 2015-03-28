@@ -1,11 +1,11 @@
 { "name": "firstTest",
  "version": "0.1.0",
  "description": "The first automatic test script for our framework",
- "paramters": 
-		[ 
-		"rdts" : [{"name": "incRDT", "function" : "inc"} ,
-					{"name" : "decRDT", "function" : "dec"}],
-		"device_mobility" : "high", 
-		"operations" : 25 
-		] 
+ "parameters": { 
+		"rdts":[ {"name": "incRDT", "method" : "inc"} ,
+					{"name" : "decRDT", "method" : "dec"} 
+				],
+		"device_mobility":"high", 
+		"operations":10 
+ 		} 
 }

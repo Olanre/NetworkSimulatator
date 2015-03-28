@@ -103,7 +103,7 @@ function handleClient (socket) {
     	
     } );
     
-    socket.on("/manipulate/RDT", function(data){
+    socket.on("/manipulate/RDT", function(data, func){
     	var json = JSON.parse(data);
     	var token = json.token;
     	var time_stamp = json.timestamp;
@@ -113,7 +113,7 @@ function handleClient (socket) {
     		if(obj.Response == 'Success'){
     			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
     			var response = {'new_val' : new_val , 'rdt_name' : json.event_data.name};
-    			io.to(socket.id).emit('newRDTVal', response);
+    			io.to(socket.id).emit('newRDTVal', response, func );
     		}
     		
     	});

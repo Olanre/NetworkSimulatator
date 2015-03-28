@@ -403,7 +403,7 @@ function removeNetwork(event_data, time_stamp){
 }
 
 function addDeviceToNetwork(event_data, time_stamp){
-	var time_stamp = new Date().toISOString();
+	//var time_stamp = new Date().toISOString();
 	var network_id=event_data.network_id;
 	var device_id=event_data.device_token;
 	var simulation_id=event_data.simulation_id;
@@ -420,7 +420,8 @@ function addDeviceToNetwork(event_data, time_stamp){
 				network.addDevice(device);
 
 				var new_activity = "Device " +  device.device_name +  " added to network " + network.networkName + " at " + time_stamp + "\n";
-				simulation.updateSimulationLog(new_activity, simulation);
+				simulation.updateSimulationLog(new_activity);
+				device.updateDeviceLog(new_activity);
 				//save the state
 				saveSimulationState( simulation_id, time_stamp, simulation);
 			}

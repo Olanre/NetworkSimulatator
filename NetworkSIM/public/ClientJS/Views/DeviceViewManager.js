@@ -1,5 +1,5 @@
 /**
- * Handles the views for devices, routing the correct functions and making sure things display correctly
+ * Handles routing the correct functions and making sure things display correctly for a device
  */
 
  /**
@@ -7,8 +7,7 @@
   */
 function joinNetworkWrapper(device_token, network_id){
 	moveDeviceToNetwork(device_token, network_id);
-	NetworksListView();
-	//set timeout
+	setTimeout(function(){ NetworksListView(); }, 500);
 }
 
  /**
@@ -16,5 +15,30 @@ function joinNetworkWrapper(device_token, network_id){
   */
 function leaveNetworkWrapper(device_token, network_id){
 	removeDevicefromNetwork(device_token, network_id);
-	NetworksListView();
+	setTimeout(function(){ NetworksListView(); }, 500);
+}
+
+/**
+ * Wrapper to make a network on the network create page
+ */
+function Device_makeNetwork(element){
+	//gets the name of the network input on the page
+	var input = document.getElementById(element);
+	console.log(input);
+	if(input !== null){
+		var name = input.value;
+		if(name !== ''&&name!==null){
+			//creates a network with this name
+			alert("Created a network with name: "+name);
+			createNetwork(name);
+		}
+		else{
+			alert("Please enter a non-empty network name.");
+			console.log("Device_makeNetwork recieved null parameters");
+		}
+	}
+	else{
+		alert("Please enter a non-empty network name.");
+		console.log("Device_makeNetwork recieved null parameters");
+	}
 }

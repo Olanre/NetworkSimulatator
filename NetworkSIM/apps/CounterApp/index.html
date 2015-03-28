@@ -9,14 +9,14 @@
 		function incrCounter(){
 			var local_counter = document.getElementById('inc_local_count').innerHTML = inc_local_count + 1;
 			inc_local_count++;
-			manipulateRDT('Counter', 'inc' );
+			manipulateRDT('Counter', 'inc', newRDTVal );
 			
 		}
 		
 		function decrCounter(){
 			var local_counter = document.getElementById('dec_local_count').innerHTML = dec_local_count - 1;
 			dec_local_count--;
-			manipulateRDT('MyCounter', 'dec' );
+			manipulateRDT('MyCounter', 'dec', newRDTVal );
 			
 		}
 		

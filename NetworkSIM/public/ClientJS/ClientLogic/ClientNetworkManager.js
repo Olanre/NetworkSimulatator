@@ -22,26 +22,3 @@ function createNetwork(network_name){
 		console.log("createNetwork recieved null parameters");
 	}
 }
-
-/**
- * Wrapper to make a network on the network create page
- */
-function Device_makeNetwork(element){
-	//gets the name of the network input on the page
-	var input = document.getElementById(element);
-	if(input !== null ){
-		var name = input.value;
-		if(name !== ''){
-			//creates a network with this name
-			createNetwork(name);
-		}
-		else{
-			console.log("Device_makeNetwork recieved null parameters");
-		}
-	}
-	else{
-		console.log("Device_makeNetwork recieved null parameters");
-	}
-}
-
-
