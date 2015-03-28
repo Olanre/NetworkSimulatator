@@ -73,19 +73,31 @@ function attachJSON(deviceJSON){
 
 function joinNetwork(network){
 
-	  if(this.networkObject!=network)this.networkObject.removeDevice(this);
-	  		  
-	  this.networkObject = network;
-	  this.deviceJSON.current_partition=network.partitionObject._id;
-	  this.deviceJSON.current_network=network._id;
-	  this.deviceJSON.save();
+	  if(this.networkObject!=network){
+
+		this.networkObject.removeDevice(this);
+		  
+		this.networkObject = network;
+		this.deviceJSON.current_partition=network.partitionObject._id;
+		this.deviceJSON.current_network=network._id;
+		this.deviceJSON.save();
+	}
 };
   
 function leaveNetwork(network){
+
+	  var network = Network.createNewNetwork('','');
 	  this.deviceJSON.current_network= '';
-	  this.networkObject = Network.createNewNetwork('','');
 	  this.deviceJSON.current_partition= '';
+
+	  network.device_list.push(this);
+	  network.networkJSON.device_list.push(this.deviceJSON._id);
+	  this.networkObject=network;
+	  this.deviceJSON.current_partition = network.partitionObject._id;
+	  this.deviceJSON.current_network = network.id;
+
 	  this.deviceJSON.save();
+	  network.networkJSON.save();
 };
 
 //This is supposed to make the device join the network it used to be in. idk lol

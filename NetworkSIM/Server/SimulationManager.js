@@ -427,6 +427,30 @@ function addDeviceToNetwork(event_data, time_stamp){
 		}
 	}
 }
+exports.removeDeviceFromNetwork= function(event_data,time_stamp){
+	var time_stamp = new Date().toISOString();
+	var device_id=event_data.device_token;
+	var simulation_id=event_data.simulation_id;
+
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+
+	if(simulation != -1){
+
+		var device=Util.findByUniqueID(device_id,simulation.getDevices());
+		var network= device.networkObject;
+		if(device != -1){
+	
+			network.removeDevice(device);
+			simulation.addPartition(device.networkObject.partitionObject);
+
+			var new_activity = "Device " +  device.device_name +  " left network " + network.networkName + " at " + time_stamp + "\n";
+			simulation.updateSimulationLog(new_activity, simulation);
+			//save the state
+			saveSimulationState( simulation_id, time_stamp, simulation);
+
+		}
+	}
+}
 function mergePartitions(event_data, time_stamp){
 	var partition_a = event_data.partition_a_id;
 	var partition_b = event_data.partition_b_id;

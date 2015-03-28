@@ -56,8 +56,8 @@ function removeDeviceFromNetwork(device_token){
 	if (device_token!==null && local_simulation!==null){
 		//creates the body of the event
 		var params = {
-			'simulation_id':local_simulation._id;
-			'device_token':device_token;
+			'simulation_id':local_simulation._id,
+			'device_token':device_token
 		};
 		var url = '/move/Device/Freelist';
 		var timestamp = new Date();
