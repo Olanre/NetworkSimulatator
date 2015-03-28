@@ -13,6 +13,7 @@ function getLocalDeviceToken(){
 		return local_device.token;
 	}
 	else{
+		return '';
 		console.log("Error: getLocalDeviceToken passed a null local_device");
 	}
 }

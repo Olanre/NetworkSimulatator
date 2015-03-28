@@ -6,6 +6,6 @@
 					{"name" : "decRDT", "method" : "dec"} 
 				],
 		"device_mobility":"high", 
-		"operations":25 
+		"operations":10 
  		} 
 }

@@ -273,7 +273,7 @@ function pushFileEvent(file_type){
 			//sets the view to simulation management
 			if (file_type=='Test'){
 				alert("Test script is being run. Please view the simulation history to see the effect.");
-				eventLogsView();
+				//eventLogsView();
 			}
 			else if (file_type == 'App'){
 				adminAppsView();
@@ -281,6 +281,6 @@ function pushFileEvent(file_type){
 			else if(file_type == 'RDT'){
 				RDTsView();
 			}
-		},3000);
+		},4000);
 	}
 }

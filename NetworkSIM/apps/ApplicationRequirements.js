@@ -7,10 +7,10 @@ var socket = io.connect();
 var connected = false;
 
 
-
 function manipulateRDT(rdtName, method, fntoCall){
 	var local_device = get_local_device();
 	var simulation = get_local_simulation();
+	console.log(simulation);
 	var token = local_device.token;
 	var timestamp = new Date();
 	var route = '/manipulate/RDT';
