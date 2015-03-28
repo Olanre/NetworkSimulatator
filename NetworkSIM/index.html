@@ -402,6 +402,7 @@
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
 		<div id = 'Requirements' style = "display:none">
+			<br>
 			<table class = "require-table">
 				<thead>
 				  <tr>
@@ -478,40 +479,59 @@
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
 		<div id = 'Requirements' style = "display:none">
-			<p> Your RDT must include a package.json and spec.md <br>
-			The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
-			An example is <br>
-			<code> 
-				{
-	  			 	"name": "incRDT",
-	 			 	"version": "0.1.0",
-	  			 	"description": "A replicated integer counter data type",
-	  			 	"main": "rdtInterface.js"
-				}
-			</code>
-			<br> <br>
-			The spec.md described the behavior of your RDT so application developers know how to access values and manipulate your RDT
-			An example<br>
-			<code>
-				# incRDT: A simple replicated integer counter data type
-	
-				A Counter object has two public methods:
-	
-	    		var c = new Counter();
-	    		c.inc();    // increment the counter
-	   			 c.val();    // read the counter value
-	
-	
-				The Counter object will be created for you and automatically replicated at each
-				device object from the `deviceIterator` you passed in to the modules `init`
-				method. There is no need to create Counter objects by yourself. In fact, the
-				Counter constructor function is not even exported.
-				
-				You should use the device objects `accessRDT` method to grab the copy of a
-				Counter that is created for you. Read the `network_topology.js` file and check
-				the interface of `Device`.
-			</code>
-			</p>
+			<br>
+			<table class = "require-table">
+				<thead>
+				  <tr>
+				     <th> Requirement</th>
+				     <th>Example</th>
+				  </tr>
+				 </thead>
+				 <tbody>
+				 	<tr>
+				 		<td> Your RDT must include a package.json and spec.md <br>
+							The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
+						</td>
+						<td>
+							<code> 
+								{
+					  			 	"name": "incRDT",
+					 			 	"version": "0.1.0",
+					  			 	"description": "A replicated integer counter data type",
+					  			 	"main": "rdtInterface.js"
+								}
+							</code>
+						</td>
+					</tr>
+					<tr>
+						<td> 
+							The spec.md described the behavior of your RDT so application developers 
+							know how to access values and manipulate your RDT
+						</td>
+						<td>
+							<code>
+								# incRDT: A simple replicated integer counter data type
+					
+								A Counter object has two public methods:
+					
+					    		var c = new Counter();
+					    		c.inc();    // increment the counter
+					   			 c.val();    // read the counter value
+					
+					
+								The Counter object will be created for you and automatically replicated at each
+								device object from the `deviceIterator` you passed in to the modules `init`
+								method. There is no need to create Counter objects by yourself. In fact, the
+								Counter constructor function is not even exported.
+								
+								You should use the device objects `accessRDT` method to grab the copy of a
+								Counter that is created for you. Read the `network_topology.js` file and check
+								the interface of `Device`.
+							</code>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<br>
 		<div id="appDiv" class="uploadContainer">
