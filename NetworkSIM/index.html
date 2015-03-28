@@ -402,29 +402,48 @@
 	<div id="uploadFiles"class='content' onload="handleFiles();">
 		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
 		<div id = 'Requirements' style = "display:none">
-			<p> Your Application must include a package.json and main.js <br>
-			The package.json describes the RDTs your application uses and the main file for interfacing with the app. <br>
-			An example is <br>
-			<code> 
-				{
-	  			 	"name": "CounterApp",
-	 				 "version": "0.1.0",
-	  			 	"description": "A small counter app for testing a incrementing data type",
-	  				 "main": "index.html",
-					 "rdt_list" : [ "incRDT" ] 
-				}
-			</code>
-			</p>
-		
-			<br>
-			<p> Finally, your application needs to include two script tags at the start in order to work with our framework. 
-				This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
-				<code> src="/js/socket.io.js"  </code> 
-				<br>
-				The javascript used to tie your logic with our RDTs must also be included as shown below <br>
-				<code>  src = "../ApplicationRequirements.js"  </code>
-			</p>
-			<br>
+			<table class = "require-table">
+				<thead>
+				  <tr>
+				     <th> Requirement</th>
+				     <th>Example</th>
+				  </tr>
+				 </thead>
+				 <tbody>
+				 	<tr>
+				 		<td>
+					 		 Your Application must include a package.json and main.js <br>
+							The package.json describes the RDTs your application uses and the main file for interfacing with the app. 
+				 		</td>
+				 		<td>
+					 		<code> 
+								{
+					  			 	"name": "CounterApp",
+					 				 "version": "0.1.0",
+					  			 	"description": "A small counter app for testing a incrementing data type",
+					  				 "main": "index.html",
+									 "rdt_list" : [ "incRDT" ] 
+								}
+							</code>
+						</td>
+				 	</tr>
+				 	
+				 	<tr>
+				 		<td>
+				 			Your application needs to include two script tags at the start in order to work with our framework. 
+							This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
+							A javascript file used to tie your logic with our RDTs must also be included
+							
+				 		</td>
+				 		<td>
+				 			<code> src="/js/socket.io.js"  </code> 							
+							<code>  src = "../ApplicationRequirements.js"  </code>
+				 		</td>
+				 	</tr>
+				 
+				 </tbody>
+			</table>
+			
 		</div>
 		<div id="appDiv" class="uploadContainer">
 
@@ -516,7 +535,7 @@
 	</div>
 	<script type='text/javascript'>
 		
-	<\/script>
+	</script>
 </script>
 
 <script type="eventLogViewTemplate" id="template24">
