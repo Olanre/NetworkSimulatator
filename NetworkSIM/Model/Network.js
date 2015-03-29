@@ -82,6 +82,7 @@ function addDevice(device){
 function removeDevice(device){
 		for (var i =0; i< this.device_list.length;i++){
 			if (this.device_list[i].token == device.token){
+				console.log("found it");
 				this.device_list.splice(i,1);
 				break;
 			}

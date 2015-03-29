@@ -34,6 +34,8 @@ function connectDevicesToNetwork(deviceList,networkObject){
 		connectedDevice.represents=deviceList[device];
 		//draw that device on the canvas
 		connectedDevice.draw();
+		connectedDevice.connected=true;
+		console.log(connectedDevice.connected);
 		i++;
 	}
 }
@@ -68,6 +70,7 @@ function createNetworkGraphicAt(xPosition, yPosition){
 function createDeviceGraphicAt(xPosition, yPosition){
 	var device=new circle(xPosition, yPosition, 10, svgCanvas, 'device');
 	shapes[uniqueDataIndex]=(device);
+	device.connected=false;
 	uniqueDataIndex++;
 	return device;
 }
@@ -188,6 +191,7 @@ function findPartitionIDForNetwork(networkObject){
  * and partitions of the topology.
  ***/
 function generateTopology(partition_list, areaWidth){
+	console.log(partition_list);
 	//clears the canvas, before redrawing everything
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;

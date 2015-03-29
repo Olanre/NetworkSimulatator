@@ -56,6 +56,10 @@ interact('.device')
 				//removes the class saying that the device is held
 				shape.element.classList.remove('held-object');
 				orderCanvas();
+				if(shape.connected==false){
+					console.log("Disconnecting device!");
+					removeDeviceFromNetwork(shape.represents.token);
+				}
 			}
 		},
 	});
@@ -82,10 +86,13 @@ interact('.network')
 			if(interactable){
 			    var draggableElement = event.relatedTarget,
 			        dropzoneElement = event.target;
-			    
+			    	
 			    if (draggableElement.classList.contains('device')){
 				    dropzoneElement.classList.add('drop-target');
 				    draggableElement.classList.add('connected-device');
+				    var device=getRelatedShapeFromEvent(event);
+				    device.connected=true;
+
 			    }
 			}
 		},
@@ -99,6 +106,7 @@ interact('.network')
 				var device=getRelatedShapeFromEvent(event);
 				var deviceIndex=event.relatedTarget.getAttribute('data-index');
 				delete network.children[deviceIndex];
+				device.connected=false;
 			}
 		},
 
@@ -115,6 +123,7 @@ interact('.network')
 				if(dragClass==='device'){
 					//attach the device to the network
 					attachChild(dropzone,dragged);
+					dragged.connected=true;
 					//get infromation about the objects
 					deviceName=shapes[draggableElement.getAttribute('data-index')].name;
 					newNetworkName=shapes[dropzoneElement.getAttribute('data-index')].name;
