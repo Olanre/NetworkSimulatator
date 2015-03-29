@@ -60,15 +60,22 @@ function handleClient (socket) {
 	    						
 	    					}
 	    					
-	    					if(admin == true){
-	    						//our admin username is hardcoded into our logic
-	    	    				var socket_id = client_map[SimulationManager.admin_user];
-	    							
-	    						var state = SimulationManager.getAppStateForAdmin(simulation);
-	    	                    io.to(socket.id).emit('syncState', state);
-	    	    			
-	    	    			}
     				});
+    			}else if( admin == true){
+    				var list = SimulationManager.getAllActiveDevices(simulation);
+					
+					for(var index = 0; index < list.length; index++){
+						var user_token = list[index]['token'];
+						var socket_id = client_map[user_token];
+						
+						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
+                        io.to(socket_id).emit('syncState', state);
+						
+					}
+							
+					var state = SimulationManager.getAppStateForAdmin(simulation);
+	                io.to(socket.id).emit('syncState', state);
+
     			}else{
     				handleEventQueue(token, events, function(){    					
     					var state= SimulationManager.getBlankAppState();
