@@ -36,6 +36,13 @@ function clearStorage(){
 /**
  * get the device for this user from the local storage
  */
+function get_local_admin(){
+	return JSON.parse(getFromStorage('admin'));
+}
+
+/**
+ * get the device for this user from the local storage
+ */
 function get_local_device(){
 	return JSON.parse(getFromStorage('device'));
 }
@@ -77,6 +84,14 @@ function get_local_history(){
  */
 function store_local_simulation(new_simulation){
 	putinStorage( 'simulation', JSON.stringify(new_simulation));
+}
+
+
+/**
+ * Stores a device object in the local storage of the client
+ */
+function store_local_admin(new_admin){
+	putinStorage( 'admin', JSON.stringify(new_admin));
 }
 
 /**

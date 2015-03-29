@@ -431,17 +431,28 @@
 				 	
 				 	<tr>
 				 		<td>
-				 			Your application needs to include two script tags at the start in order to work with our framework. 
-							This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
-							A javascript file used to tie your logic with our RDTs must also be included
+				 			Your application needs to include a script tags at the start in order to work with our framework. 
+							This is a javascript file used to tie your logic with our RDTs must also be included. 
 							
 				 		</td>
-				 		<td>
-				 			<code> src="/js/socket.io.js"  </code> 							
+				 		<td>							
 							<code>  src = "../ApplicationRequirements.js"  </code>
 				 		</td>
 				 	</tr>
-				 
+				 	
+				 	<tr>
+				 		<td>
+				 			A call to manipulate an RDT within your application must be in the format ({rdt-name}, {function}, {callback-handler})
+				 			<br>
+				 			Where the {rdt-name} is the name of the rdt to be manipulated, {function} is the function to be performed on the rdt
+				 			<br>
+				 			{callback-handler} is your callback function to handle the new value of the rdt the framework will return when it has executed 
+				 			the command
+				 		</td>
+				 		<td>
+				 			<code> manipulateRDT('Counter', 'inc', newIncVal ); </code>
+				 		</td>
+				 	</tr>
 				 </tbody>
 			</table>
 			
