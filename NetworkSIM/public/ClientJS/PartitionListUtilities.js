@@ -83,3 +83,25 @@ function getRealPartitions(partition_list){
 	}
 	return real_partitions;
 }
+
+/**
+ * Gets an array of all non-free networks
+ */
+
+ function getRealNetworks(partition_list){
+ 	if (partition_list!==null&&partition_list!==''){
+	 	var real_networks=[];
+	 	var real_partitions=getRealPartitions(partition_list);
+	 	for (var i=0;i<real_partitions.length;i++){
+	 		var networks=real_partitions[i].network_list;
+	 		for (var j=0;j<networks.length;j++){
+	 			real_networks.push(networks[j]);
+	 		}
+	 	}
+	 	return real_networks;
+ 	}
+ 	else{
+ 		console.log("getRealNetworks was passed null parameters");
+ 		return [];
+ 	}
+ }

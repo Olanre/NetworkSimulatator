@@ -387,7 +387,7 @@ function NetworksListView(){
 	clearSection();
 	var local_simulation = get_local_simulation();
 	var local_device = get_local_device();
-	var lists = getAllNetworkObjects(local_simulation);
+	var lists = getRealNetworks(local_simulation.partition_list);
 	var html = NetworksListTemplate(lists, local_device);
 	
 	getContainer().innerHTML = html;

@@ -47,12 +47,12 @@ function getAllNetworkIds(){
 		//gets the list of partition objects from the simulation
 		var partition_list = local_simulation.partition_list;
 		var list = []; 
+		//for each partition
+		for (var i = 0; i < partition_list.length; i++){
 			//gets the list of network objects from the partition
 			var networks = partition_list[i].network_list
-		//for each partition
-		for(var i = 0; i < partition_list.length; i++){;
 			for (var j = 0; j < networks.length; j++){
-				//addds the id of that network to the list
+				//adds the id of that network to the list
 				list.push(networks[j]._id);
 			}
 		}

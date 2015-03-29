@@ -13,8 +13,8 @@ function joinNetworkWrapper(device_token, network_id){
  /**
   * Wraps leave network so as to refresh the page when finished
   */
-function leaveNetworkWrapper(device_token, network_id){
-	removeDevicefromNetwork(device_token, network_id);
+function leaveNetworkWrapper(device_token){
+	removeDeviceFromNetwork(device_token);
 	setTimeout(function(){ NetworksListView(); }, 500);
 }
 

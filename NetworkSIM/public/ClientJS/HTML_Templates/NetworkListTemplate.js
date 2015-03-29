@@ -23,7 +23,7 @@ function NetworksListTemplate(networks, local_device){
 		if(local_device.current_network == networks[i]['_id']){
 			str +=  "<tr id = '" + networks[i]['_id'] + "'> " +
 					" <td> " + networks[i]['network_name'] +  " </td>" +"<td>"+ networks[i].device_list.length+"</td>"+
-					" <td>   <div class = 'btn btn-primary' onclick = 'leaveNetworkWrapper( &quot;" + local_device.token + "&quot;, &quot;" + networks[i]['_id'] + "&quot;)'>  " +
+					" <td>   <div class = 'btn btn-primary' onclick = 'leaveNetworkWrapper( &quot;" + local_device.token + "&quot;)'>  " +
 			"Leave Network </div>  </td> </tr>";
 		}
 		//otherwise create a button for joining this network
