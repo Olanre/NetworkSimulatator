@@ -274,13 +274,16 @@ function pushFileEvent(file_type){
 			btn.innerHTML = "Please Wait";
 			btn.onclick=null;
 		}
+
+		if (file_type=='Test'){
+				alert("Test script is being run. Please view the simulation history to see the effect.");
+		}
 		//send the information to the server
 		setTimeout(function(){
 			syncWithServer();
 			uploadEvent={};
 			//sets the view to simulation management
 			if (file_type=='Test'){
-				alert("Test script is being run. Please view the simulation history to see the effect.");
 				//eventLogsView();
 			}
 			else if (file_type == 'App'){

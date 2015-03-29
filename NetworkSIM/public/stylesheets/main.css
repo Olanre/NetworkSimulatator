@@ -28,8 +28,30 @@ code{
   margin-left:32%;
 }
 
+.tab{
+  margin:0px;
+  margin-left:40px;
+}
+
+.double-tab{
+  margin:0px;
+  margin-left:80px;
+}
+
 .width-45ps{
   width:45%;
+}
+
+.margin-20px{
+  margin:20px;
+}
+
+.margin-left-15ps{
+  margin-left:15%;
+}
+
+.width-80ps{
+  width:80%;
 }
 
 .text-input{

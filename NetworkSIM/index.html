@@ -594,8 +594,8 @@
 	<h1 class='flip-up-text'>Available Applications</h1>
 	<br>
 	<table class='center-table'>
-	 	{{#apps}}<tr>
-			 <td> 
+	 	{{#apps}}<tr
+>			 <td> 
 				{{name}} 
 			</td> 
 			<td> 
@@ -631,28 +631,31 @@
 		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
 		<div id = 'Requirements' style = "display:none">
 			<h4> Requirements </h4>
-			<p> Your Test script must be in the format of a JSON file <br>
-			The test.json describes the test, the RDTs the test uses and the general parameters for your test environment <br>
-			An example is <br>
-			<code> 
-				{
-	  			 	"name": "firstTest",
-	 			 	"version": "0.1.0",
-	  			 	"description": "The first automatic test script for our framework",
-	  			 	"parameters": {
-	  			 		"rdts" : [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}],
-	  			 		"device_mobility" : "high",
-	  			 		"operations" : 25
-	  			 	}
-				}
-			</code>
+			<p> Your Test script must be in the format of a JSON file. <br>
+			The json file must describe the test, the RDTs which the test uses, and the general parameters for your test environment.<br>
+			<p class='text-left margin-20px'>
+				<p class ='tab'> An example is: </p>
+				<div class='text-left margin-left-15ps'>
+					<code> 
+						{<br>
+			  			 	<p class='tab'>"name": "firstTest",</p>
+			 			 	<p class='tab'>"version": "0.1.0",</p>
+			  			 	<p class='tab'>"description": "The first automatic test script for our framework",</p>
+			  			 	<p class='tab'>"parameters": {</p>
+			  			 		<p class='double-tab'>"rdts" : [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}], </p>
+			  			 		<p class='double-tab'>"device_mobility" : "high",</p>
+			  			 		<p class='double-tab'>"operations" : 25</p>
+			  			 	<p class='tab'>}</p>
+						}
+					</code>
+				</div>
+			</p>
 			<br> <br>
-			For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will
-			result in our framework rejecting your script
+			For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will result in our framework rejecting your script. The "name" field is the name of your script. The "version" field allows you to have different versions of your script. The "description" field is a description of the test script. "parametes" are explained below. <br>
 			<br>
-			For the parameter field the following paramters are acceptable
+			<h3>For the parameter field the following paramters are acceptable</h3>
 			<br>
-			<table>
+			<table class='width-80ps center-table'>
 				<thead>
 				  <tr>
 				     <th> Parameter Name</th>
@@ -663,7 +666,7 @@
 				<tr>
 					<td> rdts </td> 
 					<td> The list of rdts you want your test to use. </td> 
-					<td> Example 1 
+					<td class='width-45ps'> Example 1 
 						<code> [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}] </code>
 						<br>
 						Example 2 
