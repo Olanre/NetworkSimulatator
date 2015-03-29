@@ -25,7 +25,7 @@ function Partition(partitionName, simulationName){
 }
 
 function createNewPartition(partitionName,simulationName){
-	var createdPartition=new Partition(partitionName, simulationName);
+	var createdPartition = new Partition(partitionName, simulationName);
 	var partitionJSON = new PModel();
 	createdPartition.attachJSON(partitionJSON);
 	partitionJSON.save();

@@ -80,6 +80,7 @@ socket.on('validate_user', function(data){
 	}
 });
 
+
 /**
  * Creates the socket connection between the server and the client
  */

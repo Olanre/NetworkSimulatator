@@ -350,6 +350,14 @@ function RegisterView(id){
 	document.getElementById('simulation_id_div').value = id;
 }
 
+function adminLoginView(){
+	var html = AdminLoginTemplate();
+	var content = getContainer();
+	
+	content.innerHTML = html;
+	
+}
+
 function SimulationManagementView(){
 	clearNav();
 	

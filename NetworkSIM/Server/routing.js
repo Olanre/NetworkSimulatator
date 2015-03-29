@@ -101,26 +101,7 @@ function handleClient (socket) {
     	//for now allow empty tokens
     		
     	
-    } );
-    
-    socket.on("/manipulate/RDT", function(data, func){
-    	var json = JSON.parse(data);
-    	var token = json.token;
-    	var time_stamp = json.timestamp;
-    	var simulation_id = json.simulation_id;
-    	var new_val = 'Not available';
-    	SimulationManager.authToken(token, simulation_id, function(obj){
-    		if(obj.Response == 'Success'){
-    			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
-    			var response = {'new_val' : new_val , 'rdt_name' : json.event_data.name};
-    			io.to(socket.id).emit('newRDTVal', response, func );
-    		}
-    		
-    	});
-    		
-                
-    });
-                
+    } );           
     
     
 };

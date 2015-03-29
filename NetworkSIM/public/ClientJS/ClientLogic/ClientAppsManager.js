@@ -18,6 +18,7 @@ function DeployApp(app_id){
 		var timestamp = new Date();
 		//add the event to the event queue
 		addToEventQueue(url, params, timestamp);
+		alert("App has been deployed to all devices in simulation");
 	}
 	else{
 		console.log("local simulation was passed null parameters");

@@ -34,6 +34,7 @@ function connectDevicesToNetwork(deviceList,networkObject){
 		connectedDevice.represents=deviceList[device];
 		//draw that device on the canvas
 		connectedDevice.draw();
+		connectedDevice.connected=true;
 		i++;
 	}
 }
@@ -68,6 +69,7 @@ function createNetworkGraphicAt(xPosition, yPosition){
 function createDeviceGraphicAt(xPosition, yPosition){
 	var device=new circle(xPosition, yPosition, 10, svgCanvas, 'device');
 	shapes[uniqueDataIndex]=(device);
+	device.connected=false;
 	uniqueDataIndex++;
 	return device;
 }
@@ -188,6 +190,8 @@ function findPartitionIDForNetwork(networkObject){
  * and partitions of the topology.
  ***/
 function generateTopology(partition_list, areaWidth){
+	console.log(partition_list);
+
 	//clears the canvas, before redrawing everything
 	clearCanvas();
 	var positioningRadius,numPartitions,rootXY;
@@ -196,9 +200,10 @@ function generateTopology(partition_list, areaWidth){
 	
 	//holds all of the partitions which actually exist, and are not just partitions containing devices not in any network
 	var realPartitions=getRealPartitions(partition_list);
+	console.log(realPartitions);
 	//holds all of the devices not in any networks
 	var free_list=getAllFreeDevices(partition_list);
-
+	console.log(free_list);
 	numPartitions=realPartitions.length;
 	//radius for positioning shapes in the topology
 	positioningRadius=areaWidth/(numPartitions+1);
@@ -207,7 +212,7 @@ function generateTopology(partition_list, areaWidth){
 	//position each partition
 	for(partition in realPartitions){
 		
-		var network_list=partition_list[partition].network_list;
+		var network_list=realPartitions[partition].network_list;
 		var angle=Math.PI/network_list.length;
 		//for each network in the partition
 		for(network in network_list){
@@ -216,6 +221,7 @@ function generateTopology(partition_list, areaWidth){
 			if(networkIndex==0){
 				root=createNetworkGraphicAt(rootXY,rootXY);
 				root.name=network_list[network].network_name;
+				console.log(network_list[network]);
 				root.represents=network_list[network];
 				connectDevicesToNetwork(network_list[network].device_list,root);
 			}

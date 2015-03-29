@@ -374,13 +374,7 @@ function createNetwork(event_data, time_stamp){
 
 //TODO
 function removeDevice(event_data, time_stamp){
-	//var simulation_name=event_data.simulation_name;
-	//var device_id=event_data.device_id;
 	
-	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
-	//var device=Util.getByUniqueID(device_name,simulationObject.gets());
-	//var new_activity = "Device " +  device.device_name +  " was deleted " + time_stamp + "\n";
-	//simulation.updateSimulationLog(new_activity);
 	//save the state
 	/** saveSimulationState( simulation._id, time_stamp, simulation);
 	 * */
@@ -388,14 +382,7 @@ function removeDevice(event_data, time_stamp){
 
 //TODO
 function removeNetwork(event_data, time_stamp){
-	//var simulation_name=event_data.simulation_name;
-	//var network_id =event_data.network_id;
-	
-	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
-	//var network=Util.getByUniqueID(network_id,simulationObject.gets());
-	//var new_activity = "Network " +  network.networkName +  " was deleted " + time_stamp + "\n";
-	//simulation.updateSimulationLog(new_activity);
-	
+		
 	//save the state
 	/** //save the state
 		saveSimulationState( simulation._id, time_stamp, simulation);
@@ -412,10 +399,10 @@ function addDeviceToNetwork(event_data, time_stamp){
 	if(simulation != -1){
 		var network=Util.findByUniqueID(network_id,simulation.getNetworks());
 		var device=Util.findByUniqueID(device_id,simulation.getDevices());
-		if(device != -1){
+		if(device != -1 && network != -1){
 			//don't add a device to a network they already belong to
 
-			if(device.networkObject!=network){
+			if(device.networkObject._id !== network._id){
 	
 				network.addDevice(device);
 
@@ -425,6 +412,31 @@ function addDeviceToNetwork(event_data, time_stamp){
 				//save the state
 				saveSimulationState( simulation_id, time_stamp, simulation);
 			}
+		}
+	}
+}
+
+exports.removeDeviceFromNetwork= function(event_data,time_stamp){
+	var time_stamp = new Date().toISOString();
+	var device_id=event_data.device_token;
+	var simulation_id=event_data.simulation_id;
+
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+
+	if(simulation != -1){
+
+		var device=Util.findByUniqueID(device_id,simulation.getDevices());
+		var network= device.networkObject;
+		if(device != -1){
+	
+			network.removeDevice(device);
+			simulation.addPartition(device.networkObject.partitionObject);
+
+			var new_activity = "Device " +  device.device_name +  " left network " + network.networkName + " at " + time_stamp + "\n";
+			simulation.updateSimulationLog(new_activity, simulation);
+			//save the state
+			saveSimulationState( simulation_id, time_stamp, simulation);
+
 		}
 	}
 }

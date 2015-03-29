@@ -79,6 +79,7 @@ function store_local_simulation(new_simulation){
 	putinStorage( 'simulation', JSON.stringify(new_simulation));
 }
 
+
 /**
  * Stores a device objet in the local storage of the client
  */
