@@ -306,19 +306,22 @@
 
 <script type = "DeviceListTemplate" id = "template14">
 	<h1 class='flip-up-text'>Devices in this Simulation</h1>
-	<div class = 'container'>
-		<table class='center-table'>
-		<tr class='tableHeading'> <td> Device Name</td><td> Network</td></tr>
-			{{#devices}}
-			
-				<tr  id = '{{_id}}'> 
-					<td> {{current_device_name}}  </td> 
-					<td>{{current_network}}</td>
-				</tr>
-			{{/devices}}
-		</table>
-	</div><br>
-		
+	<span >Device Name</span>
+	<span class='table-title'>Network Name</span>
+	<div class = 'network-scroll-table-wrapper'>
+		<div class = 'container network-scroll-table-scroll'>
+			<table class='center-table'>
+				{{#devices}}
+				
+					<tr  id = '{{_id}}'> 
+						<td> {{current_device_name}}  </td> 
+						<td>{{current_network}}</td>
+					</tr>
+				{{/devices}}
+			</table>
+		</div>
+	</div>
+	<br>	
 </script>
 
 

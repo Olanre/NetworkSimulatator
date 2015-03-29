@@ -6,16 +6,12 @@ function NetworksListTemplate(networks, local_device){
 	var networks_created = local_device.networks_created;
 	//str holds the html for the page
 	var str = "<h1 class='flip-up-text'>Available Networks</h1>"+"<br>"+
-			"<div id='network-scroll-table-wrapper' >"+
-			"<div id='network-scroll-table-scroll'>"+
+			"<span >Network Name</span>"+
+			"<span class='table-title-3'>Population</span>"+
+			"<span class='table-title-2'>Action</span>"+
+			"<div class='network-scroll-table-wrapper' >"+
+			"<div class='network-scroll-table-scroll'>"+
 			"<table class='center-table'>"+
-				"<thead>"+
-					"<tr>"+
-						"<td id='net-name-header'><scpan class='table-header-text'>Network Name</td></span>"+
-						"<td id ='pop-name-header'><scpan class='table-header-text'>Network Population</td></span>"+
-						"<td id='action-name-header'><scpan class='table-header-text'>Action</td></span>"+
-					"</tr>"+
-				"</thead>"+
 				"</tbody>";
 	//for each network, add html for interacting with that network to the page
 	for(var i = 0; i< networks.length; i++){
