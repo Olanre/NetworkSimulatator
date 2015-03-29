@@ -406,24 +406,25 @@
 			<table class = "require-table">
 				<thead>
 				  <tr>
-				     <th> Requirement</th>
+				     <th> Requirements</th>
 				     <th>Example</th>
 				  </tr>
 				 </thead>
-				 <tbody>
+				 <tbody class="text-left">
 				 	<tr>
 				 		<td>
-					 		 Your Application must include a package.json and main.js <br>
-							The package.json describes the RDTs your application uses and the main file for interfacing with the app. 
+				 			<p class="text-indent">
+					 			The Application must include a package.json file. The package.json file describes your application and the RDTs which it uses. The "name" field specifies the name of your application. The "version" allows you to identify your application by a version. The "description" is a description of your application. "main" specifies the html file which will be loaded when running the application. "rdt_list" is a list of RDTs that your application makes use of. More files may be included as well, including CSS files.
+					 		</p> 
 				 		</td>
-				 		<td>
+				 		<td class='width-45ps'>
 					 		<code> 
-								{
-					  			 	"name": "CounterApp",
-					 				 "version": "0.1.0",
-					  			 	"description": "A small counter app for testing a incrementing data type",
-					  				 "main": "index.html",
-									 "rdt_list" : [ "incRDT" ] 
+								{<br>
+					  			 	"name": "CounterApp", <br>
+					 				"version": "0.1.0",<br>
+					  			 	"description": "A small counter app for testing a incrementing data type",<br>
+					  				"main": "index.html",<br>
+									"rdt_list" : [ "incRDT" ]<br> 
 								}
 							</code>
 						</td>
@@ -431,9 +432,9 @@
 				 	
 				 	<tr>
 				 		<td>
-				 			Your application needs to include a script tags at the start in order to work with our framework. 
-							This is a javascript file used to tie your logic with our RDTs must also be included. 
-							
+				 			<p class="text-indent">
+				 				The application must include the following script tag at the beginning of the included HTML file in order to work with our framework. This is a javascript file used to tie your logic in with the RDTs.
+				 			</p>
 				 		</td>
 				 		<td>							
 							<code>  src = "../ApplicationRequirements.js"  </code>
@@ -442,12 +443,10 @@
 				 	
 				 	<tr>
 				 		<td>
-				 			A call to manipulate an RDT within your application must be in the format ({rdt-name}, {function}, {callback-handler})
-				 			<br>
-				 			Where the {rdt-name} is the name of the rdt to be manipulated, {function} is the function to be performed on the rdt
-				 			<br>
-				 			{callback-handler} is your callback function to handle the new value of the rdt the framework will return when it has executed 
-				 			the command
+				 			<p class='text-indent'>
+
+								In order to manipulate an RDT within your application, use the call manipulateRDT({rdt-name}, {function}, {callback-handler}). Here, the {rdt-name} is the name of the rdt to be manipulated, the {function} is the function to be performed on that rdt, and {callback-handler} is your callback function to handle the new value returned from that RDT when this function has been executed.
+				 			</p>
 				 		</td>
 				 		<td>
 				 			<code> manipulateRDT('Counter', 'inc', newIncVal ); </code>

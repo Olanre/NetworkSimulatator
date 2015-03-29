@@ -11,6 +11,9 @@ body{
 .nav li{
   cursor: pointer;
 }
+.text-indent{
+  text-indent: 50px;
+}
 
 #App{
   width:100%;
@@ -271,11 +274,8 @@ Upload Apps RDTs and Test Scripts
   padding:10px;
 }
 
-.test-table td{
-  background-color:#92E0CC;
-  border-radius:5px;
+.require-table{
   margin:5px;
-  padding:5px;
 }
 
 /*-----------------------
@@ -327,8 +327,8 @@ Upload Apps RDTs and Test Scripts
  *handles the scroll bar for our webpages
  ------------------------*/
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 7px;
+    height: 0px;
 }
  
  
@@ -336,7 +336,7 @@ Upload Apps RDTs and Test Scripts
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    background: rgba(85, 85, 85, 1); 
+    background: rgba(240, 90, 117,1); 
 }
 
 #network-scroll-table-scroll::-webkit-scrollbar-thumb {
