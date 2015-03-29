@@ -356,7 +356,6 @@ Handles the device log views
   overflow:scroll;
   width:80%;
   border-radius:5px;
-  border:20px;
 }
 
 #logs-scroll-box::-webkit-scrollbar-thumb {
