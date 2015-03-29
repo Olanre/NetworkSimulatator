@@ -1,6 +1,5 @@
 <html>
 <head>
-	<script src="/js/socket.io.js"></script>
 	<script src = '../ApplicationRequirements.js' type='text/javascript'></script>
 	<script type="text/javascript">
 		var inc_local_count = 0;
@@ -9,31 +8,27 @@
 		function incrCounter(){
 			var local_counter = document.getElementById('inc_local_count').innerHTML = inc_local_count + 1;
 			inc_local_count++;
-			manipulateRDT('Counter', 'inc', newRDTVal );
+			manipulateRDT('Counter', 'inc', newIncVal );
 			
 		}
 		
 		function decrCounter(){
 			var local_counter = document.getElementById('dec_local_count').innerHTML = dec_local_count - 1;
 			dec_local_count--;
-			manipulateRDT('MyCounter', 'dec', newRDTVal );
+			manipulateRDT('MyCounter', 'dec', newDecVal );
 			
 		}
 		
-		function newRDTVal(new_val, name){
-			if( name == "Counter" ){
-				
-				document.getElementById('inc_global_count').innerHTML = new_val;
-				
-			}else if(name == "MyCounter"){
-				document.getElementById('dec_global_count').innerHTML = new_val;
-			}
+		function newIncVal(new_val){
+			document.getElementById('inc_global_count').innerHTML = new_val;
 		}
+		
+		function newDecVal(new_val){
+			document.getElementById('dec_global_count').innerHTML = new_val;
+		}
+		
 	</script>
 	
-	
-	
-
 </head>
 <body>
 
