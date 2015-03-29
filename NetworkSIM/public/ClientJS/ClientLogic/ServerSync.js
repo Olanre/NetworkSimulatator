@@ -49,7 +49,7 @@ socket.on('syncState', function(appState){
 	}
 });
 
-socket.on('setSimulation', function(Sim){
+socket.on('setAdminSimulation', function(Sim){
 	if( isEmpty(Sim) == false){
 		//stores the simulation history for retrieval
 		store_local_simulation(Sim);

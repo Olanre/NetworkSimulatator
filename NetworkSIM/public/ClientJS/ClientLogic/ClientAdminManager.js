@@ -9,6 +9,7 @@ function login(user_name, password){
 	params = JSON.stringify(body);
 	socket.emit('/authenticate/authAdmin', params);
 	
+	
 }
 
 
@@ -17,7 +18,11 @@ function login(user_name, password){
  */
 function getAdminVerified(){
 	var local_admin = get_local_admin();
-	return local_admin.verified;
+	if(local_admin !== undefined && local_admin !== null){
+		return local_admin.verified;
+	}else{
+		return false;
+	}
 }
 
 /**
