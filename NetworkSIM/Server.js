@@ -10,6 +10,7 @@ var SimulationManager = require('./Server/SimulationManager');
 var Router = require("./Server/routing.js");
 var SimulationModel = require("mongoose").model("Sim");
 var StateModel = require("mongoose").model("State");
+var RDTManager = require("./Server/RDTManager.js");
 
 
 var app = express();
@@ -44,6 +45,33 @@ SimulationModel.findAllSimulations(function(simJSONlist){
 	});	
 	
 });
+
+app.post("/manipulate/RDT", function(request, response){
+	
+	var data = '';//waits until all of the data from the client has been received
+	request.on("data", function(chunk){ //if a piece of the data from the client is being received 
+		data += chunk.toString();
+	});
+	//if we have the entire data from the client
+	request.on("end", function() {
+		//console.log(data);
+		var json = JSON.parse(data);
+		var token = json.token;
+		var time_stamp = json.timestamp;
+		var name = json.event_data.name;
+		var simulation_id = json.simulation_id;
+		var new_val = 'Not available';
+		SimulationManager.authToken(token, function(obj){
+			if(obj.Response == 'Success'){
+				new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
+				var res = {'new_val' : new_val};
+				response.send( res );
+			}
+			
+		});
+	});	
+            
+});    
 
 app.get('/', function(request,response){
 	response.sendFile("/index.html", {"root": __dirname});	

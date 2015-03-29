@@ -2,37 +2,63 @@
  * New node file
  */
 
-var socket = io.connect();
-
 var connected = false;
 
 
 function manipulateRDT(rdtName, method, fntoCall){
 	var local_device = get_local_device();
 	var simulation = get_local_simulation();
-	console.log(simulation);
 	var token = local_device.token;
 	var timestamp = new Date();
 	var route = '/manipulate/RDT';
-	console.log(rdtName);
 	var event_data = {'name' : rdtName, 'method' : method, 'device_id' : token, 'simulation_id' : simulation._id};
 	
 	var event = {'event_data' : event_data, 'timestamp' : timestamp, 'token' : token, 'simulation_id' : simulation._id};
 	event = JSON.stringify(event);
 	
-	socket.emit(route, event, fntoCall );
+	send2Server(route, event, fntoCall );
 }
 
-socket.on('newRDTVal', function(data, fntoCall){
-	fntoCall(data['new_val'], data['rdt_name']);
-});
+
+/**
+ * Ajax section for javascript
+ * Bundles all of the event data and sends it to the server to handle.
+ */
+send2Server = function(url, params, callback)
+{
+	
+    var request = new XMLHttpRequest();
+    if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+    	
+		request=new XMLHttpRequest();
+		
+	}else{// code for IE6, IE5
+		
+    	request=new ActiveXObject("Microsoft.XMLHTTP");
+    	
+    }
+    request.onreadystatechange = function()
+    {
+        if (request.readyState == 4 && request.status == 200)
+        {
+        	var obj = JSON.parse(request.responseText);
+            callback(obj['new_val']); // Another callback here
+        }else{
+        	//alert("Please wait")
+        	
+        }
+    }; 
+    request.open('POST', url);
+    request.send(params);
+}
+
 
 /**
  * getFromStorage gets an item from the local storage on the device by id
  * @param id: the key of the element to retrieve from local storage
  */
 function getFromStorage(id){
-	return sessionStorage.getItem(id);
+	return localStorage.getItem(id);
 }
 
 /**

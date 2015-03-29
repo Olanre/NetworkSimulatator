@@ -37,9 +37,10 @@ function handleClient (socket) {
     		var json = JSON.parse(data);
     		var token = json.token;
     		var events = json.eventQueue ;
+    		var admin = json.admin;
     		var simulation= json.simulation_id;
     		//console.log(simulation);
-    		SimulationManager.authToken(token, simulation, function(obj){
+    		SimulationManager.authToken(token, function(obj){
     			//for now allow empty tokens
     			
     			if(obj.Response == 'Success'){
@@ -57,9 +58,24 @@ function handleClient (socket) {
 	    						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
                                 io.to(socket_id).emit('syncState', state);
 	    						
-	    					}    					
+	    					}
+	    					
     				});
-    				
+    			}else if( admin == true){
+    				var list = SimulationManager.getAllActiveDevices(simulation);
+					
+					for(var index = 0; index < list.length; index++){
+						var user_token = list[index]['token'];
+						var socket_id = client_map[user_token];
+						
+						var state = SimulationManager.getAppStateForDevice(user_token,simulation);
+                        io.to(socket_id).emit('syncState', state);
+						
+					}
+							
+					var state = SimulationManager.getAppStateForAdmin(simulation);
+	                io.to(socket.id).emit('syncState', state);
+
     			}else{
     				handleEventQueue(token, events, function(){    					
     					var state= SimulationManager.getBlankAppState();
@@ -77,25 +93,45 @@ function handleClient (socket) {
     	var json = JSON.parse(data);
     	var token = json.token;
     	var time_stamp = json.time_stamp;
-    	var simulation_id = json.simulation_id;
-    	SimulationManager.authToken(token, simulation_id, function(obj){
+    	SimulationManager.authToken(token, function(obj){
     	//for now allow empty tokens
     		client_map[token] = socket.id;
     		io.to(socket.id).emit('validate_user', obj);
     	});
     });
     
+    socket.on("/authenticate/authAdmin", function (data){
+    	
+    	var json = JSON.parse(data);
+    	var username = json.user;
+    	var password = json.password;
+    	var time_stamp = json.time_stamp;
+    	SimulationManager.authAdmin(user, password, time_stamp, function(obj){
+    	//for now allow empty tokens
+    		io.to(socket.id).emit('validate_admin', obj);
+    	});
+    });
+    
     socket.on("/get/History", function (data){
     	
     	var json = JSON.parse(data);
-    	var token = json.token;
     	var simulation_id = json.simulation_id;
-    	SimulationManager.authToken(token, simulation_id, function(obj){
-    		if(obj.Response == 'Success'){
-		    	var history = SimulationManager.getSimulationHistory(simulation_id);
-		    	io.to(socket.id).emit('syncHistory', history);
+    	var history = SimulationManager.getSimulationHistory(simulation_id);
+    	io.to(socket.id).emit('syncHistory', history);	
+    	
+    } );
+    
+    socket.on("/get/Simulation", function (data){
+    	
+    	var json = JSON.parse(data);
+    	var simulation_id = json.simulation_id;
+    	SimulationManager.getSimulationFromId( simulation_id, function(obj){
+    		if(obj == 'Not Found'){
+		    	var Sim = {};
+		    	io.to(socket.id).emit('setSimulation', Sim);
     		}else{
-    			io.to(socket.id).emit('validate_user', obj);
+    			var Sim = obj;
+    			io.to(socket.id).emit('setSimulation', Sim);
     		}
     	});
     	//for now allow empty tokens
@@ -103,29 +139,9 @@ function handleClient (socket) {
     	
     } );
     
-    socket.on("/manipulate/RDT", function(data, func){
-    	var json = JSON.parse(data);
-    	var token = json.token;
-    	var time_stamp = json.timestamp;
-    	var simulation_id = json.simulation_id;
-    	var new_val = 'Not available';
-    	SimulationManager.authToken(token, simulation_id, function(obj){
-    		if(obj.Response == 'Success'){
-    			new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
-    			var response = {'new_val' : new_val , 'rdt_name' : json.event_data.name};
-    			io.to(socket.id).emit('newRDTVal', response, func );
-    		}
-    		
-    	});
-    		
-                
-    });
-                
     
-    
+       
 };
-
-
 
 
 function handleEventQueue(token, eventQueue, callback) {
