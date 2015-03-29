@@ -102,13 +102,8 @@ function handleClient (socket) {
     		
     	
     } );
-    
-           
-    
-    
+       
 };
-
-
 
 
 function handleEventQueue(token, eventQueue, callback) {
