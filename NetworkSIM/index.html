@@ -400,24 +400,6 @@
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">
-		<h4> Requirements </h4>
-		<p> Your Application must include a package.json and main.js <br>
-		The package.json describes the RDTs your application uses and the main file for interfacing with the app. <br>
-		An example is <br>
-		<code> 
-			{
-  			 	"name":"CounterApp",
- 				 "version":"0.1.0",
-  			 	"description":"A small counter app for testing a incrementing data type",
-  				 "main":"index.html",
-				 "rdt_list" : [ "incRDT" ] 
-			}
-		</code>
-		</p>
-		<br>
-		<p> Finally, your application needs to include two script tags at the start in order to work with our framework. 
-			This framework uses socket.io so include a script with the source to it at the head of your index.html <br>
-			<code> src="/js/socket.io.js"  </code> 
 		<div class = 'btn btn-primary'  onclick = "toggle_visibility('Requirements', this)" > Toggle Requirements </div>
 		<div id = 'Requirements' style = "display:none">
 			<br>
