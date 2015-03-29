@@ -290,7 +290,7 @@ function authToken(token, callback){
 						deviceList[index].deviceJSON.verified = true;
 						deviceList[index].deviceJSON.save();
 						simulation.simulationJSON.simulation_population++;
-						saveSimulationState( simulation_id, timestamp, simulation);
+						saveSimulationState( simulation._id, timestamp, simulation);
 					}
 					else{
 						console.log(deviceList[index].deviceJSON.current_device_name+" connected");
@@ -466,10 +466,10 @@ function addDeviceToNetwork(event_data, time_stamp){
 	if(simulation != -1){
 		var network=Util.findByUniqueID(network_id,simulation.getNetworks());
 		var device=Util.findByUniqueID(device_id,simulation.getDevices());
-		if(device != -1){
+		if(device != -1 && network != -1){
 			//don't add a device to a network they already belong to
 
-			if(device.networkObject !== network){
+			if(device.networkObject._id !== network._id){
 	
 				network.addDevice(device);
 
