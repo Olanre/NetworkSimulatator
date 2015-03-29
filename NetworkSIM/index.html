@@ -437,7 +437,7 @@
 				 			</p>
 				 		</td>
 				 		<td>							
-							<code>  src = "../ApplicationRequirements.js"  </code>
+							<code class='width-45ps'>  src = "../ApplicationRequirements.js"  </code>
 				 		</td>
 				 	</tr>
 				 	
@@ -449,7 +449,7 @@
 				 			</p>
 				 		</td>
 				 		<td>
-				 			<code> manipulateRDT('Counter', 'inc', newIncVal ); </code>
+				 			<code class='width-45ps'> manipulateRDT('Counter', 'inc', newIncVal ); </code>
 				 		</td>
 				 	</tr>
 				 </tbody>
@@ -497,12 +497,14 @@
 				     <th>Example</th>
 				  </tr>
 				 </thead>
-				 <tbody>
+				 <tbody class='text-left'>
 				 	<tr>
-				 		<td> Your RDT must include a package.json and spec.md <br>
-							The package.json describes the RDT, what is is and the main file for interfacing with the RDT. <br>
+				 		<td> 
+				 			<p class='text-indent'>
+				 				The RDT must include a package.json file. This file describes the RDT and how to interact with it. The "name" field is the name of the RDT. The "version" field is allows you to attach a version number to your RDT in the case that you would like to create multiple versions. The "description" is a description of your RDT and its functionality. The "main" field is the name of the javascript file which includes every file required for the RDT as well as exporting an init function, allowing it to be propagated to all devices. Please view the example RDTs for more information.
+				 			</p>
 						</td>
-						<td>
+						<td class='width-45ps'>
 							<code> 
 								{
 					  			 	"name": "incRDT",
@@ -514,25 +516,26 @@
 						</td>
 					</tr>
 					<tr>
-						<td> 
-							The spec.md described the behavior of your RDT so application developers 
-							know how to access values and manipulate your RDT
-						</td>
 						<td>
+							<p class='text-indent'>
+								The spec.md described the behavior of your RDT, equivalent to a "readme" file, allowing developers to understand how your RDT works and how to utilize it in their applications.
+							</p>
+						</td>
+						<td class='width-45ps'>
 							<code>
-								# incRDT: A simple replicated integer counter data type
+								# incRDT: A simple replicated integer counter data type<br>
+								
+								This supplies a Counter object has with two public methods:<br><br>
 					
-								A Counter object has two public methods:
-					
-					    		var c = new Counter();
-					    		c.inc();    // increment the counter
-					   			 c.val();    // read the counter value
+					    		var c = new Counter();<br>
+					    		c.inc();    // increment the counter <br>
+					   			 c.val();    // read the counter value <br><br>
 					
 					
 								The Counter object will be created for you and automatically replicated at each
 								device object from the `deviceIterator` you passed in to the modules `init`
 								method. There is no need to create Counter objects by yourself. In fact, the
-								Counter constructor function is not even exported.
+								Counter constructor function is not even exported. <br>
 								
 								You should use the device objects `accessRDT` method to grab the copy of a
 								Counter that is created for you. Read the `network_topology.js` file and check
