@@ -20,6 +20,15 @@ code{
   color:#F9A3B2;
 }
 
+.code-center{
+  text-align:left;
+  margin-left:32%;
+}
+
+.width-45ps{
+  width:45%;
+}
+
 .text-input{
   padding:5px;
   border-radius:3px;
@@ -261,6 +270,13 @@ Upload Apps RDTs and Test Scripts
   padding:10px;
 }
 
+.test-table td{
+  background-color:#92E0CC;
+  border-radius:5px;
+  margin:5px;
+  padding:5px;
+}
+
 /*-----------------------
  *viewing list of networks which you can join and leave
  ------------------------*/
@@ -340,6 +356,7 @@ Handles the device log views
   overflow:scroll;
   width:80%;
   border-radius:5px;
+  border:20px;
 }
 
 #logs-scroll-box::-webkit-scrollbar-thumb {

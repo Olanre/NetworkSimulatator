@@ -11,10 +11,9 @@ var uploadEvent={};
  * handles this type of file on the client
  */
 function handleFiles(file_type) {
-		
-		current_files = document.getElementById(file_type).files;		
-		readFiles();
-		updateData();				
+	current_files = document.getElementById(file_type).files;		
+	readFiles();
+	updateData();				
 }
 
 /**
@@ -104,6 +103,9 @@ function setup_reader(file){
  * @param: haystack, the place in which to find that file
  */
 function hasRequiredFile(needle, haystack){
+	if(needle==null||needle==''||haystack==null||haystack==''){
+		return false;
+	}
 	//holds whether the file has been found
 	var bool = false;
 	//for each object in the haystack
@@ -236,40 +238,46 @@ function pushFileEvent(file_type){
 			alert("Please include a Mark Down file for the specs");
 			upload = false;
 		}
-		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
+		if( hasRequiredFile('package.json', uploadEvent.files) == false &&upload==true){
 			alert("Please include a package.json file describing your RDT");
 			upload = false;
 		}
 	}
 	//if uploading an application
-	if( file_type == 'App'){
+	else if( file_type == 'App'){
 		//check that all of the required information for the application exists
 		if( hasRequiredFile('package.json', uploadEvent.files) == false ){
 			alert("Please include a package.json file describing your Application");
 			upload = false;
 		}
-		if(checkRDTSinApp() == false) upload = false;
+		if(checkRDTSinApp() == false&&upload==true) upload = false;
 	}
 	//if uploading a test script
-	if( file_type == 'Test'){
+	else if( file_type == 'Test'){
 		
 		if( hasRequiredFile('test.json', uploadEvent.files) == false ){
 			alert("Please include a test.json file for your Test Script");
 			upload = false;
 		}
-		if( checkRDTSinScript() == false) upload = false;
-		
+		if( checkRDTSinScript() == false&&upload==true) upload = false;
+	}
+	else{
+		alert("Please input a file to upload");
+		upload=false;
 	}
 	//passed all of the checks
 	if( upload){
-		console.log(uploadEvent);
 		//add the event to the event queue
 		addToEventQueue('/upload',uploadEvent,new Date());
 		var btn = document.getElementById('UploadButton');
-		if(btn !== null) btn.innerHTML = "Please Wait";
+		if(btn !== null){
+			btn.innerHTML = "Please Wait";
+			btn.onclick=null;
+		}
 		//send the information to the server
 		setTimeout(function(){
 			syncWithServer();
+			uploadEvent={};
 			//sets the view to simulation management
 			if (file_type=='Test'){
 				alert("Test script is being run. Please view the simulation history to see the effect.");
@@ -281,6 +289,6 @@ function pushFileEvent(file_type){
 			else if(file_type == 'RDT'){
 				RDTsView();
 			}
-		},3000);
+		},10000);
 	}
 }

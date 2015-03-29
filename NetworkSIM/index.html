@@ -247,11 +247,11 @@
 	</div>  
 	
 	<div id = 'config-map'>	
-		<div class = 'btn btn-primary' id='button-create-partition' onclick="addtoConfigTable(this, 'Partition', this)"> New Partition </div> 
+		<div class = 'btn-2' id='button-create-partition' onclick="addtoConfigTable(this, 'Partition', this)"> New Partition </div> 
 	</div>
 	<br><br> 
 	 
-	<div class = 'btn btn-primary' id='button-create-simulation' onclick = "CreateSimulation()"> Start Simulation </div>
+	<div class = 'btn' id='button-create-simulation' onclick = "CreateSimulation()"> Start Simulation </div>
 	</div>
 </script>
 
@@ -406,10 +406,10 @@
 		An example is <br>
 		<code> 
 			{
-  			 	"name": "CounterApp",
- 				 "version": "0.1.0",
-  			 	"description": "A small counter app for testing a incrementing data type",
-  				 "main": "index.html",
+  			 	"name":"CounterApp",
+ 				 "version":"0.1.0",
+  			 	"description":"A small counter app for testing a incrementing data type",
+  				 "main":"index.html",
 				 "rdt_list" : [ "incRDT" ] 
 			}
 		</code>
@@ -458,34 +458,30 @@
 		An example is <br>
 		<code> 
 			{
-  			 	"name": "incRDT",
- 			 	"version": "0.1.0",
-  			 	"description": "A replicated integer counter data type",
-  			 	"main": "rdtInterface.js"
+  			 	"name":"incRDT",
+ 			 	"version":"0.1.0",
+  			 	"description":"A replicated integer counter data type",
+  			 	"main":"rdtInterface.js"
 			}
 		</code>
 		<br> <br>
 		The spec.md described the behavior of your RDT so application developers know how to access values and manipulate your RDT
-		An example<br>
+		An example
+		<div class='code-center'>
 		<code>
 			# incRDT: A simple replicated integer counter data type
-
+			<br>
 			A Counter object has two public methods:
-
+			<br>
     		var c = new Counter();
+    		<br>
     		c.inc();    // increment the counter
+    		<br>
    			 c.val();    // read the counter value
-
-
-			The Counter object will be created for you and automatically replicated at each
-			device object from the `deviceIterator` you passed in to the modules `init`
-			method. There is no need to create Counter objects by yourself. In fact, the
-			Counter constructor function is not even exported.
-			
-			You should use the device objects `accessRDT` method to grab the copy of a
-			Counter that is created for you. Read the `network_topology.js` file and check
-			the interface of `Device`.
-		</code>
+   			 <br>
+   		</code>
+   		</div>
+   		In order to utilize an RDT which you have uploaded, please upload an application under the "Applications" tab on the side-bar. 
 		</p>
 		<br>
 		<div id="appDiv" class="uploadContainer">
@@ -591,7 +587,7 @@
 		<br>
 		For the parameter field the following paramters are acceptable
 		<br>
-		<table>
+		<table class='test-table'>
 			<thead>
 			  <tr>
 			     <th> Parameter Name</th>
@@ -602,13 +598,13 @@
 			<tr>
 				<td> rdts </td> 
 				<td> The list of rdts you want your test to use. </td> 
-				<td> Example 1 
+				<td class='text-left width-45ps'> Example 1: 
 					<code> [{"name": "incRDT", "method" : "inc"} , {"name" : "decRDT", "method" : "dec"}] </code>
 					<br>
-					Example 2 
+					Example 2: 
 					<code>[ {"name" : "decRDT", "method" : "dec"}] </code>
 					<br>
-					 Example 3 
+					 Example 3: 
 					<code> [{"name": "incRDT", "method" : "inc"} ] </code>
 					<br>
 				</td>
