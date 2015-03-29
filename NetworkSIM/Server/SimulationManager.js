@@ -20,8 +20,6 @@ var fs = require('fs');
 
 var simulationList = [];
 var simulationHistoryList = [];
-var admin_user = "group2";
-var admin_password = "group2";
 Models.initialize();
 
 exports.loadSimulations = function(simList){
@@ -103,31 +101,6 @@ exports.getAppStateForDevice = function(token,simulation_id){
 	state.device=device;
 	state.simulation_list=module.exports.getSimulationList();
 	return state;
-}
-
-exports.getAppStateForAdmin = function(simulation_id){
-
-	var simulation,device,deviceList;
-
-	simulation=Util.findByUniqueID(simulation_id,simulationList);
-	var state = {};
-	if(simulation != -1){
-		var newJSON=Util.deepCopy(simulation.simulationJSON);
-		//console.log("Partition List "+newJSON.partition_list);
-		newJSON.rdts = buildListObject(newJSON.rdts, simulation.rdt_specs);
-		newJSON.apps = buildListObject(newJSON.apps, simulation.app_specs);
-		newJSON.partition_list=buildPartitionList(simulation);
-		
-		state.simulation=newJSON;
-	}else{
-		state.simulation = {};
-	}
-	
-	state.device= {};
-	state.simulation_list=module.exports.getSimulationList();
-	return state;
-	
-	
 }
 
 function buildPartitionList(simulation){
@@ -246,58 +219,31 @@ module.exports.getSimulationList=function(){
 	
 }
 
-module.exports.getSimulationFromId = function(simulation_id, callback){
-	var new_entry;
-	var obj = module.exports.getAppStateForAdmin(simulation_id);
-	if(simulation != -1){
-		callback(obj.simulation);
-	}else{
-		callback("Not Found");
-	}
-}
-
-function authAdmin( user_name, pass_word, timestamp, callback){
-	var obj = {};
-	var Admin = { 'verified' : true, 'authorizedOn' : timestamp};
-	if( user_name == admin_user && pass_word == admin_password){
-		obj.Response = "Success";
-		obj.Admin = Admin;
-	}else{
-		obj.Response = "Fail";
-	}
-	callback(obj);
-	
-}
-
-function authToken(token, callback){
+function authToken(token, simulation_id,  callback){
 	var res = {};
 	//var state = getBlankAppState();
 	res.Response = "Fail";
-	for(index in simulationList){
-		var simulation=simulationList[index];
-		//simulation = simulationList[i];
-		if(simulation != -1&&simulation!=undefined){
-			
-			var deviceList=simulation.device_list;
-			
-			for(var index = 0; index < deviceList.length; index++){
-				if(deviceList[index].token == token){
-					var timestamp = new Date().toISOString();
-					res.Response = "Success";
-					if(deviceList[index].deviceJSON.verified != true){
-						var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenticated in the simulation at " + timestamp + "\n";
-						simulation.updateSimulationLog(new_activity);
-						deviceList[index].deviceJSON.verified = true;
-						deviceList[index].deviceJSON.save();
-						simulation.simulationJSON.simulation_population++;
-						saveSimulationState( simulation._id, timestamp, simulation);
-					}
-					else{
-						console.log(deviceList[index].deviceJSON.current_device_name+" connected");
-					}
-					
-					break;
+	var simulation=Util.findByUniqueID(simulation_id,simulationList);
+	//simulation = simulationList[i];
+	if(simulation != -1&&simulation!=undefined){
+		var deviceList=simulation.device_list;
+		for(var index = 0; index < deviceList.length; index++){
+			if(deviceList[index].token == token){
+				var timestamp = new Date().toISOString();
+				res.Response = "Success";
+				if(deviceList[index].deviceJSON.verified != true){
+					var new_activity = "Device " +  deviceList[index].deviceJSON.current_device_name +  " was authenticated in the simulation at " + timestamp + "\n";
+					simulation.updateSimulationLog(new_activity);
+					deviceList[index].deviceJSON.verified = true;
+					deviceList[index].deviceJSON.save();
+					simulation.simulationJSON.simulation_population++;
+					saveSimulationState( simulation_id, timestamp, simulation);
 				}
+				else{
+					console.log(deviceList[index].deviceJSON.current_device_name+" connected");
+				}
+				
+				break;
 			}
 		}
 	}
@@ -428,13 +374,7 @@ function createNetwork(event_data, time_stamp){
 
 //TODO
 function removeDevice(event_data, time_stamp){
-	//var simulation_name=event_data.simulation_name;
-	//var device_id=event_data.device_id;
 	
-	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
-	//var device=Util.getByUniqueID(device_name,simulationObject.gets());
-	//var new_activity = "Device " +  device.device_name +  " was deleted " + time_stamp + "\n";
-	//simulation.updateSimulationLog(new_activity);
 	//save the state
 	/** saveSimulationState( simulation._id, time_stamp, simulation);
 	 * */
@@ -442,14 +382,7 @@ function removeDevice(event_data, time_stamp){
 
 //TODO
 function removeNetwork(event_data, time_stamp){
-	//var simulation_name=event_data.simulation_name;
-	//var network_id =event_data.network_id;
-	
-	//var simulation=Util.getByUniqueID(simulation_name,simulationList);
-	//var network=Util.getByUniqueID(network_id,simulationObject.gets());
-	//var new_activity = "Network " +  network.networkName +  " was deleted " + time_stamp + "\n";
-	//simulation.updateSimulationLog(new_activity);
-	
+		
 	//save the state
 	/** //save the state
 		saveSimulationState( simulation._id, time_stamp, simulation);
@@ -482,6 +415,7 @@ function addDeviceToNetwork(event_data, time_stamp){
 		}
 	}
 }
+
 exports.removeDeviceFromNetwork= function(event_data,time_stamp){
 	var time_stamp = new Date().toISOString();
 	var device_id=event_data.device_token;
@@ -590,9 +524,7 @@ function saveSimulationState( simulation_id, time_stamp, simulationObject){
 
 module.exports.saveSimulationState = saveSimulationState;
 module.exports.authToken = authToken;
-module.exports.authAdmin = authAdmin;
 module.exports.simulationList=simulationList;
-module.exports.admin_user = admin_user;
 module.exports.createSimulation=createSimulation;
 module.exports.addDeviceToNetwork = addDeviceToNetwork;
 module.exports.createDevice = createDevice;

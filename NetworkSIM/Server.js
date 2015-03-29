@@ -61,7 +61,7 @@ app.post("/manipulate/RDT", function(request, response){
 		var name = json.event_data.name;
 		var simulation_id = json.simulation_id;
 		var new_val = 'Not available';
-		SimulationManager.authToken(token, function(obj){
+		SimulationManager.authToken(token, simulation_id, function(obj){
 			if(obj.Response == 'Success'){
 				new_val = RDTManager.manipulateRDT(json.event_data, time_stamp);
 				var res = {'new_val' : new_val};

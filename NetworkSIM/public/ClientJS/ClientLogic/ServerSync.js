@@ -49,16 +49,6 @@ socket.on('syncState', function(appState){
 	}
 });
 
-socket.on('setAdminSimulation', function(Sim){
-	if( isEmpty(Sim) == false){
-		//stores the simulation history for retrieval
-		store_local_simulation(Sim);
-		console.log(Sim);
-	}else{
-		console.log('recieved empty object from server for simulation');
-	}
-});
-
 /**
  * Function for recieving simulation history information from the server
  */
@@ -87,23 +77,6 @@ socket.on('validate_user', function(data){
 		syncWithServer();	
 	}else{
 		alert('Token invalid \nPlease enter the correct token for this simulation')
-	}
-});
-
-/**
- * validate_user verifies whether the token input by the user is valid or not
- */
-socket.on('validate_admin', function(data){
-	object = data;
-	console.log(data);
-	//if the authentication was a success
-	if(object.Response == 'Success'){
-		alert('You have been authenticated. \nPlease wait to be redirected');
-		//sync with the server and redirect to the simulation
-		store_local_admin(object.Admin);
-		syncWithServer();	
-	}else{
-		alert('Credentials invalid. \nUsername or password is incorrect');
 	}
 });
 

@@ -51,21 +51,6 @@ function wrapCreateSimulation() {
 	return create_simulation;
 }
 
-/**
- * Function to get a new simulation from the server
- */
-function getSimulation(simulation_id){
-	//creates the body of the event
-	var param = {
-			'simulation_id': simulation_id,
-			};
-	params = JSON.stringify(param);
-	var url = '/get/Simulation';
-	//sends the request to be validated by the server
-	socket.emit(url, params);
-	setTimeout( function(){ SimulationManagementView(); }
-	, 1000 );
-}
 
 /**
  * Function to get the states associates from a simulation 
@@ -74,6 +59,7 @@ function getSimulationHistory(simulation_id){
 	console.log(simulation_id);
 	//creates the body of the event to send to the server
 	var param = { 
+			'token' : getLocalDeviceToken(),
 			'simulation_id': simulation_id,
 			};
 	params = JSON.stringify(param);

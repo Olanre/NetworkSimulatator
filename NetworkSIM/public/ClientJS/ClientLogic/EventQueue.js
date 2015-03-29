@@ -11,7 +11,6 @@ function newEventQueue(){
 	//fills the new event queue object
 	var queue = {};
 	queue.token = '';
-	queue.admin = false;
 	queue.eventQueue = [];
 	queue.simulation_id = '';
 	store_local_events(queue);
@@ -36,7 +35,6 @@ function addToEventQueue(route, event_data, time_stamp){
 	local_events.eventQueue.push(query);
 	local_events.token = getLocalDeviceToken();  
 	local_events.simulationId = getLocalSimulationId();
-	local_events.admin = getAdminVerified();
 	//stores the events on the client
 	store_local_events(local_events);
 	if(connected == true){
