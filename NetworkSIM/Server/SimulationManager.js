@@ -399,10 +399,10 @@ function addDeviceToNetwork(event_data, time_stamp){
 	if(simulation != -1){
 		var network=Util.findByUniqueID(network_id,simulation.getNetworks());
 		var device=Util.findByUniqueID(device_id,simulation.getDevices());
-		if(device != -1 && network != -1){
+		if(device != -1){
 			//don't add a device to a network they already belong to
 
-			if(device.networkObject._id !== network._id){
+			if(device.networkObject!=network){
 	
 				network.addDevice(device);
 
@@ -415,7 +415,6 @@ function addDeviceToNetwork(event_data, time_stamp){
 		}
 	}
 }
-
 exports.removeDeviceFromNetwork= function(event_data,time_stamp){
 	var time_stamp = new Date().toISOString();
 	var device_id=event_data.device_token;

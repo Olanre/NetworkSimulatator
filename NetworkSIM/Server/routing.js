@@ -114,7 +114,9 @@ function handleEventQueue(token, eventQueue, callback) {
 		
 		switch(eventQueue[i].route) {
 
-
+			case '/move/Device/Freelist' :
+                SimulationManager.removeDeviceFromNetwork(eventQueue[i].event_data, eventQueue[i].time_stamp);
+                break;
 			case '/create/Simulation': 
 				SimulationManager.createSimulation(eventQueue[i].event_data, eventQueue[i].time_stamp);
 				break;
@@ -149,8 +151,6 @@ function handleEventQueue(token, eventQueue, callback) {
             case '/launch/App':
                 ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
-            
-           
 			default:
 				break;
 				
