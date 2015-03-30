@@ -296,6 +296,8 @@ function networkTopologyView(){
 	loadJSFile('../gui/Drawing.js');
 	loadJSFile('/view/TopologyView.js');
 	loadJSFile('/gui/Manipulation.js',setTimeout(function(){generateTopology(get_local_simulation().partition_list,800);}, 800));
+	//sets the topology to be able to be interacted with
+	interactable =true;
 
 }
 

@@ -17,20 +17,20 @@ svg {
 }
 
 .name-text{
-	
+	font-size:17px;
+	fill:#504646;
 }
 
 .held-object{
 	
 }
 .network-connection{
-	fill: #71EEB8;
 	stroke-width:5;
 	stroke:#71EEB8;
 }
 
 .device {
-	fill: #ff9999;
+	fill: #55A5DD;
 }
 
 .network{
@@ -39,7 +39,6 @@ svg {
 
 .drop-locations{
 	stroke: #29CE87;
-	stroke-dasharray: 10,5;
 	stroke-width:4;
 }
 
