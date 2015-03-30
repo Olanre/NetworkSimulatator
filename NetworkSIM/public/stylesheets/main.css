@@ -315,7 +315,7 @@ Upload Apps RDTs and Test Scripts
   height:400px;
   overflow:auto;  
   margin-top:20px;
-  background-color:#7D7D7D;
+  background-color:#6d5b5b;
   border-radius:5px;
 }
 
@@ -363,7 +363,7 @@ Handles the device log views
 #logs-scroll-box{
   margin-left:auto;
   margin-right:auto;
-  background-color:#7D7D7D;
+  background-color:#6d5b5b;
   height:400px;
   overflow:scroll;
   width:80%;
