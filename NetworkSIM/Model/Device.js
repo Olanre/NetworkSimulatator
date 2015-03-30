@@ -92,6 +92,7 @@ function leaveNetwork(network){
 
 	  network.device_list.push(this);
 	  network.networkJSON.device_list.push(this.deviceJSON._id);
+	  network.networkJSON.markModified('device_list');
 	  this.networkObject=network;
 	  this.deviceJSON.current_partition = network.partitionObject._id;
 	  this.deviceJSON.current_network = network.id;

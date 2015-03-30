@@ -74,6 +74,7 @@ function attachJSON(networkJSON){
 //we assume that we will only add devices through a network
 function addDevice(device){
 		this.networkJSON.device_list.push(device.deviceJSON._id);
+		this.networkJSON.markModified('device_list');
 		this.device_list.push(device);
 		device.joinNetwork(this);
 		this.networkJSON.save();
@@ -88,12 +89,14 @@ function removeDevice(device){
 			}
 		}
 		//delete from the JSON device list
-		for (var i =0; i< this.networkJSON.device_list.length;i++){
+		/*for (var i =0; i< this.networkJSON.device_list.length;i++){
 			if (this.networkJSON.device_list[i] == device.deviceJSON._id){
 				this.networkJSON.device_list.splice(i,1);
 				break;
 			}
-		}
+		}*/
+		this.networkJSON.device_list.pull(device.deviceJSON._id);
+		this.networkJSON.markModified('device_list');
 
 		device.leaveNetwork(this);
 		this.networkJSON.save();

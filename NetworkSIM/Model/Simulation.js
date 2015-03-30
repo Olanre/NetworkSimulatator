@@ -181,6 +181,7 @@ function addPartition(partition){
 		
 		this.partition_list.push(partition);
 		this.simulationJSON.partition_list.push(partition.partitionJSON._id);
+		this.simulationJSON.markModified('partition_list');
 		this.simulationJSON.save();
 } 
 	
@@ -200,6 +201,7 @@ function addNetwork(network){
 	partition.addNetwork(network);
 	this.network_list.push(network);
 	this.simulationJSON.partition_list.push(partition.partitionJSON._id);
+	this.simulationJSON.markModified('partition_list');
 	this.simulationJSON.num_networks++;
 	this.simulationJSON.save();
 }
@@ -221,14 +223,29 @@ function mergePartitions(partitionA,partitionB){
 		if(this.partition_list[index]._id==partitionB._id){
 
 			this.partition_list.splice(index,1);
-			this.simulationJSON.partition_list.splice(index,1);
+
+			/*for(var ind=0;ind<this.simulationJSON.partition_list.length;ind++){
+				if(this.simulationJSON.partition_list[ind]==partitionB._id){
+					delete this.simulationJSON.partition_list[ind];
+					console.log(this.simulationJSON.partition_list);
+					this.simulationJSON.save(function(err){
+						if(err){console.log('err');}
+						console.log('test');
+					});
+					break;
+				}
+			}*/
+			this.simulationJSON.partition_list.pull(partitionB._id);
+			this.simulationJSON.markModified('partition_list');
+			console.log(this.simulationJSON.partition_list);
+			this.simulationJSON.save();
+
 			partitionA.mergePartitions(partitionB);
 			break;
 
 		}
 	}
 	//console.log(this.partition_list)
-	this.simulationJSON.save();
 }
 
 function updateSimulationLog(new_activity){
