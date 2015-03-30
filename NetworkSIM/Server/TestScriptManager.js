@@ -56,6 +56,7 @@ function runScript(simulation){
 		counter++;
 		ran_network = Util.randomElement( networkList );
 		ran_device = Util.randomElement( deviceList );
+		console.log(ran_network + ran_device);
 		if(ran_network !== undefined && ran_device !== undefined && simulation !== undefined){
 			
 			var event_data = wrapDeviceMover( ran_device, ran_network, simulation);

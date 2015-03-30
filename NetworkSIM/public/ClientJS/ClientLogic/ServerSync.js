@@ -97,5 +97,7 @@ socket.on('connect', function () {
  */
 socket.on('disconnect', function () {
 	connected = false;
+	location.reload();
+	
 	  console.log('Socket is disconnected.');
 });
