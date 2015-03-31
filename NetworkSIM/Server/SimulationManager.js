@@ -372,23 +372,6 @@ function createNetwork(event_data, time_stamp){
 	}
 }
 
-//TODO
-function removeDevice(event_data, time_stamp){
-	
-	//save the state
-	/** saveSimulationState( simulation._id, time_stamp, simulation);
-	 * */
-}
-
-//TODO
-function removeNetwork(event_data, time_stamp){
-		
-	//save the state
-	/** //save the state
-		saveSimulationState( simulation._id, time_stamp, simulation);
-	*/
-}
-
 function addDeviceToNetwork(event_data, time_stamp){
 	//var time_stamp = new Date().toISOString();
 	var network_id=event_data.network_id;
