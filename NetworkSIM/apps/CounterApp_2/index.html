@@ -11,21 +11,12 @@
 			manipulateRDT('Counter', 'inc', newIncVal );
 			
 		}
-		
-		function decrCounter(){
-			var local_counter = document.getElementById('dec_local_count').innerHTML = dec_local_count - 1;
-			dec_local_count--;
-			manipulateRDT('MyCounter', 'dec', newDecVal );
-			
-		}
-		
+	
 		function newIncVal(new_val){
 			document.getElementById('inc_global_count').innerHTML = new_val;
 		}
 		
-		function newDecVal(new_val){
-			document.getElementById('dec_global_count').innerHTML = new_val;
-		}
+		
 		
 	</script>
 	
@@ -94,27 +85,7 @@
 				 <td id = 'inc_global_count'></td> 
 			</tr> 
 		</table>
-		<br><hr><br>
-		<table border='1'>
-			<tr>
-				<td> 
-					
-					<div class = "images" onclick = 'decrCounter()'> 
-						<img id = 'app_img' src = "/img/location.png">
-					</div>
-
-				</td>
-				
-			</tr>
-			<tr> 
-				<td> <span class = 'text'> Dec Local Counter </span> </td>
-				<td id = 'dec_local_count'></td>
-			</tr> 
-			<tr>
-				<td>  <span class = 'text'>Dec Global Counter </span> </td>
-				 <td id = 'dec_global_count'></td> 
-			</tr> 
-		</table>
+		
 	</div>
 </body>
 </html>

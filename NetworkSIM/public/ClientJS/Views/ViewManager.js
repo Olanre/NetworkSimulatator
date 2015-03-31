@@ -150,17 +150,23 @@ function ViewAppSpec(_id, e){
 }
 
 function ViewApp( app_id){
-	var local_simulation = get_local_simulation();
-	var apps = local_simulation.apps;
+	local_device = get_local_device();
+	var apps = local_device.apps;
+	var display = false;
 	
 	for(var i = 0; i < apps.length; i++){
 		//console.log(apps[i]);
 		if(apps[i]._id == app_id){
+			display = true;
 			var location = "../apps/" + apps[i].name + "/" + apps[i].main;
 			
 		}
 	}
-	var frame = "<iframe src='" + location + "' width='100%' height='600px'> </iframe> ";
+	if(display == true){
+		var frame = "<iframe src='" + location + "' width='100%' height='600px'> </iframe> ";
+	}else{
+		var frame = "<iframe src='../apps/not_found.html' width='100%' height='600px'> </iframe> ";
+	}
 	//clears everything on the page
 	
 	clearSection();
@@ -195,17 +201,17 @@ function appDefaultView(){
 	
 	clearSection();
 	
-	var local_device = get_local_device();
+	var local_simulation = get_local_simulation();
 	//sets the top bar to be the default look
 	defaultheaderView();
 	if(getVerified() == false){
 		alert('You do not have permission to access this. Please get a token first.');
 	}else{
 		//sets the page to view to 'user information' page
-		var apps = DeviceAppsListTemplate(local_device.apps);
+		var apps = DeviceAppsListTemplate(local_simulation.apps);
 		var content = getContainer();
-		if(local_device.apps==''||local_device.apps==null){
-			apps += "No applications are registed to this device.";
+		if(local_simulation.apps==''||local_simulation.apps==null){
+			apps += "No applications are registed to this simulation.";
 		}
 		content.innerHTML = apps;
 		//sets the sidebar to the sidebar for when inside a simulation

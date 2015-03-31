@@ -42,6 +42,7 @@ function Simulation(simulation_name){
 	this.attachJSON =attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
 	this.deployApp = deployApp;
+	this.revokeApp = revokeApp;
 	this.attachNetworkIterator = attachNetworkIterator;
 	this.attachDeviceIterator = attachDeviceIterator;
 }
@@ -142,6 +143,14 @@ function deployApp(app_specJSON){
 	while (this.deviceIterator.hasNext()) {
 		console.log("About to deploy");
 		  this.deviceIterator.next().attachAppSpec( app_specJSON);
+	  }
+}
+
+function revokeApp(app_specJSON){
+	this.deviceIterator.index = 0;
+	while (this.deviceIterator.hasNext()) {
+		console.log("About to remove app");
+		  this.deviceIterator.next().removeAppSpec( app_specJSON);
 	  }
 }
 

@@ -280,7 +280,7 @@ function pushFileEvent(file_type){
 		}
 		//send the information to the server
 		setTimeout(function(){
-			syncWithServer();
+			
 			uploadEvent={};
 			//sets the view to simulation management
 			if (file_type=='Test'){

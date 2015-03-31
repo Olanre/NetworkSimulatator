@@ -12,10 +12,26 @@ function deployApp( event_data, time_stamp ){
 	
 	for(index in simulation.app_specs){
 		if(simulation.app_specs[index]._id == event_data.app_id){
-			console.log(simulation.app_specs[index].specJSON.main);
+			simulation.app_specs[index].specJSON.deployed = true;
+			
 			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was deployed to all devices at " + time_stamp + "\n";
 			simulation.updateSimulationLog(new_activity);
 			simulation.deployApp(simulation.app_specs[index].specJSON);
+		}
+	}
+	SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
+}
+
+function reverse_deploymentApp( event_data, time_stamp ){
+	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
+	
+	for(index in simulation.app_specs){
+		if(simulation.app_specs[index]._id == event_data.app_id){
+			simulation.app_specs[index].specJSON.deployed = false;
+			
+			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was removed from all devices at " + time_stamp + "\n";
+			simulation.updateSimulationLog(new_activity);
+			simulation.revokeApp(simulation.app_specs[index].specJSON);
 		}
 	}
 	SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
@@ -60,7 +76,7 @@ function attachApp( location, simulation_id, spec, time_stamp){
 	
 	
 }
-
+module.exports.reverse_deploymentApp = reverse_deploymentApp;
 module.exports.attachApp = attachApp;
 module.exports.launchApp = launchApp;
 module.exports.deployApp = deployApp;

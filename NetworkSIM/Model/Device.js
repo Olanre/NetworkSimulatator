@@ -23,6 +23,7 @@ function Device(deviceName,token, simulation_name , email){
 	this.accessRDT=accessRDT;
 	this.accessRDTByName = accessRDTByName;
 	this.attachAppSpec = attachAppSpec;
+	this.removeAppSpec = removeAppSpec;
 	
 	//Our Functions//
 	this.attachJSON=attachJSON;
@@ -128,6 +129,15 @@ function attachAppSpec( app_specJSON){
 	this.deviceJSON.apps.push(app_specJSON._id);
 	 this.deviceJSON.save();
 }
+
+function removeAppSpec( app_specJSON){
+	var index = this.deviceJSON.apps.indexOf(app_specJSON._id);
+	if(index !== -1){
+		this.deviceJSON.apps.splice(index, 1);
+	}
+	 this.deviceJSON.save();
+}
+
 
 function accessRDT(){
     // Access the previously registered replicated data type in the device

@@ -394,7 +394,12 @@
 				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
 			</td>
 			<td> 
-				<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy </div>
+				{{#deployed}}
+					<div class = 'btn btn-primary' onclick = "reverseDeployApp('{{_id}}')"> Reverse Deployment </div>
+				{{/deployed}}
+				{{^deployed}}
+					<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy App </div>
+				{{/deployed}}
 				
 			</td> 
 			<td id = '{{_id}}' > </td>
@@ -654,7 +659,10 @@
 				</div>
 			</p>
 			<br> <br>
-			For the fields of your script. the name, version, description and parameters must be filled in. Failure to put correct information in these fields will result in our framework rejecting your script. The "name" field is the name of your script. The "version" field allows you to have different versions of your script. The "description" field is a description of the test script. "parametes" are explained below. <br>
+			For the fields of your script. the name, version, description and parameters must be filled in. 
+			Failure to put correct information in these fields will result in our framework rejecting your script. 
+			The "name" field is the name of your script. The "version" field allows you to have different versions of your script. 
+			The "description" field is a description of the test script. "parametes" are explained below. <br>
 			<br>
 			<h3>For the parameter field the following paramters are acceptable</h3>
 			<br>

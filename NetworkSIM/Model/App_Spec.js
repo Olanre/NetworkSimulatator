@@ -21,6 +21,7 @@ function createNewApp_Spec( spec){
 	specJSON.description = spec.description;
 	specJSON.main = spec.main;
 	specJSON.rdt_list = spec.rdt_list;
+	specJSON.deployed = false;
 	New_Spec.specJSON = specJSON;
 	New_Spec.attachJSON(specJSON);
 	specJSON.save();

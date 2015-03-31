@@ -148,6 +148,10 @@ function handleEventQueue(token, eventQueue, callback) {
                 ApplicationManager.deployApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
                 
+            case '/reverse/deploy/App':
+                ApplicationManager.reverse_deploymentApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
+                break;
+                
             case '/launch/App':
                 ApplicationManager.launchApp(eventQueue[i].event_data, eventQueue[i].time_stamp);
                 break;
