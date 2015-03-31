@@ -280,18 +280,20 @@ function pushFileEvent(file_type){
 		}
 		//send the information to the server
 		setTimeout(function(){
-			
+			syncWithServer();
 			uploadEvent={};
 			//sets the view to simulation management
-			if (file_type=='Test'){
-				//eventLogsView();
-			}
-			else if (file_type == 'App'){
-				adminAppsView();
-			}
-			else if(file_type == 'RDT'){
-				RDTsView();
-			}
-		},10000);
+			setTimeout(function(){
+				if (file_type=='Test'){
+					eventLogsView();
+				}
+				else if (file_type == 'App'){
+					adminAppsView();
+				}
+				else if(file_type == 'RDT'){
+					RDTsView();
+				}
+			},500);
+		},5000);
 	}
 }

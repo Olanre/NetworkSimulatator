@@ -75,7 +75,8 @@ socket.on('validate_user', function(data){
 		alert('You have been authenticated. \nPlease wait to be redirected');
 		//sync with the server and redirect to the simulation
 		syncWithServer();	
-	}else{
+	}
+	else{
 		alert('Token invalid \nPlease enter the correct token for this simulation')
 	}
 });

@@ -9,6 +9,11 @@ body{
   background-color:#504646;
 }
 
+iframe{
+	border:none;
+	text-align:center;
+}
+
 .nav li{
   cursor: pointer;
 }
@@ -353,7 +358,7 @@ Upload Apps RDTs and Test Scripts
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    background: rgba(240, 90, 117,1); 
+    background: rgba(131, 116, 116,1); 
 }
 
 /*--------------------------------
