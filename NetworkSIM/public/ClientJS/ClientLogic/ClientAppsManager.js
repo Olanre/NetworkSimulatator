@@ -6,11 +6,12 @@
 /**
  * Function which deploys a specific app to devices in the simulation
  */
-function DeployApp(app_id){
+function DeployApp(app_id, device_token){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null){
 		//creates the event to add to the event queue telling the server to deploy the app
 		var params = { 
+				'device_token' : device_token,
 				'app_id': app_id, 
 				'simulation_id': local_simulation._id,
 				};
@@ -18,7 +19,7 @@ function DeployApp(app_id){
 		var timestamp = new Date();
 		//add the event to the event queue
 		addToEventQueue(url, params, timestamp);
-		alert("App has been deployed to all devices in simulation");
+		alert("App has been deployed this device");
 		setTimeout(function(){
 			adminAppsView();
 		},2000);
@@ -28,11 +29,12 @@ function DeployApp(app_id){
 	}
 }
 
-function reverseDeployApp(app_id){
+function reverseDeployApp(app_id, device_token){
 	var local_simulation = get_local_simulation();
 	if(local_simulation!==null){
 		//creates the event to add to the event queue telling the server to deploy the app
 		var params = { 
+				'device_token' : device_token,
 				'app_id': app_id, 
 				'simulation_id': local_simulation._id,
 				};
@@ -43,7 +45,7 @@ function reverseDeployApp(app_id){
 		setTimeout(function(){
 			adminAppsView();
 		},2000);
-		alert("App will be removed to all devices in simulation");
+		alert("App will be removed to from this device");
 	}
 	else{
 		console.log("local simulation was passed null parameters");

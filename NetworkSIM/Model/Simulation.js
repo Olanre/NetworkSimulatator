@@ -41,8 +41,6 @@ function Simulation(simulation_name){
 	this.mergePartitions = mergePartitions;
 	this.attachJSON =attachJSON;
 	this.updateSimulationLog = updateSimulationLog;
-	this.deployApp = deployApp;
-	this.revokeApp = revokeApp;
 	this.attachNetworkIterator = attachNetworkIterator;
 	this.attachDeviceIterator = attachDeviceIterator;
 }
@@ -137,22 +135,7 @@ function removeApp(app){
 		
 }
 
-//deploy a the referenced app spec json object to all devices
-function deployApp(app_specJSON){
-	this.deviceIterator.index = 0;
-	while (this.deviceIterator.hasNext()) {
-		console.log("About to deploy");
-		  this.deviceIterator.next().attachAppSpec( app_specJSON);
-	  }
-}
 
-function revokeApp(app_specJSON){
-	this.deviceIterator.index = 0;
-	while (this.deviceIterator.hasNext()) {
-		console.log("About to remove app");
-		  this.deviceIterator.next().removeAppSpec( app_specJSON);
-	  }
-}
 
 function getNetworks(){
 		var merged = [];

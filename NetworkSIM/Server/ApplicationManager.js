@@ -9,32 +9,43 @@ var App_Spec = require("../Model/App_Spec.js");
 
 function deployApp( event_data, time_stamp ){
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
-	
-	for(index in simulation.app_specs){
-		if(simulation.app_specs[index]._id == event_data.app_id){
-			simulation.app_specs[index].setDeployed(true);
-			
-			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was deployed to all devices at " + time_stamp + "\n";
-			simulation.updateSimulationLog(new_activity);
-			simulation.deployApp(simulation.app_specs[index].specJSON);
+	if(simulation != -1){
+		var device_id= event_data.device_token;
+		var device=Util.findByUniqueID(device_id,simulation.getDevices());
+		if(device != -1){
+			for(index in simulation.app_specs){
+				if(simulation.app_specs[index]._id == event_data.app_id){
+					
+					var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was deployed to device " + device.device_name  
+					+ " at " + time_stamp + "\n";
+					simulation.updateSimulationLog(new_activity);
+					device.attachAppSpec(simulation.app_specs[index].specJSON);
+				}
+			}
+			SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
 		}
 	}
-	SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
 }
 
 function reverse_deploymentApp( event_data, time_stamp ){
 	var simulation=Util.findByUniqueID(event_data.simulation_id,simulationList);
-	
-	for(index in simulation.app_specs){
-		if(simulation.app_specs[index]._id == event_data.app_id){
-			simulation.app_specs[index].setDeployed(false);
-			
-			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was removed from all devices at " + time_stamp + "\n";
-			simulation.updateSimulationLog(new_activity);
-			simulation.revokeApp(simulation.app_specs[index].specJSON);
+	if(simulation != -1){
+		var device_id= event_data.device_token;
+		var device=Util.findByUniqueID(device_id,simulation.getDevices());
+		if(device != -1){
+			for(index in simulation.app_specs){
+				if(simulation.app_specs[index]._id == event_data.app_id){
+					
+					var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was removed from device " + device.device_name  
+					+ " at " + time_stamp + "\n";
+					simulation.updateSimulationLog(new_activity);
+					device.removeAppSpec(simulation.app_specs[index].specJSON);
+				}
+			}
+			SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
 		}
 	}
-	SimulationManager.saveSimulationState( event_data.simulation_id, time_stamp, simulation);
+	
 }
 
 function launchApp( event_data, time_stamp){

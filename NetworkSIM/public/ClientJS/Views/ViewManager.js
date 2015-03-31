@@ -79,10 +79,12 @@ function deviceHeaderView(){
 function adminAppsView(){
 	removeClass('active');
 	document.getElementById('nav-option-applications').className='active';
-
+	
 	var local_session = get_local_simulation();
 	var applications = local_session.apps;
-	var html = viewAdminApplicationsTemplate(applications);
+	var app_map = mapDevicestoApp( applications);
+	console.log(app_map);
+	var html = viewAdminApplicationsTemplate(app_map);
 	var content = getContainer();
 	content.innerHTML = html;
 }

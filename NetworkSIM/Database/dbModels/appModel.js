@@ -10,8 +10,7 @@ var applicationSchema = mongoose.Schema({
 	version : String,
 	description : String,
 	main : String,
-	rdt_list : [String],
-	deployed: Boolean
+	rdt_list : [String]
 	
 	});
 

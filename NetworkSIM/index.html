@@ -385,26 +385,39 @@
 	<h1 class='flip-up-text'>Applications</h1>
 	<h4> The Apps currently available in this simulation </h4>
 	<br>
+	{{#apps}}
 	<table class='center-table'>
-	 	{{#apps}}<tr>
+	 	<tr>
 			 <td> 
 				{{name}} 
 			</td> 
 			<td>
 				<div class = 'btn btn-primary' onclick = "ViewAppSpec('{{_id}}', this)">View Specification</div>
 			</td>
+		</tr>
+		{{#device_list}}
+		
+		<tr>
+			<td> 
+				{{name}} 
+			</td>
 			<td> 
 				{{#deployed}}
-					<div class = 'btn btn-primary' onclick = "reverseDeployApp('{{_id}}')"> Reverse Deployment </div>
+				
+				<div class = 'btn btn-primary' onclick = "reverseDeployApp('{{_id}}','{{device_token}}')"> Reverse Deployment </div>
 				{{/deployed}}
+				
 				{{^deployed}}
-					<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}')"> Deploy App </div>
+					<div class = 'btn btn-primary' onclick = "DeployApp('{{_id}}', '{{device_token}}')"> Deploy App </div>
 				{{/deployed}}
 				
 			</td> 
 			<td id = '{{_id}}' > </td>
-		</tr>{{/apps}}
+		</tr>
+		{{/device_list}}
  	</table>
+ 	<br>
+ 	{{/apps}}
 	<br>
 	<br>
 	<div id="uploadFiles"class='content' onload="handleFiles();">

@@ -143,34 +143,13 @@ function getAllDeviceObjects(){
 	if (local_simulation!==null){
 		var list=[];
 		//gets all network objects for this simulation
-		var network_list=getAllNetworkObjects();
+		console.log(local_simulation);
+		var network_list=getAllNetworkObjects(local_simulation);
 		for (var i=0;i<network_list.length;i++){
 			//gets the list of devices from each network
 			var device_list=network_list[i].device_list;
 			for (var j=0; j<device_list.length;j++){
 				//adds each to the list
-				list.push(device_list[j]);
-			}
-		}
-		return list;
-	}
-	else{
-		console.log("Error: getAllDeviceObjects was passed a null simulation object");
-	}
-}
-/**
- * Returns all device objects in a given simulation
- */
-function getAllDeviceObjects(simulation){
-	if (simulation!==null){
-		var list=[];
-		//gets the list of all networks in a simulation
-		var network_list=getAllNetworkObjects(simulation);
-		for (var i=0;i<network_list.length;i++){
-			//gets the list of devices in this network
-			var device_list=network_list[i].device_list;
-			for (var j=0; j<device_list.length;j++){
-				//adds that device to the list
 				list.push(device_list[j]);
 			}
 		}
@@ -431,4 +410,42 @@ function getLocalSimulationLogs(){
 		console.log("Error:getLocalSimulationLogs passed null simulation object");
 		return '';
 	}
+}
+
+/**
+ * Function to get the list of devices as a list of device ids and names
+ * and whether of not the device has a particular application deployed to it
+ */
+function mapDevicestoApp( applications){
+	var app_map = {};
+	var device_apps;
+	var bool;
+	var devices; 
+	var map
+	
+	for(index in applications){
+		
+		applications[index]['device_list'] = [] ;
+		devices = getAllDeviceObjects();
+		if(devices !== null){
+			for(var i = 0; i < devices.length; i++){
+				device_apps = devices[i].apps;
+				deployed = false;
+				for(var j = 0; j < device_apps.length; j++){
+					if(device_apps[j]._id == applications[index]._id){
+						deployed = true;
+						
+					}
+				}
+				if(deployed == true){
+					applications[index]['device_list'].push({ 'name':  devices[i].current_device_name, 'device_token' : devices[i].token,  'deployed': true});
+				}else{
+					applications[index]['device_list'].push({ 'name':  devices[i].current_device_name, 'device_token' : devices[i].token, 'deployed': false});
+				}
+				
+			}
+		}
+	}
+	
+	return applications;
 }
