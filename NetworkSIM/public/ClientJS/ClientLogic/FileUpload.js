@@ -280,7 +280,7 @@ function pushFileEvent(file_type){
 		}
 		//send the information to the server
 		setTimeout(function(){
-			
+			syncWithServer();
 			uploadEvent={};
 			//sets the view to simulation management
 			if (file_type=='Test'){
@@ -292,6 +292,6 @@ function pushFileEvent(file_type){
 			else if(file_type == 'RDT'){
 				RDTsView();
 			}
-		},10000);
+		},6000);
 	}
 }
