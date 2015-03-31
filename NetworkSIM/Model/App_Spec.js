@@ -10,6 +10,7 @@ function App_Spec( name){
 	
 	//functions
 	this.getSpec = getSpec;
+	this.setDeployed = setDeployed;
 	this.attachJSON = attachJSON;
 }
 
@@ -28,6 +29,10 @@ function createNewApp_Spec( spec){
 	return New_Spec;
 }
 
+function setDeployed(bool){
+	this.specJSON.deployed = bool;
+	this.specJSON.save();
+}
 function attachJSON(specJSON){
 	this.specJSON=specJSON
 	this._id=specJSON._id;

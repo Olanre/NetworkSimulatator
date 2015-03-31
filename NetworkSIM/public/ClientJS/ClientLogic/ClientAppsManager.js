@@ -48,7 +48,6 @@ function reverseDeployApp(app_id){
 	else{
 		console.log("local simulation was passed null parameters");
 	}
-	s
 }
 
 /**
