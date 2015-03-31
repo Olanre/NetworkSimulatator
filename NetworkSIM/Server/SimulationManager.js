@@ -511,7 +511,6 @@ module.exports.createSimulation=createSimulation;
 module.exports.addDeviceToNetwork = addDeviceToNetwork;
 module.exports.createDevice = createDevice;
 module.exports.createNetwork = createNetwork;
-module.exports.removeNetwork = removeNetwork;
 module.exports.mergePartitions = mergePartitions;
 module.exports.dividePartition = dividePartition;
 module.exports.buildPartitionList = buildPartitionList;
