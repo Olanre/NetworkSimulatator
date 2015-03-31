@@ -12,7 +12,7 @@ function deployApp( event_data, time_stamp ){
 	
 	for(index in simulation.app_specs){
 		if(simulation.app_specs[index]._id == event_data.app_id){
-			simulation.app_specs[index].specJSON.deployed = true;
+			simulation.app_specs[index].setDeployed(true);
 			
 			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was deployed to all devices at " + time_stamp + "\n";
 			simulation.updateSimulationLog(new_activity);
@@ -27,7 +27,7 @@ function reverse_deploymentApp( event_data, time_stamp ){
 	
 	for(index in simulation.app_specs){
 		if(simulation.app_specs[index]._id == event_data.app_id){
-			simulation.app_specs[index].specJSON.deployed = false;
+			simulation.app_specs[index].setDeployed(false);
 			
 			var new_activity = "The App " +  simulation.app_specs[index].specJSON.name +  " was removed from all devices at " + time_stamp + "\n";
 			simulation.updateSimulationLog(new_activity);
