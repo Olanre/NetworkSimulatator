@@ -1,0 +1,5 @@
+# NetworkSimulatator
+I will be constructing a Simulation Framework (SF) that will provide the ability to simulate peer-to-peer networks of mobile devices (client-server is another possibility). 
+Within the framework I can create a number of virtual WiFi or GSM networks. The simulated mobile devices (realized as browser tabs) will be able to join and leave any of these networks. All devices on a particular network will be able to directly communicate with each other. Connection between distinct virtual networks is not guaranteed. Application developers for mobile devices will be able to register their (HTML5) applications with the Framework. SF will provide us with the option of deploying these applications to the mobile devices. I am particularly interested in applications that utilize Replicated Data Types (RDTs), which will be provided by libraries created outside the Framework. The Framework will allow us to test, benchmark and pragmatically evaluate the RDTs. 
+Automatic execution of test scripts is another desired functionality.
+
